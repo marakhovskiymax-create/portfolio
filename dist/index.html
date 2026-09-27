@@ -80,8 +80,8 @@
           <p>Выбранные продуктовые задачи и системы.</p>
         </div>
 
-        <div class="portfolio-grid">
-          <div class="project-list" role="list" aria-label="Проекты" data-reveal>
+        <div class="portfolio-grid" data-reveal-group>
+          <div class="project-list" role="list" aria-label="Проекты">
             <button
               class="project-row is-active"
               type="button"
@@ -117,7 +117,7 @@
             </button>
           </div>
 
-          <figure class="case-visual" data-project-visual="eme-web" data-reveal>
+          <figure class="case-visual" data-project-visual="eme-web">
             <div class="case-visual__glow" aria-hidden="true"></div>
             <div class="case-visual__panel">
               <div class="case-visual__topline">
@@ -137,7 +137,7 @@
         </div>
       </section>
 
-      <div class="capability-tape" aria-label="Навыки и методы">
+      <div class="capability-tape" aria-label="Навыки и методы" data-reveal>
         <div class="capability-tape__track">
           <span>Prototyping</span><span>UX Research</span><span>Hypothesis Validation</span>
           <span>Data-driven Design</span><span>Design Systems</span><span>JTBD</span>
@@ -262,7 +262,7 @@
 
       <section class="section--process" id="process" aria-labelledby="process-title">
         <div class="process-stage shell">
-          <div class="section-heading section-heading--wide">
+          <div class="section-heading section-heading--wide" data-reveal>
             <h2 id="process-title">Мой рабочий процесс</h2>
           </div>
 
@@ -297,8 +297,8 @@
       </section>
 
       <section class="section section--proof shell" aria-label="Отзывы">
-        <div class="quote-grid">
-          <figure class="quote-card" data-reveal>
+        <div class="quote-grid" data-reveal-group>
+          <figure class="quote-card">
             <blockquote>
               «Надёжный дизайнер, на которого можно положиться. Держит дедлайны, не жертвует качеством
               и всегда идёт чуть дальше, чем требуется».
@@ -306,7 +306,7 @@
             <figcaption>Из отзывов команды</figcaption>
           </figure>
 
-          <figure class="quote-card quote-card--offset" data-reveal>
+          <figure class="quote-card quote-card--offset">
             <blockquote>
               «Работает ответственно и по плану. Всегда стремится сделать задачу максимально хорошо:
               и визуально, и по сути».
@@ -357,17 +357,17 @@
         </div>
       </section>
 
-      <section class="contact shell" id="contact" aria-labelledby="contact-title">
-        <p class="contact__kicker" data-reveal>Открыт к продуктовым задачам</p>
-        <h2 id="contact-title" data-reveal>Давайте сделаем сложное понятным.</h2>
-        <a class="contact__link" href="#top" data-reveal>
+      <section class="contact shell" id="contact" aria-labelledby="contact-title" data-reveal-group>
+        <p class="contact__kicker">Открыт к продуктовым задачам</p>
+        <h2 id="contact-title">Давайте сделаем сложное понятным.</h2>
+        <a class="contact__link" href="#top">
           Обсудить проект
           <span aria-hidden="true">↗</span>
         </a>
       </section>
     </main>
 
-    <footer class="footer shell">
+    <footer class="footer shell" data-reveal>
       <span>© 2026 Max Marakhovskiy</span>
       <a href="#top">Наверх</a>
     </footer>

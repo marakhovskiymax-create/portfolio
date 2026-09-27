@@ -61,16 +61,16 @@ Quiet, cosmic, editorial, assured.
 - Logo: typographic wordmark from the supplied design; favicon uses a simple M motif
 
 ## Motion
-- Feel: quick and restrained
+- Feel: quick, fluid, and restrained; inspired by Fluid Functionalism without copying its visual identity
 - Curves: ease-out cubic-bezier(0.23, 1, 0.32, 1), cinematic cubic-bezier(0.77, 0, 0.175, 1)
-- Durations: press 120ms, panel 240ms, scroll reveal 220ms
-- Entrance: 14px rise with opacity
-- Screen track: marketing scroll reveal, subtle star-field parallax, a scrubbed career trajectory, and a scrubbed process timeline whose baseline, stems, and four steps appear in sequence
+- Durations: fast 80ms / 60ms exit, moderate 160ms / 120ms exit, slow 240ms / 160ms exit
+- Entrance: 18px rise with opacity over 240ms; grouped content staggers by 60ms
+- Screen track: marketing scroll reveal on every content block, subtle star-field parallax, a scrubbed career trajectory, and a scrubbed process timeline whose baseline, stems, and four steps appear in sequence
 - Career behavior: sticky horizontal route on wide screens; in-flow vertical route on narrow screens
 - Process behavior: sticky stepped diagram on wide screens; in-flow two-column sequence on narrow screens
-- Frequency: project hover updates the single preview; repeated nav actions do not animate spatially
-- Reduced motion: no parallax; marquee paused; feedback reduced to short opacity and color changes
-- Verified by: scripted motion, coherence, and anti-slop audits plus desktop and 390px browser QA on 2026-09-27
+- Frequency: one shared highlight glides between adjacent project rows while the single preview updates; repeated nav actions do not animate spatially
+- Reduced motion: no parallax or sliding highlight; marquee paused; opacity and color feedback remain short
+- Verified by: scripted motion, coherence, and anti-slop audits plus desktop and 390px browser QA on 2026-09-28
 
 ## Do not
 - No generic purple or cyan gradients

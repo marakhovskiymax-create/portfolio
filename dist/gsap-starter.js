@@ -12,7 +12,7 @@
     <script src="gsap-starter.js"></script>
     <script>
       TastemakerMotion.init({
-        duration: 0.22,       // seconds — match .tastemaker/style-lock.md's Motion section
+        duration: 0.24,       // seconds — match .tastemaker/style-lock.md's Motion section
         distance: 16,         // px
         ease: "power3.out",
         staggerStep: 0.06,    // seconds between staggered children
@@ -24,7 +24,7 @@
 
   function init(options) {
     var opts = Object.assign(
-      { duration: 0.22, distance: 16, ease: "power3.out", staggerStep: 0.06 },
+      { duration: 0.24, distance: 16, ease: "power3.out", staggerStep: 0.06 },
       options || {}
     );
 
@@ -53,7 +53,7 @@
         var duration = reduce ? 0.01 : opts.duration;
         var distance = reduce ? 0 : opts.distance;
 
-        document.querySelectorAll("[data-reveal]").forEach(function (el) {
+        document.querySelectorAll("[data-reveal], [data-reveal-group]").forEach(function (el) {
           var isGroup = el.hasAttribute("data-reveal-group");
           var targets = isGroup ? el.children : el;
 

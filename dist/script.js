@@ -24,6 +24,35 @@ const visualTitle = visual?.querySelector(".case-visual__title");
 const visualKind = visual?.querySelector("[data-visual-kind]");
 const visualYear = visual?.querySelector("[data-visual-year]");
 const visualCaption = visual?.querySelector("[data-visual-caption]");
+const projectList = document.querySelector(".project-list");
+const projectRows = Array.from(document.querySelectorAll(".project-row"));
+
+function mountFluidProjectHighlight() {
+  if (!projectList || !projectRows.length) return;
+
+  const highlight = document.createElement("span");
+  highlight.className = "project-hover-highlight";
+  highlight.setAttribute("aria-hidden", "true");
+  projectList.prepend(highlight);
+
+  const moveHighlight = (row) => {
+    projectList.style.setProperty("--fluid-highlight-y", `${row.offsetTop}px`);
+    projectList.style.setProperty("--fluid-row-height", `${row.offsetHeight}px`);
+    highlight.classList.add("is-visible");
+  };
+
+  projectRows.forEach((row) => {
+    row.addEventListener("pointerenter", () => moveHighlight(row));
+    row.addEventListener("focus", () => moveHighlight(row));
+  });
+
+  projectList.addEventListener("pointerleave", () => highlight.classList.remove("is-visible"));
+  projectList.addEventListener("focusout", () => {
+    window.requestAnimationFrame(() => {
+      if (!projectList.contains(document.activeElement)) highlight.classList.remove("is-visible");
+    });
+  });
+}
 
 function activateProject(button) {
   const project = projectContent[button.dataset.project];
@@ -50,10 +79,12 @@ function activateProject(button) {
   }
 }
 
-document.querySelectorAll(".project-row").forEach((button) => {
+projectRows.forEach((button) => {
   button.addEventListener("click", () => activateProject(button));
   button.addEventListener("mouseenter", () => activateProject(button));
 });
+
+mountFluidProjectHighlight();
 
 const menuToggle = document.querySelector(".menu-toggle");
 const mobileMenu = document.querySelector("#mobile-menu");
@@ -80,10 +111,10 @@ document.addEventListener("keydown", (event) => {
 
 if (window.TastemakerMotion && window.gsap && window.ScrollTrigger) {
   window.TastemakerMotion.init({
-    duration: 0.22,
-    distance: 14,
+    duration: 0.24,
+    distance: 18,
     ease: "power3.out",
-    staggerStep: 0.055,
+    staggerStep: 0.06,
   });
 
   window.gsap.matchMedia().add("(prefers-reduced-motion: no-preference)", () => {

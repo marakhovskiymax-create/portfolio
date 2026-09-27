@@ -33,8 +33,14 @@
   --space-48: 192px;
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --curve-cinematic: cubic-bezier(0.77, 0, 0.175, 1);
-  --duration-press: 120ms;
-  --duration-panel: 240ms;
+  --motion-fast: 80ms;
+  --motion-fast-exit: 60ms;
+  --motion-moderate: 160ms;
+  --motion-moderate-exit: 120ms;
+  --motion-slow: 240ms;
+  --motion-slow-exit: 160ms;
+  --duration-press: var(--motion-fast);
+  --duration-panel: var(--motion-slow);
   --shell: min(1180px, calc(100vw - 64px));
 }
 
@@ -325,7 +331,29 @@ section[id] {
 }
 
 .project-list {
+  position: relative;
+  isolation: isolate;
   border-top: 1px solid var(--color-border);
+}
+
+.project-hover-highlight {
+  position: absolute;
+  z-index: -1;
+  inset: 0 0 auto;
+  height: var(--fluid-row-height, 84px);
+  border: 1px solid rgba(114, 201, 139, 0.18);
+  background: rgba(114, 201, 139, 0.07);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate3d(0, var(--fluid-highlight-y, 0), 0);
+  transition:
+    transform var(--motion-fast) var(--ease-out),
+    opacity var(--motion-fast-exit) linear;
+  will-change: transform, opacity;
+}
+
+.project-hover-highlight.is-visible {
+  opacity: 1;
 }
 
 .project-row {
@@ -343,7 +371,7 @@ section[id] {
   cursor: pointer;
   text-align: left;
   transition:
-    color var(--duration-panel) var(--ease-out),
+    color var(--duration-press) var(--ease-out),
     transform var(--duration-press) var(--ease-out);
 }
 
@@ -361,7 +389,7 @@ section[id] {
 .project-row__arrow {
   font-size: 1.1rem;
   transform: translateX(0);
-  transition: transform var(--duration-panel) var(--ease-out);
+  transition: transform var(--duration-press) var(--ease-out);
 }
 
 .project-row:hover,
@@ -404,7 +432,7 @@ section[id] {
     var(--color-accent);
   filter: blur(28px);
   transform: scale(1.12);
-  transition: transform 280ms var(--curve-cinematic);
+  transition: transform var(--motion-slow) var(--curve-cinematic);
 }
 
 .case-visual__panel {
@@ -769,7 +797,7 @@ section[id] {
 }
 
 .quote-card--offset {
-  transform: translateY(var(--space-16));
+  margin-top: var(--space-16);
 }
 
 .quote-card blockquote {
@@ -1138,7 +1166,7 @@ section[id] {
   }
 
   .quote-card--offset {
-    transform: none;
+    margin-top: 0;
   }
 
   .section--about {
@@ -1359,7 +1387,13 @@ section[id] {
   .project-row,
   .project-row__arrow,
   .contact__link {
-    transition-duration: 100ms;
+    transition-duration: var(--motion-fast);
+  }
+
+  .project-hover-highlight {
+    transition:
+      transform 0ms,
+      opacity var(--motion-fast) linear;
   }
 }
 
