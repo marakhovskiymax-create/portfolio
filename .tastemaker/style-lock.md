@@ -41,6 +41,7 @@ Established: 2026-09-27. Source: Figma reference node 13:18 supplied by the user
 - Narrative arc: hook H1, work/proof F6, capability index, how F4, proof P2, personal context, close C2
 - Shared chrome: N4 editorial masthead and Ft2 inline footer
 - Body archetypes: H1 statement, F6 project ledger with focused visual, F4 process, P2 pull quotes, C2 statement close
+- Personal context: three asymmetrically placed text islands with seven white pill badges floating between them on wide screens; stacked reading order with a two-column badge cloud on mobile
 - Build stamp and `.tastemaker/log.json` record this implementation.
 
 ## Taste memory
@@ -77,3 +78,4 @@ Quiet, cosmic, editorial, assured.
 - No emoji icons
 - No heavy shadows or dashboard chrome
 - No invented metrics; career logo treatments must stay grounded in the supplied Figma frame
+- Do not collapse the personal-context composition into three generic cards; preserve the Figma-like text islands and scattered badges

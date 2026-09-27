@@ -786,67 +786,113 @@ section[id] {
 }
 
 .section--about {
-  min-height: 800px;
-  padding-bottom: var(--space-48);
+  width: min(90vw, 2300px);
+  min-height: 720px;
+  padding-block: clamp(40px, 5vw, 72px) var(--space-16);
+  border-bottom: 1px dotted rgba(244, 243, 238, 0.42);
+}
+
+.section--about .section-heading {
+  margin-bottom: clamp(30px, 4vw, 52px);
 }
 
 .about-map {
-  display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: var(--space-8);
+  position: relative;
+  min-height: 470px;
 }
 
 .about-note {
+  position: absolute;
+  z-index: 1;
   min-width: 0;
 }
 
 .about-note p {
   color: var(--color-muted);
-  font-size: 0.9375rem;
+  font-size: clamp(0.92rem, 1.18vw, 1.13rem);
+  line-height: 1.36;
 }
 
 .about-note strong {
   color: var(--color-text);
-  font-size: 1.2em;
+  font-size: 1.42em;
   font-weight: 500;
+  letter-spacing: -0.025em;
   text-transform: uppercase;
 }
 
 .about-note--fashion {
-  grid-column: 1 / span 4;
+  inset: 0 auto auto 0;
+  width: min(39%, 470px);
 }
 
 .about-note--film {
-  grid-column: 5 / span 4;
-  margin-top: var(--space-24);
-  text-align: center;
+  inset: 150px auto auto 35%;
+  width: min(31%, 380px);
+  text-align: right;
 }
 
 .about-note--games {
-  grid-column: 10 / span 3;
-  margin-top: var(--space-6);
+  inset: 0 0 auto auto;
+  width: min(20%, 380px);
 }
 
-.about-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-3);
-  margin-top: var(--space-6);
+.about-badges {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  pointer-events: none;
 }
 
-.about-note--film .about-tags {
-  justify-content: center;
-}
-
-.about-tags span {
+.about-badge {
+  position: absolute;
   display: inline-flex;
-  min-height: 36px;
+  min-height: 40px;
   align-items: center;
-  padding: 0 var(--space-4);
+  justify-content: center;
+  padding: 0 18px;
   border-radius: var(--radius-small);
   background: var(--color-primary);
   color: var(--color-ink);
-  font-size: 0.75rem;
+  font-size: clamp(0.78rem, 1vw, 0.95rem);
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.about-badge--vibe {
+  inset: 158px auto auto 1.5%;
+  transform: rotate(-1.5deg);
+}
+
+.about-badge--cinema {
+  inset: 286px auto auto 16.5%;
+  transform: rotate(-4deg);
+}
+
+.about-badge--shooting {
+  inset: 148px auto auto 25.5%;
+  transform: rotate(-1.5deg);
+}
+
+.about-badge--games {
+  inset: -14px auto auto 48%;
+  transform: rotate(1deg);
+}
+
+.about-badge--science {
+  inset: 141px auto auto 67%;
+  transform: rotate(2.5deg);
+}
+
+.about-badge--music {
+  inset: 248px 0 auto auto;
+  transform: rotate(6deg);
+}
+
+.about-badge--fashion {
+  inset: 336px 22% auto auto;
+  transform: rotate(-1deg);
 }
 
 .contact {
@@ -1095,20 +1141,50 @@ section[id] {
     transform: none;
   }
 
+  .section--about {
+    min-height: 0;
+  }
+
+  .about-map {
+    display: grid;
+    min-height: 0;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-16) var(--space-8);
+  }
+
+  .about-note,
   .about-note--fashion,
   .about-note--film,
   .about-note--games {
-    grid-column: span 6;
-    margin-top: 0;
+    position: static;
+    width: auto;
     text-align: left;
   }
 
   .about-note--games {
-    grid-column-start: 7;
+    grid-column: 2;
   }
 
-  .about-note--film .about-tags {
-    justify-content: flex-start;
+  .about-badges {
+    position: relative;
+    inset: auto;
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(4, max-content);
+    justify-content: space-between;
+    gap: var(--space-4);
+  }
+
+  .about-badge,
+  .about-badge--vibe,
+  .about-badge--cinema,
+  .about-badge--shooting,
+  .about-badge--games,
+  .about-badge--science,
+  .about-badge--music,
+  .about-badge--fashion {
+    position: static;
+    transform: none;
   }
 }
 
@@ -1208,13 +1284,30 @@ section[id] {
 
   .about-map {
     grid-template-columns: minmax(0, 1fr);
-    gap: var(--space-16);
+    gap: var(--space-12);
   }
 
   .about-note--fashion,
   .about-note--film,
   .about-note--games {
     grid-column: 1;
+  }
+
+  .about-note p {
+    font-size: 0.95rem;
+  }
+
+  .about-badges {
+    grid-column: 1;
+    grid-template-columns: repeat(2, max-content);
+    justify-content: start;
+    gap: var(--space-3);
+  }
+
+  .about-badge {
+    min-height: 38px;
+    padding-inline: var(--space-4);
+    font-size: 0.78rem;
   }
 
   .contact {
