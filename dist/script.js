@@ -306,6 +306,115 @@ if (window.TastemakerMotion && window.gsap && window.ScrollTrigger) {
     });
   });
 
+  const sectionMotion = window.gsap.matchMedia();
+
+  sectionMotion.add("(prefers-reduced-motion: no-preference)", () => {
+    const scrollScene = (trigger, start = "top 78%") => window.gsap.timeline({
+      defaults: { ease: "power3.out" },
+      scrollTrigger: {
+        trigger,
+        start,
+        once: true,
+      },
+    });
+
+    const portfolio = scrollScene("[data-motion-section='portfolio']", "top 72%");
+    portfolio
+      .fromTo(
+        ".section--portfolio .section-heading h2",
+        { autoAlpha: 0, yPercent: 55, clipPath: "inset(0 0 100% 0)" },
+        { autoAlpha: 1, yPercent: 0, clipPath: "inset(0 0 0% 0)", duration: 0.48 },
+      )
+      .fromTo(
+        ".section--portfolio .section-heading p",
+        { autoAlpha: 0, y: 18 },
+        { autoAlpha: 1, y: 0, duration: 0.24 },
+        "-=0.24",
+      )
+      .fromTo(
+        ".project-row",
+        { autoAlpha: 0, y: 24 },
+        { autoAlpha: 1, y: 0, duration: 0.24, stagger: 0.06 },
+        "-=0.06",
+      )
+      .fromTo(
+        ".case-visual",
+        { autoAlpha: 0, x: 32, clipPath: "inset(0 0 0 18%)" },
+        { autoAlpha: 1, x: 0, clipPath: "inset(0 0 0 0%)", duration: 0.48 },
+        "-=0.3",
+      );
+
+    scrollScene("[data-motion-section='capabilities']", "top 88%").fromTo(
+      "[data-motion-section='capabilities']",
+      { autoAlpha: 0, clipPath: "inset(0 100% 0 0)" },
+      { autoAlpha: 1, clipPath: "inset(0 0% 0 0)", duration: 0.48 },
+    );
+
+    scrollScene("[data-motion-section='proof']", "top 78%").fromTo(
+      ".quote-card",
+      { autoAlpha: 0, y: 48, scale: 0.97 },
+      { autoAlpha: 1, y: 0, scale: 1, duration: 0.48, stagger: 0.08 },
+    );
+
+    const about = scrollScene("[data-motion-section='about']", "top 74%");
+    about
+      .fromTo(
+        ".section--about .section-heading h2",
+        { autoAlpha: 0, yPercent: 55, clipPath: "inset(0 0 100% 0)" },
+        { autoAlpha: 1, yPercent: 0, clipPath: "inset(0 0 0% 0)", duration: 0.48 },
+      )
+      .fromTo(
+        ".about-note--fashion",
+        { autoAlpha: 0, x: -32 },
+        { autoAlpha: 1, x: 0, duration: 0.48 },
+        "-=0.18",
+      )
+      .fromTo(
+        ".about-note--film",
+        { autoAlpha: 0, y: 32 },
+        { autoAlpha: 1, y: 0, duration: 0.48 },
+        "-=0.36",
+      )
+      .fromTo(
+        ".about-note--games",
+        { autoAlpha: 0, x: 32 },
+        { autoAlpha: 1, x: 0, duration: 0.48 },
+        "-=0.36",
+      )
+      .fromTo(
+        ".about-badge",
+        { autoAlpha: 0, y: 16, scale: 0.94 },
+        { autoAlpha: 1, y: 0, scale: 1, duration: 0.24, stagger: 0.06 },
+        "-=0.18",
+      );
+
+    const contact = scrollScene("[data-motion-section='contact']", "top 76%");
+    contact
+      .fromTo(
+        ".contact__kicker",
+        { autoAlpha: 0, y: 18 },
+        { autoAlpha: 1, y: 0, duration: 0.24 },
+      )
+      .fromTo(
+        ".contact h2",
+        { autoAlpha: 0, yPercent: 35, clipPath: "inset(0 0 100% 0)" },
+        { autoAlpha: 1, yPercent: 0, clipPath: "inset(0 0 0% 0)", duration: 0.48 },
+        "-=0.06",
+      )
+      .fromTo(
+        ".contact__link",
+        { autoAlpha: 0, x: -18 },
+        { autoAlpha: 1, x: 0, duration: 0.24 },
+        "-=0.12",
+      );
+
+    scrollScene("[data-motion-section='footer']", "top 96%").fromTo(
+      "[data-motion-section='footer'] > *",
+      { autoAlpha: 0, y: 12 },
+      { autoAlpha: 1, y: 0, duration: 0.24, stagger: 0.06 },
+    );
+  });
+
   const buildCareerTimeline = (start, end) => {
     const stops = window.gsap.utils.toArray("[data-career-stop]");
     const drawPaths = window.gsap.utils.toArray("[data-career-draw]");

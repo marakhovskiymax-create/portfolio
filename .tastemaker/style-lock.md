@@ -64,8 +64,8 @@ Quiet, cosmic, editorial, assured.
 - Feel: quick, fluid, and restrained; inspired by Fluid Functionalism without copying its visual identity
 - Curves: ease-out cubic-bezier(0.23, 1, 0.32, 1), cinematic cubic-bezier(0.77, 0, 0.175, 1)
 - Durations: fast 80ms / 60ms exit, moderate 160ms / 120ms exit, slow 240ms / 160ms exit
-- Entrance: 18px rise with opacity over 240ms; grouped content staggers by 60ms
-- Screen track: marketing scroll reveal on every content block, a pointer-driven white Spider Cursor field in the hero, a scrubbed career trajectory, and a scrubbed process timeline whose baseline, stems, and four steps appear in sequence
+- Entrance: small interface reveals use an 18px rise over 240ms; major marketing blocks use explicit 480ms scroll scenes with 60 to 80ms staging
+- Screen track: portfolio heading, rows and visual enter in sequence; the capability tape wipes open; quote cards rise; personal notes approach from three directions before badges pop in; the contact statement unfolds in three beats; the hero retains its pointer-driven white Spider Cursor field; career and process keep their scrubbed diagrams
 - Career behavior: sticky horizontal route on wide screens; in-flow vertical route on narrow screens
 - Process behavior: sticky stepped diagram on wide screens; in-flow two-column sequence on narrow screens
 - Frequency: one shared highlight glides between adjacent project rows while the single preview updates; repeated nav actions do not animate spatially
