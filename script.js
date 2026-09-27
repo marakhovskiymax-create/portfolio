@@ -98,4 +98,87 @@ if (window.TastemakerMotion && window.gsap && window.ScrollTrigger) {
       },
     });
   });
+
+  const buildCareerTimeline = (start, end) => {
+    const stops = window.gsap.utils.toArray("[data-career-stop]");
+    const drawPaths = window.gsap.utils.toArray("[data-career-draw]");
+    const revealMoments = [0.045, 0.24, 0.455, 0.655, 0.845];
+
+    window.gsap.set(stops, { autoAlpha: 0, y: 16 });
+    window.gsap.set(drawPaths, { strokeDashoffset: 1 });
+
+    const timeline = window.gsap.timeline({
+      defaults: { overwrite: "auto" },
+      scrollTrigger: {
+        trigger: ".career-story",
+        start,
+        end,
+        scrub: 0.6,
+      },
+    });
+
+    timeline.to(drawPaths, { strokeDashoffset: 0, duration: 1, ease: "none" }, 0);
+
+    stops.forEach((stop, index) => {
+      timeline.to(
+        stop,
+        { autoAlpha: 1, y: 0, duration: 0.09, ease: "power3.out" },
+        revealMoments[index],
+      );
+    });
+
+    return timeline;
+  };
+
+  const careerMotion = window.gsap.matchMedia();
+
+  careerMotion.add(
+    "(min-width: 901px) and (prefers-reduced-motion: no-preference)",
+    () => {
+      buildCareerTimeline("top top", "bottom bottom");
+    },
+  );
+
+  careerMotion.add(
+    "(max-width: 900px) and (prefers-reduced-motion: no-preference)",
+    () => {
+      buildCareerTimeline("top 8%", "bottom 72%");
+    },
+  );
+
+  careerMotion.add("(prefers-reduced-motion: reduce)", () => {
+    window.gsap.set("[data-career-stop]", { autoAlpha: 1, y: 0 });
+    window.gsap.set("[data-career-draw]", { strokeDashoffset: 0 });
+  });
+
+  const processMotion = window.gsap.matchMedia();
+
+  processMotion.add("(prefers-reduced-motion: no-preference)", () => {
+    const baseline = document.querySelector(".process-baseline");
+    const stems = window.gsap.utils.toArray(".process-step__stem");
+    const steps = window.gsap.utils.toArray("[data-process-step]");
+
+    window.gsap.set(baseline, { scaleX: 0, transformOrigin: "left center" });
+    window.gsap.set(stems, { scaleY: 0, transformOrigin: "bottom center" });
+    window.gsap.set(steps, { autoAlpha: 0, y: 12 });
+
+    window.gsap
+      .timeline({
+        scrollTrigger: {
+          trigger: "[data-process-story]",
+          start: "top 78%",
+          once: true,
+        },
+      })
+      .to(baseline, { scaleX: 1, duration: 0.48, ease: "power3.out" })
+      .to(stems, { scaleY: 1, duration: 0.28, ease: "power3.out", stagger: 0.07 }, 0.12)
+      .to(steps, { autoAlpha: 1, y: 0, duration: 0.22, ease: "power3.out", stagger: 0.07 }, 0.2);
+  });
+
+  processMotion.add("(prefers-reduced-motion: reduce)", () => {
+    window.gsap.set(".process-baseline, .process-step__stem, [data-process-step]", {
+      autoAlpha: 1,
+      clearProps: "transform",
+    });
+  });
 }

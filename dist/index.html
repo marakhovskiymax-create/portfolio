@@ -149,23 +149,116 @@
         </div>
       </div>
 
-      <section class="section section--career shell" id="career" aria-labelledby="career-title">
-        <div class="section-heading" data-reveal>
-          <h2 id="career-title">Карьера</h2>
-          <p>Продуктовая практика на стыке исследований, UX/UI и веб-дизайна.</p>
-        </div>
+      <section class="career-story" id="career" aria-labelledby="career-title">
+        <div class="career-stage">
+          <div class="career-stage__heading shell" data-reveal>
+            <h2 id="career-title">Карьера</h2>
+          </div>
 
-        <div class="career-ledger" data-reveal>
-          <article class="career-row">
-            <span class="career-row__date">2023&nbsp;– сейчас</span>
-            <h3>Продуктовый дизайнер</h3>
-            <p>Исследования, сценарии, интерфейсные системы и передача решений в разработку.</p>
-          </article>
-          <article class="career-row">
-            <span class="career-row__date">Фокус</span>
-            <h3>Сложные операционные продукты</h3>
-            <p>Делаю процессы понятными людям, не упрощая саму предметную область.</p>
-          </article>
+          <div class="career-track">
+            <svg
+              class="career-route career-route--desktop"
+              viewBox="0 0 1440 430"
+              preserveAspectRatio="none"
+              aria-hidden="true"
+            >
+              <defs>
+                <mask id="career-reveal-desktop" maskUnits="userSpaceOnUse" x="-30" y="0" width="1500" height="430">
+                  <path
+                    class="career-route__draw"
+                    data-career-draw
+                    pathLength="1"
+                    d="M-20 175 C100 122 210 75 355 115 C500 154 585 228 700 226 C840 225 875 142 1002 128 C1160 110 1290 128 1460 178"
+                  />
+                </mask>
+              </defs>
+              <path
+                class="career-route__base"
+                d="M-20 175 C100 122 210 75 355 115 C500 154 585 228 700 226 C840 225 875 142 1002 128 C1160 110 1290 128 1460 178"
+              />
+              <path
+                class="career-route__trace"
+                mask="url(#career-reveal-desktop)"
+                d="M-20 175 C100 122 210 75 355 115 C500 154 585 228 700 226 C840 225 875 142 1002 128 C1160 110 1290 128 1460 178"
+              />
+            </svg>
+
+            <svg
+              class="career-route career-route--mobile"
+              viewBox="0 0 360 1080"
+              preserveAspectRatio="none"
+              aria-hidden="true"
+            >
+              <defs>
+                <mask id="career-reveal-mobile" maskUnits="userSpaceOnUse" x="0" y="-20" width="360" height="1120">
+                  <path
+                    class="career-route__draw"
+                    data-career-draw
+                    pathLength="1"
+                    d="M54 -10 C48 74 102 126 126 214 C151 307 87 374 55 451 C18 541 67 605 150 680 C212 736 156 809 76 888 C36 928 31 1003 74 1090"
+                  />
+                </mask>
+              </defs>
+              <path
+                class="career-route__base"
+                d="M54 -10 C48 74 102 126 126 214 C151 307 87 374 55 451 C18 541 67 605 150 680 C212 736 156 809 76 888 C36 928 31 1003 74 1090"
+              />
+              <path
+                class="career-route__trace"
+                mask="url(#career-reveal-mobile)"
+                d="M54 -10 C48 74 102 126 126 214 C151 307 87 374 55 451 C18 541 67 605 150 680 C212 736 156 809 76 888 C36 928 31 1003 74 1090"
+              />
+            </svg>
+
+            <ol class="career-journey" aria-label="Профессиональный путь">
+              <li class="career-stop career-stop--hse" data-career-stop>
+                <div class="career-logo career-logo--hse" role="img" aria-label="Логотип ВШЭ">
+                  <span>В</span>
+                </div>
+                <div class="career-stop__body">
+                  <h3>ВШЭ</h3>
+                  <p>Коммуникации, медиа и дизайна</p>
+                  <time>2018 – 2022</time>
+                </div>
+              </li>
+
+              <li class="career-stop career-stop--match" data-career-stop>
+                <div class="career-logo career-logo--match" role="img" aria-label="Логотип Матч ТВ">МАТЧ!</div>
+                <div class="career-stop__body">
+                  <h3>Матч ТВ</h3>
+                  <p>Product, UX/UI дизайнер</p>
+                  <time>Август 2022 – Ноябрь 2023</time>
+                </div>
+              </li>
+
+              <li class="career-stop career-stop--geleos" data-career-stop>
+                <div class="career-logo career-logo--geleos" role="img" aria-label="Логотип Гелеос"></div>
+                <div class="career-stop__body">
+                  <h3>ГЕЛЕОС</h3>
+                  <p>UX/UI, Web дизайнер</p>
+                  <time>Ноябрь 2023 – Май 2024</time>
+                </div>
+              </li>
+
+              <li class="career-stop career-stop--don" data-career-stop>
+                <div class="career-logo career-logo--don" role="img" aria-label="Логотип Дон Баллон">ДОН БАЛЛОН</div>
+                <div class="career-stop__body">
+                  <h3>Дон Баллон</h3>
+                  <p>Product, UX/UI дизайнер</p>
+                  <time>Июнь 2024 – Октябрь 2024</time>
+                </div>
+              </li>
+
+              <li class="career-stop career-stop--eme" data-career-stop>
+                <div class="career-logo career-logo--eme" role="img" aria-label="Логотип EME">EME</div>
+                <div class="career-stop__body">
+                  <h3>EME</h3>
+                  <p>Product, UX/UI дизайнер</p>
+                  <time>Август 2022 – Ноябрь 2023</time>
+                </div>
+              </li>
+            </ol>
+          </div>
         </div>
       </section>
 
@@ -174,26 +267,31 @@
           <h2 id="process-title">Мой рабочий процесс</h2>
         </div>
 
-        <ol class="process-line" data-reveal>
-          <li class="process-step process-step--low">
+        <ol class="process-line" data-process-story>
+          <li class="process-baseline" aria-hidden="true"></li>
+          <li class="process-step process-step--one" data-process-step>
+            <span class="process-step__stem" aria-hidden="true"></span>
             <span class="process-step__number">1</span>
             <h3>Копать</h3>
             <p>Интервью, данные, контекст.</p>
           </li>
-          <li class="process-step process-step--mid">
+          <li class="process-step process-step--two" data-process-step>
+            <span class="process-step__stem" aria-hidden="true"></span>
             <span class="process-step__number">2</span>
             <h3>Формулировать</h3>
-            <p>Из хаоса исследований в одну чёткую задачу.</p>
+            <p>Из хаоса исследований: одна чёткая задача.</p>
           </li>
-          <li class="process-step process-step--high">
+          <li class="process-step process-step--three" data-process-step>
+            <span class="process-step__stem" aria-hidden="true"></span>
             <span class="process-step__number">3</span>
             <h3>Создавать</h3>
             <p>Визуальный язык как аргумент, а не украшение.</p>
           </li>
-          <li class="process-step process-step--base">
+          <li class="process-step process-step--four" data-process-step>
+            <span class="process-step__stem" aria-hidden="true"></span>
             <span class="process-step__number">4</span>
             <h3>Передавать</h3>
-            <p>Дизайн, который переживёт передачу в разработку.</p>
+            <p>Дизайн, который переживает хэнд-офф.</p>
           </li>
         </ol>
       </section>
@@ -265,8 +363,8 @@
       <a href="#top">Наверх</a>
     </footer>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="vendor/gsap.min.js"></script>
+    <script src="vendor/ScrollTrigger.min.js"></script>
     <script src="gsap-starter.js"></script>
     <script src="script.js"></script>
   </body>

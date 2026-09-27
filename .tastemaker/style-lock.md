@@ -54,7 +54,8 @@ Quiet, cosmic, editorial, assured.
 
 ## Assets
 - Anchor asset: supplied Figma node 13:18
-- Asset style: code-native interface geometry, one green product panel, star-field texture
+- Asset style: code-native interface geometry, one green product panel, star-field texture, source-faithful career logo treatments from the supplied frame
+- Motion runtime: vendored GSAP 3.12.5 and ScrollTrigger 3.12.5, so the scroll story does not depend on CDN availability
 - Illustration versus photography: no photography in this first homepage pass
 - Logo: typographic wordmark from the supplied design; favicon uses a simple M motif
 
@@ -63,14 +64,15 @@ Quiet, cosmic, editorial, assured.
 - Curves: ease-out cubic-bezier(0.23, 1, 0.32, 1), cinematic cubic-bezier(0.77, 0, 0.175, 1)
 - Durations: press 120ms, panel 240ms, scroll reveal 220ms
 - Entrance: 14px rise with opacity
-- Screen track: marketing scroll reveal with one subtle star-field parallax
+- Screen track: marketing scroll reveal, subtle star-field parallax, a scrubbed career trajectory, and a process timeline that draws before its four steps appear
+- Career behavior: sticky horizontal route on wide screens; in-flow vertical route on narrow screens
 - Frequency: project hover updates the single preview; repeated nav actions do not animate spatially
 - Reduced motion: no parallax; marquee paused; feedback reduced to short opacity and color changes
-- Verified by: pending final scripted and browser QA
+- Verified by: scripted motion, coherence, and anti-slop audits plus desktop and 390px browser QA on 2026-09-27
 
 ## Do not
 - No generic purple or cyan gradients
 - No card grid of generic feature blurbs
 - No emoji icons
 - No heavy shadows or dashboard chrome
-- No invented metrics or company logos
+- No invented metrics; career logo treatments must stay grounded in the supplied Figma frame
