@@ -109,6 +109,182 @@ document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") closeMenu();
 });
 
+function initSpiderCursor() {
+  const hero = document.querySelector(".hero");
+  const canvas = document.querySelector("[data-spider-cursor]");
+  const canTrackPointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (!hero || !canvas || !canTrackPointer || reduceMotion) return;
+
+  const context = canvas.getContext("2d");
+  if (!context) return;
+
+  const { sin, cos, PI, hypot, min, max } = Math;
+  const many = (count, factory) => Array.from({ length: count }, (_, index) => factory(index));
+  const random = (range = 1, offset = 0) => Math.random() * range + offset;
+  const lerp = (start, end, amount) => start + (end - start) * amount;
+  const point = (x, y) => ({ x, y });
+  const noise = (x, y, seed = 101) => {
+    const first = sin(0.3 * x + 1.4 * seed + 2 + 2.5 * sin(0.4 * y - 1.3 * seed + 1));
+    const second = sin(0.2 * y + 1.5 * seed + 2.8 + 2.3 * sin(0.5 * x - 1.2 * seed + 0.5));
+    return first + second;
+  };
+
+  let width = 0;
+  let height = 0;
+  let pixelRatio = 1;
+  let visible = true;
+  let frame = 0;
+
+  function syncCanvas() {
+    const nextWidth = hero.clientWidth;
+    const nextHeight = hero.clientHeight;
+    const nextRatio = min(window.devicePixelRatio || 1, 2);
+    if (nextWidth === width && nextHeight === height && nextRatio === pixelRatio) return;
+
+    width = nextWidth;
+    height = nextHeight;
+    pixelRatio = nextRatio;
+    canvas.width = Math.round(width * pixelRatio);
+    canvas.height = Math.round(height * pixelRatio);
+    context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+  }
+
+  function drawCircle(x, y, radius) {
+    context.beginPath();
+    context.ellipse(x, y, radius, radius, 0, 0, PI * 2);
+    context.fill();
+  }
+
+  function drawThread(startX, startY, endX, endY) {
+    context.beginPath();
+    context.moveTo(startX, startY);
+    for (let index = 0; index < 100; index += 1) {
+      const progress = (index + 1) / 100;
+      const x = lerp(startX, endX, progress);
+      const y = lerp(startY, endY, progress);
+      const offset = noise(x / 5 + startX, y / 5 + startY) * 2;
+      context.lineTo(x + offset, y + offset);
+    }
+    context.stroke();
+  }
+
+  function spawnSwarm() {
+    const particles = many(333, () => ({
+      x: random(window.innerWidth),
+      y: random(window.innerHeight),
+      length: 0,
+      radius: 0,
+    }));
+    const directions = many(9, (index) => ({
+      x: cos((index / 9) * PI * 2),
+      y: sin((index / 9) * PI * 2),
+    }));
+    const phase = random(100);
+    let targetX = random(window.innerWidth);
+    let targetY = random(window.innerHeight);
+    let centerX = random(window.innerWidth);
+    let centerY = random(window.innerHeight);
+    const xSpeed = random(0.5, 0.5);
+    const ySpeed = random(0.5, 0.5);
+    const drift = point(random(50, 50), random(50, 50));
+    let reach = window.innerWidth / random(100, 150);
+
+    function paintParticle(particle) {
+      directions.forEach((direction) => {
+        if (!particle.length) return;
+        const anchorX = centerX + direction.x * reach;
+        const anchorY = centerY + direction.y * reach;
+        const pull = particle.length * particle.length;
+        drawThread(
+          lerp(anchorX, particle.x, pull),
+          lerp(anchorY, particle.y, pull),
+          anchorX,
+          anchorY,
+        );
+      });
+      drawCircle(particle.x, particle.y, particle.radius);
+    }
+
+    return {
+      follow(x, y) {
+        targetX = x;
+        targetY = y;
+      },
+      tick(time) {
+        const xOffset = cos(time * xSpeed + phase) * drift.x;
+        const yOffset = sin(time * ySpeed + phase) * drift.y;
+        const destinationX = targetX + xOffset;
+        const destinationY = targetY + yOffset;
+        centerX += min(width / 100, (destinationX - centerX) / 10);
+        centerY += min(width / 100, (destinationY - centerY) / 10);
+        reach = width / random(100, 150);
+
+        let connected = 0;
+        particles.forEach((particle) => {
+          const distance = hypot(particle.x - centerX, particle.y - centerY);
+          let radius = min(2, width / distance / 5);
+          const nearCursor = distance < width / 10 && connected < 8;
+          const direction = nearCursor ? 0.1 : -0.1;
+          if (nearCursor) {
+            connected += 1;
+            radius *= 1.5;
+          }
+          particle.radius = radius;
+          particle.length = max(0, min(particle.length + direction, 1));
+          paintParticle(particle);
+        });
+      },
+    };
+  }
+
+  syncCanvas();
+  const swarms = many(2, spawnSwarm);
+
+  function handlePointerMove(event) {
+    const bounds = hero.getBoundingClientRect();
+    const x = event.clientX - bounds.left;
+    const y = event.clientY - bounds.top;
+    swarms.forEach((swarm) => swarm.follow(x, y));
+  }
+
+  function handlePointerLeave(event) {
+    const bounds = hero.getBoundingClientRect();
+    swarms.forEach((swarm) => swarm.follow(event.clientX < bounds.left ? -80 : width + 80, event.clientY - bounds.top));
+  }
+
+  function render(timestamp) {
+    frame = window.requestAnimationFrame(render);
+    if (!visible) return;
+
+    syncCanvas();
+    context.fillStyle = "#050505";
+    context.fillRect(0, 0, width, height);
+    context.fillStyle = "#ffffff";
+    context.strokeStyle = "rgba(255, 255, 255, 0.86)";
+    context.lineWidth = 0.72;
+    swarms.forEach((swarm) => swarm.tick(timestamp / 1000));
+  }
+
+  const observer = new IntersectionObserver(([entry]) => {
+    visible = entry.isIntersecting;
+  });
+
+  observer.observe(hero);
+  hero.addEventListener("pointermove", handlePointerMove, { passive: true });
+  hero.addEventListener("pointerleave", handlePointerLeave, { passive: true });
+  hero.classList.add("has-spider-cursor");
+  frame = window.requestAnimationFrame(render);
+
+  window.addEventListener("pagehide", () => {
+    window.cancelAnimationFrame(frame);
+    observer.disconnect();
+  }, { once: true });
+}
+
+initSpiderCursor();
+
 if (window.TastemakerMotion && window.gsap && window.ScrollTrigger) {
   window.TastemakerMotion.init({
     duration: 0.24,
