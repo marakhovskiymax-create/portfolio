@@ -15,7 +15,7 @@
   --color-border: #3b3d39;
   --color-ink: #050505;
   --font-display: "Playfair Display", Georgia, serif;
-  --font-body: "Manrope", Arial, sans-serif;
+  --font-body: "Nunito Sans", Arial, sans-serif;
   --radius-small: 999px;
   --radius-medium: 20px;
   --radius-large: 32px;
@@ -578,77 +578,35 @@ section[id] {
 
 .career-logo {
   position: relative;
-  display: inline-flex;
-  min-height: 34px;
-  align-items: center;
-  justify-content: center;
-  background: var(--color-bg);
+  display: block;
+  object-fit: contain;
+  object-position: left center;
 }
 
 .career-logo--hse {
-  width: 34px;
-  min-height: 34px;
-  border: 1px solid rgba(197, 221, 255, 0.78);
-  border-radius: 50%;
-  background:
-    radial-gradient(circle at 36% 29%, rgba(185, 214, 255, 0.72), transparent 13%),
-    radial-gradient(circle at 55% 62%, #0b2b68 0 45%, #061a44 72%);
-  box-shadow:
-    inset 0 0 0 3px #0b285f,
-    inset 0 0 0 4px rgba(211, 229, 255, 0.5);
-  color: #f5f8ff;
-  font-family: Georgia, serif;
-  font-size: 1rem;
-  line-height: 1;
-}
-
-.career-logo--hse span {
-  transform: translateY(-1px);
+  width: 36px;
+  height: 36px;
 }
 
 .career-logo--match {
-  min-width: 94px;
-  color: #ffc548;
-  font-family: Impact, "Arial Black", sans-serif;
-  font-size: 1.75rem;
-  font-style: italic;
-  font-weight: 900;
-  letter-spacing: -0.08em;
-  line-height: 1;
-  text-shadow: 2px 2px 0 #7d5713;
+  width: 96px;
+  height: 38px;
 }
 
 .career-logo--geleos {
-  width: 36px;
-  min-height: 36px;
-  border-radius: 50%;
-  background:
-    radial-gradient(circle at 34% 28%, #d7e5ff 0 5%, #7ca1eb 18%, #355db6 44%, #112c70 67%, #071538 100%);
-  box-shadow:
-    0 0 10px rgba(91, 131, 224, 0.46),
-    inset -5px -7px 11px rgba(0, 7, 30, 0.7);
+  width: 44px;
+  height: 44px;
+  margin-left: -3px;
 }
 
 .career-logo--don {
-  min-width: 168px;
-  color: #ff3554;
-  font-family: Impact, "Arial Narrow", sans-serif;
-  font-size: 1.65rem;
-  font-stretch: condensed;
-  letter-spacing: 0.015em;
-  line-height: 1;
+  width: 172px;
+  height: 34px;
 }
 
 .career-logo--eme {
-  min-width: 64px;
-  min-height: 31px;
-  padding-inline: 4px;
-  border: 2px solid #00ae82;
-  color: #00c696;
-  font-size: 1.55rem;
-  font-weight: 500;
-  letter-spacing: -0.09em;
-  line-height: 1;
+  width: 66px;
+  height: 32px;
 }
 
 .career-stop__body {
@@ -656,8 +614,8 @@ section[id] {
 }
 
 .career-stop h3 {
-  font-size: 1.08rem;
-  font-weight: 600;
+  font-size: 1.06rem;
+  font-weight: 700;
   line-height: 1.25;
 }
 
@@ -679,17 +637,40 @@ section[id] {
 }
 
 .section--process {
-  padding-block: var(--space-12) var(--space-8);
+  position: relative;
+  min-height: 170svh;
+  border-bottom: 1px solid var(--color-border);
+  scroll-margin-top: 0;
+}
+
+.process-stage {
+  position: sticky;
+  top: 0;
+  display: flex;
+  min-height: 620px;
+  height: 100svh;
+  flex-direction: column;
+  justify-content: center;
+  padding-block: clamp(56px, 8vh, 96px);
 }
 
 .section-heading--wide {
-  margin-bottom: var(--space-4);
+  margin-bottom: clamp(44px, 7vh, 76px);
+}
+
+.section-heading--wide h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.65rem, 2.1vw, 2.55rem);
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.12;
 }
 
 .process-line {
   position: relative;
   display: grid;
-  min-height: 300px;
+  min-height: clamp(300px, 40vh, 370px);
   grid-template-columns: repeat(4, minmax(0, 1fr));
   align-items: end;
   gap: var(--space-6);
@@ -762,15 +743,15 @@ section[id] {
 }
 
 .process-step h3 {
-  font-size: 1.18rem;
-  font-weight: 600;
+  font-size: clamp(1.1rem, 1.38vw, 1.45rem);
+  font-weight: 700;
   line-height: 1.16;
 }
 
 .process-step p {
   margin-top: 5px;
   color: var(--color-muted);
-  font-size: 0.68rem;
+  font-size: clamp(0.66rem, 0.76vw, 0.8rem);
   line-height: 1.4;
 }
 
@@ -1067,6 +1048,23 @@ section[id] {
   .career-stop p,
   .career-stop time {
     font-size: 0.8125rem;
+  }
+
+  .section--process {
+    min-height: 0;
+    padding-block: var(--space-24);
+  }
+
+  .process-stage {
+    position: relative;
+    top: auto;
+    height: auto;
+    min-height: 0;
+    padding-block: 0;
+  }
+
+  .section-heading--wide {
+    margin-bottom: var(--space-12);
   }
 
   .process-line {

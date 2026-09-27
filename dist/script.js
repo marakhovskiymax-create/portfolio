@@ -151,34 +151,59 @@ if (window.TastemakerMotion && window.gsap && window.ScrollTrigger) {
     window.gsap.set("[data-career-draw]", { strokeDashoffset: 0 });
   });
 
-  const processMotion = window.gsap.matchMedia();
-
-  processMotion.add("(prefers-reduced-motion: no-preference)", () => {
+  const buildProcessTimeline = (start, end) => {
     const baseline = document.querySelector(".process-baseline");
     const stems = window.gsap.utils.toArray(".process-step__stem");
     const steps = window.gsap.utils.toArray("[data-process-step]");
+    const revealMoments = [0.08, 0.32, 0.56, 0.8];
 
     window.gsap.set(baseline, { scaleX: 0, transformOrigin: "left center" });
     window.gsap.set(stems, { scaleY: 0, transformOrigin: "bottom center" });
-    window.gsap.set(steps, { autoAlpha: 0, y: 12 });
+    window.gsap.set(steps, { autoAlpha: 0, y: 14 });
 
-    window.gsap
-      .timeline({
-        scrollTrigger: {
-          trigger: "[data-process-story]",
-          start: "top 78%",
-          once: true,
-        },
-      })
-      .to(baseline, { scaleX: 1, duration: 0.48, ease: "power3.out" })
-      .to(stems, { scaleY: 1, duration: 0.28, ease: "power3.out", stagger: 0.07 }, 0.12)
-      .to(steps, { autoAlpha: 1, y: 0, duration: 0.22, ease: "power3.out", stagger: 0.07 }, 0.2);
-  });
+    const timeline = window.gsap.timeline({
+      defaults: { overwrite: "auto" },
+      scrollTrigger: {
+        trigger: ".section--process",
+        start,
+        end,
+        scrub: 0.6,
+      },
+    });
+
+    timeline.to(baseline, { scaleX: 1, duration: 1, ease: "none" }, 0);
+
+    steps.forEach((step, index) => {
+      timeline.to(
+        stems[index],
+        { scaleY: 1, duration: 0.08, ease: "power2.out" },
+        revealMoments[index],
+      );
+      timeline.to(
+        step,
+        { autoAlpha: 1, y: 0, duration: 0.1, ease: "power3.out" },
+        revealMoments[index] + 0.035,
+      );
+    });
+
+    return timeline;
+  };
+
+  const processMotion = window.gsap.matchMedia();
+
+  processMotion.add(
+    "(min-width: 901px) and (prefers-reduced-motion: no-preference)",
+    () => buildProcessTimeline("top top", "bottom bottom"),
+  );
+
+  processMotion.add(
+    "(max-width: 900px) and (prefers-reduced-motion: no-preference)",
+    () => buildProcessTimeline("top 72%", "bottom 45%"),
+  );
 
   processMotion.add("(prefers-reduced-motion: reduce)", () => {
-    window.gsap.set(".process-baseline, .process-step__stem, [data-process-step]", {
-      autoAlpha: 1,
-      clearProps: "transform",
-    });
+    window.gsap.set(".process-baseline", { scaleX: 1, transformOrigin: "left center" });
+    window.gsap.set(".process-step__stem", { scaleY: 1, transformOrigin: "bottom center" });
+    window.gsap.set("[data-process-step]", { autoAlpha: 1, y: 0 });
   });
 }

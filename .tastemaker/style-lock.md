@@ -20,7 +20,7 @@ Established: 2026-09-27. Source: Figma reference node 13:18 supplied by the user
 
 ## Typography
 - Display and wordmark: Playfair Display, reflecting the supplied editorial Figma direction
-- Body and UI: Manrope
+- Body and UI: Nunito Sans, matching the rounded sans-serif used in the supplied Figma frame
 - Base: 16px. Display uses fluid clamps with a 1.02 line-height floor.
 
 ## Shape language
@@ -54,7 +54,7 @@ Quiet, cosmic, editorial, assured.
 
 ## Assets
 - Anchor asset: supplied Figma node 13:18
-- Asset style: code-native interface geometry, one green product panel, star-field texture, source-faithful career logo treatments from the supplied frame
+- Asset style: code-native interface geometry, one green product panel, star-field texture, and SVG career marks matching the individual vector groups in the supplied frame
 - Motion runtime: vendored GSAP 3.12.5 and ScrollTrigger 3.12.5, so the scroll story does not depend on CDN availability
 - Illustration versus photography: no photography in this first homepage pass
 - Logo: typographic wordmark from the supplied design; favicon uses a simple M motif
@@ -64,8 +64,9 @@ Quiet, cosmic, editorial, assured.
 - Curves: ease-out cubic-bezier(0.23, 1, 0.32, 1), cinematic cubic-bezier(0.77, 0, 0.175, 1)
 - Durations: press 120ms, panel 240ms, scroll reveal 220ms
 - Entrance: 14px rise with opacity
-- Screen track: marketing scroll reveal, subtle star-field parallax, a scrubbed career trajectory, and a process timeline that draws before its four steps appear
+- Screen track: marketing scroll reveal, subtle star-field parallax, a scrubbed career trajectory, and a scrubbed process timeline whose baseline, stems, and four steps appear in sequence
 - Career behavior: sticky horizontal route on wide screens; in-flow vertical route on narrow screens
+- Process behavior: sticky stepped diagram on wide screens; in-flow two-column sequence on narrow screens
 - Frequency: project hover updates the single preview; repeated nav actions do not animate spatially
 - Reduced motion: no parallax; marquee paused; feedback reduced to short opacity and color changes
 - Verified by: scripted motion, coherence, and anti-slop audits plus desktop and 390px browser QA on 2026-09-27

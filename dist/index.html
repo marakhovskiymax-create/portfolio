@@ -12,7 +12,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&family=Playfair+Display:ital,wght@0,600;1,500;1,600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,400;0,6..12,500;0,6..12,600;0,6..12,700;1,6..12,500&family=Playfair+Display:ital,wght@0,600;1,500;1,600&display=swap"
       rel="stylesheet"
     />
     <link
@@ -212,9 +212,7 @@
 
             <ol class="career-journey" aria-label="Профессиональный путь">
               <li class="career-stop career-stop--hse" data-career-stop>
-                <div class="career-logo career-logo--hse" role="img" aria-label="Логотип ВШЭ">
-                  <span>В</span>
-                </div>
+                <img class="career-logo career-logo--hse" src="design/assets/logos/hse.svg" alt="" />
                 <div class="career-stop__body">
                   <h3>ВШЭ</h3>
                   <p>Коммуникации, медиа и дизайна</p>
@@ -223,7 +221,7 @@
               </li>
 
               <li class="career-stop career-stop--match" data-career-stop>
-                <div class="career-logo career-logo--match" role="img" aria-label="Логотип Матч ТВ">МАТЧ!</div>
+                <img class="career-logo career-logo--match" src="design/assets/logos/match-tv.svg" alt="" />
                 <div class="career-stop__body">
                   <h3>Матч ТВ</h3>
                   <p>Product, UX/UI дизайнер</p>
@@ -232,7 +230,7 @@
               </li>
 
               <li class="career-stop career-stop--geleos" data-career-stop>
-                <div class="career-logo career-logo--geleos" role="img" aria-label="Логотип Гелеос"></div>
+                <img class="career-logo career-logo--geleos" src="design/assets/logos/geleos.svg" alt="" />
                 <div class="career-stop__body">
                   <h3>ГЕЛЕОС</h3>
                   <p>UX/UI, Web дизайнер</p>
@@ -241,7 +239,7 @@
               </li>
 
               <li class="career-stop career-stop--don" data-career-stop>
-                <div class="career-logo career-logo--don" role="img" aria-label="Логотип Дон Баллон">ДОН БАЛЛОН</div>
+                <img class="career-logo career-logo--don" src="design/assets/logos/don-ballon.svg" alt="" />
                 <div class="career-stop__body">
                   <h3>Дон Баллон</h3>
                   <p>Product, UX/UI дизайнер</p>
@@ -250,7 +248,7 @@
               </li>
 
               <li class="career-stop career-stop--eme" data-career-stop>
-                <div class="career-logo career-logo--eme" role="img" aria-label="Логотип EME">EME</div>
+                <img class="career-logo career-logo--eme" src="design/assets/logos/eme.svg" alt="" />
                 <div class="career-stop__body">
                   <h3>EME</h3>
                   <p>Product, UX/UI дизайнер</p>
@@ -262,38 +260,40 @@
         </div>
       </section>
 
-      <section class="section section--process shell" id="process" aria-labelledby="process-title">
-        <div class="section-heading section-heading--wide" data-reveal>
-          <h2 id="process-title">Мой рабочий процесс</h2>
-        </div>
+      <section class="section--process" id="process" aria-labelledby="process-title">
+        <div class="process-stage shell">
+          <div class="section-heading section-heading--wide">
+            <h2 id="process-title">Мой рабочий процесс</h2>
+          </div>
 
-        <ol class="process-line" data-process-story>
-          <li class="process-baseline" aria-hidden="true"></li>
-          <li class="process-step process-step--one" data-process-step>
-            <span class="process-step__stem" aria-hidden="true"></span>
-            <span class="process-step__number">1</span>
-            <h3>Копать</h3>
-            <p>Интервью, данные, контекст.</p>
-          </li>
-          <li class="process-step process-step--two" data-process-step>
-            <span class="process-step__stem" aria-hidden="true"></span>
-            <span class="process-step__number">2</span>
-            <h3>Формулировать</h3>
-            <p>Из хаоса исследований: одна чёткая задача.</p>
-          </li>
-          <li class="process-step process-step--three" data-process-step>
-            <span class="process-step__stem" aria-hidden="true"></span>
-            <span class="process-step__number">3</span>
-            <h3>Создавать</h3>
-            <p>Визуальный язык как аргумент, а не украшение.</p>
-          </li>
-          <li class="process-step process-step--four" data-process-step>
-            <span class="process-step__stem" aria-hidden="true"></span>
-            <span class="process-step__number">4</span>
-            <h3>Передавать</h3>
-            <p>Дизайн, который переживает хэнд-офф.</p>
-          </li>
-        </ol>
+          <ol class="process-line" data-process-story>
+            <li class="process-baseline" aria-hidden="true"></li>
+            <li class="process-step process-step--one" data-process-step>
+              <span class="process-step__stem" aria-hidden="true"></span>
+              <span class="process-step__number">1</span>
+              <h3>Копать</h3>
+              <p>Интервью, данные, контекст.</p>
+            </li>
+            <li class="process-step process-step--two" data-process-step>
+              <span class="process-step__stem" aria-hidden="true"></span>
+              <span class="process-step__number">2</span>
+              <h3>Формулировать</h3>
+              <p>Из хаоса исследований: одна чёткая задача.</p>
+            </li>
+            <li class="process-step process-step--three" data-process-step>
+              <span class="process-step__stem" aria-hidden="true"></span>
+              <span class="process-step__number">3</span>
+              <h3>Создавать</h3>
+              <p>Визуальный язык как аргумент, а не украшение.</p>
+            </li>
+            <li class="process-step process-step--four" data-process-step>
+              <span class="process-step__stem" aria-hidden="true"></span>
+              <span class="process-step__number">4</span>
+              <h3>Передавать</h3>
+              <p>Дизайн, который переживает хэнд-офф.</p>
+            </li>
+          </ol>
+        </div>
       </section>
 
       <section class="section section--proof shell" aria-label="Отзывы">
