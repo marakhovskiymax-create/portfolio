@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="ru" class="no-js">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#050505" />
+    <meta
+      name="description"
+      content="Портфолио Максима Мараховского, продуктового дизайнера: кейсы, подход к работе и профессиональные интересы."
+    />
+    <title>Максим Мараховский · Продуктовый дизайнер</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&family=Playfair+Display:ital,wght@0,600;1,500;1,600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23050505'/%3E%3Cpath d='M13 43V20h7l12 15 12-15h7v23h-7V31L32 46 20 31v12z' fill='%2372c98b'/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script>
+      document.documentElement.classList.replace("no-js", "js");
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">К содержанию</a>
+
+    <header class="site-header" aria-label="Главная навигация">
+      <nav class="masthead shell">
+        <div class="masthead__links masthead__links--primary">
+          <a href="#portfolio">Портфолио</a>
+          <a href="#career">Карьера</a>
+          <a href="#about">Обо мне</a>
+        </div>
+
+        <a class="wordmark" href="#top" aria-label="Наверх">marakhovskiy</a>
+
+        <div class="masthead__links masthead__links--meta">
+          <a href="#career">Резюме</a>
+          <a href="#contact">Телеграм</a>
+        </div>
+
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu">
+          <span>Меню</span>
+          <span class="menu-toggle__line" aria-hidden="true"></span>
+        </button>
+      </nav>
+
+      <div class="mobile-menu" id="mobile-menu" hidden>
+        <a href="#portfolio">Портфолио</a>
+        <a href="#career">Карьера</a>
+        <a href="#about">Обо мне</a>
+        <a href="#contact">Контакты</a>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="hero" id="top" aria-labelledby="hero-title">
+        <div class="hero__stars" aria-hidden="true"></div>
+        <div class="hero__content shell">
+          <p class="hero__intro" data-reveal>Привет, я Максим Мараховский</p>
+          <h1 id="hero-title" data-reveal>
+            Продуктовый дизайнер.<br />
+            Превращаю сложное в очевидное.
+          </h1>
+          <p class="hero__lede" data-reveal>
+            Работаю от исследований к системе. Делаю трудное лёгким на вид.
+          </p>
+          <a class="button button--light" href="#contact" data-reveal>Написать мне</a>
+          <p class="hero__index" aria-hidden="true">01 / Главная</p>
+        </div>
+      </section>
+
+      <section class="section section--portfolio shell" id="portfolio" aria-labelledby="portfolio-title">
+        <div class="section-heading" data-reveal>
+          <h2 id="portfolio-title">Портфолио</h2>
+          <p>Выбранные продуктовые задачи и системы.</p>
+        </div>
+
+        <div class="portfolio-grid">
+          <div class="project-list" role="list" aria-label="Проекты" data-reveal>
+            <button
+              class="project-row is-active"
+              type="button"
+              role="listitem"
+              data-project="eme-web"
+              aria-pressed="true"
+            >
+              <span class="project-row__name">EME.WEB</span>
+              <span class="project-row__desc">Экосистема грузоперевозок</span>
+              <span class="project-row__arrow" aria-hidden="true">↗</span>
+            </button>
+            <button
+              class="project-row"
+              type="button"
+              role="listitem"
+              data-project="eme-app"
+              aria-pressed="false"
+            >
+              <span class="project-row__name">EME.APP</span>
+              <span class="project-row__desc">Приложение для работы на складе</span>
+              <span class="project-row__arrow" aria-hidden="true">↗</span>
+            </button>
+            <button
+              class="project-row"
+              type="button"
+              role="listitem"
+              data-project="lunch-balloon"
+              aria-pressed="false"
+            >
+              <span class="project-row__name">Ланч Баллон</span>
+              <span class="project-row__desc">Магазин воздушных шаров</span>
+              <span class="project-row__arrow" aria-hidden="true">↗</span>
+            </button>
+          </div>
+
+          <figure class="case-visual" data-project-visual="eme-web" data-reveal>
+            <div class="case-visual__glow" aria-hidden="true"></div>
+            <div class="case-visual__panel">
+              <div class="case-visual__topline">
+                <span>Max Marakhovskiy</span>
+                <span>2026</span>
+              </div>
+              <p class="case-visual__title">Convenient, consistent, system.</p>
+              <div class="case-visual__meta">
+                <span data-visual-kind>Web ecosystem</span>
+                <span data-visual-year>01 / 03</span>
+              </div>
+            </div>
+            <figcaption class="sr-only" data-visual-caption>
+              Визуальная карточка проекта EME.WEB, экосистемы грузоперевозок.
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <div class="capability-tape" aria-label="Навыки и методы">
+        <div class="capability-tape__track">
+          <span>Prototyping</span><span>UX Research</span><span>Hypothesis Validation</span>
+          <span>Data-driven Design</span><span>Design Systems</span><span>JTBD</span>
+          <span>CJM</span><span>Analytics</span><span>Claude</span><span>NanoBanano</span>
+          <span aria-hidden="true">Prototyping</span><span aria-hidden="true">UX Research</span>
+          <span aria-hidden="true">Hypothesis Validation</span><span aria-hidden="true">Data-driven Design</span>
+          <span aria-hidden="true">Design Systems</span><span aria-hidden="true">JTBD</span>
+          <span aria-hidden="true">CJM</span><span aria-hidden="true">Analytics</span>
+        </div>
+      </div>
+
+      <section class="section section--career shell" id="career" aria-labelledby="career-title">
+        <div class="section-heading" data-reveal>
+          <h2 id="career-title">Карьера</h2>
+          <p>Продуктовая практика на стыке исследований, UX/UI и веб-дизайна.</p>
+        </div>
+
+        <div class="career-ledger" data-reveal>
+          <article class="career-row">
+            <span class="career-row__date">2023&nbsp;– сейчас</span>
+            <h3>Продуктовый дизайнер</h3>
+            <p>Исследования, сценарии, интерфейсные системы и передача решений в разработку.</p>
+          </article>
+          <article class="career-row">
+            <span class="career-row__date">Фокус</span>
+            <h3>Сложные операционные продукты</h3>
+            <p>Делаю процессы понятными людям, не упрощая саму предметную область.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section section--process shell" id="process" aria-labelledby="process-title">
+        <div class="section-heading section-heading--wide" data-reveal>
+          <h2 id="process-title">Мой рабочий процесс</h2>
+        </div>
+
+        <ol class="process-line" data-reveal>
+          <li class="process-step process-step--low">
+            <span class="process-step__number">1</span>
+            <h3>Копать</h3>
+            <p>Интервью, данные, контекст.</p>
+          </li>
+          <li class="process-step process-step--mid">
+            <span class="process-step__number">2</span>
+            <h3>Формулировать</h3>
+            <p>Из хаоса исследований в одну чёткую задачу.</p>
+          </li>
+          <li class="process-step process-step--high">
+            <span class="process-step__number">3</span>
+            <h3>Создавать</h3>
+            <p>Визуальный язык как аргумент, а не украшение.</p>
+          </li>
+          <li class="process-step process-step--base">
+            <span class="process-step__number">4</span>
+            <h3>Передавать</h3>
+            <p>Дизайн, который переживёт передачу в разработку.</p>
+          </li>
+        </ol>
+      </section>
+
+      <section class="section section--proof shell" aria-label="Отзывы">
+        <div class="quote-grid">
+          <figure class="quote-card" data-reveal>
+            <blockquote>
+              «Надёжный дизайнер, на которого можно положиться. Держит дедлайны, не жертвует качеством
+              и всегда идёт чуть дальше, чем требуется».
+            </blockquote>
+            <figcaption>Из отзывов команды</figcaption>
+          </figure>
+
+          <figure class="quote-card quote-card--offset" data-reveal>
+            <blockquote>
+              «Работает ответственно и по плану. Всегда стремится сделать задачу максимально хорошо:
+              и визуально, и по сути».
+            </blockquote>
+            <figcaption>Из отзывов команды</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="section section--about shell" id="about" aria-labelledby="about-title">
+        <div class="section-heading" data-reveal>
+          <h2 id="about-title">Обо мне вне дизайна</h2>
+        </div>
+
+        <div class="about-map">
+          <article class="about-note about-note--fashion" data-reveal>
+            <p>
+              Слежу за <strong>модой</strong> не как за трендами, а как за языком. Показы помогают читать
+              силуэт, материал и темп как аргументы. В дизайне я делаю то же самое.
+            </p>
+            <div class="about-tags"><span>Вайб кодинг</span><span>Кино</span></div>
+          </article>
+
+          <article class="about-note about-note--film" data-reveal>
+            <p>
+              Я снимаю и смотрю <strong>документальное кино</strong>. Оно учит терпению и наблюдению,
+              а в исследованиях помогает не торопиться с выводами.
+            </p>
+            <div class="about-tags"><span>Съёмки</span><span>Научпоп</span></div>
+          </article>
+
+          <article class="about-note about-note--games" data-reveal>
+            <p>
+              Я <strong>играю</strong> и разбираю, почему продукт работает или нет. Хорошая система даёт
+              обратную связь и умеет объяснить себя сама.
+            </p>
+            <div class="about-tags"><span>Игры</span><span>Мода</span></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="contact shell" id="contact" aria-labelledby="contact-title">
+        <p class="contact__kicker" data-reveal>Открыт к продуктовым задачам</p>
+        <h2 id="contact-title" data-reveal>Давайте сделаем сложное понятным.</h2>
+        <a class="contact__link" href="#top" data-reveal>
+          Обсудить проект
+          <span aria-hidden="true">↗</span>
+        </a>
+      </section>
+    </main>
+
+    <footer class="footer shell">
+      <span>© 2026 Max Marakhovskiy</span>
+      <a href="#top">Наверх</a>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="gsap-starter.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
