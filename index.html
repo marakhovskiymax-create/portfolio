@@ -20,7 +20,7 @@
       type="image/svg+xml"
       href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23050505'/%3E%3Cpath d='M13 43V20h7l12 15 12-15h7v23h-7V31L32 46 20 31v12z' fill='%2372c98b'/%3E%3C/svg%3E"
     />
-    <link rel="stylesheet" href="styles.css?v=20260928-4" />
+    <link rel="stylesheet" href="styles.css?v=20260928-8-header-gutter" />
     <script>
       document.documentElement.classList.replace("no-js", "js");
     </script>
@@ -30,18 +30,17 @@
     <canvas class="spider-cursor" data-spider-cursor aria-hidden="true"></canvas>
 
     <header class="site-header" aria-label="Главная навигация">
-      <nav class="masthead shell">
+      <nav class="masthead shell" aria-label="Главная навигация">
         <div class="masthead__links masthead__links--primary">
           <a href="#portfolio">Портфолио</a>
           <a href="#career">Карьера</a>
-          <a href="#about">Обо мне</a>
         </div>
 
-        <a class="wordmark" href="#top" aria-label="Наверх">marakhovskiy</a>
+        <a class="wordmark" href="#top" aria-label="На главную">marakhovskiy</a>
 
         <div class="masthead__links masthead__links--meta">
-          <a href="#career">Резюме</a>
-          <a href="#contact">Телеграм</a>
+          <a href="#about">Обо мне</a>
+          <a href="#contact">Контакты</a>
         </div>
 
         <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu">
@@ -369,13 +368,40 @@
     </main>
 
     <footer class="footer shell" data-motion-section="footer">
-      <span>© 2026 Max Marakhovskiy</span>
-      <a href="#top">Наверх</a>
+      <div class="footer__identity" data-reveal>
+        <a class="footer__wordmark" href="#top">marakhovskiy</a>
+        <p>Продуктовый дизайнер.<br />Превращаю сложное в очевидное.</p>
+        <span class="footer__copyright">© 2026 Максим Мараховский</span>
+      </div>
+
+      <nav class="footer__nav" aria-label="Ссылки в подвале">
+        <div class="footer__group" data-reveal>
+          <h2>Работа</h2>
+          <ul>
+            <li><a href="#portfolio">Портфолио</a></li>
+            <li><a href="#career">Карьера</a></li>
+          </ul>
+        </div>
+        <div class="footer__group" data-reveal>
+          <h2>Подход</h2>
+          <ul>
+            <li><a href="#process">Рабочий процесс</a></li>
+            <li><a href="#about">Обо мне</a></li>
+          </ul>
+        </div>
+        <div class="footer__group" data-reveal>
+          <h2>Связаться</h2>
+          <ul>
+            <li><a href="#contact">Обсудить проект <span aria-hidden="true">↗</span></a></li>
+            <li><a href="#top">Вернуться наверх <span aria-hidden="true">↑</span></a></li>
+          </ul>
+        </div>
+      </nav>
     </footer>
 
     <script src="vendor/gsap.min.js"></script>
     <script src="vendor/ScrollTrigger.min.js"></script>
     <script src="gsap-starter.js"></script>
-    <script src="script.js?v=20260928-4"></script>
+    <script src="script.js?v=20260928-8-aligned-header"></script>
   </body>
 </html>
