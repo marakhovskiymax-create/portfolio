@@ -63,12 +63,12 @@ Quiet, cosmic, editorial, assured.
 ## Motion
 - Feel: quick, fluid, and restrained; inspired by Fluid Functionalism without copying its visual identity
 - Curves: ease-out cubic-bezier(0.23, 1, 0.32, 1), cinematic cubic-bezier(0.77, 0, 0.175, 1)
-- Durations: fast 80ms / 60ms exit, moderate 160ms / 120ms exit, slow 240ms / 160ms exit
+- Durations: fast 80ms / 60ms exit, moderate 160ms / 120ms exit, slow 240ms / 160ms exit; cursor-to-target morph uses 240ms in and 280ms out with an interruptible ease-in-out crossfade
 - Entrance: small interface reveals use an 18px rise over 240ms; major marketing blocks use explicit 480ms scroll scenes with 60 to 80ms staging
 - Screen track: portfolio heading, rows and visual enter in sequence; the capability tape wipes open; quote cards rise; personal notes approach from three directions before badges pop in; the contact statement unfolds in three beats; one white Spider Cursor entity follows the pointer directly across the entire page; career and process keep their scrubbed diagrams
 - Career behavior: sticky horizontal route on wide screens; in-flow vertical route on narrow screens
 - Process behavior: sticky stepped diagram on wide screens; in-flow two-column sequence on narrow screens
-- Frequency: one shared highlight glides between adjacent project rows while the single preview updates; the star field changes composition with page scroll; the cursor entity has no autonomous drift and disappears when a bright white organic perimeter takes over around links, buttons, project rows, quote cards, or interest badges; that perimeter inherits each target's actual corner geometry, including pill and panel radii
+- Frequency: one shared highlight glides between adjacent project rows while the single preview updates; the star field changes composition with page scroll and adds low-amplitude drift plus restrained twinkle to free stars; particles connected to the cursor remain stable; the cursor entity has no autonomous drift and smoothly dissolves into a bright white organic perimeter around links, buttons, project rows, quote cards, or interest badges; that perimeter inherits each target's actual corner geometry, including pill and panel radii
 - Reduced motion: the global Spider Cursor is removed and the hero keeps its static star field; no parallax or sliding highlight; marquee paused; opacity and color feedback remain short
 - Verified by: scripted motion, coherence, and anti-slop audits plus desktop and 390px browser QA on 2026-09-28
 

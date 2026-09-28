@@ -123,6 +123,11 @@ function initSpiderCursor() {
   const many = (count, factory) => Array.from({ length: count }, (_, index) => factory(index));
   const random = (range = 1, offset = 0) => Math.random() * range + offset;
   const lerp = (start, end, amount) => start + (end - start) * amount;
+  const clamp = (value, lower = 0, upper = 1) => max(lower, min(value, upper));
+  const smoothstep = (value) => {
+    const progress = clamp(value);
+    return progress * progress * (3 - 2 * progress);
+  };
   const wrap = (value, limit) => ((value % limit) + limit) % limit;
   const point = (x, y) => ({ x, y });
   const noise = (x, y, seed = 101) => {
@@ -138,7 +143,8 @@ function initSpiderCursor() {
   let pointerY = window.innerHeight / 2;
   let activeTarget = null;
   let lastTargetRect = null;
-  let targetStrength = 0;
+  let targetProgress = 0;
+  let previousTimestamp = 0;
   let frame = 0;
   let targetRadiusCache = new WeakMap();
   const interactiveSelector = "a, button, [role='button'], input:not([type='hidden']), select, textarea, [data-cursor-target]";
@@ -318,6 +324,11 @@ function initSpiderCursor() {
       y: 0,
       parallaxX: random(0.045, -0.0225),
       parallaxY: random(0.09, 0.025),
+      phase: random(PI * 2),
+      driftRate: random(0.08, 0.05),
+      driftX: random(5, 2),
+      driftY: random(7, 3),
+      twinkleRate: random(0.55, 0.35),
       length: 0,
       radius: 0,
     }));
@@ -328,7 +339,7 @@ function initSpiderCursor() {
     let centerX = pointerX;
     let centerY = pointerY;
 
-    function paintParticle(particle, creatureAmount, reach) {
+    function paintParticle(particle, creatureAmount, reach, time, connected) {
       if (creatureAmount > 0.01 && particle.length) {
         context.save();
         context.globalAlpha = creatureAmount;
@@ -345,7 +356,21 @@ function initSpiderCursor() {
         });
         context.restore();
       }
-      drawCircle(particle.x, particle.y, particle.radius);
+
+      const freeStarAmount = connected ? 0 : 1;
+      const twinkle = (sin(time * particle.twinkleRate + particle.phase) + 1) / 2;
+      const visualX = wrap(
+        particle.x + sin(time * particle.driftRate + particle.phase) * particle.driftX * freeStarAmount,
+        width,
+      );
+      const visualY = wrap(
+        particle.y + cos(time * particle.driftRate * 0.82 + particle.phase) * particle.driftY * freeStarAmount,
+        height,
+      );
+      context.save();
+      context.globalAlpha = connected ? 1 : lerp(0.58, 0.92, twinkle);
+      drawCircle(visualX, visualY, particle.radius * (connected ? 1 : lerp(0.82, 1.16, twinkle)));
+      context.restore();
     }
 
     return {
@@ -353,7 +378,7 @@ function initSpiderCursor() {
         centerX = x;
         centerY = y;
       },
-      tick(creatureAmount = 1) {
+      tick(time, delta, creatureAmount = 1) {
         const skyScroll = window.scrollY;
         const reach = width / 125;
 
@@ -364,14 +389,15 @@ function initSpiderCursor() {
           const distance = hypot(particle.x - centerX, particle.y - centerY);
           let radius = min(2, width / distance / 5);
           const nearCursor = creatureAmount > 0.05 && distance < width / 10 && connected < 8;
-          const direction = nearCursor ? 0.1 : -0.16;
           if (nearCursor) {
             connected += 1;
             radius *= 1.5;
           }
           particle.radius = radius;
-          particle.length = max(0, min(particle.length + direction, 1));
-          paintParticle(particle, creatureAmount, reach);
+          particle.length = clamp(
+            particle.length + (nearCursor ? delta / 0.22 : -delta / 0.18),
+          );
+          paintParticle(particle, creatureAmount, reach, time, nearCursor);
         });
       },
     };
@@ -413,16 +439,21 @@ function initSpiderCursor() {
     context.strokeStyle = "rgba(255, 255, 255, 0.86)";
     context.lineWidth = 0.72;
     const time = timestamp / 1000;
+    const delta = previousTimestamp ? min(0.05, (timestamp - previousTimestamp) / 1000) : 0;
+    previousTimestamp = timestamp;
     const currentRect = getTargetRect(activeTarget);
 
     if (currentRect) lastTargetRect = currentRect;
-    targetStrength += ((currentRect ? 1 : 0) - targetStrength) * 0.16;
+    targetProgress = clamp(
+      targetProgress + (currentRect ? delta / 0.24 : -delta / 0.28),
+    );
+    const targetStrength = smoothstep(targetProgress);
 
     if (lastTargetRect && targetStrength > 0.01) {
       drawTargetTexture(lastTargetRect, time, targetStrength);
     }
 
-    swarms.forEach((swarm) => swarm.tick(1 - targetStrength));
+    swarms.forEach((swarm) => swarm.tick(time, delta, 1 - targetStrength));
   }
 
   window.addEventListener("pointermove", handlePointerMove, { passive: true });
