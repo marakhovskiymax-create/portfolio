@@ -225,25 +225,26 @@ section[id] {
 }
 
 .spider-cursor {
-  position: absolute;
-  z-index: -2;
+  position: fixed;
+  z-index: 90;
   inset: 0;
   display: block;
-  width: 100%;
-  height: 100%;
+  width: 100dvw;
+  height: 100dvh;
   opacity: 0;
   pointer-events: none;
   transition: opacity var(--motion-slow) var(--ease-out);
 }
 
-.hero.has-spider-cursor .spider-cursor {
+body.has-spider-cursor .spider-cursor {
   opacity: 1;
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .hero.has-spider-cursor,
-  .hero.has-spider-cursor a,
-  .hero.has-spider-cursor button {
+  body.has-spider-cursor,
+  body.has-spider-cursor a,
+  body.has-spider-cursor button,
+  body.has-spider-cursor [role="button"] {
     cursor: none;
   }
 }

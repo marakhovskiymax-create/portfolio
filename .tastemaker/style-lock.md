@@ -65,11 +65,11 @@ Quiet, cosmic, editorial, assured.
 - Curves: ease-out cubic-bezier(0.23, 1, 0.32, 1), cinematic cubic-bezier(0.77, 0, 0.175, 1)
 - Durations: fast 80ms / 60ms exit, moderate 160ms / 120ms exit, slow 240ms / 160ms exit
 - Entrance: small interface reveals use an 18px rise over 240ms; major marketing blocks use explicit 480ms scroll scenes with 60 to 80ms staging
-- Screen track: portfolio heading, rows and visual enter in sequence; the capability tape wipes open; quote cards rise; personal notes approach from three directions before badges pop in; the contact statement unfolds in three beats; the hero retains its pointer-driven white Spider Cursor field; career and process keep their scrubbed diagrams
+- Screen track: portfolio heading, rows and visual enter in sequence; the capability tape wipes open; quote cards rise; personal notes approach from three directions before badges pop in; the contact statement unfolds in three beats; one white Spider Cursor entity follows the pointer across the entire page and forms an organic perimeter around actionable regions; career and process keep their scrubbed diagrams
 - Career behavior: sticky horizontal route on wide screens; in-flow vertical route on narrow screens
 - Process behavior: sticky stepped diagram on wide screens; in-flow two-column sequence on narrow screens
-- Frequency: one shared highlight glides between adjacent project rows while the single preview updates; repeated nav actions do not animate spatially
-- Reduced motion: Spider Cursor is replaced by the static star field; no parallax or sliding highlight; marquee paused; opacity and color feedback remain short
+- Frequency: one shared highlight glides between adjacent project rows while the single preview updates; the global cursor field morphs only when the pointer crosses an actionable boundary
+- Reduced motion: the global Spider Cursor is removed and the hero keeps its static star field; no parallax or sliding highlight; marquee paused; opacity and color feedback remain short
 - Verified by: scripted motion, coherence, and anti-slop audits plus desktop and 390px browser QA on 2026-09-28
 
 ## Do not

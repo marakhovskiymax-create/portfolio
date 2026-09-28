@@ -110,12 +110,11 @@ document.addEventListener("keydown", (event) => {
 });
 
 function initSpiderCursor() {
-  const hero = document.querySelector(".hero");
   const canvas = document.querySelector("[data-spider-cursor]");
   const canTrackPointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  if (!hero || !canvas || !canTrackPointer || reduceMotion) return;
+  if (!canvas || !canTrackPointer || reduceMotion) return;
 
   const context = canvas.getContext("2d");
   if (!context) return;
@@ -134,12 +133,17 @@ function initSpiderCursor() {
   let width = 0;
   let height = 0;
   let pixelRatio = 1;
-  let visible = true;
+  let pointerX = window.innerWidth / 2;
+  let pointerY = window.innerHeight / 2;
+  let activeTarget = null;
+  let lastTargetRect = null;
+  let targetStrength = 0;
   let frame = 0;
+  const interactiveSelector = "a, button, [role='button'], input:not([type='hidden']), select, textarea, [data-cursor-target]";
 
   function syncCanvas() {
-    const nextWidth = hero.clientWidth;
-    const nextHeight = hero.clientHeight;
+    const nextWidth = window.innerWidth;
+    const nextHeight = window.innerHeight;
     const nextRatio = min(window.devicePixelRatio || 1, 2);
     if (nextWidth === width && nextHeight === height && nextRatio === pixelRatio) return;
 
@@ -168,6 +172,63 @@ function initSpiderCursor() {
       context.lineTo(x + offset, y + offset);
     }
     context.stroke();
+  }
+
+  function perimeterPoint(rect, progress) {
+    const perimeter = 2 * (rect.width + rect.height);
+    let distance = ((progress % 1) + 1) % 1 * perimeter;
+
+    if (distance <= rect.width) return point(rect.left + distance, rect.top);
+    distance -= rect.width;
+    if (distance <= rect.height) return point(rect.right, rect.top + distance);
+    distance -= rect.height;
+    if (distance <= rect.width) return point(rect.right - distance, rect.bottom);
+    return point(rect.left, rect.bottom - (distance - rect.width));
+  }
+
+  function getTargetRect(target) {
+    if (!target?.isConnected) return null;
+    const bounds = target.getBoundingClientRect();
+    const padding = 10;
+    return {
+      left: bounds.left - padding,
+      top: bounds.top - padding,
+      right: bounds.right + padding,
+      bottom: bounds.bottom + padding,
+      width: bounds.width + padding * 2,
+      height: bounds.height + padding * 2,
+    };
+  }
+
+  function drawTargetTexture(rect, time, strength) {
+    const sampleCount = 96;
+    context.save();
+    context.lineWidth = 0.62;
+
+    for (let layer = 0; layer < 4; layer += 1) {
+      context.beginPath();
+      for (let index = 0; index <= sampleCount; index += 1) {
+        const progress = index / sampleCount;
+        const edge = perimeterPoint(rect, progress);
+        const offset = noise(edge.x / 7 + time * 8, edge.y / 7, 101 + layer * 13) * (1.6 + layer * 0.45);
+        const x = edge.x + offset;
+        const y = edge.y + offset;
+        if (index === 0) context.moveTo(x, y);
+        else context.lineTo(x, y);
+      }
+      context.globalAlpha = strength * (0.16 + layer * 0.055);
+      context.stroke();
+    }
+
+    context.globalAlpha = strength * 0.82;
+    many(18, (index) => {
+      const progress = index / 18 + sin(time * 0.8 + index) * 0.006;
+      const edge = perimeterPoint(rect, progress);
+      const radius = 0.8 + (sin(time * 2 + index * 1.7) + 1) * 0.45;
+      drawCircle(edge.x, edge.y, radius);
+      return null;
+    });
+    context.restore();
   }
 
   function spawnSwarm() {
@@ -212,13 +273,16 @@ function initSpiderCursor() {
         targetX = x;
         targetY = y;
       },
-      tick(time) {
+      tick(time, focusAmount = 0) {
         const xOffset = cos(time * xSpeed + phase) * drift.x;
         const yOffset = sin(time * ySpeed + phase) * drift.y;
         const destinationX = targetX + xOffset;
         const destinationY = targetY + yOffset;
-        centerX += min(width / 100, (destinationX - centerX) / 10);
-        centerY += min(width / 100, (destinationY - centerY) / 10);
+        const focused = focusAmount > 0.05;
+        const followDivisor = focused ? 4 : 10;
+        const followCap = width / (focused ? 30 : 100);
+        centerX += min(followCap, (destinationX - centerX) / followDivisor);
+        centerY += min(followCap, (destinationY - centerY) / followDivisor);
         reach = width / random(100, 150);
 
         let connected = 0;
@@ -240,46 +304,69 @@ function initSpiderCursor() {
   }
 
   syncCanvas();
-  const swarms = many(2, spawnSwarm);
+  const swarms = many(1, spawnSwarm);
 
   function handlePointerMove(event) {
-    const bounds = hero.getBoundingClientRect();
-    const x = event.clientX - bounds.left;
-    const y = event.clientY - bounds.top;
-    swarms.forEach((swarm) => swarm.follow(x, y));
+    pointerX = event.clientX;
+    pointerY = event.clientY;
+
+    const candidate = event.target instanceof Element ? event.target.closest(interactiveSelector) : null;
+    activeTarget = candidate && !candidate.matches(":disabled, [aria-disabled='true']") ? candidate : null;
+    if (!activeTarget) swarms.forEach((swarm) => swarm.follow(pointerX, pointerY));
   }
 
-  function handlePointerLeave(event) {
-    const bounds = hero.getBoundingClientRect();
-    swarms.forEach((swarm) => swarm.follow(event.clientX < bounds.left ? -80 : width + 80, event.clientY - bounds.top));
+  function handlePointerLeave() {
+    activeTarget = null;
+    swarms.forEach((swarm) => swarm.follow(-100, -100));
+  }
+
+  function handleFocusIn(event) {
+    const candidate = event.target instanceof Element ? event.target.closest(interactiveSelector) : null;
+    if (candidate && !candidate.matches(":disabled, [aria-disabled='true']")) activeTarget = candidate;
+  }
+
+  function handleFocusOut() {
+    activeTarget = null;
   }
 
   function render(timestamp) {
     frame = window.requestAnimationFrame(render);
-    if (!visible) return;
+    if (document.hidden) return;
 
     syncCanvas();
-    context.fillStyle = "#050505";
-    context.fillRect(0, 0, width, height);
+    context.clearRect(0, 0, width, height);
     context.fillStyle = "#ffffff";
     context.strokeStyle = "rgba(255, 255, 255, 0.86)";
     context.lineWidth = 0.72;
-    swarms.forEach((swarm) => swarm.tick(timestamp / 1000));
+    const time = timestamp / 1000;
+    const currentRect = getTargetRect(activeTarget);
+
+    if (currentRect) lastTargetRect = currentRect;
+    targetStrength += ((currentRect ? 1 : 0) - targetStrength) * 0.16;
+
+    if (currentRect) {
+      swarms.forEach((swarm, index) => {
+        const orbit = perimeterPoint(currentRect, time * 0.08 + index / swarms.length);
+        swarm.follow(orbit.x, orbit.y);
+      });
+    }
+
+    if (lastTargetRect && targetStrength > 0.01) {
+      drawTargetTexture(lastTargetRect, time, targetStrength);
+    }
+
+    swarms.forEach((swarm) => swarm.tick(time, targetStrength));
   }
 
-  const observer = new IntersectionObserver(([entry]) => {
-    visible = entry.isIntersecting;
-  });
-
-  observer.observe(hero);
-  hero.addEventListener("pointermove", handlePointerMove, { passive: true });
-  hero.addEventListener("pointerleave", handlePointerLeave, { passive: true });
-  hero.classList.add("has-spider-cursor");
+  window.addEventListener("pointermove", handlePointerMove, { passive: true });
+  document.documentElement.addEventListener("pointerleave", handlePointerLeave, { passive: true });
+  document.addEventListener("focusin", handleFocusIn);
+  document.addEventListener("focusout", handleFocusOut);
+  document.body.classList.add("has-spider-cursor");
   frame = window.requestAnimationFrame(render);
 
   window.addEventListener("pagehide", () => {
     window.cancelAnimationFrame(frame);
-    observer.disconnect();
   }, { once: true });
 }
 
