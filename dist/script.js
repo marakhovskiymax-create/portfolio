@@ -119,7 +119,7 @@ function initSpiderCursor() {
   const context = canvas.getContext("2d");
   if (!context) return;
 
-  const { sin, cos, PI, hypot, min, max } = Math;
+  const { sin, cos, PI, hypot, min, max, sqrt } = Math;
   const many = (count, factory) => Array.from({ length: count }, (_, index) => factory(index));
   const random = (range = 1, offset = 0) => Math.random() * range + offset;
   const lerp = (start, end, amount) => start + (end - start) * amount;
@@ -140,6 +140,7 @@ function initSpiderCursor() {
   let lastTargetRect = null;
   let targetStrength = 0;
   let frame = 0;
+  let targetRadiusCache = new WeakMap();
   const interactiveSelector = "a, button, [role='button'], input:not([type='hidden']), select, textarea, [data-cursor-target]";
 
   function syncCanvas() {
@@ -154,6 +155,7 @@ function initSpiderCursor() {
     canvas.width = Math.round(width * pixelRatio);
     canvas.height = Math.round(height * pixelRatio);
     context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+    targetRadiusCache = new WeakMap();
   }
 
   function drawCircle(x, y, radius) {
@@ -175,23 +177,73 @@ function initSpiderCursor() {
     context.stroke();
   }
 
-  function perimeterPoint(rect, progress) {
-    const perimeter = 2 * (rect.width + rect.height);
-    let distance = ((progress % 1) + 1) % 1 * perimeter;
+  function quarterEllipseLength(radiusX, radiusY) {
+    if (!radiusX || !radiusY) return 0;
+    const sum = radiusX + radiusY;
+    const h = ((radiusX - radiusY) ** 2) / (sum ** 2);
+    return (PI * sum * (1 + (3 * h) / (10 + sqrt(4 - 3 * h)))) / 4;
+  }
 
-    if (distance <= rect.width) return point(rect.left + distance, rect.top);
-    distance -= rect.width;
-    if (distance <= rect.height) return point(rect.right, rect.top + distance);
-    distance -= rect.height;
-    if (distance <= rect.width) return point(rect.right - distance, rect.bottom);
-    return point(rect.left, rect.bottom - (distance - rect.width));
+  function perimeterPoint(rect, progress) {
+    let distance = ((progress % 1) + 1) % 1 * rect.perimeter;
+
+    for (const segment of rect.segments) {
+      if (distance <= segment.length || segment === rect.segments.at(-1)) {
+        const amount = segment.length ? min(1, distance / segment.length) : 0;
+        if (segment.type === "line") {
+          return point(
+            lerp(segment.startX, segment.endX, amount),
+            lerp(segment.startY, segment.endY, amount),
+          );
+        }
+
+        const angle = lerp(segment.startAngle, segment.endAngle, amount);
+        return point(
+          segment.centerX + cos(angle) * segment.radiusX,
+          segment.centerY + sin(angle) * segment.radiusY,
+        );
+      }
+      distance -= segment.length;
+    }
+
+    return point(rect.left, rect.top);
+  }
+
+  function readTargetRadii(target) {
+    const cached = targetRadiusCache.get(target);
+    if (cached) return cached;
+
+    const style = window.getComputedStyle(target);
+    const parseRadius = (value) => {
+      const values = value.split(" ").map((part) => Number.parseFloat(part) || 0);
+      return point(values[0], values[1] ?? values[0]);
+    };
+    const radii = {
+      topLeft: parseRadius(style.borderTopLeftRadius),
+      topRight: parseRadius(style.borderTopRightRadius),
+      bottomRight: parseRadius(style.borderBottomRightRadius),
+      bottomLeft: parseRadius(style.borderBottomLeftRadius),
+    };
+    targetRadiusCache.set(target, radii);
+    return radii;
   }
 
   function getTargetRect(target) {
     if (!target?.isConnected) return null;
     const bounds = target.getBoundingClientRect();
     const padding = 10;
-    return {
+    const baseRadii = readTargetRadii(target);
+    const expand = (radius) => point(
+      radius.x > 0 ? radius.x + padding : 0,
+      radius.y > 0 ? radius.y + padding : 0,
+    );
+    const radii = {
+      topLeft: expand(baseRadii.topLeft),
+      topRight: expand(baseRadii.topRight),
+      bottomRight: expand(baseRadii.bottomRight),
+      bottomLeft: expand(baseRadii.bottomLeft),
+    };
+    const rect = {
       left: bounds.left - padding,
       top: bounds.top - padding,
       right: bounds.right + padding,
@@ -199,29 +251,55 @@ function initSpiderCursor() {
       width: bounds.width + padding * 2,
       height: bounds.height + padding * 2,
     };
+
+    const radiusScale = min(
+      1,
+      rect.width / max(1, radii.topLeft.x + radii.topRight.x),
+      rect.width / max(1, radii.bottomLeft.x + radii.bottomRight.x),
+      rect.height / max(1, radii.topLeft.y + radii.bottomLeft.y),
+      rect.height / max(1, radii.topRight.y + radii.bottomRight.y),
+    );
+    Object.values(radii).forEach((radius) => {
+      radius.x *= radiusScale;
+      radius.y *= radiusScale;
+    });
+
+    const { topLeft, topRight, bottomRight, bottomLeft } = radii;
+    rect.segments = [
+      { type: "line", startX: rect.left + topLeft.x, startY: rect.top, endX: rect.right - topRight.x, endY: rect.top, length: rect.width - topLeft.x - topRight.x },
+      { type: "arc", centerX: rect.right - topRight.x, centerY: rect.top + topRight.y, radiusX: topRight.x, radiusY: topRight.y, startAngle: -PI / 2, endAngle: 0, length: quarterEllipseLength(topRight.x, topRight.y) },
+      { type: "line", startX: rect.right, startY: rect.top + topRight.y, endX: rect.right, endY: rect.bottom - bottomRight.y, length: rect.height - topRight.y - bottomRight.y },
+      { type: "arc", centerX: rect.right - bottomRight.x, centerY: rect.bottom - bottomRight.y, radiusX: bottomRight.x, radiusY: bottomRight.y, startAngle: 0, endAngle: PI / 2, length: quarterEllipseLength(bottomRight.x, bottomRight.y) },
+      { type: "line", startX: rect.right - bottomRight.x, startY: rect.bottom, endX: rect.left + bottomLeft.x, endY: rect.bottom, length: rect.width - bottomRight.x - bottomLeft.x },
+      { type: "arc", centerX: rect.left + bottomLeft.x, centerY: rect.bottom - bottomLeft.y, radiusX: bottomLeft.x, radiusY: bottomLeft.y, startAngle: PI / 2, endAngle: PI, length: quarterEllipseLength(bottomLeft.x, bottomLeft.y) },
+      { type: "line", startX: rect.left, startY: rect.bottom - bottomLeft.y, endX: rect.left, endY: rect.top + topLeft.y, length: rect.height - bottomLeft.y - topLeft.y },
+      { type: "arc", centerX: rect.left + topLeft.x, centerY: rect.top + topLeft.y, radiusX: topLeft.x, radiusY: topLeft.y, startAngle: PI, endAngle: PI * 1.5, length: quarterEllipseLength(topLeft.x, topLeft.y) },
+    ].filter((segment) => segment.length > 0);
+    rect.perimeter = rect.segments.reduce((total, segment) => total + segment.length, 0);
+    return rect;
   }
 
   function drawTargetTexture(rect, time, strength) {
-    const sampleCount = 96;
+    const sampleCount = min(320, max(140, Math.ceil(rect.perimeter / 5)));
     context.save();
-    context.lineWidth = 0.62;
+    context.lineWidth = 0.78;
 
     for (let layer = 0; layer < 4; layer += 1) {
       context.beginPath();
       for (let index = 0; index <= sampleCount; index += 1) {
         const progress = index / sampleCount;
         const edge = perimeterPoint(rect, progress);
-        const offset = noise(edge.x / 7 + time * 8, edge.y / 7, 101 + layer * 13) * (1.6 + layer * 0.45);
+        const offset = noise(edge.x / 7 + time * 8, edge.y / 7, 101 + layer * 13) * (0.45 + layer * 0.7);
         const x = edge.x + offset;
         const y = edge.y + offset;
         if (index === 0) context.moveTo(x, y);
         else context.lineTo(x, y);
       }
-      context.globalAlpha = strength * (0.16 + layer * 0.055);
+      context.globalAlpha = strength * [0.92, 0.56, 0.34, 0.22][layer];
       context.stroke();
     }
 
-    context.globalAlpha = strength * 0.82;
+    context.globalAlpha = strength * 0.96;
     many(18, (index) => {
       const progress = index / 18 + sin(time * 0.8 + index) * 0.006;
       const edge = perimeterPoint(rect, progress);

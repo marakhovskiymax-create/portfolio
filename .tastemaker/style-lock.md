@@ -68,7 +68,7 @@ Quiet, cosmic, editorial, assured.
 - Screen track: portfolio heading, rows and visual enter in sequence; the capability tape wipes open; quote cards rise; personal notes approach from three directions before badges pop in; the contact statement unfolds in three beats; one white Spider Cursor entity follows the pointer directly across the entire page; career and process keep their scrubbed diagrams
 - Career behavior: sticky horizontal route on wide screens; in-flow vertical route on narrow screens
 - Process behavior: sticky stepped diagram on wide screens; in-flow two-column sequence on narrow screens
-- Frequency: one shared highlight glides between adjacent project rows while the single preview updates; the star field changes composition with page scroll; the cursor entity has no autonomous drift and disappears when an organic perimeter takes over around links, buttons, project rows, quote cards, or interest badges
+- Frequency: one shared highlight glides between adjacent project rows while the single preview updates; the star field changes composition with page scroll; the cursor entity has no autonomous drift and disappears when a bright white organic perimeter takes over around links, buttons, project rows, quote cards, or interest badges; that perimeter inherits each target's actual corner geometry, including pill and panel radii
 - Reduced motion: the global Spider Cursor is removed and the hero keeps its static star field; no parallax or sliding highlight; marquee paused; opacity and color feedback remain short
 - Verified by: scripted motion, coherence, and anti-slop audits plus desktop and 390px browser QA on 2026-09-28
 
