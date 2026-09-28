@@ -123,6 +123,7 @@ function initSpiderCursor() {
   const many = (count, factory) => Array.from({ length: count }, (_, index) => factory(index));
   const random = (range = 1, offset = 0) => Math.random() * range + offset;
   const lerp = (start, end, amount) => start + (end - start) * amount;
+  const wrap = (value, limit) => ((value % limit) + limit) % limit;
   const point = (x, y) => ({ x, y });
   const noise = (x, y, seed = 101) => {
     const first = sin(0.3 * x + 1.4 * seed + 2 + 2.5 * sin(0.4 * y - 1.3 * seed + 1));
@@ -233,8 +234,12 @@ function initSpiderCursor() {
 
   function spawnSwarm() {
     const particles = many(333, () => ({
-      x: random(window.innerWidth),
-      y: random(window.innerHeight),
+      originX: random(window.innerWidth),
+      originY: random(window.innerHeight),
+      x: 0,
+      y: 0,
+      parallaxX: random(0.045, -0.0225),
+      parallaxY: random(0.09, 0.025),
       length: 0,
       radius: 0,
     }));
@@ -242,62 +247,53 @@ function initSpiderCursor() {
       x: cos((index / 9) * PI * 2),
       y: sin((index / 9) * PI * 2),
     }));
-    const phase = random(100);
-    let targetX = random(window.innerWidth);
-    let targetY = random(window.innerHeight);
-    let centerX = random(window.innerWidth);
-    let centerY = random(window.innerHeight);
-    const xSpeed = random(0.5, 0.5);
-    const ySpeed = random(0.5, 0.5);
-    const drift = point(random(50, 50), random(50, 50));
-    let reach = window.innerWidth / random(100, 150);
+    let centerX = pointerX;
+    let centerY = pointerY;
 
-    function paintParticle(particle) {
-      directions.forEach((direction) => {
-        if (!particle.length) return;
-        const anchorX = centerX + direction.x * reach;
-        const anchorY = centerY + direction.y * reach;
-        const pull = particle.length * particle.length;
-        drawThread(
-          lerp(anchorX, particle.x, pull),
-          lerp(anchorY, particle.y, pull),
-          anchorX,
-          anchorY,
-        );
-      });
+    function paintParticle(particle, creatureAmount, reach) {
+      if (creatureAmount > 0.01 && particle.length) {
+        context.save();
+        context.globalAlpha = creatureAmount;
+        directions.forEach((direction) => {
+          const anchorX = centerX + direction.x * reach;
+          const anchorY = centerY + direction.y * reach;
+          const pull = particle.length * particle.length;
+          drawThread(
+            lerp(anchorX, particle.x, pull),
+            lerp(anchorY, particle.y, pull),
+            anchorX,
+            anchorY,
+          );
+        });
+        context.restore();
+      }
       drawCircle(particle.x, particle.y, particle.radius);
     }
 
     return {
       follow(x, y) {
-        targetX = x;
-        targetY = y;
+        centerX = x;
+        centerY = y;
       },
-      tick(time, focusAmount = 0) {
-        const xOffset = cos(time * xSpeed + phase) * drift.x;
-        const yOffset = sin(time * ySpeed + phase) * drift.y;
-        const destinationX = targetX + xOffset;
-        const destinationY = targetY + yOffset;
-        const focused = focusAmount > 0.05;
-        const followDivisor = focused ? 4 : 10;
-        const followCap = width / (focused ? 30 : 100);
-        centerX += min(followCap, (destinationX - centerX) / followDivisor);
-        centerY += min(followCap, (destinationY - centerY) / followDivisor);
-        reach = width / random(100, 150);
+      tick(creatureAmount = 1) {
+        const skyScroll = window.scrollY;
+        const reach = width / 125;
 
         let connected = 0;
         particles.forEach((particle) => {
+          particle.x = wrap(particle.originX + skyScroll * particle.parallaxX, width);
+          particle.y = wrap(particle.originY - skyScroll * particle.parallaxY, height);
           const distance = hypot(particle.x - centerX, particle.y - centerY);
           let radius = min(2, width / distance / 5);
-          const nearCursor = distance < width / 10 && connected < 8;
-          const direction = nearCursor ? 0.1 : -0.1;
+          const nearCursor = creatureAmount > 0.05 && distance < width / 10 && connected < 8;
+          const direction = nearCursor ? 0.1 : -0.16;
           if (nearCursor) {
             connected += 1;
             radius *= 1.5;
           }
           particle.radius = radius;
           particle.length = max(0, min(particle.length + direction, 1));
-          paintParticle(particle);
+          paintParticle(particle, creatureAmount, reach);
         });
       },
     };
@@ -312,7 +308,7 @@ function initSpiderCursor() {
 
     const candidate = event.target instanceof Element ? event.target.closest(interactiveSelector) : null;
     activeTarget = candidate && !candidate.matches(":disabled, [aria-disabled='true']") ? candidate : null;
-    if (!activeTarget) swarms.forEach((swarm) => swarm.follow(pointerX, pointerY));
+    swarms.forEach((swarm) => swarm.follow(pointerX, pointerY));
   }
 
   function handlePointerLeave() {
@@ -344,18 +340,11 @@ function initSpiderCursor() {
     if (currentRect) lastTargetRect = currentRect;
     targetStrength += ((currentRect ? 1 : 0) - targetStrength) * 0.16;
 
-    if (currentRect) {
-      swarms.forEach((swarm, index) => {
-        const orbit = perimeterPoint(currentRect, time * 0.08 + index / swarms.length);
-        swarm.follow(orbit.x, orbit.y);
-      });
-    }
-
     if (lastTargetRect && targetStrength > 0.01) {
       drawTargetTexture(lastTargetRect, time, targetStrength);
     }
 
-    swarms.forEach((swarm) => swarm.tick(time, targetStrength));
+    swarms.forEach((swarm) => swarm.tick(1 - targetStrength));
   }
 
   window.addEventListener("pointermove", handlePointerMove, { passive: true });
