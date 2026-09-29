@@ -1611,3 +1611,45 @@ body.has-spider-cursor .spider-cursor {
     transition: none;
   }
 }
+
+/* One vertical rhythm: adjacent section content is separated by 120px. */
+main {
+  gap: 0;
+}
+
+main > .section--portfolio {
+  padding-block: var(--block-gap) 104px;
+}
+
+main > .capability-tape {
+  padding-block: 16px;
+}
+
+main > .career-story {
+  padding-block: 0;
+}
+
+main > .career-story .career-stage {
+  padding-block: 104px 60px;
+}
+
+main > .career-story + .section--process {
+  margin-block-start: 0;
+  padding-block: 0;
+}
+
+main > .section--process .process-stage {
+  justify-content: flex-start;
+  padding-block: 60px;
+}
+
+main > .section--proof,
+main > .section--about,
+main > .contact {
+  padding-block: 60px;
+}
+
+body > .footer {
+  margin-top: 0;
+  padding-block: 60px 56px;
+}
