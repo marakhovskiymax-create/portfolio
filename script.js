@@ -470,6 +470,72 @@ function initSpiderCursor() {
 
 initSpiderCursor();
 
+function initHeroTextEffect() {
+  const textEffects = Array.from(document.querySelectorAll("[data-hero-text-effect]"));
+  const supportingElements = Array.from(document.querySelectorAll("[data-hero-reveal]"));
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  textEffects.forEach((element) => {
+    const text = element.textContent;
+    const fragment = document.createDocumentFragment();
+
+    element.textContent = "";
+    element.setAttribute("aria-hidden", "true");
+
+    Array.from(text).forEach((character) => {
+      const span = document.createElement("span");
+      span.className = "hero-char";
+      span.textContent = character === " " ? "\u00a0" : character;
+      fragment.append(span);
+    });
+
+    element.append(fragment);
+  });
+
+  if (!window.gsap || reduceMotion) return;
+
+  textEffects.forEach((element) => {
+    const characters = element.querySelectorAll(".hero-char");
+    const delay = Number.parseFloat(element.dataset.heroDelay || "0");
+
+    window.gsap.fromTo(
+      characters,
+      { autoAlpha: 0, rotateX: 90, y: 10 },
+      {
+        autoAlpha: 1,
+        rotateX: 0,
+        y: 0,
+        duration: 0.2,
+        delay,
+        stagger: 0.05,
+        ease: "power3.out",
+        clearProps: "transform,opacity,visibility",
+      },
+    );
+  });
+
+  supportingElements.forEach((element) => {
+    const delay = Number.parseFloat(element.dataset.heroDelay || "0");
+    const useBlur = element.dataset.heroPreset === "blur";
+
+    window.gsap.fromTo(
+      element,
+      { autoAlpha: 0, y: useBlur ? 8 : 10, filter: useBlur ? "blur(8px)" : "blur(0px)" },
+      {
+        autoAlpha: 1,
+        y: 0,
+        filter: "blur(0px)",
+        duration: useBlur ? 0.5 : 0.32,
+        delay,
+        ease: "power3.out",
+        clearProps: "transform,opacity,visibility,filter",
+      },
+    );
+  });
+}
+
+initHeroTextEffect();
+
 if (window.TastemakerMotion && window.gsap && window.ScrollTrigger) {
   window.TastemakerMotion.init({
     duration: 0.24,

@@ -310,6 +310,17 @@ body.has-spider-cursor .spider-cursor {
   overflow-wrap: anywhere;
 }
 
+.hero__line {
+  display: block;
+  perspective: 700px;
+}
+
+.hero-char {
+  display: inline-block;
+  transform-origin: 50% 70%;
+  backface-visibility: hidden;
+}
+
 .hero__lede {
   max-width: 520px;
   margin-top: var(--space-6);

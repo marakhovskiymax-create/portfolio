@@ -61,15 +61,18 @@
       <section class="hero" id="top" aria-labelledby="hero-title">
         <div class="hero__stars" aria-hidden="true"></div>
         <div class="hero__content shell">
-          <p class="hero__intro" data-reveal>Привет, я Максим Мараховский</p>
-          <h1 id="hero-title" data-reveal>
-            Продуктовый дизайнер.<br />
-            Превращаю сложное в очевидное.
+          <p class="hero__intro" data-hero-reveal data-hero-delay="0.15">Привет, я Максим Мараховский</p>
+          <h1
+            id="hero-title"
+            aria-label="Продуктовый дизайнер. Превращаю сложное в очевидное."
+          >
+            <span class="hero__line" data-hero-text-effect data-hero-delay="0.5">Продуктовый дизайнер.</span>
+            <span class="hero__line" data-hero-text-effect data-hero-delay="1.5">Превращаю сложное в очевидное.</span>
           </h1>
-          <p class="hero__lede" data-reveal>
+          <p class="hero__lede" data-hero-reveal data-hero-delay="2.5" data-hero-preset="blur">
             Работаю от исследований к системе. Делаю трудное лёгким на вид.
           </p>
-          <a class="button button--light" href="#contact" data-reveal>Написать мне</a>
+          <a class="button button--light" href="#contact" data-hero-reveal data-hero-delay="2.75">Написать мне</a>
           <p class="hero__index" aria-hidden="true">01 / Главная</p>
         </div>
       </section>
