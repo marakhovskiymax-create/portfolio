@@ -20,7 +20,7 @@
       type="image/svg+xml"
       href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23050505'/%3E%3Cpath d='M13 43V20h7l12 15 12-15h7v23h-7V31L32 46 20 31v12z' fill='%2372c98b'/%3E%3C/svg%3E"
     />
-    <link rel="stylesheet" href="styles.css?v=20260929-faq" />
+    <link rel="stylesheet" href="styles.css?v=20260929-contact-globe2" />
     <script>
       document.documentElement.classList.replace("no-js", "js");
     </script>
@@ -474,12 +474,93 @@
       </section>
 
       <section class="contact shell" id="contact" aria-labelledby="contact-title" data-motion-section="contact">
-        <p class="contact__kicker">Открыт к продуктовым задачам</p>
-        <h2 id="contact-title">Давайте сделаем сложное понятным.</h2>
-        <a class="contact__link" href="#top">
-          Обсудить проект
-          <span aria-hidden="true">↗</span>
-        </a>
+        <header class="contact__heading">
+          <p class="contact__kicker">Контакты</p>
+          <h2 id="contact-title">Давайте обсудим задачу.</h2>
+          <p class="contact__intro">
+            Расскажите о продукте, команде и том, что сейчас важно изменить. Отвечу и предложу следующий шаг.
+          </p>
+        </header>
+
+        <div class="contact__grid">
+          <div class="contact__details">
+            <div class="contact__details-copy">
+              <h3>Связаться напрямую</h3>
+              <p>Тестовые контакты для проверки блока. Позже их можно заменить на рабочие.</p>
+            </div>
+
+            <ul class="contact__links" aria-label="Тестовые контакты">
+              <li>
+                <a class="contact-method" href="mailto:hello@example.com">
+                  <span class="contact-method__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none"><path d="M4 6.75h16v10.5H4zM4.5 7.3 12 13l7.5-5.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                  </span>
+                  <span>hello@example.com</span>
+                </a>
+              </li>
+              <li>
+                <a class="contact-method" href="tel:+37400000000">
+                  <span class="contact-method__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none"><path d="M8.15 3.75 5.6 5.1c-.7.37-.98 1.2-.67 1.93 2.55 5.96 6.08 9.5 12.04 12.04.73.31 1.56.03 1.93-.67l1.35-2.55-4.2-2.2-1.32 1.54a15.2 15.2 0 0 1-5.92-5.92l1.54-1.32-2.2-4.2Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                  </span>
+                  <span>+374 00 000 000</span>
+                </a>
+              </li>
+              <li>
+                <a class="contact-method" href="https://t.me/example" target="_blank" rel="noreferrer">
+                  <span class="contact-method__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none"><path d="m4 11.5 15.5-6-3.25 13-4.6-3.4-2.6 2.35.45-4.25L16.3 8l-8.2 4.15L4 11.5Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                  </span>
+                  <span>@portfolio_example</span>
+                </a>
+              </li>
+            </ul>
+
+            <div class="contact-globe" aria-hidden="true">
+              <canvas width="600" height="600" data-contact-globe></canvas>
+              <span class="contact-globe__place">Ереван · GMT+4</span>
+              <span class="contact-globe__fade"></span>
+            </div>
+          </div>
+
+          <form class="contact-form" data-contact-form>
+            <div class="contact-form__heading">
+              <h3>Написать сообщение</h3>
+              <p>Заполните поля — пока это тестовый сценарий без отправки.</p>
+            </div>
+
+            <div class="contact-form__divider" aria-hidden="true"></div>
+
+            <div class="contact-form__row">
+              <label>
+                <span>Имя</span>
+                <input name="name" type="text" value="Анна" autocomplete="name" required />
+              </label>
+              <label>
+                <span>Компания</span>
+                <input name="company" type="text" value="Новый продукт" autocomplete="organization" />
+              </label>
+            </div>
+
+            <label>
+              <span>Почта</span>
+              <input name="email" type="email" value="anna@example.com" autocomplete="email" required />
+            </label>
+
+            <label>
+              <span>Сообщение</span>
+              <textarea name="message" rows="4" required>Ищем продуктового дизайнера для развития сервиса и хотим обсудить задачу.</textarea>
+            </label>
+
+            <div class="contact-form__footer">
+              <button class="contact-form__submit" type="submit">
+                Отправить
+                <span aria-hidden="true">→</span>
+              </button>
+              <p class="contact-form__status" role="status" aria-live="polite" data-contact-status></p>
+            </div>
+          </form>
+        </div>
       </section>
     </main>
 
@@ -518,6 +599,6 @@
     <script src="vendor/gsap.min.js"></script>
     <script src="vendor/ScrollTrigger.min.js"></script>
     <script src="gsap-starter.js"></script>
-    <script src="script.js?v=20260929-faq"></script>
+    <script src="script.js?v=20260929-contact-globe2"></script>
   </body>
 </html>

@@ -602,6 +602,187 @@ function initFAQAccordion() {
 
 initFAQAccordion();
 
+function initContactForm() {
+  const form = document.querySelector("[data-contact-form]");
+  const status = document.querySelector("[data-contact-status]");
+  if (!form || !status) return;
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (!form.reportValidity()) return;
+
+    status.textContent = "Тестовое сообщение готово — отправка пока не подключена.";
+  });
+}
+
+function initContactGlobe() {
+  const canvas = document.querySelector("[data-contact-globe]");
+  if (!canvas) return;
+
+  const context = canvas.getContext("2d");
+  if (!context) return;
+
+  const container = canvas.closest(".contact-globe");
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const tilt = -0.16;
+  let width = 0;
+  let height = 0;
+  let ratio = 1;
+  let rotation = -0.78;
+  let visible = false;
+  let frameId = 0;
+  let previousTime = 0;
+
+  const syncSize = () => {
+    const rect = canvas.getBoundingClientRect();
+    const nextWidth = Math.max(1, rect.width);
+    const nextHeight = Math.max(1, rect.height);
+    const nextRatio = Math.min(window.devicePixelRatio || 1, 2);
+    if (nextWidth === width && nextHeight === height && nextRatio === ratio) return;
+
+    width = nextWidth;
+    height = nextHeight;
+    ratio = nextRatio;
+    canvas.width = Math.round(width * ratio);
+    canvas.height = Math.round(height * ratio);
+    context.setTransform(ratio, 0, 0, ratio, 0, 0);
+  };
+
+  const project = (latitude, longitude) => {
+    const phi = (latitude * Math.PI) / 180;
+    const lambda = (longitude * Math.PI) / 180 + rotation;
+    const baseX = Math.cos(phi) * Math.sin(lambda);
+    const baseY = Math.sin(phi);
+    const baseZ = Math.cos(phi) * Math.cos(lambda);
+    const y = baseY * Math.cos(tilt) - baseZ * Math.sin(tilt);
+    const z = baseY * Math.sin(tilt) + baseZ * Math.cos(tilt);
+    return { x: baseX, y, z };
+  };
+
+  const drawLine = (points, centerX, centerY, radius, alpha = 1) => {
+    let drawing = false;
+    context.beginPath();
+
+    points.forEach(([latitude, longitude]) => {
+      const point = project(latitude, longitude);
+      const x = centerX + point.x * radius;
+      const y = centerY - point.y * radius;
+
+      if (point.z > 0.005) {
+        if (!drawing) context.moveTo(x, y);
+        else context.lineTo(x, y);
+        drawing = true;
+      } else {
+        drawing = false;
+      }
+    });
+
+    context.globalAlpha = alpha;
+    context.stroke();
+  };
+
+  const range = (start, end, step) => {
+    const values = [];
+    for (let value = start; value <= end; value += step) values.push(value);
+    return values;
+  };
+
+  const draw = () => {
+    syncSize();
+    context.clearRect(0, 0, width, height);
+
+    const radius = Math.min(width, height) * 0.43;
+    const centerX = width / 2;
+    const centerY = height * 0.49;
+    const glow = context.createRadialGradient(centerX, centerY, radius * 0.2, centerX, centerY, radius * 1.12);
+    glow.addColorStop(0, "rgba(114, 201, 139, 0.10)");
+    glow.addColorStop(0.72, "rgba(114, 201, 139, 0.025)");
+    glow.addColorStop(1, "rgba(114, 201, 139, 0)");
+    context.fillStyle = glow;
+    context.beginPath();
+    context.arc(centerX, centerY, radius * 1.12, 0, Math.PI * 2);
+    context.fill();
+
+    context.lineWidth = 0.8;
+    context.strokeStyle = "rgba(244, 243, 238, 0.38)";
+    range(-60, 60, 20).forEach((latitude) => {
+      const points = range(-180, 180, 3).map((longitude) => [latitude, longitude]);
+      drawLine(points, centerX, centerY, radius, 0.38);
+    });
+
+    range(-150, 180, 30).forEach((longitude) => {
+      const points = range(-90, 90, 3).map((latitude) => [latitude, longitude]);
+      drawLine(points, centerX, centerY, radius, 0.3);
+    });
+
+    context.globalAlpha = 1;
+    context.lineWidth = 1.15;
+    context.strokeStyle = "rgba(244, 243, 238, 0.72)";
+    context.beginPath();
+    context.arc(centerX, centerY, radius, 0, Math.PI * 2);
+    context.stroke();
+
+    const marker = project(40.18, 44.51);
+    if (marker.z > 0) {
+      const x = centerX + marker.x * radius;
+      const y = centerY - marker.y * radius;
+      context.fillStyle = "rgba(114, 201, 139, 0.18)";
+      context.beginPath();
+      context.arc(x, y, 8, 0, Math.PI * 2);
+      context.fill();
+      context.fillStyle = "#72c98b";
+      context.beginPath();
+      context.arc(x, y, 3, 0, Math.PI * 2);
+      context.fill();
+    }
+
+    context.globalAlpha = 1;
+  };
+
+  const animate = (time) => {
+    if (!visible || document.hidden) {
+      frameId = 0;
+      return;
+    }
+
+    if (previousTime) rotation += Math.min(time - previousTime, 32) * 0.000055;
+    previousTime = time;
+    draw();
+    frameId = window.requestAnimationFrame(animate);
+  };
+
+  const start = () => {
+    if (reduceMotion) {
+      draw();
+      return;
+    }
+    if (!frameId && visible && !document.hidden) {
+      previousTime = 0;
+      frameId = window.requestAnimationFrame(animate);
+    }
+  };
+
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      visible = entry.isIntersecting;
+      if (visible) start();
+      else if (frameId) {
+        window.cancelAnimationFrame(frameId);
+        frameId = 0;
+      }
+    },
+    { threshold: 0.08 },
+  );
+
+  observer.observe(container || canvas);
+  new ResizeObserver(() => draw()).observe(container || canvas);
+  document.addEventListener("visibilitychange", start);
+  draw();
+}
+
+initContactForm();
+initContactGlobe();
+
 if (window.TastemakerMotion && window.gsap && window.ScrollTrigger) {
   window.TastemakerMotion.init({
     duration: 0.24,
@@ -748,20 +929,38 @@ if (window.TastemakerMotion && window.gsap && window.ScrollTrigger) {
     contact
       .fromTo(
         ".contact__kicker",
-        { autoAlpha: 0, y: 18 },
-        { autoAlpha: 1, y: 0, duration: 0.24 },
+        { autoAlpha: 0, y: -12 },
+        { autoAlpha: 1, y: 0, duration: 0.48 },
       )
       .fromTo(
         ".contact h2",
-        { autoAlpha: 0, yPercent: 35, clipPath: "inset(0 0 100% 0)" },
-        { autoAlpha: 1, yPercent: 0, clipPath: "inset(0 0 0% 0)", duration: 0.48 },
-        "-=0.06",
+        { autoAlpha: 0, y: 14 },
+        { autoAlpha: 1, y: 0, duration: 0.55 },
+        "-=0.28",
       )
       .fromTo(
-        ".contact__link",
-        { autoAlpha: 0, x: -18 },
-        { autoAlpha: 1, x: 0, duration: 0.24 },
-        "-=0.12",
+        ".contact__intro",
+        { autoAlpha: 0, y: 12 },
+        { autoAlpha: 1, y: 0, duration: 0.5 },
+        "-=0.3",
+      )
+      .fromTo(
+        ".contact__details",
+        { autoAlpha: 0, y: 28 },
+        { autoAlpha: 1, y: 0, duration: 0.6 },
+        "-=0.2",
+      )
+      .fromTo(
+        ".contact-form",
+        { autoAlpha: 0, y: 28 },
+        { autoAlpha: 1, y: 0, duration: 0.6 },
+        "-=0.42",
+      )
+      .fromTo(
+        ".contact-method",
+        { autoAlpha: 0, x: -12 },
+        { autoAlpha: 1, x: 0, duration: 0.35, stagger: 0.08 },
+        "-=0.28",
       );
 
     const footer = scrollScene("[data-motion-section='footer']", "top 96%");
