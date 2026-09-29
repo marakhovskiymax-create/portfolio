@@ -536,6 +536,72 @@ function initHeroTextEffect() {
 
 initHeroTextEffect();
 
+function initFAQAccordion() {
+  const title = document.querySelector("[data-faq-title]");
+  const items = Array.from(document.querySelectorAll("[data-faq-item]"));
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (title) {
+    const words = title.textContent.trim().split(/\s+/);
+    const fragment = document.createDocumentFragment();
+    title.textContent = "";
+
+    words.forEach((word) => {
+      const span = document.createElement("span");
+      span.className = "faq-title__word";
+      span.textContent = word;
+      span.setAttribute("aria-hidden", "true");
+      fragment.append(span, document.createTextNode(" "));
+    });
+
+    title.append(fragment);
+  }
+
+  const setOpen = (item, shouldOpen) => {
+    const trigger = item.querySelector(".faq-trigger");
+    const answer = item.querySelector("[data-faq-answer]");
+    if (!trigger || !answer) return;
+
+    const currentHeight = answer.getBoundingClientRect().height;
+    trigger.setAttribute("aria-expanded", String(shouldOpen));
+    answer.setAttribute("aria-hidden", String(!shouldOpen));
+    item.classList.toggle("is-open", shouldOpen);
+
+    if (reduceMotion) {
+      answer.style.height = shouldOpen ? "auto" : "0px";
+      answer.style.opacity = shouldOpen ? "1" : "0";
+      return;
+    }
+
+    answer.style.height = `${currentHeight}px`;
+    answer.getBoundingClientRect();
+    answer.style.height = shouldOpen ? `${answer.scrollHeight}px` : "0px";
+    answer.style.opacity = shouldOpen ? "1" : "0";
+  };
+
+  items.forEach((item) => {
+    const trigger = item.querySelector(".faq-trigger");
+    const answer = item.querySelector("[data-faq-answer]");
+    if (!trigger || !answer) return;
+
+    answer.style.height = "0px";
+    answer.style.opacity = "0";
+
+    trigger.addEventListener("click", () => {
+      const willOpen = trigger.getAttribute("aria-expanded") !== "true";
+      items.forEach((otherItem) => setOpen(otherItem, otherItem === item && willOpen));
+    });
+
+    answer.addEventListener("transitionend", (event) => {
+      if (event.propertyName === "height" && item.classList.contains("is-open")) {
+        answer.style.height = "auto";
+      }
+    });
+  });
+}
+
+initFAQAccordion();
+
 if (window.TastemakerMotion && window.gsap && window.ScrollTrigger) {
   window.TastemakerMotion.init({
     duration: 0.24,
@@ -637,6 +703,45 @@ if (window.TastemakerMotion && window.gsap && window.ScrollTrigger) {
         { autoAlpha: 0, y: 16, scale: 0.94 },
         { autoAlpha: 1, y: 0, scale: 1, duration: 0.24, stagger: 0.06 },
         "-=0.18",
+      );
+
+    const faq = scrollScene("[data-motion-section='faq']", "top 74%");
+    faq
+      .fromTo(
+        ".faq-title__word",
+        { autoAlpha: 0, filter: "blur(6px)", y: 12 },
+        {
+          autoAlpha: 1,
+          filter: "blur(0px)",
+          y: 0,
+          duration: 0.4,
+          stagger: 0.08,
+          ease: "power2.inOut",
+        },
+      )
+      .fromTo(
+        ".faq__intro",
+        { autoAlpha: 0 },
+        { autoAlpha: 1, duration: 0.5 },
+        0.4,
+      )
+      .fromTo(
+        ".faq__list",
+        { autoAlpha: 0, y: 20 },
+        { autoAlpha: 1, y: 0, duration: 0.5 },
+        0.5,
+      )
+      .fromTo(
+        ".faq-item",
+        { autoAlpha: 0, y: 10 },
+        { autoAlpha: 1, y: 0, duration: 0.35, stagger: 0.07, ease: "power2.out" },
+        0.5,
+      )
+      .fromTo(
+        ".faq-contact",
+        { autoAlpha: 0, y: 20 },
+        { autoAlpha: 1, y: 0, duration: 0.5 },
+        0.72,
       );
 
     const contact = scrollScene("[data-motion-section='contact']", "top 76%");
