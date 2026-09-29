@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="ru" class="no-js">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#050505" />
+    <meta
+      name="description"
+      content="Портфолио Максима Мараховского, продуктового дизайнера: кейсы, подход к работе и профессиональные интересы."
+    />
+    <title>Максим Мараховский · Продуктовый дизайнер</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,400;0,6..12,500;0,6..12,600;0,6..12,700;1,6..12,500&family=Playfair+Display:ital,wght@0,600;1,500;1,600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23050505'/%3E%3Cpath d='M13 43V20h7l12 15 12-15h7v23h-7V31L32 46 20 31v12z' fill='%2372c98b'/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="styles.css?v=20260928-4" />
+    <script>
+      document.documentElement.classList.replace("no-js", "js");
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">К содержанию</a>
+    <canvas class="spider-cursor" data-spider-cursor aria-hidden="true"></canvas>
+
+    <header class="site-header" aria-label="Главная навигация">
+      <nav class="masthead shell">
+        <div class="masthead__links masthead__links--primary">
+          <a href="#portfolio">Портфолио</a>
+          <a href="#career">Карьера</a>
+          <a href="#about">Обо мне</a>
+        </div>
+
+        <a class="wordmark" href="#top" aria-label="Наверх">marakhovskiy</a>
+
+        <div class="masthead__links masthead__links--meta">
+          <a href="#career">Резюме</a>
+          <a href="#contact">Телеграм</a>
+        </div>
+
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu">
+          <span>Меню</span>
+          <span class="menu-toggle__line" aria-hidden="true"></span>
+        </button>
+      </nav>
+
+      <div class="mobile-menu" id="mobile-menu" hidden>
+        <a href="#portfolio">Портфолио</a>
+        <a href="#career">Карьера</a>
+        <a href="#about">Обо мне</a>
+        <a href="#contact">Контакты</a>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="hero" id="top" aria-labelledby="hero-title">
+        <div class="hero__stars" aria-hidden="true"></div>
+        <div class="hero__content shell">
+          <p class="hero__intro" data-reveal>Привет, я Максим Мараховский</p>
+          <h1 id="hero-title" data-reveal>
+            Продуктовый дизайнер.<br />
+            Превращаю сложное в очевидное.
+          </h1>
+          <p class="hero__lede" data-reveal>
+            Работаю от исследований к системе. Делаю трудное лёгким на вид.
+          </p>
+          <a class="button button--light" href="#contact" data-reveal>Написать мне</a>
+          <p class="hero__index" aria-hidden="true">01 / Главная</p>
+        </div>
+      </section>
+
+      <section class="section section--portfolio shell" id="portfolio" aria-labelledby="portfolio-title" data-motion-section="portfolio">
+        <div class="section-heading">
+          <h2 id="portfolio-title">Портфолио</h2>
+          <p>Выбранные продуктовые задачи и системы.</p>
+        </div>
+
+        <div class="portfolio-grid">
+          <div class="project-list" role="list" aria-label="Проекты">
+            <button
+              class="project-row is-active"
+              type="button"
+              role="listitem"
+              data-project="eme-web"
+              aria-pressed="true"
+            >
+              <span class="project-row__name">EME.WEB</span>
+              <span class="project-row__desc">Экосистема грузоперевозок</span>
+              <span class="project-row__arrow" aria-hidden="true">↗</span>
+            </button>
+            <button
+              class="project-row"
+              type="button"
+              role="listitem"
+              data-project="eme-app"
+              aria-pressed="false"
+            >
+              <span class="project-row__name">EME.APP</span>
+              <span class="project-row__desc">Приложение для работы на складе</span>
+              <span class="project-row__arrow" aria-hidden="true">↗</span>
+            </button>
+            <button
+              class="project-row"
+              type="button"
+              role="listitem"
+              data-project="lunch-balloon"
+              aria-pressed="false"
+            >
+              <span class="project-row__name">Ланч Баллон</span>
+              <span class="project-row__desc">Магазин воздушных шаров</span>
+              <span class="project-row__arrow" aria-hidden="true">↗</span>
+            </button>
+          </div>
+
+          <figure class="case-visual" data-project-visual="eme-web">
+            <div class="case-visual__glow" aria-hidden="true"></div>
+            <div class="case-visual__panel">
+              <div class="case-visual__topline">
+                <span>Max Marakhovskiy</span>
+                <span>2026</span>
+              </div>
+              <p class="case-visual__title">Convenient, consistent, system.</p>
+              <div class="case-visual__meta">
+                <span data-visual-kind>Web ecosystem</span>
+                <span data-visual-year>01 / 03</span>
+              </div>
+            </div>
+            <figcaption class="sr-only" data-visual-caption>
+              Визуальная карточка проекта EME.WEB, экосистемы грузоперевозок.
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <div class="capability-tape" aria-label="Навыки и методы" data-motion-section="capabilities">
+        <div class="capability-tape__track">
+          <span>Prototyping</span><span>UX Research</span><span>Hypothesis Validation</span>
+          <span>Data-driven Design</span><span>Design Systems</span><span>JTBD</span>
+          <span>CJM</span><span>Analytics</span><span>Claude</span><span>NanoBanano</span>
+          <span aria-hidden="true">Prototyping</span><span aria-hidden="true">UX Research</span>
+          <span aria-hidden="true">Hypothesis Validation</span><span aria-hidden="true">Data-driven Design</span>
+          <span aria-hidden="true">Design Systems</span><span aria-hidden="true">JTBD</span>
+          <span aria-hidden="true">CJM</span><span aria-hidden="true">Analytics</span>
+        </div>
+      </div>
+
+      <section class="career-story" id="career" aria-labelledby="career-title">
+        <div class="career-stage">
+          <div class="career-stage__heading shell" data-reveal>
+            <h2 id="career-title">Карьера</h2>
+          </div>
+
+          <div class="career-track">
+            <svg
+              class="career-route career-route--desktop"
+              viewBox="0 0 1440 430"
+              preserveAspectRatio="none"
+              aria-hidden="true"
+            >
+              <defs>
+                <mask id="career-reveal-desktop" maskUnits="userSpaceOnUse" x="-30" y="0" width="1500" height="430">
+                  <path
+                    class="career-route__draw"
+                    data-career-draw
+                    pathLength="1"
+                    d="M-20 175 C100 122 210 75 355 115 C500 154 585 228 700 226 C840 225 875 142 1002 128 C1160 110 1290 128 1460 178"
+                  />
+                </mask>
+              </defs>
+              <path
+                class="career-route__base"
+                d="M-20 175 C100 122 210 75 355 115 C500 154 585 228 700 226 C840 225 875 142 1002 128 C1160 110 1290 128 1460 178"
+              />
+              <path
+                class="career-route__trace"
+                mask="url(#career-reveal-desktop)"
+                d="M-20 175 C100 122 210 75 355 115 C500 154 585 228 700 226 C840 225 875 142 1002 128 C1160 110 1290 128 1460 178"
+              />
+            </svg>
+
+            <svg
+              class="career-route career-route--mobile"
+              viewBox="0 0 360 1080"
+              preserveAspectRatio="none"
+              aria-hidden="true"
+            >
+              <defs>
+                <mask id="career-reveal-mobile" maskUnits="userSpaceOnUse" x="0" y="-20" width="360" height="1120">
+                  <path
+                    class="career-route__draw"
+                    data-career-draw
+                    pathLength="1"
+                    d="M54 -10 C48 74 102 126 126 214 C151 307 87 374 55 451 C18 541 67 605 150 680 C212 736 156 809 76 888 C36 928 31 1003 74 1090"
+                  />
+                </mask>
+              </defs>
+              <path
+                class="career-route__base"
+                d="M54 -10 C48 74 102 126 126 214 C151 307 87 374 55 451 C18 541 67 605 150 680 C212 736 156 809 76 888 C36 928 31 1003 74 1090"
+              />
+              <path
+                class="career-route__trace"
+                mask="url(#career-reveal-mobile)"
+                d="M54 -10 C48 74 102 126 126 214 C151 307 87 374 55 451 C18 541 67 605 150 680 C212 736 156 809 76 888 C36 928 31 1003 74 1090"
+              />
+            </svg>
+
+            <ol class="career-journey" aria-label="Профессиональный путь">
+              <li class="career-stop career-stop--hse" data-career-stop>
+                <img class="career-logo career-logo--hse" src="design/assets/logos/hse.svg" alt="" />
+                <div class="career-stop__body">
+                  <h3>ВШЭ</h3>
+                  <p>Коммуникации, медиа и дизайна</p>
+                  <time>2018 – 2022</time>
+                </div>
+              </li>
+
+              <li class="career-stop career-stop--match" data-career-stop>
+                <img class="career-logo career-logo--match" src="design/assets/logos/match-tv.svg" alt="" />
+                <div class="career-stop__body">
+                  <h3>Матч ТВ</h3>
+                  <p>Product, UX/UI дизайнер</p>
+                  <time>Август 2022 – Ноябрь 2023</time>
+                </div>
+              </li>
+
+              <li class="career-stop career-stop--geleos" data-career-stop>
+                <img class="career-logo career-logo--geleos" src="design/assets/logos/geleos.svg" alt="" />
+                <div class="career-stop__body">
+                  <h3>ГЕЛЕОС</h3>
+                  <p>UX/UI, Web дизайнер</p>
+                  <time>Ноябрь 2023 – Май 2024</time>
+                </div>
+              </li>
+
+              <li class="career-stop career-stop--don" data-career-stop>
+                <img class="career-logo career-logo--don" src="design/assets/logos/don-ballon.svg" alt="" />
+                <div class="career-stop__body">
+                  <h3>Дон Баллон</h3>
+                  <p>Product, UX/UI дизайнер</p>
+                  <time>Июнь 2024 – Октябрь 2024</time>
+                </div>
+              </li>
+
+              <li class="career-stop career-stop--eme" data-career-stop>
+                <img class="career-logo career-logo--eme" src="design/assets/logos/eme.svg" alt="" />
+                <div class="career-stop__body">
+                  <h3>EME</h3>
+                  <p>Product, UX/UI дизайнер</p>
+                  <time>Август 2022 – Ноябрь 2023</time>
+                </div>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <section class="section--process" id="process" aria-labelledby="process-title">
+        <div class="process-stage shell">
+          <div class="section-heading section-heading--wide" data-reveal>
+            <h2 id="process-title">Мой рабочий процесс</h2>
+          </div>
+
+          <ol class="process-line" data-process-story>
+            <li class="process-baseline" aria-hidden="true"></li>
+            <li class="process-step process-step--one" data-process-step>
+              <span class="process-step__stem" aria-hidden="true"></span>
+              <span class="process-step__number">1</span>
+              <h3>Копать</h3>
+              <p>Интервью, данные, контекст.</p>
+            </li>
+            <li class="process-step process-step--two" data-process-step>
+              <span class="process-step__stem" aria-hidden="true"></span>
+              <span class="process-step__number">2</span>
+              <h3>Формулировать</h3>
+              <p>Из хаоса исследований: одна чёткая задача.</p>
+            </li>
+            <li class="process-step process-step--three" data-process-step>
+              <span class="process-step__stem" aria-hidden="true"></span>
+              <span class="process-step__number">3</span>
+              <h3>Создавать</h3>
+              <p>Визуальный язык как аргумент, а не украшение.</p>
+            </li>
+            <li class="process-step process-step--four" data-process-step>
+              <span class="process-step__stem" aria-hidden="true"></span>
+              <span class="process-step__number">4</span>
+              <h3>Передавать</h3>
+              <p>Дизайн, который переживает хэнд-офф.</p>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <section class="section section--proof shell" aria-label="Отзывы" data-motion-section="proof">
+        <div class="quote-grid">
+          <figure class="quote-card" data-cursor-target>
+            <blockquote>
+              «Надёжный дизайнер, на которого можно положиться. Держит дедлайны, не жертвует качеством
+              и всегда идёт чуть дальше, чем требуется».
+            </blockquote>
+            <figcaption>Из отзывов команды</figcaption>
+          </figure>
+
+          <figure class="quote-card quote-card--offset" data-cursor-target>
+            <blockquote>
+              «Работает ответственно и по плану. Всегда стремится сделать задачу максимально хорошо:
+              и визуально, и по сути».
+            </blockquote>
+            <figcaption>Из отзывов команды</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="section section--about shell" id="about" aria-labelledby="about-title" data-motion-section="about">
+        <div class="section-heading">
+          <h2 id="about-title">Обо мне вне дизайна</h2>
+        </div>
+
+        <div class="about-map">
+          <article class="about-note about-note--fashion">
+            <p>
+              Слежу за <strong>модой</strong> не как за трендами, а как за языком. На показах форма говорит
+              без слов: силуэт, материал, темп выхода моделей. Это научило меня читать визуальные
+              решения как аргументы, а не как украшения. В дизайне я делаю то же самое.
+            </p>
+          </article>
+
+          <article class="about-note about-note--film">
+            <p>
+              Я снимаю и смотрю <strong>документальное</strong> кино, потому что оно учит терпению и
+              наблюдению. Те же навыки нужны в user research: не торопиться с выводами, слушать дольше, чем
+              хочется.
+            </p>
+          </article>
+
+          <article class="about-note about-note--games">
+            <p>
+              Я <strong>играю</strong> и параллельно разбираю, почему это работает и почему нет. Онбординг
+              без инструкции, обратная связь на каждое действие, системы, которые объясняют себя сами.
+            </p>
+          </article>
+
+          <div class="about-badges" aria-label="Интересы вне дизайна">
+            <span class="about-badge about-badge--vibe" data-cursor-target>Вайб кодинг</span>
+            <span class="about-badge about-badge--cinema" data-cursor-target>Кино</span>
+            <span class="about-badge about-badge--shooting" data-cursor-target>Съёмки</span>
+            <span class="about-badge about-badge--games" data-cursor-target>Игры</span>
+            <span class="about-badge about-badge--science" data-cursor-target>Научпоп</span>
+            <span class="about-badge about-badge--music" data-cursor-target>Музыка</span>
+            <span class="about-badge about-badge--fashion" data-cursor-target>Мода</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="contact shell" id="contact" aria-labelledby="contact-title" data-motion-section="contact">
+        <p class="contact__kicker">Открыт к продуктовым задачам</p>
+        <h2 id="contact-title">Давайте сделаем сложное понятным.</h2>
+        <a class="contact__link" href="#top">
+          Обсудить проект
+          <span aria-hidden="true">↗</span>
+        </a>
+      </section>
+    </main>
+
+    <footer class="footer shell" data-motion-section="footer">
+      <span>© 2026 Max Marakhovskiy</span>
+      <a href="#top">Наверх</a>
+    </footer>
+
+    <script src="vendor/gsap.min.js"></script>
+    <script src="vendor/ScrollTrigger.min.js"></script>
+    <script src="gsap-starter.js"></script>
+    <script src="script.js?v=20260928-4"></script>
+  </body>
+</html>
