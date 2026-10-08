@@ -1,6 +1,6 @@
 /* tastemaker · macrostructure: Editorial Index · mood: elegant · page: landing
  * arc: hook(H2) -> proof/work(F6) -> capability -> proof(P2) -> person -> FAQ -> close(C2)
- * nav: N4 · hero: H2 · footer: Ft2 · knobs: hero=oversized-split/eyes/stars; work=editorial-index/case-panel
+ * nav: N4 · hero: H2 · footer: Ft2 · knobs: hero=oversized-split/upright/stars; work=editorial-index/case-panel
  * palette: Figma reference (elegant/dark) · contrast: pass (matrix)
  * critique: ShowTell 5 · Phil 5 · Hier 5 · Spec 5 · Restr 5 · Var 5 */
 
@@ -303,10 +303,10 @@ body.has-spider-cursor .spider-cursor {
   min-width: 0;
   color: var(--color-text);
   font-family: var(--font-hero);
-  font-size: clamp(5rem, 10.2vw, 12.75rem);
+  font-size: clamp(5rem, 9vw, 11.25rem);
   font-style: normal;
   font-weight: 900;
-  letter-spacing: -0.072em;
+  letter-spacing: -0.01em;
   line-height: 1;
   overflow-wrap: anywhere;
   text-wrap: nowrap;
@@ -320,8 +320,7 @@ body.has-spider-cursor .spider-cursor {
 }
 
 .hero__title-row--first {
-  justify-content: space-between;
-  gap: clamp(18px, 2.4vw, 44px);
+  justify-content: flex-start;
 }
 
 .hero__title-row--second {
@@ -338,33 +337,6 @@ body.has-spider-cursor .spider-cursor {
   display: inline-block;
   transform-origin: 50% 70%;
   backface-visibility: hidden;
-}
-
-.hero-eyes {
-  display: inline-flex;
-  flex: 0 0 auto;
-  gap: clamp(12px, 1.3vw, 22px);
-  padding-right: 0.02em;
-}
-
-.hero-eye {
-  position: relative;
-  display: grid;
-  width: clamp(72px, 8.2vw, 150px);
-  aspect-ratio: 1;
-  place-items: center;
-  overflow: hidden;
-  border-radius: 50%;
-  background: var(--color-primary);
-}
-
-.hero-eye__pupil {
-  width: 36%;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: var(--color-ink);
-  transform: translate3d(var(--pupil-x, -18%), var(--pupil-y, 18%), 0);
-  will-change: transform;
 }
 
 .hero__bottom {
@@ -1894,7 +1866,7 @@ body.has-spider-cursor .spider-cursor {
   }
 
   .hero h1 {
-    font-size: clamp(4.6rem, 10vw, 7.2rem);
+    font-size: clamp(4.4rem, 9vw, 6.8rem);
   }
 
   .hero__bottom {
@@ -2055,26 +2027,14 @@ body.has-spider-cursor .spider-cursor {
   }
 
   .hero h1 {
-    font-size: clamp(2.3rem, 10.7vw, 4.25rem);
-    letter-spacing: -0.075em;
+    font-size: clamp(2.55rem, 11.8vw, 4.65rem);
+    letter-spacing: 0;
     text-wrap: nowrap;
-  }
-
-  .hero__title-row--first {
-    gap: 10px;
   }
 
   .hero__title-row--second {
     justify-content: flex-start;
     margin-top: -0.04em;
-  }
-
-  .hero-eyes {
-    gap: 6px;
-  }
-
-  .hero-eye {
-    width: clamp(28px, 5.8vw, 38px);
   }
 
   .hero__bottom {

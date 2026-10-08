@@ -19,7 +19,7 @@ Established: 2026-09-27. Source: Figma reference node 13:18 supplied by the user
 - Decorative only: bg/border, border/on-primary, text/accent, primary/accent, surface/border, bg/surface, surface/on-primary, text/primary, bg/on-primary
 
 ## Typography
-- Hero display: Inter Tight 900, uppercase and upright, matching the compact oversized type requested from the Kokil Tamta reference
+- Hero display: Inter Tight 900, uppercase and upright, with near-neutral tracking (-0.01em desktop, 0 on mobile) so Cyrillic characters remain clearly separated
 - Editorial headings and wordmark: Playfair Display, retained outside the hero to preserve the supplied Figma direction
 - Body and UI: Nunito Sans, matching the rounded sans-serif used in the supplied Figma frame
 - Base: 16px. Hero display uses fluid clamps with a 1.0 line-height floor; editorial display keeps a 1.02 floor.
@@ -41,15 +41,15 @@ Established: 2026-09-27. Source: Figma reference node 13:18 supplied by the user
 - Macrostructure: Editorial Index
 - Narrative arc: hook H2, work/proof F6, capability index, proof P2, personal context, FAQ, close C2
 - Shared chrome: N4 editorial masthead and Ft2 inline footer
-- Body archetypes: H2 oversized split-title hero with an interactive eye accent, F6 project ledger with focused visual, P2 pull quotes, C2 statement close
+- Body archetypes: H2 oversized split-title typographic hero, F6 project ledger with focused visual, P2 pull quotes, C2 statement close
 - Personal context: three asymmetrically placed text islands with seven white pill badges floating between them on wide screens; stacked reading order with a two-column badge cloud on mobile
 - Build stamp and `.tastemaker/log.json` record this implementation.
 
 ## Taste memory
 - Profile priors used: none
 - Decision log: `.tastemaker/decisions.log`
-- Last resolved decisions: the user rejected the italic statement hero and kept an upright oversized product-designer composition based on Kokil Tamta, with intro, short lede, lower-right actions and a metadata strip (2026-10-08)
-- Pending review: whether the interactive eye accent should remain in the final hero
+- Last resolved decisions: the user rejected the interactive eyes and overly tight tracking; the hero remains purely typographic with more open Cyrillic spacing (2026-10-08)
+- Pending review: none
 - Profile promotion: none
 
 ## Mood descriptors
@@ -67,7 +67,7 @@ Quiet, cosmic, editorial, assured.
 - Curves: ease-out cubic-bezier(0.23, 1, 0.32, 1), cinematic cubic-bezier(0.77, 0, 0.175, 1)
 - Durations: fast 80ms / 60ms exit, moderate 160ms / 120ms exit, slow 240ms / 160ms exit; cursor-to-target morph uses 240ms in and 280ms out with an interruptible ease-in-out crossfade
 - Entrance: small interface reveals use an 18px rise over 240ms; major marketing blocks use explicit 480ms scroll scenes with 60 to 80ms staging
-- Screen track: hero intro, title characters, eye accent, lede, actions and metadata strip enter in six restrained beats; the two pupils follow pointer direction only inside the hero; portfolio heading, rows and visual enter in sequence; the capability tape wipes open; quote cards rise; personal notes approach from three directions before badges pop in; the contact statement unfolds in three beats; one white Spider Cursor entity follows the pointer directly across the entire page; career keeps its scrubbed diagram
+- Screen track: hero intro, title characters, lede, actions and metadata strip enter in five restrained beats; portfolio heading, rows and visual enter in sequence; the capability tape wipes open; quote cards rise; personal notes approach from three directions before badges pop in; the contact statement unfolds in three beats; one white Spider Cursor entity follows the pointer directly across the entire page; career keeps its scrubbed diagram
 - Career behavior: sticky horizontal route on wide screens; in-flow vertical route on narrow screens
 - Frequency: one shared highlight glides between adjacent project rows while the single preview updates; the star field changes composition with page scroll and adds low-amplitude drift plus restrained twinkle to free stars; particles connected to the cursor remain stable; the cursor entity has no autonomous drift and smoothly dissolves into a bright white organic perimeter around links, buttons, project rows, quote cards, or interest badges; that perimeter inherits each target's actual corner geometry, including pill and panel radii
 - Reduced motion: the global Spider Cursor is removed and the hero keeps its static star field; no parallax or sliding highlight; marquee paused; opacity and color feedback remain short
@@ -81,3 +81,4 @@ Quiet, cosmic, editorial, assured.
 - No invented metrics; career logo treatments must stay grounded in the supplied Figma frame
 - Do not collapse the personal-context composition into three generic cards; preserve the Figma-like text islands and scattered badges
 - Do not return the hero title to italic type; its current role is direct, oversized and typographic
+- Do not add decorative eyes to the hero or tighten the Cyrillic title until letterforms touch
