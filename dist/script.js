@@ -544,6 +544,70 @@ function initHeroTextEffect() {
 
 initHeroTextEffect();
 
+function initHeroEyes() {
+  const hero = document.querySelector(".hero");
+  const eyes = Array.from(document.querySelectorAll(".hero-eye"));
+  const canTrackPointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (!hero || !eyes.length || !canTrackPointer || reduceMotion) return;
+
+  let pointerX = window.innerWidth * 0.72;
+  let pointerY = window.innerHeight * 0.58;
+  let targetX = -0.18;
+  let targetY = 0.18;
+  let currentX = targetX;
+  let currentY = targetY;
+  let tracking = false;
+  let frame = 0;
+
+  const updatePointer = (event) => {
+    pointerX = event.clientX;
+    pointerY = event.clientY;
+    tracking = true;
+  };
+
+  const resetPointer = () => {
+    tracking = false;
+    targetX = -0.18;
+    targetY = 0.18;
+  };
+
+  const render = () => {
+    if (tracking) {
+      const firstBounds = eyes[0].getBoundingClientRect();
+      const lastBounds = eyes.at(-1).getBoundingClientRect();
+      const centerX = (firstBounds.left + lastBounds.right) / 2;
+      const centerY = (firstBounds.top + firstBounds.bottom) / 2;
+      const deltaX = pointerX - centerX;
+      const deltaY = pointerY - centerY;
+      const distance = Math.hypot(deltaX, deltaY) || 1;
+      targetX = (deltaX / distance) * 0.28;
+      targetY = (deltaY / distance) * 0.28;
+    }
+
+    currentX += (targetX - currentX) * 0.16;
+    currentY += (targetY - currentY) * 0.16;
+
+    eyes.forEach((eye) => {
+      eye.style.setProperty("--pupil-x", `${currentX * 100}%`);
+      eye.style.setProperty("--pupil-y", `${currentY * 100}%`);
+    });
+
+    frame = window.requestAnimationFrame(render);
+  };
+
+  hero.addEventListener("pointermove", updatePointer, { passive: true });
+  hero.addEventListener("pointerleave", resetPointer);
+  frame = window.requestAnimationFrame(render);
+
+  window.addEventListener("pagehide", () => {
+    window.cancelAnimationFrame(frame);
+  }, { once: true });
+}
+
+initHeroEyes();
+
 function initFAQAccordion() {
   const title = document.querySelector("[data-faq-title]");
   const items = Array.from(document.querySelectorAll("[data-faq-item]"));
@@ -570,7 +634,6 @@ function initFAQAccordion() {
     const answer = item.querySelector("[data-faq-answer]");
     if (!trigger || !answer) return;
 
-    const currentHeight = answer.getBoundingClientRect().height;
     trigger.setAttribute("aria-expanded", String(shouldOpen));
     answer.setAttribute("aria-hidden", String(!shouldOpen));
     item.classList.toggle("is-open", shouldOpen);
@@ -581,10 +644,20 @@ function initFAQAccordion() {
       return;
     }
 
-    answer.style.height = `${currentHeight}px`;
-    answer.getBoundingClientRect();
-    answer.style.height = shouldOpen ? `${answer.scrollHeight}px` : "0px";
-    answer.style.opacity = shouldOpen ? "1" : "0";
+    window.clearTimeout(answer.closeTimer);
+
+    if (shouldOpen) {
+      answer.style.height = "auto";
+      window.requestAnimationFrame(() => {
+        answer.style.opacity = "1";
+      });
+      return;
+    }
+
+    answer.style.opacity = "0";
+    answer.closeTimer = window.setTimeout(() => {
+      if (!item.classList.contains("is-open")) answer.style.height = "0px";
+    }, 200);
   };
 
   items.forEach((item) => {
@@ -600,11 +673,6 @@ function initFAQAccordion() {
       items.forEach((otherItem) => setOpen(otherItem, otherItem === item && willOpen));
     });
 
-    answer.addEventListener("transitionend", (event) => {
-      if (event.propertyName === "height" && item.classList.contains("is-open")) {
-        answer.style.height = "auto";
-      }
-    });
   });
 }
 
@@ -619,7 +687,7 @@ function initContactForm() {
     event.preventDefault();
     if (!form.reportValidity()) return;
 
-    status.textContent = "Тестовое сообщение готово — отправка пока не подключена.";
+    status.textContent = "Тестовое сообщение готово. Отправка пока не подключена.";
   });
 }
 
