@@ -20,7 +20,7 @@
       type="image/svg+xml"
       href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23050505'/%3E%3Cpath d='M13 43V20h7l12 15 12-15h7v23h-7V31L32 46 20 31v12z' fill='%2372c98b'/%3E%3C/svg%3E"
     />
-    <link rel="stylesheet" href="styles.css?v=20260929-contact-globe2" />
+    <link rel="stylesheet" href="styles.css?v=20260929-remove-process" />
     <script>
       document.documentElement.classList.replace("no-js", "js");
     </script>
@@ -84,6 +84,79 @@
         </div>
 
         <div class="portfolio-grid">
+          <figure
+            class="case-visual card-time-machine"
+            data-theme="dark"
+            data-project-visual="eme-web"
+          >
+            <div class="time-machine__stage" data-time-machine-stage aria-hidden="true">
+              <article class="time-machine__card time-machine__card--eme-web" data-stage-card="eme-web">
+                <div class="time-machine__card-chrome"><span>EME.WEB</span><span>CONTROL TOWER</span></div>
+                <div class="time-machine__card-body">
+                  <div class="time-machine__card-copy">
+                    <span class="time-machine__card-eyebrow">LIVE OVERVIEW</span>
+                    <strong>Freight control</strong>
+                    <span class="time-machine__card-stat">Routes · status · delivery</span>
+                  </div>
+                  <div class="time-machine__graphic time-machine__graphic--routes"></div>
+                </div>
+              </article>
+              <article class="time-machine__card time-machine__card--eme-app" data-stage-card="eme-app">
+                <div class="time-machine__card-chrome"><span>EME.APP</span><span>WAREHOUSE</span></div>
+                <div class="time-machine__card-body">
+                  <div class="time-machine__card-copy">
+                    <span class="time-machine__card-eyebrow">PICKING QUEUE</span>
+                    <strong>Order ready</strong>
+                    <span class="time-machine__card-stat">Scan · pick · dispatch</span>
+                  </div>
+                  <div class="time-machine__graphic time-machine__graphic--warehouse"></div>
+                </div>
+              </article>
+              <article class="time-machine__card time-machine__card--lunch" data-stage-card="lunch-balloon">
+                <div class="time-machine__card-chrome"><span>ЛАНЧ БАЛЛОН</span><span>CELEBRATE</span></div>
+                <div class="time-machine__card-body">
+                  <div class="time-machine__card-copy">
+                    <span class="time-machine__card-eyebrow">A LITTLE MORE JOY</span>
+                    <strong>Make it a day</strong>
+                    <span class="time-machine__card-stat">Balloons for every reason</span>
+                  </div>
+                  <div class="time-machine__graphic time-machine__graphic--balloons">
+                    <span></span><span></span><span></span>
+                  </div>
+                </div>
+              </article>
+            </div>
+            <div class="time-machine__timeline" role="group" aria-label="Выбрать проект">
+              <button class="time-machine__stop time-machine__stop--main is-active" type="button" data-stage-index="0" aria-label="Показать EME.WEB" aria-pressed="true">
+                <span class="time-machine__stop-index" aria-hidden="true">01</span>
+                <span class="time-machine__stop-mark" aria-hidden="true"></span>
+              </button>
+              <button class="time-machine__stop time-machine__stop--minor" type="button" data-stage-index="0.33" aria-label="Промежуточная позиция перед EME.APP">
+                <span class="time-machine__stop-mark" aria-hidden="true"></span>
+              </button>
+              <button class="time-machine__stop time-machine__stop--minor" type="button" data-stage-index="0.66" aria-label="Промежуточная позиция перед EME.APP">
+                <span class="time-machine__stop-mark" aria-hidden="true"></span>
+              </button>
+              <button class="time-machine__stop time-machine__stop--main" type="button" data-stage-index="1" aria-label="Показать EME.APP" aria-pressed="false">
+                <span class="time-machine__stop-index" aria-hidden="true">02</span>
+                <span class="time-machine__stop-mark" aria-hidden="true"></span>
+              </button>
+              <button class="time-machine__stop time-machine__stop--minor" type="button" data-stage-index="1.33" aria-label="Промежуточная позиция перед Ланч Баллон">
+                <span class="time-machine__stop-mark" aria-hidden="true"></span>
+              </button>
+              <button class="time-machine__stop time-machine__stop--minor" type="button" data-stage-index="1.66" aria-label="Промежуточная позиция перед Ланч Баллон">
+                <span class="time-machine__stop-mark" aria-hidden="true"></span>
+              </button>
+              <button class="time-machine__stop time-machine__stop--main" type="button" data-stage-index="2" aria-label="Показать Ланч Баллон" aria-pressed="false">
+                <span class="time-machine__stop-index" aria-hidden="true">03</span>
+                <span class="time-machine__stop-mark" aria-hidden="true"></span>
+              </button>
+            </div>
+            <figcaption class="sr-only" data-visual-caption>
+              Интерактивный предпросмотр проекта EME.WEB, экосистемы грузоперевозок.
+            </figcaption>
+          </figure>
+
           <div class="project-list" role="list" aria-label="Проекты">
             <button
               class="project-row is-active"
@@ -119,24 +192,6 @@
               <span class="project-row__arrow" aria-hidden="true">↗</span>
             </button>
           </div>
-
-          <figure class="case-visual" data-project-visual="eme-web">
-            <div class="case-visual__glow" aria-hidden="true"></div>
-            <div class="case-visual__panel">
-              <div class="case-visual__topline">
-                <span>Max Marakhovskiy</span>
-                <span>2026</span>
-              </div>
-              <p class="case-visual__title">Convenient, consistent, system.</p>
-              <div class="case-visual__meta">
-                <span data-visual-kind>Web ecosystem</span>
-                <span data-visual-year>01 / 03</span>
-              </div>
-            </div>
-            <figcaption class="sr-only" data-visual-caption>
-              Визуальная карточка проекта EME.WEB, экосистемы грузоперевозок.
-            </figcaption>
-          </figure>
         </div>
       </section>
 
@@ -153,169 +208,242 @@
       </div>
 
       <section class="career-story" id="career" aria-labelledby="career-title">
-        <div class="career-stage">
-          <div class="career-stage__heading shell" data-reveal>
+        <div class="career-stage shell">
+          <header class="career-stage__heading" data-reveal>
             <h2 id="career-title">Карьера</h2>
-          </div>
+          </header>
 
-          <div class="career-track">
-            <svg
-              class="career-route career-route--desktop"
-              viewBox="0 0 1440 430"
-              preserveAspectRatio="none"
-              aria-hidden="true"
-            >
-              <defs>
-                <mask id="career-reveal-desktop" maskUnits="userSpaceOnUse" x="-30" y="0" width="1500" height="430">
-                  <path
-                    class="career-route__draw"
-                    data-career-draw
-                    pathLength="1"
-                    d="M-20 175 C100 122 210 75 355 115 C500 154 585 228 700 226 C840 225 875 142 1002 128 C1160 110 1290 128 1460 178"
-                  />
-                </mask>
-              </defs>
-              <path
-                class="career-route__base"
-                d="M-20 175 C100 122 210 75 355 115 C500 154 585 228 700 226 C840 225 875 142 1002 128 C1160 110 1290 128 1460 178"
-              />
-              <path
-                class="career-route__trace"
-                mask="url(#career-reveal-desktop)"
-                d="M-20 175 C100 122 210 75 355 115 C500 154 585 228 700 226 C840 225 875 142 1002 128 C1160 110 1290 128 1460 178"
-              />
-            </svg>
-
-            <svg
-              class="career-route career-route--mobile"
-              viewBox="0 0 360 1080"
-              preserveAspectRatio="none"
-              aria-hidden="true"
-            >
-              <defs>
-                <mask id="career-reveal-mobile" maskUnits="userSpaceOnUse" x="0" y="-20" width="360" height="1120">
-                  <path
-                    class="career-route__draw"
-                    data-career-draw
-                    pathLength="1"
-                    d="M54 -10 C48 74 102 126 126 214 C151 307 87 374 55 451 C18 541 67 605 150 680 C212 736 156 809 76 888 C36 928 31 1003 74 1090"
-                  />
-                </mask>
-              </defs>
-              <path
-                class="career-route__base"
-                d="M54 -10 C48 74 102 126 126 214 C151 307 87 374 55 451 C18 541 67 605 150 680 C212 736 156 809 76 888 C36 928 31 1003 74 1090"
-              />
-              <path
-                class="career-route__trace"
-                mask="url(#career-reveal-mobile)"
-                d="M54 -10 C48 74 102 126 126 214 C151 307 87 374 55 451 C18 541 67 605 150 680 C212 736 156 809 76 888 C36 928 31 1003 74 1090"
-              />
-            </svg>
+          <div class="career-timeline">
+            <span class="career-journey__track" aria-hidden="true">
+              <span class="career-journey__progress" data-career-progress></span>
+            </span>
 
             <ol class="career-journey" aria-label="Профессиональный путь">
-              <li class="career-stop career-stop--hse" data-career-stop>
-                <img class="career-logo career-logo--hse" src="design/assets/logos/hse.svg" alt="" />
-                <div class="career-stop__body">
-                  <h3>ВШЭ</h3>
-                  <p>Коммуникации, медиа и дизайна</p>
-                  <time>2018 – 2022</time>
-                </div>
+              <li class="career-stop" data-career-stop>
+                <span class="career-stop__node" aria-hidden="true">01</span>
+                <article class="career-stop__card">
+                  <figure class="career-stop__media">
+                    <img src="design/assets/career/hse-campus.jpg" alt="" loading="lazy" decoding="async" />
+                    <span class="career-stop__image-index">Образование</span>
+                  </figure>
+                  <div class="career-stop__body">
+                    <div class="career-stop__meta">
+                      <img class="career-logo career-logo--hse" src="design/assets/logos/hse.svg" alt="" />
+                      <time>2018 – 2022</time>
+                    </div>
+                    <h3>ВШЭ</h3>
+                    <p>Коммуникации, медиа и дизайна</p>
+                  </div>
+                </article>
               </li>
 
-              <li class="career-stop career-stop--match" data-career-stop>
-                <img class="career-logo career-logo--match" src="design/assets/logos/match-tv.svg" alt="" />
-                <div class="career-stop__body">
-                  <h3>Матч ТВ</h3>
-                  <p>Product, UX/UI дизайнер</p>
-                  <time>Август 2022 – Ноябрь 2023</time>
-                </div>
+              <li class="career-stop" data-career-stop>
+                <span class="career-stop__node" aria-hidden="true">02</span>
+                <article class="career-stop__card">
+                  <figure class="career-stop__media">
+                    <img src="design/assets/career/match-sport.jpg" alt="" loading="lazy" decoding="async" />
+                    <span class="career-stop__image-index">Спорт и медиа</span>
+                  </figure>
+                  <div class="career-stop__body">
+                    <div class="career-stop__meta">
+                      <img class="career-logo career-logo--match" src="design/assets/logos/match-tv.svg" alt="" />
+                      <time>Август 2022 – Ноябрь 2023</time>
+                    </div>
+                    <h3>Матч ТВ</h3>
+                    <p>Product, UX/UI дизайнер</p>
+                  </div>
+                </article>
               </li>
 
-              <li class="career-stop career-stop--geleos" data-career-stop>
-                <img class="career-logo career-logo--geleos" src="design/assets/logos/geleos.svg" alt="" />
-                <div class="career-stop__body">
-                  <h3>ГЕЛЕОС</h3>
-                  <p>UX/UI, Web дизайнер</p>
-                  <time>Ноябрь 2023 – Май 2024</time>
-                </div>
+              <li class="career-stop" data-career-stop>
+                <span class="career-stop__node" aria-hidden="true">03</span>
+                <article class="career-stop__card">
+                  <figure class="career-stop__media">
+                    <img src="design/assets/career/geleos-office.jpg" alt="" loading="lazy" decoding="async" />
+                    <span class="career-stop__image-index">Цифровые продукты</span>
+                  </figure>
+                  <div class="career-stop__body">
+                    <div class="career-stop__meta">
+                      <img class="career-logo career-logo--geleos" src="design/assets/logos/geleos.svg" alt="" />
+                      <time>Ноябрь 2023 – Май 2024</time>
+                    </div>
+                    <h3>ГЕЛЕОС</h3>
+                    <p>UX/UI, Web дизайнер</p>
+                  </div>
+                </article>
               </li>
 
-              <li class="career-stop career-stop--don" data-career-stop>
-                <img class="career-logo career-logo--don" src="design/assets/logos/don-ballon.svg" alt="" />
-                <div class="career-stop__body">
-                  <h3>Дон Баллон</h3>
-                  <p>Product, UX/UI дизайнер</p>
-                  <time>Июнь 2024 – Октябрь 2024</time>
-                </div>
+              <li class="career-stop" data-career-stop>
+                <span class="career-stop__node" aria-hidden="true">04</span>
+                <article class="career-stop__card">
+                  <figure class="career-stop__media">
+                    <img src="design/assets/career/don-ballon.jpg" alt="" loading="lazy" decoding="async" />
+                    <span class="career-stop__image-index">E-commerce</span>
+                  </figure>
+                  <div class="career-stop__body">
+                    <div class="career-stop__meta">
+                      <img class="career-logo career-logo--don" src="design/assets/logos/don-ballon.svg" alt="" />
+                      <time>Июнь 2024 – Октябрь 2024</time>
+                    </div>
+                    <h3>Дон Баллон</h3>
+                    <p>Product, UX/UI дизайнер</p>
+                  </div>
+                </article>
               </li>
 
-              <li class="career-stop career-stop--eme" data-career-stop>
-                <img class="career-logo career-logo--eme" src="design/assets/logos/eme.svg" alt="" />
-                <div class="career-stop__body">
-                  <h3>EME</h3>
-                  <p>Product, UX/UI дизайнер</p>
-                  <time>Август 2022 – Ноябрь 2023</time>
-                </div>
+              <li class="career-stop" data-career-stop>
+                <span class="career-stop__node" aria-hidden="true">05</span>
+                <article class="career-stop__card">
+                  <figure class="career-stop__media">
+                    <img src="design/assets/career/eme-warehouse.jpg" alt="" loading="lazy" decoding="async" />
+                    <span class="career-stop__image-index">Логистика</span>
+                  </figure>
+                  <div class="career-stop__body">
+                    <div class="career-stop__meta">
+                      <img class="career-logo career-logo--eme" src="design/assets/logos/eme.svg" alt="" />
+                      <time>Август 2022 – Ноябрь 2023</time>
+                    </div>
+                    <h3>EME</h3>
+                    <p>Product, UX/UI дизайнер</p>
+                  </div>
+                </article>
               </li>
             </ol>
           </div>
         </div>
       </section>
 
-      <section class="section--process" id="process" aria-labelledby="process-title">
-        <div class="process-stage shell">
-          <div class="section-heading section-heading--wide" data-reveal>
-            <h2 id="process-title">Мой рабочий процесс</h2>
+      <section class="section section--proof shell" id="proof" aria-label="Отзывы" data-motion-section="proof">
+        <div class="quote-marquee" aria-label="Отзывы команды">
+          <div class="quote-marquee__row" role="group" aria-label="Первая строка отзывов">
+            <div class="quote-marquee__track">
+              <div class="quote-marquee__group">
+                <figure class="quote-card" data-cursor-target>
+                  <blockquote>
+                    «Надёжный дизайнер, на которого можно положиться. Держит дедлайны, не жертвует качеством
+                    и всегда идёт чуть дальше, чем требуется».
+                  </blockquote>
+                  <figcaption>Из отзывов команды</figcaption>
+                </figure>
+                <figure class="quote-card" data-cursor-target>
+                  <blockquote>
+                    «Работает ответственно и по плану. Всегда стремится сделать задачу максимально хорошо:
+                    и визуально, и по сути».
+                  </blockquote>
+                  <figcaption>Из отзывов команды</figcaption>
+                </figure>
+                <figure class="quote-card" aria-hidden="true">
+                  <blockquote>
+                    «Надёжный дизайнер, на которого можно положиться. Держит дедлайны, не жертвует качеством
+                    и всегда идёт чуть дальше, чем требуется».
+                  </blockquote>
+                  <figcaption>Из отзывов команды</figcaption>
+                </figure>
+                <figure class="quote-card" aria-hidden="true">
+                  <blockquote>
+                    «Работает ответственно и по плану. Всегда стремится сделать задачу максимально хорошо:
+                    и визуально, и по сути».
+                  </blockquote>
+                  <figcaption>Из отзывов команды</figcaption>
+                </figure>
+              </div>
+              <div class="quote-marquee__group" aria-hidden="true">
+                <figure class="quote-card">
+                  <blockquote>
+                    «Надёжный дизайнер, на которого можно положиться. Держит дедлайны, не жертвует качеством
+                    и всегда идёт чуть дальше, чем требуется».
+                  </blockquote>
+                  <figcaption>Из отзывов команды</figcaption>
+                </figure>
+                <figure class="quote-card">
+                  <blockquote>
+                    «Работает ответственно и по плану. Всегда стремится сделать задачу максимально хорошо:
+                    и визуально, и по сути».
+                  </blockquote>
+                  <figcaption>Из отзывов команды</figcaption>
+                </figure>
+                <figure class="quote-card">
+                  <blockquote>
+                    «Надёжный дизайнер, на которого можно положиться. Держит дедлайны, не жертвует качеством
+                    и всегда идёт чуть дальше, чем требуется».
+                  </blockquote>
+                  <figcaption>Из отзывов команды</figcaption>
+                </figure>
+                <figure class="quote-card">
+                  <blockquote>
+                    «Работает ответственно и по плану. Всегда стремится сделать задачу максимально хорошо:
+                    и визуально, и по сути».
+                  </blockquote>
+                  <figcaption>Из отзывов команды</figcaption>
+                </figure>
+              </div>
+            </div>
           </div>
 
-          <ol class="process-line" data-process-story>
-            <li class="process-baseline" aria-hidden="true"></li>
-            <li class="process-step process-step--one" data-process-step>
-              <span class="process-step__stem" aria-hidden="true"></span>
-              <span class="process-step__number">1</span>
-              <h3>Копать</h3>
-              <p>Интервью, данные, контекст.</p>
-            </li>
-            <li class="process-step process-step--two" data-process-step>
-              <span class="process-step__stem" aria-hidden="true"></span>
-              <span class="process-step__number">2</span>
-              <h3>Формулировать</h3>
-              <p>Из хаоса исследований: одна чёткая задача.</p>
-            </li>
-            <li class="process-step process-step--three" data-process-step>
-              <span class="process-step__stem" aria-hidden="true"></span>
-              <span class="process-step__number">3</span>
-              <h3>Создавать</h3>
-              <p>Визуальный язык как аргумент, а не украшение.</p>
-            </li>
-            <li class="process-step process-step--four" data-process-step>
-              <span class="process-step__stem" aria-hidden="true"></span>
-              <span class="process-step__number">4</span>
-              <h3>Передавать</h3>
-              <p>Дизайн, который переживает хэнд-офф.</p>
-            </li>
-          </ol>
-        </div>
-      </section>
-
-      <section class="section section--proof shell" aria-label="Отзывы" data-motion-section="proof">
-        <div class="quote-grid">
-          <figure class="quote-card" data-cursor-target>
-            <blockquote>
-              «Надёжный дизайнер, на которого можно положиться. Держит дедлайны, не жертвует качеством
-              и всегда идёт чуть дальше, чем требуется».
-            </blockquote>
-            <figcaption>Из отзывов команды</figcaption>
-          </figure>
-
-          <figure class="quote-card quote-card--offset" data-cursor-target>
-            <blockquote>
-              «Работает ответственно и по плану. Всегда стремится сделать задачу максимально хорошо:
-              и визуально, и по сути».
-            </blockquote>
-            <figcaption>Из отзывов команды</figcaption>
-          </figure>
+          <div class="quote-marquee__row quote-marquee__row--reverse" role="group" aria-label="Вторая строка отзывов" aria-hidden="true">
+            <div class="quote-marquee__track">
+              <div class="quote-marquee__group">
+                <figure class="quote-card">
+                  <blockquote>
+                    «Работает ответственно и по плану. Всегда стремится сделать задачу максимально хорошо:
+                    и визуально, и по сути».
+                  </blockquote>
+                  <figcaption>Из отзывов команды</figcaption>
+                </figure>
+                <figure class="quote-card">
+                  <blockquote>
+                    «Надёжный дизайнер, на которого можно положиться. Держит дедлайны, не жертвует качеством
+                    и всегда идёт чуть дальше, чем требуется».
+                  </blockquote>
+                  <figcaption>Из отзывов команды</figcaption>
+                </figure>
+                <figure class="quote-card">
+                  <blockquote>
+                    «Работает ответственно и по плану. Всегда стремится сделать задачу максимально хорошо:
+                    и визуально, и по сути».
+                  </blockquote>
+                  <figcaption>Из отзывов команды</figcaption>
+                </figure>
+                <figure class="quote-card">
+                  <blockquote>
+                    «Надёжный дизайнер, на которого можно положиться. Держит дедлайны, не жертвует качеством
+                    и всегда идёт чуть дальше, чем требуется».
+                  </blockquote>
+                  <figcaption>Из отзывов команды</figcaption>
+                </figure>
+              </div>
+              <div class="quote-marquee__group" aria-hidden="true">
+                <figure class="quote-card">
+                  <blockquote>
+                    «Работает ответственно и по плану. Всегда стремится сделать задачу максимально хорошо:
+                    и визуально, и по сути».
+                  </blockquote>
+                  <figcaption>Из отзывов команды</figcaption>
+                </figure>
+                <figure class="quote-card">
+                  <blockquote>
+                    «Надёжный дизайнер, на которого можно положиться. Держит дедлайны, не жертвует качеством
+                    и всегда идёт чуть дальше, чем требуется».
+                  </blockquote>
+                  <figcaption>Из отзывов команды</figcaption>
+                </figure>
+                <figure class="quote-card">
+                  <blockquote>
+                    «Работает ответственно и по плану. Всегда стремится сделать задачу максимально хорошо:
+                    и визуально, и по сути».
+                  </blockquote>
+                  <figcaption>Из отзывов команды</figcaption>
+                </figure>
+                <figure class="quote-card">
+                  <blockquote>
+                    «Надёжный дизайнер, на которого можно положиться. Держит дедлайны, не жертвует качеством
+                    и всегда идёт чуть дальше, чем требуется».
+                  </blockquote>
+                  <figcaption>Из отзывов команды</figcaption>
+                </figure>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -582,7 +710,6 @@
         <div class="footer__group" data-reveal>
           <h2>Подход</h2>
           <ul>
-            <li><a href="#process">Рабочий процесс</a></li>
             <li><a href="#about">Обо мне</a></li>
           </ul>
         </div>
@@ -599,6 +726,6 @@
     <script src="vendor/gsap.min.js"></script>
     <script src="vendor/ScrollTrigger.min.js"></script>
     <script src="gsap-starter.js"></script>
-    <script src="script.js?v=20260929-contact-globe2"></script>
+    <script src="script.js?v=20260929-remove-process"></script>
   </body>
 </html>

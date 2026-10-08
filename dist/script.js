@@ -1,31 +1,42 @@
 const projectContent = {
   "eme-web": {
-    title: "Convenient, consistent, system.",
-    kind: "Web ecosystem",
-    index: "01 / 03",
-    caption: "Визуальная карточка проекта EME.WEB, экосистемы грузоперевозок.",
+    caption: "Интерактивный предпросмотр проекта EME.WEB, экосистемы грузоперевозок.",
   },
   "eme-app": {
-    title: "Workflows without friction.",
-    kind: "Warehouse app",
-    index: "02 / 03",
-    caption: "Визуальная карточка проекта EME.APP, приложения для работы на складе.",
+    caption: "Интерактивный предпросмотр проекта EME.APP, приложения для работы на складе.",
   },
   "lunch-balloon": {
-    title: "Joy, ordered clearly.",
-    kind: "E-commerce",
-    index: "03 / 03",
-    caption: "Визуальная карточка проекта Ланч Баллон, магазина воздушных шаров.",
+    caption: "Интерактивный предпросмотр проекта Ланч Баллон, магазина воздушных шаров.",
   },
 };
 
 const visual = document.querySelector("[data-project-visual]");
-const visualTitle = visual?.querySelector(".case-visual__title");
-const visualKind = visual?.querySelector("[data-visual-kind]");
-const visualYear = visual?.querySelector("[data-visual-year]");
 const visualCaption = visual?.querySelector("[data-visual-caption]");
 const projectList = document.querySelector(".project-list");
 const projectRows = Array.from(document.querySelectorAll(".project-row"));
+const stageCards = Array.from(visual?.querySelectorAll("[data-stage-card]") ?? []);
+const timeMachineStops = Array.from(visual?.querySelectorAll("[data-stage-index]") ?? []);
+
+function syncTimeMachine(activeIndex) {
+  stageCards.forEach((card, index) => {
+    const offset = index - activeIndex;
+    const hasPassed = offset < 0;
+    card.classList.toggle("is-current", offset === 0);
+    card.style.setProperty("--card-z", hasPassed ? "200px" : `${-offset * 60}px`);
+    card.style.setProperty("--card-y", hasPassed ? "300px" : `${-offset * 12}px`);
+    card.style.setProperty("--card-rotate", hasPassed ? "-20deg" : `${offset * 2}deg`);
+    card.style.setProperty("--card-scale", hasPassed ? "1.3" : "1");
+    card.style.setProperty("--card-opacity", hasPassed ? "0" : String(1 - Math.abs(offset) * 0.2));
+    card.style.zIndex = String(stageCards.length - index);
+  });
+
+  timeMachineStops.forEach((stop) => {
+    if (!stop.classList.contains("time-machine__stop--main")) return;
+    const isActive = Number(stop.dataset.stageIndex) === activeIndex;
+    stop.classList.toggle("is-active", isActive);
+    stop.setAttribute("aria-pressed", String(isActive));
+  });
+}
 
 function mountFluidProjectHighlight() {
   if (!projectList || !projectRows.length) return;
@@ -65,18 +76,8 @@ function activateProject(button) {
   });
 
   visual.dataset.projectVisual = button.dataset.project;
-  visualTitle.textContent = project.title;
-  visualKind.textContent = project.kind;
-  visualYear.textContent = project.index;
   visualCaption.textContent = project.caption;
-
-  if (window.gsap && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    window.gsap.fromTo(
-      visual.querySelector(".case-visual__panel"),
-      { opacity: 0, y: 12 },
-      { opacity: 1, y: 0, duration: 0.24, ease: "power3.out" },
-    );
-  }
+  syncTimeMachine(projectRows.indexOf(button));
 }
 
 projectRows.forEach((button) => {
@@ -84,6 +85,13 @@ projectRows.forEach((button) => {
   button.addEventListener("mouseenter", () => activateProject(button));
 });
 
+timeMachineStops.forEach((stop) => {
+  const activate = () => activateProject(projectRows[Math.round(Number(stop.dataset.stageIndex))]);
+  stop.addEventListener("click", activate);
+  stop.addEventListener("pointerenter", activate);
+});
+
+syncTimeMachine(0);
 mountFluidProjectHighlight();
 
 const menuToggle = document.querySelector(".menu-toggle");
@@ -849,9 +857,9 @@ if (window.TastemakerMotion && window.gsap && window.ScrollTrigger) {
     );
 
     scrollScene("[data-motion-section='proof']", "top 78%").fromTo(
-      ".quote-card",
-      { autoAlpha: 0, y: 48, scale: 0.97 },
-      { autoAlpha: 1, y: 0, scale: 1, duration: 0.48, stagger: 0.08 },
+      ".quote-marquee__row",
+      { autoAlpha: 0, y: 28 },
+      { autoAlpha: 1, y: 0, duration: 0.48, stagger: 0.1 },
     );
 
     const about = scrollScene("[data-motion-section='about']", "top 74%");
@@ -979,111 +987,80 @@ if (window.TastemakerMotion && window.gsap && window.ScrollTrigger) {
       );
   });
 
-  const buildCareerTimeline = (start, end) => {
+  const buildCareerTimeline = () => {
+    const progress = document.querySelector("[data-career-progress]");
     const stops = window.gsap.utils.toArray("[data-career-stop]");
-    const drawPaths = window.gsap.utils.toArray("[data-career-draw]");
-    const revealMoments = [0.045, 0.24, 0.455, 0.655, 0.845];
+    if (!progress || !stops.length) return;
 
-    window.gsap.set(stops, { autoAlpha: 0, y: 16 });
-    window.gsap.set(drawPaths, { strokeDashoffset: 1 });
-
-    const timeline = window.gsap.timeline({
-      defaults: { overwrite: "auto" },
+    window.gsap.set(progress, { scaleY: 0, transformOrigin: "top center" });
+    window.gsap.to(progress, {
+      scaleY: 1,
+      ease: "none",
       scrollTrigger: {
-        trigger: ".career-story",
-        start,
-        end,
+        trigger: ".career-journey",
+        start: "top 74%",
+        end: "bottom 62%",
         scrub: 0.6,
       },
     });
 
-    timeline.to(drawPaths, { strokeDashoffset: 0, duration: 1, ease: "none" }, 0);
-
     stops.forEach((stop, index) => {
-      timeline.to(
-        stop,
-        { autoAlpha: 1, y: 0, duration: 0.09, ease: "power3.out" },
-        revealMoments[index],
+      const card = stop.querySelector(".career-stop__card");
+      const node = stop.querySelector(".career-stop__node");
+      const image = stop.querySelector(".career-stop__media img");
+      if (!card || !node || !image) return;
+
+      const revealTrigger = {
+        trigger: stop,
+        start: "top 82%",
+        end: "center 58%",
+        scrub: 0.45,
+      };
+
+      window.gsap.fromTo(
+        card,
+        { autoAlpha: 0, x: index % 2 === 0 ? -52 : 52, y: 22, filter: "blur(7px)" },
+        {
+          autoAlpha: 1,
+          x: 0,
+          y: 0,
+          filter: "blur(0px)",
+          ease: "none",
+          scrollTrigger: { ...revealTrigger },
+        },
+      );
+
+      window.gsap.fromTo(
+        node,
+        { autoAlpha: 0.3, scale: 0.65 },
+        { autoAlpha: 1, scale: 1, ease: "none", scrollTrigger: { ...revealTrigger } },
+      );
+
+      window.gsap.fromTo(
+        image,
+        { yPercent: 10, scale: 1.08 },
+        {
+          yPercent: -10,
+          scale: 1,
+          ease: "none",
+          scrollTrigger: {
+            trigger: stop,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+          },
+        },
       );
     });
-
-    return timeline;
   };
 
   const careerMotion = window.gsap.matchMedia();
 
-  careerMotion.add(
-    "(min-width: 901px) and (prefers-reduced-motion: no-preference)",
-    () => {
-      buildCareerTimeline("top top", "bottom bottom");
-    },
-  );
-
-  careerMotion.add(
-    "(max-width: 900px) and (prefers-reduced-motion: no-preference)",
-    () => {
-      buildCareerTimeline("top 8%", "bottom 72%");
-    },
-  );
+  careerMotion.add("(prefers-reduced-motion: no-preference)", buildCareerTimeline);
 
   careerMotion.add("(prefers-reduced-motion: reduce)", () => {
-    window.gsap.set("[data-career-stop]", { autoAlpha: 1, y: 0 });
-    window.gsap.set("[data-career-draw]", { strokeDashoffset: 0 });
+    window.gsap.set("[data-career-progress]", { scaleY: 1 });
+    window.gsap.set(".career-stop__card", { autoAlpha: 1, x: 0, y: 0, filter: "none" });
   });
 
-  const buildProcessTimeline = (start, end) => {
-    const baseline = document.querySelector(".process-baseline");
-    const stems = window.gsap.utils.toArray(".process-step__stem");
-    const steps = window.gsap.utils.toArray("[data-process-step]");
-    const revealMoments = [0.08, 0.32, 0.56, 0.8];
-
-    window.gsap.set(baseline, { scaleX: 0, transformOrigin: "left center" });
-    window.gsap.set(stems, { scaleY: 0, transformOrigin: "bottom center" });
-    window.gsap.set(steps, { autoAlpha: 0, y: 14 });
-
-    const timeline = window.gsap.timeline({
-      defaults: { overwrite: "auto" },
-      scrollTrigger: {
-        trigger: ".section--process",
-        start,
-        end,
-        scrub: 0.6,
-      },
-    });
-
-    timeline.to(baseline, { scaleX: 1, duration: 1, ease: "none" }, 0);
-
-    steps.forEach((step, index) => {
-      timeline.to(
-        stems[index],
-        { scaleY: 1, duration: 0.08, ease: "power2.out" },
-        revealMoments[index],
-      );
-      timeline.to(
-        step,
-        { autoAlpha: 1, y: 0, duration: 0.1, ease: "power3.out" },
-        revealMoments[index] + 0.035,
-      );
-    });
-
-    return timeline;
-  };
-
-  const processMotion = window.gsap.matchMedia();
-
-  processMotion.add(
-    "(min-width: 901px) and (prefers-reduced-motion: no-preference)",
-    () => buildProcessTimeline("top top", "bottom bottom"),
-  );
-
-  processMotion.add(
-    "(max-width: 900px) and (prefers-reduced-motion: no-preference)",
-    () => buildProcessTimeline("top 72%", "bottom 45%"),
-  );
-
-  processMotion.add("(prefers-reduced-motion: reduce)", () => {
-    window.gsap.set(".process-baseline", { scaleX: 1, transformOrigin: "left center" });
-    window.gsap.set(".process-step__stem", { scaleY: 1, transformOrigin: "bottom center" });
-    window.gsap.set("[data-process-step]", { autoAlpha: 1, y: 0 });
-  });
 }
