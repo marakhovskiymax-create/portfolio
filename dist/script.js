@@ -614,6 +614,85 @@ function initFAQAccordion() {
 
 initFAQAccordion();
 
+function initCareerTimeline() {
+  const timeline = document.querySelector("[data-career-timeline]");
+  const tabs = Array.from(timeline?.querySelectorAll("[data-career-tab]") ?? []);
+  const panels = Array.from(timeline?.querySelectorAll("[data-career-panel]") ?? []);
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (!timeline || !tabs.length || tabs.length !== panels.length) return;
+
+  let activeIndex = tabs.findIndex((tab) => tab.classList.contains("is-active"));
+  let cleanupTimer = 0;
+  if (activeIndex < 0) activeIndex = 0;
+
+  const setProgress = (index) => {
+    const progress = tabs.length > 1 ? index / (tabs.length - 1) : 0;
+    timeline.style.setProperty("--career-progress", String(progress));
+  };
+
+  const activate = (nextIndex, shouldFocus = false) => {
+    if (nextIndex === activeIndex || nextIndex < 0 || nextIndex >= tabs.length) return;
+
+    window.clearTimeout(cleanupTimer);
+    const previousIndex = activeIndex;
+    const previousPanel = panels[previousIndex];
+    const nextPanel = panels[nextIndex];
+    const direction = nextIndex > previousIndex ? "forward" : "backward";
+
+    panels.forEach((panel, index) => {
+      if (index === previousIndex || index === nextIndex) return;
+      panel.hidden = true;
+      panel.classList.remove("is-active", "is-leaving");
+    });
+
+    timeline.dataset.direction = direction;
+    previousPanel.classList.remove("is-active");
+    previousPanel.classList.add("is-leaving");
+    previousPanel.setAttribute("aria-hidden", "true");
+
+    nextPanel.hidden = false;
+    nextPanel.classList.remove("is-leaving");
+    nextPanel.setAttribute("aria-hidden", "false");
+    window.requestAnimationFrame(() => nextPanel.classList.add("is-active"));
+
+    tabs.forEach((tab, index) => {
+      const isActive = index === nextIndex;
+      tab.classList.toggle("is-active", isActive);
+      tab.setAttribute("aria-selected", String(isActive));
+      tab.tabIndex = isActive ? 0 : -1;
+    });
+
+    setProgress(nextIndex);
+    activeIndex = nextIndex;
+
+    cleanupTimer = window.setTimeout(() => {
+      previousPanel.hidden = true;
+      previousPanel.classList.remove("is-leaving");
+    }, reduceMotion ? 120 : 240);
+
+    if (shouldFocus) tabs[nextIndex].focus();
+  };
+
+  tabs.forEach((tab, index) => {
+    tab.addEventListener("click", () => activate(index));
+    tab.addEventListener("keydown", (event) => {
+      let nextIndex = null;
+      if (event.key === "ArrowRight") nextIndex = (index + 1) % tabs.length;
+      if (event.key === "ArrowLeft") nextIndex = (index - 1 + tabs.length) % tabs.length;
+      if (event.key === "Home") nextIndex = 0;
+      if (event.key === "End") nextIndex = tabs.length - 1;
+      if (nextIndex === null) return;
+      event.preventDefault();
+      activate(nextIndex, true);
+    });
+  });
+
+  setProgress(activeIndex);
+}
+
+initCareerTimeline();
+
 function initContactForm() {
   const form = document.querySelector("[data-contact-form]");
   const status = document.querySelector("[data-contact-status]");
@@ -991,80 +1070,51 @@ if (window.TastemakerMotion && window.gsap && window.ScrollTrigger) {
       );
   });
 
-  const buildCareerTimeline = () => {
-    const progress = document.querySelector("[data-career-progress]");
-    const stops = window.gsap.utils.toArray("[data-career-stop]");
-    if (!progress || !stops.length) return;
+  const careerMotion = window.gsap.matchMedia();
 
-    window.gsap.set(progress, { scaleY: 0, transformOrigin: "top center" });
-    window.gsap.to(progress, {
-      scaleY: 1,
-      ease: "none",
+  careerMotion.add("(prefers-reduced-motion: no-preference)", () => {
+    const career = window.gsap.timeline({
+      defaults: { ease: "power3.out" },
       scrollTrigger: {
-        trigger: ".career-journey",
-        start: "top 74%",
-        end: "bottom 62%",
-        scrub: 0.6,
+        trigger: ".career-story",
+        start: "top 72%",
+        toggleActions: "play none none none",
       },
     });
 
-    stops.forEach((stop, index) => {
-      const card = stop.querySelector(".career-stop__card");
-      const node = stop.querySelector(".career-stop__node");
-      const image = stop.querySelector(".career-stop__media img");
-      if (!card || !node || !image) return;
-
-      const revealTrigger = {
-        trigger: stop,
-        start: "top 82%",
-        end: "center 58%",
-        scrub: 0.45,
-      };
-
-      window.gsap.fromTo(
-        card,
-        { autoAlpha: 0, x: index % 2 === 0 ? -52 : 52, y: 22, filter: "blur(7px)" },
-        {
-          autoAlpha: 1,
-          x: 0,
-          y: 0,
-          filter: "blur(0px)",
-          ease: "none",
-          scrollTrigger: { ...revealTrigger },
-        },
+    career
+      .fromTo(
+        ".career-stage__heading > *",
+        { autoAlpha: 0, y: 18 },
+        { autoAlpha: 1, y: 0, duration: 0.48, stagger: 0.08 },
+      )
+      .fromTo(
+        ".career-tabs__rail",
+        { autoAlpha: 0, scaleX: 0, transformOrigin: "left center" },
+        { autoAlpha: 1, scaleX: 1, duration: 0.48 },
+        "-=0.24",
+      )
+      .fromTo(
+        ".career-tab",
+        { autoAlpha: 0, y: 10 },
+        { autoAlpha: 1, y: 0, duration: 0.32, stagger: 0.06 },
+        "-=0.24",
+      )
+      .fromTo(
+        ".career-panel.is-active > *",
+        { autoAlpha: 0, y: 16 },
+        { autoAlpha: 1, y: 0, duration: 0.48, stagger: 0.08 },
+        "-=0.18",
       );
-
-      window.gsap.fromTo(
-        node,
-        { autoAlpha: 0.3, scale: 0.65 },
-        { autoAlpha: 1, scale: 1, ease: "none", scrollTrigger: { ...revealTrigger } },
-      );
-
-      window.gsap.fromTo(
-        image,
-        { yPercent: 10, scale: 1.08 },
-        {
-          yPercent: -10,
-          scale: 1,
-          ease: "none",
-          scrollTrigger: {
-            trigger: stop,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: true,
-          },
-        },
-      );
-    });
-  };
-
-  const careerMotion = window.gsap.matchMedia();
-
-  careerMotion.add("(prefers-reduced-motion: no-preference)", buildCareerTimeline);
+  });
 
   careerMotion.add("(prefers-reduced-motion: reduce)", () => {
-    window.gsap.set("[data-career-progress]", { scaleY: 1 });
-    window.gsap.set(".career-stop__card", { autoAlpha: 1, x: 0, y: 0, filter: "none" });
+    window.gsap.set(".career-stage__heading > *, .career-tabs__rail, .career-tab, .career-panel.is-active > *", {
+      autoAlpha: 1,
+      x: 0,
+      y: 0,
+      scaleX: 1,
+    });
   });
 
 }

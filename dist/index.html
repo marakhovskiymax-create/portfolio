@@ -20,7 +20,7 @@
       type="image/svg+xml"
       href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23050505'/%3E%3Cpath d='M13 43V20h7l12 15 12-15h7v23h-7V31L32 46 20 31v12z' fill='%2372c98b'/%3E%3C/svg%3E"
     />
-    <link rel="stylesheet" href="styles.css?v=20261008-hero-type" />
+    <link rel="stylesheet" href="styles.css?v=20261008-career-timeline" />
     <script>
       document.documentElement.classList.replace("no-js", "js");
     </script>
@@ -225,104 +225,68 @@
         <div class="career-stage shell">
           <header class="career-stage__heading" data-reveal>
             <h2 id="career-title">Карьера</h2>
+            <p>От медиа и e-commerce к сложным логистическим продуктам.</p>
           </header>
 
-          <div class="career-timeline">
-            <span class="career-journey__track" aria-hidden="true">
-              <span class="career-journey__progress" data-career-progress></span>
-            </span>
+          <div class="career-timeline" data-career-timeline data-direction="forward">
+            <div class="career-tabs" role="tablist" aria-label="Выбрать этап карьеры">
+              <span class="career-tabs__rail" aria-hidden="true">
+                <span class="career-tabs__progress" data-career-progress></span>
+              </span>
 
-            <ol class="career-journey" aria-label="Профессиональный путь">
-              <li class="career-stop" data-career-stop>
-                <span class="career-stop__node" aria-hidden="true">01</span>
-                <article class="career-stop__card">
-                  <figure class="career-stop__media">
-                    <img src="design/assets/career/hse-campus.jpg" alt="" loading="lazy" decoding="async" />
-                    <span class="career-stop__image-index">Образование</span>
-                  </figure>
-                  <div class="career-stop__body">
-                    <div class="career-stop__meta">
-                      <img class="career-logo career-logo--hse" src="design/assets/logos/hse.svg" alt="" />
-                      <time>2018 – 2022</time>
-                    </div>
-                    <h3>ВШЭ</h3>
-                    <p>Коммуникации, медиа и дизайна</p>
-                  </div>
-                </article>
-              </li>
+              <button class="career-tab is-active" type="button" role="tab" id="career-tab-hse" aria-controls="career-panel-hse" aria-selected="true" tabindex="0" data-career-tab="0">
+                <span class="career-tab__logo"><img class="career-logo career-logo--hse" src="design/assets/logos/hse.svg" alt="" /></span>
+                <span class="sr-only">ВШЭ, 2018–2022</span>
+              </button>
+              <button class="career-tab" type="button" role="tab" id="career-tab-match" aria-controls="career-panel-match" aria-selected="false" tabindex="-1" data-career-tab="1">
+                <span class="career-tab__logo"><img class="career-logo career-logo--match" src="design/assets/logos/match-tv.svg" alt="" /></span>
+                <span class="sr-only">Матч ТВ, август 2022–ноябрь 2023</span>
+              </button>
+              <button class="career-tab" type="button" role="tab" id="career-tab-geleos" aria-controls="career-panel-geleos" aria-selected="false" tabindex="-1" data-career-tab="2">
+                <span class="career-tab__logo"><img class="career-logo career-logo--geleos" src="design/assets/logos/geleos.svg" alt="" /></span>
+                <span class="sr-only">ГЕЛЕОС, ноябрь 2023–май 2024</span>
+              </button>
+              <button class="career-tab" type="button" role="tab" id="career-tab-don" aria-controls="career-panel-don" aria-selected="false" tabindex="-1" data-career-tab="3">
+                <span class="career-tab__logo"><img class="career-logo career-logo--don" src="design/assets/logos/don-ballon.svg" alt="" /></span>
+                <span class="sr-only">Дон Баллон, июнь 2024–октябрь 2024</span>
+              </button>
+              <button class="career-tab" type="button" role="tab" id="career-tab-eme" aria-controls="career-panel-eme" aria-selected="false" tabindex="-1" data-career-tab="4">
+                <span class="career-tab__logo"><img class="career-logo career-logo--eme" src="design/assets/logos/eme.svg" alt="" /></span>
+                <span class="sr-only">EME</span>
+              </button>
+            </div>
 
-              <li class="career-stop" data-career-stop>
-                <span class="career-stop__node" aria-hidden="true">02</span>
-                <article class="career-stop__card">
-                  <figure class="career-stop__media">
-                    <img src="design/assets/career/match-sport.jpg" alt="" loading="lazy" decoding="async" />
-                    <span class="career-stop__image-index">Спорт и медиа</span>
-                  </figure>
-                  <div class="career-stop__body">
-                    <div class="career-stop__meta">
-                      <img class="career-logo career-logo--match" src="design/assets/logos/match-tv.svg" alt="" />
-                      <time>Август 2022 – Ноябрь 2023</time>
-                    </div>
-                    <h3>Матч ТВ</h3>
-                    <p>Product, UX/UI дизайнер</p>
-                  </div>
-                </article>
-              </li>
+            <div class="career-showcase" aria-live="polite">
+              <article class="career-panel is-active" role="tabpanel" id="career-panel-hse" aria-labelledby="career-tab-hse" data-career-panel="0">
+                <figure class="career-panel__media"><img src="design/assets/career/hse-campus.jpg" alt="Кампус Высшей школы экономики" loading="lazy" decoding="async" /></figure>
+                <div class="career-panel__year"><span>Период</span><time>2018–2022</time></div>
+                <div class="career-panel__copy"><span>Образование</span><h3>ВШЭ</h3><p>Коммуникации, медиа и дизайн. Здесь сформировался системный подход к визуальным решениям.</p></div>
+              </article>
 
-              <li class="career-stop" data-career-stop>
-                <span class="career-stop__node" aria-hidden="true">03</span>
-                <article class="career-stop__card">
-                  <figure class="career-stop__media">
-                    <img src="design/assets/career/geleos-office.jpg" alt="" loading="lazy" decoding="async" />
-                    <span class="career-stop__image-index">Цифровые продукты</span>
-                  </figure>
-                  <div class="career-stop__body">
-                    <div class="career-stop__meta">
-                      <img class="career-logo career-logo--geleos" src="design/assets/logos/geleos.svg" alt="" />
-                      <time>Ноябрь 2023 – Май 2024</time>
-                    </div>
-                    <h3>ГЕЛЕОС</h3>
-                    <p>UX/UI, Web дизайнер</p>
-                  </div>
-                </article>
-              </li>
+              <article class="career-panel" role="tabpanel" id="career-panel-match" aria-labelledby="career-tab-match" data-career-panel="1" hidden>
+                <figure class="career-panel__media"><img src="design/assets/career/match-sport.jpg" alt="Спортивная медиасреда Матч ТВ" loading="lazy" decoding="async" /></figure>
+                <div class="career-panel__year"><span>Период</span><time>Август 2022<br />Ноябрь 2023</time></div>
+                <div class="career-panel__copy"><span>Спорт и медиа</span><h3>Матч ТВ</h3><p>Проектировал продуктовые сценарии и интерфейсы для спортивной медиаплатформы.</p></div>
+              </article>
 
-              <li class="career-stop" data-career-stop>
-                <span class="career-stop__node" aria-hidden="true">04</span>
-                <article class="career-stop__card">
-                  <figure class="career-stop__media">
-                    <img src="design/assets/career/don-ballon.jpg" alt="" loading="lazy" decoding="async" />
-                    <span class="career-stop__image-index">E-commerce</span>
-                  </figure>
-                  <div class="career-stop__body">
-                    <div class="career-stop__meta">
-                      <img class="career-logo career-logo--don" src="design/assets/logos/don-ballon.svg" alt="" />
-                      <time>Июнь 2024 – Октябрь 2024</time>
-                    </div>
-                    <h3>Дон Баллон</h3>
-                    <p>Product, UX/UI дизайнер</p>
-                  </div>
-                </article>
-              </li>
+              <article class="career-panel" role="tabpanel" id="career-panel-geleos" aria-labelledby="career-tab-geleos" data-career-panel="2" hidden>
+                <figure class="career-panel__media"><img src="design/assets/career/geleos-office.jpg" alt="Рабочее пространство ГЕЛЕОС" loading="lazy" decoding="async" /></figure>
+                <div class="career-panel__year"><span>Период</span><time>Ноябрь 2023<br />Май 2024</time></div>
+                <div class="career-panel__copy"><span>Цифровые продукты</span><h3>ГЕЛЕОС</h3><p>Работал над UX/UI и веб-продуктами: от структуры до готовых интерфейсов.</p></div>
+              </article>
 
-              <li class="career-stop" data-career-stop>
-                <span class="career-stop__node" aria-hidden="true">05</span>
-                <article class="career-stop__card">
-                  <figure class="career-stop__media">
-                    <img src="design/assets/career/eme-warehouse.jpg" alt="" loading="lazy" decoding="async" />
-                    <span class="career-stop__image-index">Логистика</span>
-                  </figure>
-                  <div class="career-stop__body">
-                    <div class="career-stop__meta">
-                      <img class="career-logo career-logo--eme" src="design/assets/logos/eme.svg" alt="" />
-                      <time>Август 2022 – Ноябрь 2023</time>
-                    </div>
-                    <h3>EME</h3>
-                    <p>Product, UX/UI дизайнер</p>
-                  </div>
-                </article>
-              </li>
-            </ol>
+              <article class="career-panel" role="tabpanel" id="career-panel-don" aria-labelledby="career-tab-don" data-career-panel="3" hidden>
+                <figure class="career-panel__media"><img src="design/assets/career/don-ballon.jpg" alt="Проект Дон Баллон" loading="lazy" decoding="async" /></figure>
+                <div class="career-panel__year"><span>Период</span><time>Июнь 2024<br />Октябрь 2024</time></div>
+                <div class="career-panel__copy"><span>E-commerce</span><h3>Дон Баллон</h3><p>Развивал e-commerce продукт и собирал цельный пользовательский путь покупки.</p></div>
+              </article>
+
+              <article class="career-panel" role="tabpanel" id="career-panel-eme" aria-labelledby="career-tab-eme" data-career-panel="4" hidden>
+                <figure class="career-panel__media"><img src="design/assets/career/eme-warehouse.jpg" alt="Логистический склад EME" loading="lazy" decoding="async" /></figure>
+                <div class="career-panel__year"><span>Период</span><time>Август 2022<br />Ноябрь 2023</time></div>
+                <div class="career-panel__copy"><span>Логистика</span><h3>EME</h3><p>Проектировал интерфейсы для логистики, перевозок и операционной работы команд.</p></div>
+              </article>
+            </div>
           </div>
         </div>
       </section>
@@ -740,6 +704,6 @@
     <script src="vendor/gsap.min.js"></script>
     <script src="vendor/ScrollTrigger.min.js"></script>
     <script src="gsap-starter.js"></script>
-    <script src="script.js?v=20261008-hero-type"></script>
+    <script src="script.js?v=20261008-career-timeline"></script>
   </body>
 </html>
