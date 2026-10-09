@@ -810,12 +810,15 @@ body.has-spider-cursor .spider-cursor {
 }
 
 .time-machine__stop-target {
+  --stop-mark-width: clamp(30px, 3vw, 44px);
+  --stop-mark-growth: clamp(12px, 1.2vw, 18px);
   position: relative;
   display: inline-flex;
   min-height: 44px;
   align-items: center;
   justify-content: flex-end;
   gap: 10px;
+  padding-right: var(--stop-mark-growth);
   border-radius: 999px;
 }
 
@@ -837,7 +840,7 @@ body.has-spider-cursor .spider-cursor {
 }
 
 .time-machine__stop-mark {
-  width: clamp(30px, 3vw, 44px);
+  width: var(--stop-mark-width);
   height: 3px;
   border-radius: 2px;
   background: rgba(255, 255, 255, 0.48);
@@ -2276,9 +2279,9 @@ body.has-spider-cursor .spider-cursor {
     min-width: 0;
   }
 
-  .time-machine__stop-target { gap: 10px; }
+  .time-machine__stop-target { --stop-mark-width: 20px; --stop-mark-growth: 8px; gap: 10px; }
   .time-machine__stop-label { font-size: 20px; }
-  .time-machine__stop-mark { width: 20px; }
+  .time-machine__stop-mark { width: var(--stop-mark-width); }
 
   .career-story {
     padding-block: var(--space-24);
