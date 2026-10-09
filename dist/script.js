@@ -747,6 +747,11 @@ function initSkillsPlayground() {
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const states = new Map();
   let topLayer = 20;
+  let physicsFrame = 0;
+  let previousPhysicsTime = 0;
+  let physicsActive = false;
+  const gravity = 1500;
+  const restitution = 0.28;
 
   const getBounds = (item) => ({
     maxX: Math.max(0, surface.clientWidth - item.offsetWidth),
@@ -765,71 +770,21 @@ function initSkillsPlayground() {
   const render = (item, state) => {
     item.style.setProperty("--drag-x", `${state.x}px`);
     item.style.setProperty("--drag-y", `${state.y}px`);
-  };
-
-  const stopMomentum = (state) => {
-    if (state.frame) cancelAnimationFrame(state.frame);
-    state.frame = 0;
-  };
-
-  const startMomentum = (item, state) => {
-    stopMomentum(state);
-    if (reduceMotion || Math.hypot(state.vx, state.vy) < 0.08) return;
-
-    let previous = performance.now();
-    const glide = (time) => {
-      const delta = Math.min(32, time - previous);
-      previous = time;
-      const bounds = getBounds(item);
-      state.x += state.vx * delta;
-      state.y += state.vy * delta;
-
-      if (state.x <= 0 || state.x >= bounds.maxX) {
-        state.x = Math.min(bounds.maxX, Math.max(0, state.x));
-        state.vx *= -0.42;
-      }
-      if (state.y <= 0 || state.y >= bounds.maxY) {
-        state.y = Math.min(bounds.maxY, Math.max(0, state.y));
-        state.vy *= -0.42;
-      }
-
-      const friction = Math.pow(0.9, delta / 16.67);
-      state.vx *= friction;
-      state.vy *= friction;
-      render(item, state);
-
-      if (Math.hypot(state.vx, state.vy) > 0.015) state.frame = requestAnimationFrame(glide);
-      else state.frame = 0;
-    };
-
-    state.frame = requestAnimationFrame(glide);
+    item.style.setProperty("--physics-rotate", `${state.rotation}deg`);
   };
 
   const layout = (preserve = false) => {
-    items.forEach((item) => {
-      let state = states.get(item);
-      if (!state) {
-        state = {
-          x: 0,
-          y: 0,
-          vx: 0,
-          vy: 0,
-          frame: 0,
-          pointerId: null,
-          offsetX: 0,
-          offsetY: 0,
-          previousX: 0,
-          previousY: 0,
-          previousTime: performance.now(),
-        };
-        states.set(item, state);
-      }
-
+    items.forEach((item, index) => {
+      const state = states.get(item);
       const bounds = getBounds(item);
       if (!preserve) {
         const mobile = surface.clientWidth < 960;
         state.x = bounds.maxX * Number((mobile ? item.dataset.mobileX : item.dataset.x) || 0);
-        state.y = bounds.maxY * Number((mobile ? item.dataset.mobileY : item.dataset.y) || 0);
+        state.y = reduceMotion
+          ? Math.max(0, bounds.maxY - (index % 3) * (item.offsetHeight * 0.72))
+          : Math.min(bounds.maxY, 112 + (index % 4) * 24);
+        state.vx = reduceMotion ? 0 : (index % 2 ? -34 : 34);
+        state.vy = reduceMotion ? 0 : index * 8;
       } else {
         const next = clampPosition(item, state.x, state.y);
         state.x = next.x;
@@ -839,15 +794,133 @@ function initSkillsPlayground() {
     });
   };
 
+  const resolveCollisions = () => {
+    const bodies = items.map((item) => ({ item, state: states.get(item) }));
+
+    for (let pass = 0; pass < 4; pass += 1) {
+      for (let first = 0; first < bodies.length; first += 1) {
+        for (let second = first + 1; second < bodies.length; second += 1) {
+          const a = bodies[first];
+          const b = bodies[second];
+          const widthA = a.item.offsetWidth;
+          const heightA = a.item.offsetHeight;
+          const widthB = b.item.offsetWidth;
+          const heightB = b.item.offsetHeight;
+          const overlapX = Math.min(a.state.x + widthA, b.state.x + widthB) - Math.max(a.state.x, b.state.x);
+          const overlapY = Math.min(a.state.y + heightA, b.state.y + heightB) - Math.max(a.state.y, b.state.y);
+          if (overlapX <= 0 || overlapY <= 0) continue;
+
+          const inverseA = a.state.dragging ? 0 : 1;
+          const inverseB = b.state.dragging ? 0 : 1;
+          const inverseTotal = inverseA + inverseB;
+          if (!inverseTotal) continue;
+
+          if (overlapY < overlapX) {
+            const direction = a.state.y + heightA / 2 < b.state.y + heightB / 2 ? -1 : 1;
+            const correction = overlapY + 0.4;
+            a.state.y += direction * correction * (inverseA / inverseTotal);
+            b.state.y -= direction * correction * (inverseB / inverseTotal);
+            const relative = (a.state.vy - b.state.vy) * direction;
+            if (relative < 0) {
+              const impulse = -(1 + 0.16) * relative / inverseTotal;
+              a.state.vy += impulse * direction * inverseA;
+              b.state.vy -= impulse * direction * inverseB;
+            }
+          } else {
+            const direction = a.state.x + widthA / 2 < b.state.x + widthB / 2 ? -1 : 1;
+            const correction = overlapX + 0.4;
+            a.state.x += direction * correction * (inverseA / inverseTotal);
+            b.state.x -= direction * correction * (inverseB / inverseTotal);
+            const relative = (a.state.vx - b.state.vx) * direction;
+            if (relative < 0) {
+              const impulse = -(1 + 0.2) * relative / inverseTotal;
+              a.state.vx += impulse * direction * inverseA;
+              b.state.vx -= impulse * direction * inverseB;
+            }
+          }
+        }
+      }
+    }
+  };
+
+  const containBodies = () => {
+    items.forEach((item) => {
+      const state = states.get(item);
+      if (state.dragging) return;
+      const bounds = getBounds(item);
+
+      if (state.x < 0) {
+        state.x = 0;
+        state.vx = Math.abs(state.vx) * restitution;
+      } else if (state.x > bounds.maxX) {
+        state.x = bounds.maxX;
+        state.vx = -Math.abs(state.vx) * restitution;
+      }
+
+      if (state.y < 0) {
+        state.y = 0;
+        state.vy = Math.abs(state.vy) * restitution;
+      } else if (state.y > bounds.maxY) {
+        state.y = bounds.maxY;
+        state.vy = -Math.abs(state.vy) * restitution;
+        state.vx *= 0.78;
+        state.angularVelocity *= 0.7;
+        if (Math.abs(state.vy) < 28) state.vy = 0;
+        if (Math.abs(state.vx) < 4) state.vx = 0;
+      }
+    });
+  };
+
+  const physicsStep = (time) => {
+    if (!physicsActive || reduceMotion) {
+      physicsFrame = 0;
+      return;
+    }
+
+    const delta = previousPhysicsTime ? Math.min(0.028, (time - previousPhysicsTime) / 1000) : 0;
+    previousPhysicsTime = time;
+
+    items.forEach((item) => {
+      const state = states.get(item);
+      if (state.dragging) return;
+      state.vy += gravity * delta;
+      state.x += state.vx * delta;
+      state.y += state.vy * delta;
+      state.rotation += state.angularVelocity * delta;
+      state.vx *= Math.pow(0.996, delta * 60);
+      state.angularVelocity *= Math.pow(0.985, delta * 60);
+    });
+
+    containBodies();
+    resolveCollisions();
+    containBodies();
+    items.forEach((item) => render(item, states.get(item)));
+    physicsFrame = requestAnimationFrame(physicsStep);
+  };
+
+  const startPhysics = () => {
+    if (reduceMotion || physicsFrame) return;
+    physicsActive = true;
+    previousPhysicsTime = 0;
+    physicsFrame = requestAnimationFrame(physicsStep);
+  };
+
+  const stopPhysics = () => {
+    physicsActive = false;
+    if (physicsFrame) cancelAnimationFrame(physicsFrame);
+    physicsFrame = 0;
+  };
+
   items.forEach((item, index) => {
     item.style.setProperty("--item-order", String(index));
-    item.style.setProperty("--item-rotate", item.dataset.rotate || "0");
     const state = {
       x: 0,
       y: 0,
       vx: 0,
       vy: 0,
-      frame: 0,
+      rotation: Number(item.dataset.rotate || 0),
+      angularVelocity: (index % 2 ? -1 : 1) * (4 + (index % 3) * 2),
+      dragging: false,
       pointerId: null,
       offsetX: 0,
       offsetY: 0,
@@ -860,9 +933,9 @@ function initSkillsPlayground() {
     item.addEventListener("pointerdown", (event) => {
       if (event.pointerType === "mouse" && event.button !== 0) return;
       event.preventDefault();
-      stopMomentum(state);
       const itemRect = item.getBoundingClientRect();
       const surfaceRect = surface.getBoundingClientRect();
+      state.dragging = true;
       state.pointerId = event.pointerId;
       state.offsetX = event.clientX - itemRect.left;
       state.offsetY = event.clientY - itemRect.top;
@@ -896,8 +969,8 @@ function initSkillsPlayground() {
       );
       const now = performance.now();
       const delta = Math.max(8, now - state.previousTime);
-      state.vx = (event.clientX - state.previousX) / delta;
-      state.vy = (event.clientY - state.previousY) / delta;
+      state.vx = ((event.clientX - state.previousX) / delta) * 1000;
+      state.vy = ((event.clientY - state.previousY) / delta) * 1000;
       state.previousX = event.clientX;
       state.previousY = event.clientY;
       state.previousTime = now;
@@ -909,9 +982,11 @@ function initSkillsPlayground() {
     const release = (event) => {
       if (state.pointerId !== event.pointerId) return;
       state.pointerId = null;
+      state.dragging = false;
       item.classList.remove("is-dragging");
       if (item.hasPointerCapture(event.pointerId)) item.releasePointerCapture(event.pointerId);
-      startMomentum(item, state);
+      state.angularVelocity += Math.max(-32, Math.min(32, state.vx * 0.025));
+      startPhysics();
     };
 
     item.addEventListener("pointerup", release);
@@ -926,13 +1001,13 @@ function initSkillsPlayground() {
       }[event.key];
       if (!movement) return;
       event.preventDefault();
-      stopMomentum(state);
       const next = clampPosition(item, state.x + movement[0], state.y + movement[1]);
       state.x = next.x;
       state.y = next.y;
       topLayer += 1;
       item.style.zIndex = String(topLayer);
       render(item, state);
+      startPhysics();
     });
   });
 
@@ -942,13 +1017,18 @@ function initSkillsPlayground() {
 
   const revealObserver = new IntersectionObserver(
     ([entry]) => {
-      if (!entry.isIntersecting) return;
-      playground.classList.add("is-ready");
-      revealObserver.disconnect();
+      if (entry.isIntersecting) {
+        playground.classList.add("is-ready");
+        startPhysics();
+      } else {
+        stopPhysics();
+      }
     },
-    { threshold: 0.18 },
+    { threshold: 0.08 },
   );
   revealObserver.observe(playground);
+
+  window.addEventListener("pagehide", stopPhysics, { once: true });
 }
 
 initSkillsPlayground();

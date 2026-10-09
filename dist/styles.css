@@ -2660,7 +2660,7 @@ body > .footer {
   z-index: 2;
   width: 100%;
   padding: 0 16px 16px;
-  color: #101114;
+  color: #e8eeff;
   background: var(--color-bg);
 }
 
@@ -2668,13 +2668,15 @@ body > .footer {
   position: relative;
   min-height: clamp(560px, 72vh, 760px);
   overflow: hidden;
-  border: 1px solid rgba(244, 243, 238, 0.2);
+  border: 1px solid rgba(111, 151, 255, 0.34);
   border-radius: 42px;
   background:
-    radial-gradient(circle at 50% 110%, rgba(23, 48, 169, 0.84), transparent 54%),
-    radial-gradient(circle at 16% 24%, rgba(255, 255, 255, 0.62), transparent 33%),
-    linear-gradient(180deg, #f4f3ee 0%, #dce2f3 20%, #7893ee 55%, #3155d8 100%);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+    radial-gradient(circle at 48% 108%, rgba(44, 96, 244, 0.34), transparent 58%),
+    linear-gradient(180deg, rgba(18, 37, 82, 0.34), rgba(11, 34, 91, 0.58));
+  box-shadow:
+    inset 0 1px 0 rgba(139, 172, 255, 0.18),
+    inset 0 -80px 160px rgba(19, 61, 173, 0.12);
+  backdrop-filter: blur(12px) saturate(112%);
   isolation: isolate;
 }
 
@@ -2682,7 +2684,7 @@ body > .footer {
   position: absolute;
   inset: 0;
   z-index: -1;
-  background-image: radial-gradient(rgba(255, 255, 255, 0.42) 0.7px, transparent 0.8px);
+  background-image: radial-gradient(rgba(143, 174, 255, 0.46) 0.7px, transparent 0.8px);
   background-size: 5px 5px;
   content: "";
   opacity: 0.22;
@@ -2739,22 +2741,25 @@ body > .footer {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(16, 17, 20, 0.1);
-  color: #15161a;
-  background: #f7f6f2;
+  border: 1px solid rgba(137, 169, 255, 0.38);
+  color: #f1f4ff;
+  background: rgba(25, 55, 126, 0.58);
   font: inherit;
   font-size: clamp(1rem, 1.8vw, 1.55rem);
   font-weight: 600;
   line-height: 1;
   opacity: 0;
-  box-shadow: 0 14px 34px rgba(24, 37, 94, 0.16);
-  transform: translate3d(var(--drag-x), var(--drag-y), 0) rotate(calc(var(--item-rotate, 0) * 1deg));
+  box-shadow:
+    inset 0 1px 0 rgba(195, 212, 255, 0.16),
+    0 16px 34px rgba(1, 8, 28, 0.24);
+  transform: translate3d(var(--drag-x), var(--drag-y), 0) rotate(var(--physics-rotate, 0deg));
   transition:
     opacity 360ms var(--ease-out),
     box-shadow 160ms var(--ease-out),
     filter 160ms var(--ease-out);
   transition-delay: calc(var(--item-order, 0) * 45ms);
   user-select: none;
+  backdrop-filter: blur(16px) saturate(120%);
   touch-action: none;
   cursor: grab;
   will-change: transform;
@@ -2765,13 +2770,15 @@ body > .footer {
 }
 
 .skill-drag-item:focus-visible {
-  outline: 3px solid #101114;
+  outline: 3px solid #9bb8ff;
   outline-offset: 5px;
 }
 
 .skill-drag-item.is-dragging {
-  filter: brightness(1.03);
-  box-shadow: 0 22px 48px rgba(16, 25, 68, 0.28);
+  filter: brightness(1.16) saturate(1.1);
+  box-shadow:
+    inset 0 1px 0 rgba(213, 224, 255, 0.28),
+    0 24px 54px rgba(0, 8, 32, 0.42);
   cursor: grabbing;
 }
 
@@ -2797,11 +2804,19 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
   height: 44px;
   place-items: center;
   border-radius: 12px;
-  color: #3155d8;
-  background: #dbe3ff;
-  font-size: 0.9rem;
-  font-weight: 800;
-  letter-spacing: -0.04em;
+  color: #cfe0ff;
+  background: rgba(92, 135, 255, 0.22);
+}
+
+.skill-drag-item__glyph svg,
+.skill-drag-item__vertical-content svg {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.6;
 }
 
 .skill-drag-item--vertical {
@@ -2811,9 +2826,16 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
   padding: 22px;
 }
 
-.skill-drag-item--vertical span {
+.skill-drag-item__vertical-content {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
   white-space: nowrap;
   transform: rotate(-90deg);
+}
+
+.skill-drag-item__vertical-content svg {
+  flex: 0 0 auto;
 }
 
 .skill-drag-item--tool {
@@ -2824,25 +2846,49 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
   font-weight: 800;
 }
 
+.brand-mark {
+  width: 54px;
+  height: 54px;
+}
+
 .skill-drag-item--js {
   color: #101114;
-  background: #f5d90a;
+  border-color: rgba(255, 224, 71, 0.62);
+  background: rgba(245, 217, 10, 0.9);
+}
+
+.brand-mark--js {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 8px 5px 3px;
+  font-size: 1.65rem;
+  font-weight: 800;
+  letter-spacing: -0.08em;
 }
 
 .skill-drag-item--framer {
   color: white;
-  background: #1473e6;
+  border-color: rgba(119, 157, 255, 0.52);
+  background: rgba(20, 66, 183, 0.76);
+}
+
+.brand-mark--framer {
+  fill: currentColor;
 }
 
 .skill-drag-item--vscode {
-  color: #f4f3ee;
-  background: #17191e;
-  font-size: 1.05rem;
-  letter-spacing: -0.08em;
+  color: #72b8ff;
+  border-color: rgba(43, 141, 238, 0.52);
+  background: rgba(7, 35, 77, 0.78);
+}
+
+.brand-mark--vscode {
+  fill: currentColor;
 }
 
 .skill-drag-item--figma {
-  background: #f7f6f2;
+  background: rgba(19, 47, 106, 0.74);
 }
 
 .figma-mark {
@@ -2862,11 +2908,18 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
 .figma-mark i:nth-child(5) { border-radius: 9px 0 9px 9px; background: #0acf83; }
 
 .skill-drag-item--slack {
-  color: #3155d8;
-  background: #f7f6f2;
-  font-size: 3rem;
-  font-weight: 500;
+  background: rgba(22, 50, 111, 0.74);
 }
+
+.brand-mark--slack {
+  width: 58px;
+  height: 58px;
+}
+
+.slack-blue { fill: #36c5f0; }
+.slack-green { fill: #2eb67d; }
+.slack-yellow { fill: #ecb22e; }
+.slack-red { fill: #e01e5a; }
 
 @media (max-width: 960px) {
   .skills-playground {
@@ -2897,7 +2950,12 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
     width: 34px;
     height: 34px;
     border-radius: 9px;
-    font-size: 0.75rem;
+  }
+
+  .skill-drag-item__glyph svg,
+  .skill-drag-item__vertical-content svg {
+    width: 19px;
+    height: 19px;
   }
 
   .skill-drag-item--vertical {
@@ -2913,6 +2971,12 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
     height: 72px;
     border-radius: 19px;
     font-size: 1.2rem;
+  }
+
+  .brand-mark,
+  .brand-mark--slack {
+    width: 40px;
+    height: 40px;
   }
 
   .figma-mark {
