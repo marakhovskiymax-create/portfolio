@@ -610,6 +610,14 @@ function initFAQAccordion() {
     const answer = item.querySelector("[data-faq-answer]");
     if (!trigger || !answer) return;
 
+    const isOpen = trigger.getAttribute("aria-expanded") === "true";
+    if (isOpen === shouldOpen && !answer.dataset.animating) return;
+
+    window.clearTimeout(answer.closeTimer);
+    answer.animationToken = (answer.animationToken || 0) + 1;
+    const animationToken = answer.animationToken;
+    const currentHeight = answer.getBoundingClientRect().height;
+
     trigger.setAttribute("aria-expanded", String(shouldOpen));
     answer.setAttribute("aria-hidden", String(!shouldOpen));
     item.classList.toggle("is-open", shouldOpen);
@@ -617,23 +625,30 @@ function initFAQAccordion() {
     if (reduceMotion) {
       answer.style.height = shouldOpen ? "auto" : "0px";
       answer.style.opacity = shouldOpen ? "1" : "0";
+      delete answer.dataset.animating;
       return;
     }
 
-    window.clearTimeout(answer.closeTimer);
+    answer.dataset.animating = "true";
+    answer.style.height = `${currentHeight}px`;
+    void answer.offsetHeight;
 
-    if (shouldOpen) {
-      answer.style.height = "auto";
-      window.requestAnimationFrame(() => {
-        answer.style.opacity = "1";
-      });
-      return;
-    }
+    const targetHeight = shouldOpen ? answer.scrollHeight : 0;
+    window.requestAnimationFrame(() => {
+      if (answer.animationToken !== animationToken) return;
+      answer.style.height = `${targetHeight}px`;
+      answer.style.opacity = shouldOpen ? "1" : "0";
+    });
 
-    answer.style.opacity = "0";
-    answer.closeTimer = window.setTimeout(() => {
-      if (!item.classList.contains("is-open")) answer.style.height = "0px";
-    }, 200);
+    const finishTransition = (event) => {
+      if (event.propertyName !== "height") return;
+      answer.removeEventListener("transitionend", finishTransition);
+      if (answer.animationToken !== animationToken) return;
+      answer.style.height = item.classList.contains("is-open") ? "auto" : "0px";
+      delete answer.dataset.animating;
+    };
+
+    answer.addEventListener("transitionend", finishTransition);
   };
 
   items.forEach((item) => {

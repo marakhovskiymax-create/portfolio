@@ -1573,7 +1573,10 @@ body.has-spider-cursor .spider-cursor {
   height: 0;
   overflow: hidden;
   opacity: 0;
-  transition: opacity 200ms var(--ease-out);
+  transition:
+    height 200ms var(--ease-out),
+    opacity 180ms var(--ease-out);
+  will-change: height, opacity;
 }
 
 .faq-answer__card {
@@ -1584,18 +1587,6 @@ body.has-spider-cursor .spider-cursor {
   background: rgba(244, 243, 238, 0.055);
   color: var(--color-muted);
   line-height: 1.6;
-}
-
-.faq-item.is-open .faq-answer__card {
-  animation: faq-shake 240ms var(--curve-cinematic);
-}
-
-@keyframes faq-shake {
-  0%, 100% { transform: translateX(0); }
-  20% { transform: translateX(6px); }
-  40% { transform: translateX(-5px); }
-  60% { transform: translateX(3px); }
-  80% { transform: translateX(-1px); }
 }
 
 .faq-contact {
@@ -2642,10 +2633,6 @@ main > .contact {
   .faq-contact__link,
   .faq-contact__link span {
     transition-duration: 0ms;
-  }
-
-  .faq-item.is-open .faq-answer__card {
-    animation: none;
   }
 }
 
