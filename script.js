@@ -16,18 +16,34 @@ const projectList = document.querySelector(".project-list");
 const projectRows = Array.from(document.querySelectorAll(".project-row"));
 const stageCards = Array.from(visual?.querySelectorAll("[data-stage-card]") ?? []);
 const timeMachineStops = Array.from(visual?.querySelectorAll("[data-stage-index]") ?? []);
+const timeMachineTimeline = visual?.querySelector(".time-machine__timeline");
+const reduceTimeMachineMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-function syncTimeMachine(activeIndex) {
+function syncTimeMachine(activeIndex, immediate = false) {
   stageCards.forEach((card, index) => {
     const offset = index - activeIndex;
     const hasPassed = offset < 0;
+    const properties = {
+      "--card-z": hasPassed ? "200px" : `${-offset * 60}px`,
+      "--card-y": hasPassed ? "300px" : `${-offset * 12}px`,
+      "--card-rotate": hasPassed ? "-20deg" : `${offset * 2}deg`,
+      "--card-scale": hasPassed ? 1.3 : 1,
+      "--card-opacity": hasPassed ? 0 : 1 - Math.abs(offset) * 0.2,
+    };
+
     card.classList.toggle("is-current", offset === 0);
-    card.style.setProperty("--card-z", hasPassed ? "200px" : `${-offset * 60}px`);
-    card.style.setProperty("--card-y", hasPassed ? "300px" : `${-offset * 12}px`);
-    card.style.setProperty("--card-rotate", hasPassed ? "-20deg" : `${offset * 2}deg`);
-    card.style.setProperty("--card-scale", hasPassed ? "1.3" : "1");
-    card.style.setProperty("--card-opacity", hasPassed ? "0" : String(1 - Math.abs(offset) * 0.2));
     card.style.zIndex = String(stageCards.length - index);
+
+    if (window.gsap && !reduceTimeMachineMotion && !immediate) {
+      window.gsap.to(card, {
+        ...properties,
+        duration: 0.55,
+        ease: "power3.out",
+        overwrite: "auto",
+      });
+    } else {
+      Object.entries(properties).forEach(([property, value]) => card.style.setProperty(property, String(value)));
+    }
   });
 
   timeMachineStops.forEach((stop) => {
@@ -35,6 +51,23 @@ function syncTimeMachine(activeIndex) {
     const isActive = Number(stop.dataset.stageIndex) === activeIndex;
     stop.classList.toggle("is-active", isActive);
     stop.setAttribute("aria-pressed", String(isActive));
+  });
+}
+
+function syncTimeMachineHover(hoveredIndex = null) {
+  visual?.classList.toggle("is-scrubbing", hoveredIndex !== null);
+
+  timeMachineStops.forEach((stop) => {
+    const stopIndex = Number(stop.dataset.stageIndex);
+    const isMain = stop.classList.contains("time-machine__stop--main");
+    const isSelected = Math.round(stopIndex) === Math.round(hoveredIndex ?? -10);
+    const isNear = hoveredIndex !== null && Math.abs(stopIndex - hoveredIndex) <= 0.5;
+    const scale = hoveredIndex === null ? 1 : isMain && isSelected ? 1.4 : isNear ? (isMain ? 1.25 : 1.15) : 1;
+    const opacity = isMain ? 1 : hoveredIndex === null ? 0.3 : isNear ? 0.5 : 0.3;
+
+    stop.classList.toggle("is-hovered", hoveredIndex !== null && stopIndex === hoveredIndex);
+    stop.style.setProperty("--stop-scale", String(scale));
+    stop.style.setProperty("--stop-opacity", String(opacity));
   });
 }
 
@@ -86,12 +119,39 @@ projectRows.forEach((button) => {
 });
 
 timeMachineStops.forEach((stop) => {
-  const activate = () => activateProject(projectRows[Math.round(Number(stop.dataset.stageIndex))]);
+  const stopIndex = Number(stop.dataset.stageIndex);
+  const activate = () => activateProject(projectRows[Math.round(stopIndex)]);
   stop.addEventListener("click", activate);
-  stop.addEventListener("pointerenter", activate);
+  stop.addEventListener("pointerenter", () => {
+    syncTimeMachineHover(stopIndex);
+    activate();
+  });
+  stop.addEventListener("focus", () => {
+    syncTimeMachineHover(stopIndex);
+    activate();
+  });
+  stop.addEventListener("keydown", (event) => {
+    if (!['ArrowUp', 'ArrowDown', 'Home', 'End'].includes(event.key)) return;
+    event.preventDefault();
+    const current = timeMachineStops.indexOf(stop);
+    const next = event.key === 'Home'
+      ? 0
+      : event.key === 'End'
+        ? timeMachineStops.length - 1
+        : (current + (event.key === 'ArrowDown' ? 1 : -1) + timeMachineStops.length) % timeMachineStops.length;
+    timeMachineStops[next].focus();
+  });
 });
 
-syncTimeMachine(0);
+timeMachineTimeline?.addEventListener("pointerleave", () => syncTimeMachineHover());
+timeMachineTimeline?.addEventListener("focusout", () => {
+  window.requestAnimationFrame(() => {
+    if (!timeMachineTimeline.contains(document.activeElement)) syncTimeMachineHover();
+  });
+});
+
+syncTimeMachine(0, true);
+syncTimeMachineHover();
 mountFluidProjectHighlight();
 
 const menuToggle = document.querySelector(".menu-toggle");

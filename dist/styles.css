@@ -537,7 +537,7 @@ body.has-spider-cursor .spider-cursor {
   position: relative;
   isolation: isolate;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 52px;
+  grid-template-columns: minmax(0, 1fr) minmax(118px, 0.38fr);
   gap: var(--space-4);
   align-items: center;
   min-height: 336px;
@@ -594,8 +594,6 @@ body.has-spider-cursor .spider-cursor {
   backface-visibility: hidden;
   opacity: var(--card-opacity, 1);
   transition:
-    transform 620ms cubic-bezier(0.22, 0.8, 0.2, 1),
-    opacity 360ms var(--ease-out),
     border-color var(--motion-slow) var(--ease-out);
   transform:
     translate3d(-50%, -50%, var(--card-z, 0px))
@@ -761,20 +759,11 @@ body.has-spider-cursor .spider-cursor {
   align-self: center;
 }
 
-.time-machine__timeline::before {
-  position: absolute;
-  inset: 8% 9px;
-  width: 1px;
-  content: "";
-  background: repeating-linear-gradient(to bottom, rgba(255, 255, 255, 0.22) 0 2px, transparent 2px 7px);
-}
-
 .time-machine__stop {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 8px;
   padding: 0;
   border: 0;
   background: transparent;
@@ -782,49 +771,66 @@ body.has-spider-cursor .spider-cursor {
   cursor: pointer;
 }
 
-.time-machine__stop-index {
-  font-size: 0.62rem;
-  font-variant-numeric: tabular-nums;
-  opacity: 0.58;
-  transition: opacity var(--motion-fast) var(--ease-out), color var(--motion-fast) var(--ease-out);
+.time-machine__stop-label {
+  position: absolute;
+  top: 50%;
+  right: 38px;
+  color: rgba(244, 243, 238, 0.9);
+  filter: blur(2px);
+  font-size: 0.64rem;
+  font-weight: 700;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-50%) scale(0.8);
+  transform-origin: right center;
+  transition:
+    opacity 150ms var(--ease-out),
+    filter 150ms var(--ease-out),
+    transform 150ms var(--ease-out),
+    color 150ms var(--ease-out);
+  white-space: nowrap;
 }
 
 .time-machine__stop-mark {
-  width: 20px;
+  width: 24px;
   height: 3px;
   border-radius: 2px;
   background: rgba(255, 255, 255, 0.48);
+  opacity: var(--stop-opacity, 1);
+  transform: scaleX(var(--stop-scale, 1));
   transform-origin: right center;
   transition:
-    background var(--motion-fast) var(--ease-out),
-    transform var(--motion-fast) var(--ease-out),
-    width var(--motion-fast) var(--ease-out);
+    background-color var(--motion-fast) var(--ease-out),
+    opacity 300ms var(--ease-out),
+    transform 300ms cubic-bezier(0.22, 1.35, 0.36, 1);
 }
 
 .time-machine__stop--minor .time-machine__stop-mark {
-  width: 10px;
-  height: 2px;
-  opacity: 0.38;
+  background: rgba(255, 255, 255, 0.2);
+  --stop-opacity: 0.3;
 }
 
-.time-machine__stop--minor:is(:hover, :focus-visible) .time-machine__stop-mark {
-  width: 15px;
-  opacity: 0.85;
+.time-machine__stop.is-active .time-machine__stop-mark {
+  background: var(--project-accent);
 }
 
-.time-machine__stop:is(:hover, :focus-visible, .is-active) .time-machine__stop-index {
+.time-machine__stop.is-hovered .time-machine__stop-label,
+.time-machine__stop:focus-visible .time-machine__stop-label,
+.card-time-machine:not(.is-scrubbing) .time-machine__stop.is-active .time-machine__stop-label {
   color: var(--project-accent);
   opacity: 1;
+  filter: blur(0);
+  transform: translateY(-50%) scale(1);
 }
 
-.time-machine__stop:is(:hover, :focus-visible, .is-active) .time-machine__stop-mark {
-  width: 27px;
-  background: var(--project-accent);
+.time-machine__stop:focus-visible {
+  outline: 1px solid rgba(244, 243, 238, 0.72);
+  outline-offset: 4px;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .time-machine__card,
-  .time-machine__stop-index,
+  .time-machine__stop-label,
   .time-machine__stop-mark {
     transition: none;
   }
@@ -2192,7 +2198,7 @@ body.has-spider-cursor .spider-cursor {
   }
 
   .case-visual {
-    grid-template-columns: minmax(0, 1fr) 38px;
+    grid-template-columns: minmax(0, 1fr) 112px;
     min-height: 320px;
     gap: var(--space-1);
     padding: var(--space-3);
@@ -2221,20 +2227,11 @@ body.has-spider-cursor .spider-cursor {
   }
 
   .time-machine__stop {
-    gap: 4px;
+    min-width: 0;
   }
 
-  .time-machine__stop-mark {
-    width: 15px;
-  }
-
-  .time-machine__stop:is(:hover, :focus-visible, .is-active) .time-machine__stop-mark {
-    width: 20px;
-  }
-
-  .time-machine__stop--minor:is(:hover, :focus-visible) .time-machine__stop-mark {
-    width: 14px;
-  }
+  .time-machine__stop-label { right: 34px; font-size: 0.56rem; }
+  .time-machine__stop-mark { width: 20px; }
 
   .career-story {
     padding-block: var(--space-24);
@@ -2398,7 +2395,7 @@ body.has-spider-cursor .spider-cursor {
   }
 
   .time-machine__card,
-  .time-machine__stop-index,
+  .time-machine__stop-label,
   .time-machine__stop-mark,
   .button,
   .project-row,
