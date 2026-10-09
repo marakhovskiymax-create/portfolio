@@ -544,7 +544,7 @@ body.has-spider-cursor .spider-cursor {
   border-radius: var(--radius-medium);
   border: 1px solid rgba(255, 255, 255, 0.1);
   padding: clamp(18px, 2.5vw, 40px);
-  padding-inline: 50px;
+  padding-inline: 60px;
   background: #09090b;
   color: var(--color-text);
   --project-accent: var(--color-accent);
@@ -843,7 +843,7 @@ body.has-spider-cursor .spider-cursor {
   background: rgba(255, 255, 255, 0.48);
   opacity: var(--stop-opacity, 1);
   transform: scaleX(var(--stop-scale, 1));
-  transform-origin: right center;
+  transform-origin: left center;
   transition:
     background-color var(--motion-fast) var(--ease-out),
     opacity 300ms var(--ease-out),
