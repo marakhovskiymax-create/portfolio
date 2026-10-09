@@ -27,12 +27,13 @@ function syncTimeMachine(activeIndex, immediate = false) {
   stageCards.forEach((card, index) => {
     const offset = index - activeIndex;
     const hasPassed = offset < 0;
+    const depth = Math.max(0, offset);
     const properties = {
-      "--card-z": hasPassed ? "200px" : `${-offset * 60}px`,
-      "--card-y": hasPassed ? "300px" : `${-offset * 12}px`,
-      "--card-rotate": hasPassed ? "-20deg" : `${offset * 2}deg`,
-      "--card-scale": hasPassed ? 1.3 : 1,
-      "--card-opacity": hasPassed ? 0 : 1 - Math.abs(offset) * 0.2,
+      "--card-z": hasPassed ? "200px" : `${-depth * 60}px`,
+      "--card-y": hasPassed ? "300px" : `${-depth * 42}px`,
+      "--card-rotate": hasPassed ? "-20deg" : `${depth * 2}deg`,
+      "--card-scale": hasPassed ? 1.3 : 1 - Math.min(depth, 4) * 0.025,
+      "--card-opacity": hasPassed ? 0 : Math.max(0.28, 1 - depth * 0.15),
     };
 
     card.classList.toggle("is-current", offset === 0);

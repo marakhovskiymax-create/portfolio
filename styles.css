@@ -589,7 +589,7 @@ body.has-spider-cursor .spider-cursor {
 
 .time-machine__card {
   position: absolute;
-  top: 50%;
+  top: 54%;
   left: 44%;
   display: grid;
   width: min(86%, 1080px);
