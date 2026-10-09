@@ -589,7 +589,7 @@ body.has-spider-cursor .spider-cursor {
 .time-machine__card {
   position: absolute;
   top: 50%;
-  left: 50%;
+  left: 44%;
   display: grid;
   width: min(86%, 1080px);
   aspect-ratio: 220 / 135;
@@ -805,19 +805,27 @@ body.has-spider-cursor .spider-cursor {
   background: transparent;
   color: var(--color-muted);
   cursor: pointer;
+  justify-self: end;
+}
+
+.time-machine__stop-target {
+  position: relative;
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
+  border-radius: 999px;
 }
 
 .time-machine__stop-label {
-  position: absolute;
-  top: 50%;
-  right: 54px;
   color: rgba(244, 243, 238, 0.9);
   filter: blur(2px);
-  font-size: clamp(0.62rem, 0.85vw, 0.78rem);
-  font-weight: 700;
+  font-size: 20px;
+  font-weight: 500;
   opacity: 0;
   pointer-events: none;
-  transform: translateY(-50%) scale(0.8);
+  transform: scale(0.8);
   transform-origin: right center;
   transition:
     opacity 150ms var(--ease-out),
@@ -856,7 +864,7 @@ body.has-spider-cursor .spider-cursor {
   color: var(--project-accent);
   opacity: 1;
   filter: blur(0);
-  transform: translateY(-50%) scale(1);
+  transform: scale(1);
 }
 
 .time-machine__stop:focus-visible {
@@ -2246,6 +2254,7 @@ body.has-spider-cursor .spider-cursor {
 
   .time-machine__card {
     width: 94%;
+    left: 50%;
   }
 
   .time-machine__card-body {
@@ -2266,7 +2275,8 @@ body.has-spider-cursor .spider-cursor {
     min-width: 0;
   }
 
-  .time-machine__stop-label { right: 34px; font-size: 0.56rem; }
+  .time-machine__stop-target { gap: 9px; }
+  .time-machine__stop-label { font-size: 20px; }
   .time-machine__stop-mark { width: 20px; }
 
   .career-story {

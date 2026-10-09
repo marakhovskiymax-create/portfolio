@@ -188,6 +188,7 @@ function initSpiderCursor() {
     const interactive = element instanceof Element ? element.closest(interactiveSelector) : null;
     if (!interactive || interactive.matches(":disabled, [aria-disabled='true']")) return null;
     if (interactive.matches(".career-tab")) return interactive.querySelector(".career-tab__logo");
+    if (interactive.matches(".time-machine__stop")) return interactive.querySelector(".time-machine__stop-target");
     return interactive;
   }
 
