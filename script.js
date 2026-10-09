@@ -157,6 +157,13 @@ function initSpiderCursor() {
   let targetRadiusCache = new WeakMap();
   const interactiveSelector = "a, button, [role='button'], input:not([type='hidden']), select, textarea, [data-cursor-target]";
 
+  function resolveInteractiveTarget(element) {
+    const interactive = element instanceof Element ? element.closest(interactiveSelector) : null;
+    if (!interactive || interactive.matches(":disabled, [aria-disabled='true']")) return null;
+    if (interactive.matches(".career-tab")) return interactive.querySelector(".career-tab__logo");
+    return interactive;
+  }
+
   function syncCanvas() {
     const nextWidth = window.innerWidth;
     const nextHeight = window.innerHeight;
@@ -418,8 +425,7 @@ function initSpiderCursor() {
     pointerX = event.clientX;
     pointerY = event.clientY;
 
-    const candidate = event.target instanceof Element ? event.target.closest(interactiveSelector) : null;
-    activeTarget = candidate && !candidate.matches(":disabled, [aria-disabled='true']") ? candidate : null;
+    activeTarget = resolveInteractiveTarget(event.target);
     swarms.forEach((swarm) => swarm.follow(pointerX, pointerY));
   }
 
@@ -429,8 +435,7 @@ function initSpiderCursor() {
   }
 
   function handleFocusIn(event) {
-    const candidate = event.target instanceof Element ? event.target.closest(interactiveSelector) : null;
-    if (candidate && !candidate.matches(":disabled, [aria-disabled='true']")) activeTarget = candidate;
+    activeTarget = resolveInteractiveTarget(event.target);
   }
 
   function handleFocusOut() {
@@ -616,18 +621,22 @@ initFAQAccordion();
 
 function initCareerTimeline() {
   const timeline = document.querySelector("[data-career-timeline]");
+  const rail = timeline?.querySelector(".career-tabs__rail");
   const tabs = Array.from(timeline?.querySelectorAll("[data-career-tab]") ?? []);
   const panels = Array.from(timeline?.querySelectorAll("[data-career-panel]") ?? []);
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  if (!timeline || !tabs.length || tabs.length !== panels.length) return;
+  if (!timeline || !rail || !tabs.length || tabs.length !== panels.length) return;
 
   let activeIndex = tabs.findIndex((tab) => tab.classList.contains("is-active"));
   let cleanupTimer = 0;
   if (activeIndex < 0) activeIndex = 0;
 
   const setProgress = (index) => {
-    const progress = tabs.length > 1 ? index / (tabs.length - 1) : 0;
+    const railRect = rail.getBoundingClientRect();
+    const tabRect = tabs[index].getBoundingClientRect();
+    const activeCenter = tabRect.left + tabRect.width / 2;
+    const progress = Math.min(1, Math.max(0, (activeCenter - railRect.left) / railRect.width));
     timeline.style.setProperty("--career-progress", String(progress));
   };
 
@@ -689,6 +698,7 @@ function initCareerTimeline() {
   });
 
   setProgress(activeIndex);
+  window.addEventListener("resize", () => setProgress(activeIndex), { passive: true });
 }
 
 initCareerTimeline();

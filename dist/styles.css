@@ -878,19 +878,11 @@ body.has-spider-cursor .spider-cursor {
 }
 
 .career-stage__heading h2 {
-  color: var(--color-text);
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 3.25vw, 3.75rem);
-  font-style: italic;
-  font-weight: 500;
-  letter-spacing: -0.035em;
-  line-height: 1.12;
-}
-
-.career-stage__heading p {
+  grid-column: 2;
   max-width: 640px;
   justify-self: end;
   color: var(--color-text);
+  font-family: var(--font-body);
   font-size: clamp(1.6rem, 3vw, 3.4rem);
   font-weight: 700;
   letter-spacing: -0.045em;
@@ -913,14 +905,16 @@ body.has-spider-cursor .spider-cursor {
 }
 
 .career-tabs__rail {
-  position: relative;
-  z-index: -1;
+  position: absolute;
+  z-index: 0;
+  top: 50%;
+  left: 50%;
   display: block;
+  width: 100vw;
   height: 1px;
-  grid-column: 1 / -1;
-  grid-row: 1;
   overflow: hidden;
-  background: rgba(244, 243, 238, 0.25);
+  background: rgba(244, 243, 238, 0.22);
+  translate: -50% -50%;
 }
 
 .career-tabs__progress {
@@ -930,11 +924,12 @@ body.has-spider-cursor .spider-cursor {
   background: var(--color-text);
   transform: scaleX(var(--career-progress, 0));
   transform-origin: left center;
-  transition: transform 240ms var(--curve-cinematic);
+  transition: transform 250ms var(--curve-cinematic);
 }
 
 .career-tab {
   position: relative;
+  z-index: 1;
   display: grid;
   min-width: 0;
   min-height: 72px;
@@ -981,9 +976,9 @@ body.has-spider-cursor .spider-cursor {
   position: absolute;
   inset: auto auto calc(50% + 14px) 50%;
   display: grid;
-  min-width: 72px;
-  min-height: 32px;
+  width: max-content;
   place-items: center;
+  padding: 4px;
   opacity: 0.58;
   transform: translateX(-50%);
   transition:
@@ -1131,7 +1126,8 @@ body.has-spider-cursor .spider-cursor {
     gap: var(--space-6);
   }
 
-  .career-stage__heading p {
+  .career-stage__heading h2 {
+    grid-column: 1;
     max-width: 620px;
     justify-self: start;
   }
@@ -1147,7 +1143,7 @@ body.has-spider-cursor .spider-cursor {
     margin-bottom: var(--space-12);
   }
 
-  .career-stage__heading p {
+  .career-stage__heading h2 {
     font-size: clamp(1.45rem, 8vw, 2.25rem);
   }
 
@@ -1158,10 +1154,6 @@ body.has-spider-cursor .spider-cursor {
   .career-tab {
     min-height: 72px;
     padding-inline: 4px;
-  }
-
-  .career-tab__logo {
-    min-width: 54px;
   }
 
   .career-logo--hse { width: 28px; height: 28px; }
