@@ -48,7 +48,7 @@ Established: 2026-09-27. Source: Figma reference node 13:18 supplied by the user
 ## Taste memory
 - Profile priors used: none
 - Decision log: `.tastemaker/decisions.log`
-- Last resolved decisions: the career timeline uses a full-bleed rail, a filled segment ending at the active logo, year-only dates, and logo-bound cursor highlights (2026-10-09)
+- Last resolved decisions: the career timeline title is locked to two lines, active logos retain a contour-following glow after pointer exit, and milestone dots sit directly on the rail (2026-10-09)
 - Pending review: none
 - Profile promotion: none
 
@@ -68,7 +68,7 @@ Quiet, cosmic, editorial, assured.
 - Durations: fast 80ms / 60ms exit, moderate 160ms / 120ms exit, slow 240ms / 160ms exit; cursor-to-target morph uses 240ms in and 280ms out with an interruptible ease-in-out crossfade
 - Entrance: small interface reveals use an 18px rise over 240ms; major marketing blocks use explicit 480ms scroll scenes with 60 to 80ms staging
 - Screen track: hero intro, title characters, lede, actions and metadata strip enter in five restrained beats; portfolio heading, rows and visual enter in sequence; the capability tape wipes open; quote cards rise; personal notes approach from three directions before badges pop in; the contact statement unfolds in three beats; one white Spider Cursor entity follows the pointer directly across the entire page; the career rail draws once as it enters the viewport
-- Career behavior: one full-bleed horizontal rail connects five logo tabs; its filled segment ends at the active logo and controls one shared photo, year-only date, and project-description panel; content moves directionally for 240ms on click or keyboard navigation and reflows into a compact two-column detail row on narrow screens
+- Career behavior: one full-bleed horizontal rail connects five logo tabs with centered milestone dots; its filled segment ends at the active logo and controls one shared photo, year-only date, and project-description panel; the chosen logo keeps a contour-following light state after hover ends; content moves directionally for 240ms on click or keyboard navigation and reflows into a compact two-column detail row on narrow screens
 - Frequency: one shared highlight glides between adjacent project rows while the single preview updates; the star field changes composition with page scroll and adds low-amplitude drift plus restrained twinkle to free stars; particles connected to the cursor remain stable; the cursor entity has no autonomous drift and smoothly dissolves into a bright white organic perimeter around links, buttons, project rows, quote cards, or interest badges; career tabs retain a generous hit area while their cursor perimeter hugs only the visible logo; every perimeter inherits its target's actual corner geometry
 - Reduced motion: the global Spider Cursor is removed and the hero keeps its static star field; no parallax or sliding highlight; marquee paused; opacity and color feedback remain short
 - Verified by: scripted motion, coherence, and anti-slop audits plus desktop and 390px browser QA on 2026-09-28

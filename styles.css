@@ -890,6 +890,11 @@ body.has-spider-cursor .spider-cursor {
   text-wrap: balance;
 }
 
+.career-title__line {
+  display: block;
+  white-space: nowrap;
+}
+
 .career-timeline {
   position: relative;
 }
@@ -901,7 +906,6 @@ body.has-spider-cursor .spider-cursor {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   align-items: center;
-  padding-top: 8px;
 }
 
 .career-tabs__rail {
@@ -986,10 +990,24 @@ body.has-spider-cursor .spider-cursor {
     transform var(--motion-moderate) var(--ease-out);
 }
 
+.career-tab__logo img {
+  transition:
+    filter var(--motion-moderate) var(--ease-out),
+    transform var(--motion-moderate) var(--ease-out);
+}
+
 .career-tab:focus-visible .career-tab__logo,
 .career-tab.is-active .career-tab__logo {
   opacity: 1;
   transform: translateX(-50%) translateY(-3px);
+}
+
+.career-tab.is-active .career-tab__logo img {
+  filter:
+    brightness(1.12)
+    drop-shadow(0 0 4px rgba(244, 243, 238, 0.72))
+    drop-shadow(0 0 12px rgba(244, 243, 238, 0.38));
+  transform: scale(1.035);
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -1144,11 +1162,7 @@ body.has-spider-cursor .spider-cursor {
   }
 
   .career-stage__heading h2 {
-    font-size: clamp(1.45rem, 8vw, 2.25rem);
-  }
-
-  .career-tabs {
-    padding-top: 14px;
+    font-size: clamp(1rem, 4.7vw, 1.45rem);
   }
 
   .career-tab {
