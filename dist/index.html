@@ -20,7 +20,7 @@
       type="image/svg+xml"
       href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23050505'/%3E%3Cpath d='M13 43V20h7l12 15 12-15h7v23h-7V31L32 46 20 31v12z' fill='%2372c98b'/%3E%3C/svg%3E"
     />
-    <link rel="stylesheet" href="styles.css?v=20261009-career-align" />
+    <link rel="stylesheet" href="styles.css?v=20261009-skills-playground" />
     <script>
       document.documentElement.classList.replace("no-js", "js");
     </script>
@@ -681,9 +681,64 @@
       </nav>
     </footer>
 
+    <section class="skills-playground" id="skills-playground" aria-labelledby="skills-playground-title" data-skills-playground>
+      <div class="skills-playground__surface">
+        <div class="skills-playground__hint">
+          <svg viewBox="0 0 120 74" aria-hidden="true">
+            <path d="M112 8C75 18 42 37 20 65" />
+            <path d="m18 53 2 12 12-2" />
+          </svg>
+          <div>
+            <p class="skills-playground__eyebrow">Мои навыки и инструменты</p>
+            <h2 id="skills-playground-title">Можно двигать</h2>
+          </div>
+        </div>
+
+        <button class="skill-drag-item skill-drag-item--vertical" type="button" data-drag-item data-x="0.018" data-y="0.28" data-mobile-x="0.02" data-mobile-y="0.16" data-rotate="-2" aria-describedby="skills-playground-instruction">
+          <span>Дизайн-системы</span>
+        </button>
+        <button class="skill-drag-item skill-drag-item--pill" type="button" data-drag-item data-x="0.17" data-y="0.34" data-mobile-x="0.62" data-mobile-y="0.24" data-rotate="-1.5" aria-describedby="skills-playground-instruction">
+          <span class="skill-drag-item__glyph" aria-hidden="true">Ix</span>
+          <span>Интерактивный дизайн</span>
+        </button>
+        <button class="skill-drag-item skill-drag-item--pill" type="button" data-drag-item data-x="0.63" data-y="0.34" data-mobile-x="0.3" data-mobile-y="0.37" data-rotate="1" aria-describedby="skills-playground-instruction">
+          <span class="skill-drag-item__glyph" aria-hidden="true">Pd</span>
+          <span>Продуктовый дизайн</span>
+        </button>
+        <button class="skill-drag-item skill-drag-item--pill" type="button" data-drag-item data-x="0.24" data-y="0.61" data-mobile-x="0.54" data-mobile-y="0.5" data-rotate="0.8" aria-describedby="skills-playground-instruction">
+          <span class="skill-drag-item__glyph" aria-hidden="true">Wd</span>
+          <span>Веб-дизайн</span>
+        </button>
+        <button class="skill-drag-item skill-drag-item--pill" type="button" data-drag-item data-x="0.56" data-y="0.61" data-mobile-x="0.2" data-mobile-y="0.62" data-rotate="-1" aria-describedby="skills-playground-instruction">
+          <span class="skill-drag-item__glyph" aria-hidden="true">Ur</span>
+          <span>Исследования</span>
+        </button>
+
+        <button class="skill-drag-item skill-drag-item--tool skill-drag-item--js" type="button" data-drag-item data-x="0.09" data-y="0.69" data-mobile-x="0.02" data-mobile-y="0.79" data-rotate="3" aria-label="JavaScript — можно перемещать" aria-describedby="skills-playground-instruction">
+          <span aria-hidden="true">JS</span>
+        </button>
+        <button class="skill-drag-item skill-drag-item--tool skill-drag-item--framer" type="button" data-drag-item data-x="0.16" data-y="0.72" data-mobile-x="0.25" data-mobile-y="0.84" data-rotate="-4" aria-label="Framer — можно перемещать" aria-describedby="skills-playground-instruction">
+          <span aria-hidden="true">F</span>
+        </button>
+        <button class="skill-drag-item skill-drag-item--tool skill-drag-item--vscode" type="button" data-drag-item data-x="0.42" data-y="0.73" data-mobile-x="0.49" data-mobile-y="0.78" data-rotate="2" aria-label="Visual Studio Code — можно перемещать" aria-describedby="skills-playground-instruction">
+          <span aria-hidden="true">&lt;/&gt;</span>
+        </button>
+        <button class="skill-drag-item skill-drag-item--tool skill-drag-item--figma" type="button" data-drag-item data-x="0.75" data-y="0.57" data-mobile-x="0.72" data-mobile-y="0.84" data-rotate="5" aria-label="Figma — можно перемещать" aria-describedby="skills-playground-instruction">
+          <span class="figma-mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+        </button>
+        <button class="skill-drag-item skill-drag-item--tool skill-drag-item--slack" type="button" data-drag-item data-x="0.84" data-y="0.72" data-mobile-x="0.88" data-mobile-y="0.68" data-rotate="-3" aria-label="Slack — можно перемещать" aria-describedby="skills-playground-instruction">
+          <span aria-hidden="true">#</span>
+        </button>
+
+        <p class="sr-only" id="skills-playground-instruction">
+          Перетаскивайте элемент указателем или двигайте его клавишами со стрелками. С клавишей Shift шаг будет больше.
+        </p>
+      </div>
+    </section>
+
     <script src="vendor/gsap.min.js"></script>
     <script src="vendor/ScrollTrigger.min.js"></script>
     <script src="gsap-starter.js"></script>
-    <script src="script.js?v=20261009-time-machine-depth"></script>
+    <script src="script.js?v=20261009-skills-playground"></script>
   </body>
 </html>

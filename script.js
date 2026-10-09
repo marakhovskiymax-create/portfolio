@@ -178,6 +178,7 @@ function initSpiderCursor() {
   let pointerX = window.innerWidth / 2;
   let pointerY = window.innerHeight / 2;
   let activeTarget = null;
+  let pointerOverDragItem = false;
   let lastTargetRect = null;
   let targetProgress = 0;
   let previousTimestamp = 0;
@@ -188,6 +189,7 @@ function initSpiderCursor() {
   function resolveInteractiveTarget(element) {
     const interactive = element instanceof Element ? element.closest(interactiveSelector) : null;
     if (!interactive || interactive.matches(":disabled, [aria-disabled='true']")) return null;
+    if (interactive.matches(".skill-drag-item")) return null;
     if (interactive.matches(".career-tab")) return interactive.querySelector(".career-tab__logo");
     if (interactive.matches(".time-machine__stop")) return interactive.querySelector(".time-machine__stop-target");
     return interactive;
@@ -454,21 +456,25 @@ function initSpiderCursor() {
     pointerX = event.clientX;
     pointerY = event.clientY;
 
+    pointerOverDragItem = event.target instanceof Element && Boolean(event.target.closest(".skill-drag-item"));
     activeTarget = resolveInteractiveTarget(event.target);
     swarms.forEach((swarm) => swarm.follow(pointerX, pointerY));
   }
 
   function handlePointerLeave() {
     activeTarget = null;
+    pointerOverDragItem = false;
     swarms.forEach((swarm) => swarm.follow(-100, -100));
   }
 
   function handleFocusIn(event) {
+    pointerOverDragItem = event.target instanceof Element && event.target.matches(".skill-drag-item");
     activeTarget = resolveInteractiveTarget(event.target);
   }
 
   function handleFocusOut() {
     activeTarget = null;
+    pointerOverDragItem = false;
   }
 
   function render(timestamp) {
@@ -495,7 +501,7 @@ function initSpiderCursor() {
       drawTargetTexture(lastTargetRect, time, targetStrength);
     }
 
-    swarms.forEach((swarm) => swarm.tick(time, delta, 1 - targetStrength));
+    swarms.forEach((swarm) => swarm.tick(time, delta, pointerOverDragItem ? 0 : 1 - targetStrength));
   }
 
   window.addEventListener("pointermove", handlePointerMove, { passive: true });
@@ -731,6 +737,221 @@ function initCareerTimeline() {
 }
 
 initCareerTimeline();
+
+function initSkillsPlayground() {
+  const playground = document.querySelector("[data-skills-playground]");
+  const surface = playground?.querySelector(".skills-playground__surface");
+  const items = surface ? [...surface.querySelectorAll("[data-drag-item]")] : [];
+  if (!playground || !surface || !items.length) return;
+
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const states = new Map();
+  let topLayer = 20;
+
+  const getBounds = (item) => ({
+    maxX: Math.max(0, surface.clientWidth - item.offsetWidth),
+    maxY: Math.max(0, surface.clientHeight - item.offsetHeight),
+  });
+
+  const clampPosition = (item, x, y) => {
+    const bounds = getBounds(item);
+    return {
+      x: Math.min(bounds.maxX, Math.max(0, x)),
+      y: Math.min(bounds.maxY, Math.max(0, y)),
+      bounds,
+    };
+  };
+
+  const render = (item, state) => {
+    item.style.setProperty("--drag-x", `${state.x}px`);
+    item.style.setProperty("--drag-y", `${state.y}px`);
+  };
+
+  const stopMomentum = (state) => {
+    if (state.frame) cancelAnimationFrame(state.frame);
+    state.frame = 0;
+  };
+
+  const startMomentum = (item, state) => {
+    stopMomentum(state);
+    if (reduceMotion || Math.hypot(state.vx, state.vy) < 0.08) return;
+
+    let previous = performance.now();
+    const glide = (time) => {
+      const delta = Math.min(32, time - previous);
+      previous = time;
+      const bounds = getBounds(item);
+      state.x += state.vx * delta;
+      state.y += state.vy * delta;
+
+      if (state.x <= 0 || state.x >= bounds.maxX) {
+        state.x = Math.min(bounds.maxX, Math.max(0, state.x));
+        state.vx *= -0.42;
+      }
+      if (state.y <= 0 || state.y >= bounds.maxY) {
+        state.y = Math.min(bounds.maxY, Math.max(0, state.y));
+        state.vy *= -0.42;
+      }
+
+      const friction = Math.pow(0.9, delta / 16.67);
+      state.vx *= friction;
+      state.vy *= friction;
+      render(item, state);
+
+      if (Math.hypot(state.vx, state.vy) > 0.015) state.frame = requestAnimationFrame(glide);
+      else state.frame = 0;
+    };
+
+    state.frame = requestAnimationFrame(glide);
+  };
+
+  const layout = (preserve = false) => {
+    items.forEach((item) => {
+      let state = states.get(item);
+      if (!state) {
+        state = {
+          x: 0,
+          y: 0,
+          vx: 0,
+          vy: 0,
+          frame: 0,
+          pointerId: null,
+          offsetX: 0,
+          offsetY: 0,
+          previousX: 0,
+          previousY: 0,
+          previousTime: performance.now(),
+        };
+        states.set(item, state);
+      }
+
+      const bounds = getBounds(item);
+      if (!preserve) {
+        const mobile = surface.clientWidth < 600;
+        state.x = bounds.maxX * Number((mobile ? item.dataset.mobileX : item.dataset.x) || 0);
+        state.y = bounds.maxY * Number((mobile ? item.dataset.mobileY : item.dataset.y) || 0);
+      } else {
+        const next = clampPosition(item, state.x, state.y);
+        state.x = next.x;
+        state.y = next.y;
+      }
+      render(item, state);
+    });
+  };
+
+  items.forEach((item, index) => {
+    item.style.setProperty("--item-order", String(index));
+    item.style.setProperty("--item-rotate", item.dataset.rotate || "0");
+    const state = {
+      x: 0,
+      y: 0,
+      vx: 0,
+      vy: 0,
+      frame: 0,
+      pointerId: null,
+      offsetX: 0,
+      offsetY: 0,
+      previousX: 0,
+      previousY: 0,
+      previousTime: performance.now(),
+    };
+    states.set(item, state);
+
+    item.addEventListener("pointerdown", (event) => {
+      if (event.pointerType === "mouse" && event.button !== 0) return;
+      event.preventDefault();
+      stopMomentum(state);
+      const itemRect = item.getBoundingClientRect();
+      const surfaceRect = surface.getBoundingClientRect();
+      state.pointerId = event.pointerId;
+      state.offsetX = event.clientX - itemRect.left;
+      state.offsetY = event.clientY - itemRect.top;
+      state.previousX = event.clientX;
+      state.previousY = event.clientY;
+      state.previousTime = performance.now();
+      state.vx = 0;
+      state.vy = 0;
+      topLayer += 1;
+      item.style.zIndex = String(topLayer);
+      item.classList.add("is-dragging");
+      item.setPointerCapture(event.pointerId);
+
+      const next = clampPosition(
+        item,
+        event.clientX - surfaceRect.left - state.offsetX,
+        event.clientY - surfaceRect.top - state.offsetY,
+      );
+      state.x = next.x;
+      state.y = next.y;
+      render(item, state);
+    });
+
+    item.addEventListener("pointermove", (event) => {
+      if (state.pointerId !== event.pointerId) return;
+      const surfaceRect = surface.getBoundingClientRect();
+      const next = clampPosition(
+        item,
+        event.clientX - surfaceRect.left - state.offsetX,
+        event.clientY - surfaceRect.top - state.offsetY,
+      );
+      const now = performance.now();
+      const delta = Math.max(8, now - state.previousTime);
+      state.vx = (event.clientX - state.previousX) / delta;
+      state.vy = (event.clientY - state.previousY) / delta;
+      state.previousX = event.clientX;
+      state.previousY = event.clientY;
+      state.previousTime = now;
+      state.x = next.x;
+      state.y = next.y;
+      render(item, state);
+    });
+
+    const release = (event) => {
+      if (state.pointerId !== event.pointerId) return;
+      state.pointerId = null;
+      item.classList.remove("is-dragging");
+      if (item.hasPointerCapture(event.pointerId)) item.releasePointerCapture(event.pointerId);
+      startMomentum(item, state);
+    };
+
+    item.addEventListener("pointerup", release);
+    item.addEventListener("pointercancel", release);
+    item.addEventListener("keydown", (event) => {
+      const step = event.shiftKey ? 32 : 12;
+      const movement = {
+        ArrowLeft: [-step, 0],
+        ArrowRight: [step, 0],
+        ArrowUp: [0, -step],
+        ArrowDown: [0, step],
+      }[event.key];
+      if (!movement) return;
+      event.preventDefault();
+      stopMomentum(state);
+      const next = clampPosition(item, state.x + movement[0], state.y + movement[1]);
+      state.x = next.x;
+      state.y = next.y;
+      topLayer += 1;
+      item.style.zIndex = String(topLayer);
+      render(item, state);
+    });
+  });
+
+  requestAnimationFrame(() => layout(false));
+  const resizeObserver = new ResizeObserver(() => layout(true));
+  resizeObserver.observe(surface);
+
+  const revealObserver = new IntersectionObserver(
+    ([entry]) => {
+      if (!entry.isIntersecting) return;
+      playground.classList.add("is-ready");
+      revealObserver.disconnect();
+    },
+    { threshold: 0.18 },
+  );
+  revealObserver.observe(playground);
+}
+
+initSkillsPlayground();
 
 function initContactForm() {
   const form = document.querySelector("[data-contact-form]");
