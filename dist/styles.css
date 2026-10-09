@@ -2868,7 +2868,7 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
   font-weight: 500;
 }
 
-@media (max-width: 800px) {
+@media (max-width: 960px) {
   .skills-playground {
     padding-inline: 8px;
   }

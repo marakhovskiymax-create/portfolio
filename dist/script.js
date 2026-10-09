@@ -827,7 +827,7 @@ function initSkillsPlayground() {
 
       const bounds = getBounds(item);
       if (!preserve) {
-        const mobile = surface.clientWidth < 600;
+        const mobile = surface.clientWidth < 960;
         state.x = bounds.maxX * Number((mobile ? item.dataset.mobileX : item.dataset.x) || 0);
         state.y = bounds.maxY * Number((mobile ? item.dataset.mobileY : item.dataset.y) || 0);
       } else {
