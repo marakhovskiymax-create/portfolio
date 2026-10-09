@@ -8,12 +8,16 @@ const projectContent = {
   "lunch-balloon": {
     caption: "Интерактивный предпросмотр проекта Ланч Баллон, магазина воздушных шаров.",
   },
+  "match-tv": {
+    caption: "Интерактивный предпросмотр продуктовых сценариев и интерфейсов Матч ТВ.",
+  },
+  "don-ballon": {
+    caption: "Интерактивный предпросмотр e-commerce проекта Дон Баллон и полного пути покупки.",
+  },
 };
 
 const visual = document.querySelector("[data-project-visual]");
 const visualCaption = visual?.querySelector("[data-visual-caption]");
-const projectList = document.querySelector(".project-list");
-const projectRows = Array.from(document.querySelectorAll(".project-row"));
 const stageCards = Array.from(visual?.querySelectorAll("[data-stage-card]") ?? []);
 const timeMachineStops = Array.from(visual?.querySelectorAll("[data-stage-index]") ?? []);
 const timeMachineTimeline = visual?.querySelector(".time-machine__timeline");
@@ -71,56 +75,20 @@ function syncTimeMachineHover(hoveredIndex = null) {
   });
 }
 
-function mountFluidProjectHighlight() {
-  if (!projectList || !projectRows.length) return;
-
-  const highlight = document.createElement("span");
-  highlight.className = "project-hover-highlight";
-  highlight.setAttribute("aria-hidden", "true");
-  projectList.prepend(highlight);
-
-  const moveHighlight = (row) => {
-    projectList.style.setProperty("--fluid-highlight-y", `${row.offsetTop}px`);
-    projectList.style.setProperty("--fluid-row-height", `${row.offsetHeight}px`);
-    highlight.classList.add("is-visible");
-  };
-
-  projectRows.forEach((row) => {
-    row.addEventListener("pointerenter", () => moveHighlight(row));
-    row.addEventListener("focus", () => moveHighlight(row));
-  });
-
-  projectList.addEventListener("pointerleave", () => highlight.classList.remove("is-visible"));
-  projectList.addEventListener("focusout", () => {
-    window.requestAnimationFrame(() => {
-      if (!projectList.contains(document.activeElement)) highlight.classList.remove("is-visible");
-    });
-  });
-}
-
-function activateProject(button) {
-  const project = projectContent[button.dataset.project];
+function activateProject(index) {
+  const card = stageCards[index];
+  const projectId = card?.dataset.stageCard;
+  const project = projectContent[projectId];
   if (!project || !visual) return;
 
-  document.querySelectorAll(".project-row").forEach((row) => {
-    const isActive = row === button;
-    row.classList.toggle("is-active", isActive);
-    row.setAttribute("aria-pressed", String(isActive));
-  });
-
-  visual.dataset.projectVisual = button.dataset.project;
+  visual.dataset.projectVisual = projectId;
   visualCaption.textContent = project.caption;
-  syncTimeMachine(projectRows.indexOf(button));
+  syncTimeMachine(index);
 }
-
-projectRows.forEach((button) => {
-  button.addEventListener("click", () => activateProject(button));
-  button.addEventListener("mouseenter", () => activateProject(button));
-});
 
 timeMachineStops.forEach((stop) => {
   const stopIndex = Number(stop.dataset.stageIndex);
-  const activate = () => activateProject(projectRows[Math.round(stopIndex)]);
+  const activate = () => activateProject(Math.round(stopIndex));
   stop.addEventListener("click", activate);
   stop.addEventListener("pointerenter", () => {
     syncTimeMachineHover(stopIndex);
@@ -152,7 +120,6 @@ timeMachineTimeline?.addEventListener("focusout", () => {
 
 syncTimeMachine(0, true);
 syncTimeMachineHover();
-mountFluidProjectHighlight();
 
 const menuToggle = document.querySelector(".menu-toggle");
 const mobileMenu = document.querySelector("#mobile-menu");
@@ -991,16 +958,16 @@ if (window.TastemakerMotion && window.gsap && window.ScrollTrigger) {
         "-=0.24",
       )
       .fromTo(
-        ".project-row",
-        { autoAlpha: 0, y: 24 },
-        { autoAlpha: 1, y: 0, duration: 0.24, stagger: 0.06 },
-        "-=0.06",
-      )
-      .fromTo(
         ".case-visual",
         { autoAlpha: 0, x: 32, clipPath: "inset(0 0 0 18%)" },
         { autoAlpha: 1, x: 0, clipPath: "inset(0 0 0 0%)", duration: 0.48 },
-        "-=0.3",
+        "-=0.06",
+      )
+      .fromTo(
+        ".time-machine__stop",
+        { autoAlpha: 0, x: 18 },
+        { autoAlpha: 1, x: 0, duration: 0.22, stagger: 0.055 },
+        "-=0.22",
       );
 
     scrollScene("[data-motion-section='capabilities']", "top 88%").fromTo(

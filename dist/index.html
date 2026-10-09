@@ -20,7 +20,7 @@
       type="image/svg+xml"
       href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23050505'/%3E%3Cpath d='M13 43V20h7l12 15 12-15h7v23h-7V31L32 46 20 31v12z' fill='%2372c98b'/%3E%3C/svg%3E"
     />
-    <link rel="stylesheet" href="styles.css?v=20261009-time-machine" />
+    <link rel="stylesheet" href="styles.css?v=20261009-time-machine-five" />
     <script>
       document.documentElement.classList.replace("no-js", "js");
     </script>
@@ -139,30 +139,48 @@
                   </div>
                 </div>
               </article>
+              <article class="time-machine__card time-machine__card--match" data-stage-card="match-tv">
+                <div class="time-machine__card-chrome"><span>МАТЧ ТВ</span><span>SPORT MEDIA</span></div>
+                <div class="time-machine__card-body">
+                  <div class="time-machine__card-copy">
+                    <span class="time-machine__card-eyebrow">PRODUCT SCENARIOS</span>
+                    <strong>Спортивная медиаплатформа</strong>
+                    <span class="time-machine__card-stat">Content · live · navigation</span>
+                  </div>
+                  <div class="time-machine__graphic time-machine__graphic--match"></div>
+                </div>
+              </article>
+              <article class="time-machine__card time-machine__card--don" data-stage-card="don-ballon">
+                <div class="time-machine__card-chrome"><span>ДОН БАЛЛОН</span><span>E-COMMERCE</span></div>
+                <div class="time-machine__card-body">
+                  <div class="time-machine__card-copy">
+                    <span class="time-machine__card-eyebrow">PURCHASE FLOW</span>
+                    <strong>Путь от выбора до заказа</strong>
+                    <span class="time-machine__card-stat">Catalog · cart · checkout</span>
+                  </div>
+                  <div class="time-machine__graphic time-machine__graphic--commerce"></div>
+                </div>
+              </article>
             </div>
             <div class="time-machine__timeline" role="group" aria-label="Выбрать проект">
               <button class="time-machine__stop time-machine__stop--main is-active" type="button" data-stage-index="0" aria-label="Показать EME.WEB" aria-pressed="true">
                 <span class="time-machine__stop-label" aria-hidden="true">EME.WEB</span>
                 <span class="time-machine__stop-mark" aria-hidden="true"></span>
               </button>
-              <button class="time-machine__stop time-machine__stop--minor" type="button" data-stage-index="0.33" aria-label="Промежуточная позиция перед EME.APP">
-                <span class="time-machine__stop-mark" aria-hidden="true"></span>
-              </button>
-              <button class="time-machine__stop time-machine__stop--minor" type="button" data-stage-index="0.66" aria-label="Промежуточная позиция перед EME.APP">
-                <span class="time-machine__stop-mark" aria-hidden="true"></span>
-              </button>
               <button class="time-machine__stop time-machine__stop--main" type="button" data-stage-index="1" aria-label="Показать EME.APP" aria-pressed="false">
                 <span class="time-machine__stop-label" aria-hidden="true">EME.APP</span>
                 <span class="time-machine__stop-mark" aria-hidden="true"></span>
               </button>
-              <button class="time-machine__stop time-machine__stop--minor" type="button" data-stage-index="1.33" aria-label="Промежуточная позиция перед Ланч Баллон">
-                <span class="time-machine__stop-mark" aria-hidden="true"></span>
-              </button>
-              <button class="time-machine__stop time-machine__stop--minor" type="button" data-stage-index="1.66" aria-label="Промежуточная позиция перед Ланч Баллон">
-                <span class="time-machine__stop-mark" aria-hidden="true"></span>
-              </button>
               <button class="time-machine__stop time-machine__stop--main" type="button" data-stage-index="2" aria-label="Показать Ланч Баллон" aria-pressed="false">
                 <span class="time-machine__stop-label" aria-hidden="true">Ланч Баллон</span>
+                <span class="time-machine__stop-mark" aria-hidden="true"></span>
+              </button>
+              <button class="time-machine__stop time-machine__stop--main" type="button" data-stage-index="3" aria-label="Показать Матч ТВ" aria-pressed="false">
+                <span class="time-machine__stop-label" aria-hidden="true">Матч ТВ</span>
+                <span class="time-machine__stop-mark" aria-hidden="true"></span>
+              </button>
+              <button class="time-machine__stop time-machine__stop--main" type="button" data-stage-index="4" aria-label="Показать Дон Баллон" aria-pressed="false">
+                <span class="time-machine__stop-label" aria-hidden="true">Дон Баллон</span>
                 <span class="time-machine__stop-mark" aria-hidden="true"></span>
               </button>
             </div>
@@ -171,41 +189,6 @@
             </figcaption>
           </figure>
 
-          <div class="project-list" role="list" aria-label="Проекты">
-            <button
-              class="project-row is-active"
-              type="button"
-              role="listitem"
-              data-project="eme-web"
-              aria-pressed="true"
-            >
-              <span class="project-row__name">EME.WEB</span>
-              <span class="project-row__desc">Экосистема грузоперевозок</span>
-              <span class="project-row__arrow" aria-hidden="true">↗</span>
-            </button>
-            <button
-              class="project-row"
-              type="button"
-              role="listitem"
-              data-project="eme-app"
-              aria-pressed="false"
-            >
-              <span class="project-row__name">EME.APP</span>
-              <span class="project-row__desc">Приложение для работы на складе</span>
-              <span class="project-row__arrow" aria-hidden="true">↗</span>
-            </button>
-            <button
-              class="project-row"
-              type="button"
-              role="listitem"
-              data-project="lunch-balloon"
-              aria-pressed="false"
-            >
-              <span class="project-row__name">Ланч Баллон</span>
-              <span class="project-row__desc">Магазин воздушных шаров</span>
-              <span class="project-row__arrow" aria-hidden="true">↗</span>
-            </button>
-          </div>
         </div>
       </section>
 
@@ -706,6 +689,6 @@
     <script src="vendor/gsap.min.js"></script>
     <script src="vendor/ScrollTrigger.min.js"></script>
     <script src="gsap-starter.js"></script>
-    <script src="script.js?v=20261009-time-machine"></script>
+    <script src="script.js?v=20261009-time-machine-five"></script>
   </body>
 </html>
