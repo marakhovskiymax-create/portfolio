@@ -742,256 +742,212 @@ function initSkillsPlayground() {
   const playground = document.querySelector("[data-skills-playground]");
   const surface = playground?.querySelector(".skills-playground__surface");
   const items = surface ? [...surface.querySelectorAll("[data-drag-item]")] : [];
-  if (!playground || !surface || !items.length) return;
+  if (!playground || !surface || !items.length || !window.Matter) return;
 
+  const { Body, Bodies, Composite, Engine, Sleeping } = window.Matter;
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const engine = Engine.create({ enableSleeping: true, positionIterations: 8, velocityIterations: 6 });
   const states = new Map();
+  let frame = 0;
+  let previousTime = 0;
+  let accumulatedTime = 0;
+  let sceneActive = false;
   let topLayer = 20;
-  let physicsFrame = 0;
-  let previousPhysicsTime = 0;
-  let physicsActive = false;
-  const gravity = 1500;
-  const restitution = 0.28;
 
-  const getBounds = (item) => ({
-    maxX: Math.max(0, surface.clientWidth - item.offsetWidth),
-    maxY: Math.max(0, surface.clientHeight - item.offsetHeight),
-  });
+  engine.gravity.y = 1;
+  engine.gravity.scale = reduceMotion ? 0 : 0.00145;
 
-  const clampPosition = (item, x, y) => {
-    const bounds = getBounds(item);
-    return {
-      x: Math.min(bounds.maxX, Math.max(0, x)),
-      y: Math.min(bounds.maxY, Math.max(0, y)),
-      bounds,
-    };
+  const renderState = (item, state) => {
+    if (!state.body) return;
+    item.style.setProperty("--drag-x", `${state.body.position.x - item.offsetWidth / 2}px`);
+    item.style.setProperty("--drag-y", `${state.body.position.y - item.offsetHeight / 2}px`);
+    item.style.setProperty("--physics-rotate", `${state.body.angle}rad`);
   };
 
-  const render = (item, state) => {
-    item.style.setProperty("--drag-x", `${state.x}px`);
-    item.style.setProperty("--drag-y", `${state.y}px`);
-    item.style.setProperty("--physics-rotate", `${state.rotation}deg`);
+  const bodyRadius = (item) => {
+    if (item.classList.contains("skill-drag-item--pill")) return item.offsetHeight / 2;
+    if (item.classList.contains("skill-drag-item--vertical")) return item.offsetWidth / 2;
+    return Math.min(24, item.offsetWidth * 0.24);
   };
 
-  const layout = (preserve = false) => {
+  const buildWorld = (preserve = false) => {
+    const width = surface.clientWidth;
+    const height = surface.clientHeight;
+    const oldStates = items.map((item) => {
+      const state = states.get(item);
+      return state?.body
+        ? {
+            x: state.body.position.x / Math.max(1, width),
+            y: state.body.position.y / Math.max(1, height),
+            angle: state.body.angle,
+            velocity: { ...state.body.velocity },
+            angularVelocity: state.body.angularVelocity,
+          }
+        : null;
+    });
+
+    Composite.clear(engine.world, false);
+    const wallDepth = 120;
+    const walls = [
+      Bodies.rectangle(width / 2, height + wallDepth / 2, width + wallDepth * 2, wallDepth, { isStatic: true }),
+      Bodies.rectangle(-wallDepth / 2, height / 2, wallDepth, height + wallDepth * 2, { isStatic: true }),
+      Bodies.rectangle(width + wallDepth / 2, height / 2, wallDepth, height + wallDepth * 2, { isStatic: true }),
+      Bodies.rectangle(width / 2, -wallDepth / 2, width + wallDepth * 2, wallDepth, { isStatic: true }),
+    ];
+    Composite.add(engine.world, walls);
+
     items.forEach((item, index) => {
       const state = states.get(item);
-      const bounds = getBounds(item);
-      if (!preserve) {
-        const mobile = surface.clientWidth < 960;
-        state.x = bounds.maxX * Number((mobile ? item.dataset.mobileX : item.dataset.x) || 0);
-        state.y = reduceMotion
-          ? Math.max(0, bounds.maxY - (index % 3) * (item.offsetHeight * 0.72))
-          : Math.min(bounds.maxY, 112 + (index % 4) * 24);
-        state.vx = reduceMotion ? 0 : (index % 2 ? -34 : 34);
-        state.vy = reduceMotion ? 0 : index * 8;
-      } else {
-        const next = clampPosition(item, state.x, state.y);
-        state.x = next.x;
-        state.y = next.y;
+      const old = oldStates[index];
+      const mobile = width < 960;
+      const maxX = Math.max(0, width - item.offsetWidth);
+      const initialX = item.offsetWidth / 2 + maxX * Number((mobile ? item.dataset.mobileX : item.dataset.x) || 0);
+      const initialY = reduceMotion
+        ? height - item.offsetHeight / 2 - 8 - (index % 3) * 6
+        : 100 + item.offsetHeight / 2 + (index % 4) * 18;
+      const body = Bodies.rectangle(
+        preserve && old ? Math.min(width - item.offsetWidth / 2, Math.max(item.offsetWidth / 2, old.x * width)) : initialX,
+        preserve && old ? Math.min(height - item.offsetHeight / 2, Math.max(item.offsetHeight / 2, old.y * height)) : initialY,
+        item.offsetWidth,
+        item.offsetHeight,
+        {
+          angle: preserve && old ? old.angle : (Number(item.dataset.rotate || 0) * Math.PI) / 180,
+          chamfer: { radius: bodyRadius(item) },
+          density: item.classList.contains("skill-drag-item--pill") ? 0.0012 : 0.0016,
+          friction: 0.42,
+          frictionStatic: 0.72,
+          frictionAir: 0.012,
+          restitution: 0.24,
+          sleepThreshold: 42,
+          isStatic: reduceMotion,
+        },
+      );
+
+      state.body = body;
+      if (preserve && old && !reduceMotion) {
+        Body.setVelocity(body, old.velocity);
+        Body.setAngularVelocity(body, old.angularVelocity);
+      } else if (!reduceMotion) {
+        Body.setVelocity(body, { x: index % 2 ? -0.7 : 0.7, y: index * 0.08 });
+        Body.setAngularVelocity(body, (index % 2 ? -1 : 1) * 0.006);
       }
-      render(item, state);
+      Composite.add(engine.world, body);
+      renderState(item, state);
     });
   };
 
-  const resolveCollisions = () => {
-    const bodies = items.map((item) => ({ item, state: states.get(item) }));
-
-    for (let pass = 0; pass < 4; pass += 1) {
-      for (let first = 0; first < bodies.length; first += 1) {
-        for (let second = first + 1; second < bodies.length; second += 1) {
-          const a = bodies[first];
-          const b = bodies[second];
-          const widthA = a.item.offsetWidth;
-          const heightA = a.item.offsetHeight;
-          const widthB = b.item.offsetWidth;
-          const heightB = b.item.offsetHeight;
-          const overlapX = Math.min(a.state.x + widthA, b.state.x + widthB) - Math.max(a.state.x, b.state.x);
-          const overlapY = Math.min(a.state.y + heightA, b.state.y + heightB) - Math.max(a.state.y, b.state.y);
-          if (overlapX <= 0 || overlapY <= 0) continue;
-
-          const inverseA = a.state.dragging ? 0 : 1;
-          const inverseB = b.state.dragging ? 0 : 1;
-          const inverseTotal = inverseA + inverseB;
-          if (!inverseTotal) continue;
-
-          if (overlapY < overlapX) {
-            const direction = a.state.y + heightA / 2 < b.state.y + heightB / 2 ? -1 : 1;
-            const correction = overlapY + 0.4;
-            a.state.y += direction * correction * (inverseA / inverseTotal);
-            b.state.y -= direction * correction * (inverseB / inverseTotal);
-            const relative = (a.state.vy - b.state.vy) * direction;
-            if (relative < 0) {
-              const impulse = -(1 + 0.16) * relative / inverseTotal;
-              a.state.vy += impulse * direction * inverseA;
-              b.state.vy -= impulse * direction * inverseB;
-            }
-          } else {
-            const direction = a.state.x + widthA / 2 < b.state.x + widthB / 2 ? -1 : 1;
-            const correction = overlapX + 0.4;
-            a.state.x += direction * correction * (inverseA / inverseTotal);
-            b.state.x -= direction * correction * (inverseB / inverseTotal);
-            const relative = (a.state.vx - b.state.vx) * direction;
-            if (relative < 0) {
-              const impulse = -(1 + 0.2) * relative / inverseTotal;
-              a.state.vx += impulse * direction * inverseA;
-              b.state.vx -= impulse * direction * inverseB;
-            }
-          }
-        }
-      }
-    }
-  };
-
-  const containBodies = () => {
-    items.forEach((item) => {
-      const state = states.get(item);
-      if (state.dragging) return;
-      const bounds = getBounds(item);
-
-      if (state.x < 0) {
-        state.x = 0;
-        state.vx = Math.abs(state.vx) * restitution;
-      } else if (state.x > bounds.maxX) {
-        state.x = bounds.maxX;
-        state.vx = -Math.abs(state.vx) * restitution;
-      }
-
-      if (state.y < 0) {
-        state.y = 0;
-        state.vy = Math.abs(state.vy) * restitution;
-      } else if (state.y > bounds.maxY) {
-        state.y = bounds.maxY;
-        state.vy = -Math.abs(state.vy) * restitution;
-        state.vx *= 0.78;
-        state.angularVelocity *= 0.7;
-        if (Math.abs(state.vy) < 28) state.vy = 0;
-        if (Math.abs(state.vx) < 4) state.vx = 0;
-      }
-    });
-  };
-
-  const physicsStep = (time) => {
-    if (!physicsActive || reduceMotion) {
-      physicsFrame = 0;
+  const tick = (time) => {
+    if (!sceneActive) {
+      frame = 0;
       return;
     }
-
-    const delta = previousPhysicsTime ? Math.min(0.028, (time - previousPhysicsTime) / 1000) : 0;
-    previousPhysicsTime = time;
-
-    items.forEach((item) => {
-      const state = states.get(item);
-      if (state.dragging) return;
-      state.vy += gravity * delta;
-      state.x += state.vx * delta;
-      state.y += state.vy * delta;
-      state.rotation += state.angularVelocity * delta;
-      state.vx *= Math.pow(0.996, delta * 60);
-      state.angularVelocity *= Math.pow(0.985, delta * 60);
-    });
-
-    containBodies();
-    resolveCollisions();
-    containBodies();
-    items.forEach((item) => render(item, states.get(item)));
-    physicsFrame = requestAnimationFrame(physicsStep);
+    const fixedStep = 1000 / 60;
+    const delta = previousTime ? Math.min(50, time - previousTime) : fixedStep;
+    previousTime = time;
+    accumulatedTime += delta;
+    while (accumulatedTime >= fixedStep) {
+      Engine.update(engine, fixedStep);
+      accumulatedTime -= fixedStep;
+    }
+    items.forEach((item) => renderState(item, states.get(item)));
+    frame = requestAnimationFrame(tick);
   };
 
-  const startPhysics = () => {
-    if (reduceMotion || physicsFrame) return;
-    physicsActive = true;
-    previousPhysicsTime = 0;
-    physicsFrame = requestAnimationFrame(physicsStep);
+  const startScene = () => {
+    if (frame || reduceMotion) return;
+    sceneActive = true;
+    previousTime = 0;
+    accumulatedTime = 0;
+    frame = requestAnimationFrame(tick);
   };
 
-  const stopPhysics = () => {
-    physicsActive = false;
-    if (physicsFrame) cancelAnimationFrame(physicsFrame);
-    physicsFrame = 0;
+  const stopScene = () => {
+    sceneActive = false;
+    if (frame) cancelAnimationFrame(frame);
+    frame = 0;
   };
 
   items.forEach((item, index) => {
     item.style.setProperty("--item-order", String(index));
     const state = {
-      x: 0,
-      y: 0,
-      vx: 0,
-      vy: 0,
-      rotation: Number(item.dataset.rotate || 0),
-      angularVelocity: (index % 2 ? -1 : 1) * (4 + (index % 3) * 2),
-      dragging: false,
+      body: null,
       pointerId: null,
-      offsetX: 0,
-      offsetY: 0,
+      pointerOffsetX: 0,
+      pointerOffsetY: 0,
       previousX: 0,
       previousY: 0,
-      previousTime: performance.now(),
+      previousTime: 0,
+      throwX: 0,
+      throwY: 0,
     };
     states.set(item, state);
 
     item.addEventListener("pointerdown", (event) => {
-      if (event.pointerType === "mouse" && event.button !== 0) return;
+      if (!state.body || (event.pointerType === "mouse" && event.button !== 0)) return;
       event.preventDefault();
-      const itemRect = item.getBoundingClientRect();
       const surfaceRect = surface.getBoundingClientRect();
-      state.dragging = true;
       state.pointerId = event.pointerId;
-      state.offsetX = event.clientX - itemRect.left;
-      state.offsetY = event.clientY - itemRect.top;
+      state.pointerOffsetX = event.clientX - surfaceRect.left - state.body.position.x;
+      state.pointerOffsetY = event.clientY - surfaceRect.top - state.body.position.y;
       state.previousX = event.clientX;
       state.previousY = event.clientY;
       state.previousTime = performance.now();
-      state.vx = 0;
-      state.vy = 0;
+      state.throwX = 0;
+      state.throwY = 0;
+      Sleeping.set(state.body, false);
+      Body.setStatic(state.body, true);
       topLayer += 1;
       item.style.zIndex = String(topLayer);
       item.classList.add("is-dragging");
       item.setPointerCapture(event.pointerId);
-
-      const next = clampPosition(
-        item,
-        event.clientX - surfaceRect.left - state.offsetX,
-        event.clientY - surfaceRect.top - state.offsetY,
-      );
-      state.x = next.x;
-      state.y = next.y;
-      render(item, state);
+      startScene();
     });
 
     item.addEventListener("pointermove", (event) => {
-      if (state.pointerId !== event.pointerId) return;
+      if (!state.body || state.pointerId !== event.pointerId) return;
       const surfaceRect = surface.getBoundingClientRect();
-      const next = clampPosition(
-        item,
-        event.clientX - surfaceRect.left - state.offsetX,
-        event.clientY - surfaceRect.top - state.offsetY,
+      const halfWidth = item.offsetWidth / 2;
+      const halfHeight = item.offsetHeight / 2;
+      const x = Math.min(
+        surface.clientWidth - halfWidth,
+        Math.max(halfWidth, event.clientX - surfaceRect.left - state.pointerOffsetX),
+      );
+      const y = Math.min(
+        surface.clientHeight - halfHeight,
+        Math.max(halfHeight, event.clientY - surfaceRect.top - state.pointerOffsetY),
       );
       const now = performance.now();
       const delta = Math.max(8, now - state.previousTime);
-      state.vx = ((event.clientX - state.previousX) / delta) * 1000;
-      state.vy = ((event.clientY - state.previousY) / delta) * 1000;
+      state.throwX = ((event.clientX - state.previousX) / delta) * (1000 / 60);
+      state.throwY = ((event.clientY - state.previousY) / delta) * (1000 / 60);
       state.previousX = event.clientX;
       state.previousY = event.clientY;
       state.previousTime = now;
-      state.x = next.x;
-      state.y = next.y;
-      render(item, state);
+      Body.setPosition(state.body, { x, y });
+      renderState(item, state);
     });
 
     const release = (event) => {
-      if (state.pointerId !== event.pointerId) return;
+      if (!state.body || state.pointerId !== event.pointerId) return;
       state.pointerId = null;
-      state.dragging = false;
       item.classList.remove("is-dragging");
       if (item.hasPointerCapture(event.pointerId)) item.releasePointerCapture(event.pointerId);
-      state.angularVelocity += Math.max(-32, Math.min(32, state.vx * 0.025));
-      startPhysics();
+      if (!reduceMotion) {
+        Body.setStatic(state.body, false);
+        Sleeping.set(state.body, false);
+        Body.setVelocity(state.body, {
+          x: Math.max(-22, Math.min(22, state.throwX)),
+          y: Math.max(-22, Math.min(22, state.throwY)),
+        });
+        Body.setAngularVelocity(state.body, Math.max(-0.12, Math.min(0.12, state.throwX * 0.006)));
+        startScene();
+      }
     };
 
     item.addEventListener("pointerup", release);
     item.addEventListener("pointercancel", release);
     item.addEventListener("keydown", (event) => {
+      if (!state.body) return;
       const step = event.shiftKey ? 32 : 12;
       const movement = {
         ArrowLeft: [-step, 0],
@@ -1001,34 +957,45 @@ function initSkillsPlayground() {
       }[event.key];
       if (!movement) return;
       event.preventDefault();
-      const next = clampPosition(item, state.x + movement[0], state.y + movement[1]);
-      state.x = next.x;
-      state.y = next.y;
+      const halfWidth = item.offsetWidth / 2;
+      const halfHeight = item.offsetHeight / 2;
+      Body.setPosition(state.body, {
+        x: Math.min(surface.clientWidth - halfWidth, Math.max(halfWidth, state.body.position.x + movement[0])),
+        y: Math.min(surface.clientHeight - halfHeight, Math.max(halfHeight, state.body.position.y + movement[1])),
+      });
+      if (!reduceMotion) {
+        Body.setStatic(state.body, false);
+        Sleeping.set(state.body, false);
+        Body.setVelocity(state.body, { x: movement[0] * 0.12, y: movement[1] * 0.12 });
+      }
       topLayer += 1;
       item.style.zIndex = String(topLayer);
-      render(item, state);
-      startPhysics();
+      renderState(item, state);
+      startScene();
     });
   });
 
-  requestAnimationFrame(() => layout(false));
-  const resizeObserver = new ResizeObserver(() => layout(true));
+  requestAnimationFrame(() => buildWorld(false));
+  let resizeFrame = 0;
+  const resizeObserver = new ResizeObserver(() => {
+    cancelAnimationFrame(resizeFrame);
+    resizeFrame = requestAnimationFrame(() => buildWorld(true));
+  });
   resizeObserver.observe(surface);
 
   const revealObserver = new IntersectionObserver(
     ([entry]) => {
       if (entry.isIntersecting) {
         playground.classList.add("is-ready");
-        startPhysics();
+        startScene();
       } else {
-        stopPhysics();
+        stopScene();
       }
     },
     { threshold: 0.08 },
   );
   revealObserver.observe(playground);
-
-  window.addEventListener("pagehide", stopPhysics, { once: true });
+  window.addEventListener("pagehide", stopScene, { once: true });
 }
 
 initSkillsPlayground();
