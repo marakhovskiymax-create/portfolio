@@ -2670,11 +2670,14 @@ body > .footer {
   overflow: hidden;
   border: 0;
   border-radius: 42px;
-  background:
-    radial-gradient(circle at 48% 108%, rgba(44, 96, 244, 0.34), transparent 58%),
-    linear-gradient(180deg, rgba(18, 37, 82, 0.34), rgba(11, 34, 91, 0.58));
-  box-shadow: inset 0 -80px 160px rgba(19, 61, 173, 0.12);
-  backdrop-filter: blur(12px) saturate(112%);
+  background: linear-gradient(
+    to top,
+    rgba(35, 82, 204, 0.46) 0%,
+    rgba(20, 51, 132, 0.2) 27%,
+    rgba(5, 5, 5, 0) 58%
+  );
+  box-shadow: none;
+  backdrop-filter: none;
   isolation: isolate;
 }
 
@@ -2786,8 +2789,10 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
 
 .skill-drag-item--pill {
   gap: 16px;
+  width: auto;
+  height: 86px;
   min-height: 86px;
-  padding: 20px 30px;
+  padding: 0 30px;
   border-radius: 999px;
   white-space: nowrap;
 }
@@ -2802,8 +2807,7 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
   background: rgba(92, 135, 255, 0.22);
 }
 
-.skill-drag-item__glyph svg,
-.skill-drag-item__vertical-content svg {
+.skill-drag-item__glyph svg {
   width: 24px;
   height: 24px;
   fill: none;
@@ -2811,25 +2815,6 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-width: 1.6;
-}
-
-.skill-drag-item--vertical {
-  width: 112px;
-  height: 326px;
-  border-radius: 56px;
-  padding: 22px;
-}
-
-.skill-drag-item__vertical-content {
-  display: inline-flex;
-  align-items: center;
-  gap: 14px;
-  white-space: nowrap;
-  transform: rotate(-90deg);
-}
-
-.skill-drag-item__vertical-content svg {
-  flex: 0 0 auto;
 }
 
 .skill-drag-item--tool {
@@ -2931,9 +2916,10 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
   }
 
   .skill-drag-item--pill {
+    height: 62px;
     min-height: 62px;
     gap: 10px;
-    padding: 14px 18px;
+    padding: 0 18px;
     font-size: 0.9rem;
   }
 
@@ -2943,18 +2929,9 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
     border-radius: 9px;
   }
 
-  .skill-drag-item__glyph svg,
-  .skill-drag-item__vertical-content svg {
+  .skill-drag-item__glyph svg {
     width: 19px;
     height: 19px;
-  }
-
-  .skill-drag-item--vertical {
-    width: 76px;
-    height: 250px;
-    padding: 16px;
-    font-size: 0.95rem;
-    z-index: 5;
   }
 
   .skill-drag-item--tool {
