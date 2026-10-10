@@ -1029,127 +1029,55 @@ function initContactForm() {
 }
 
 function initContactGlobe() {
-  const canvas = document.querySelector("[data-contact-globe]");
-  if (!canvas) return;
+  const svgElement = document.querySelector("[data-contact-globe]");
+  if (!svgElement || !window.d3 || !window.topojson) return;
 
-  const context = canvas.getContext("2d");
-  if (!context) return;
+  const container = svgElement.closest(".contact-globe");
+  if (!container) return;
 
-  const container = canvas.closest(".contact-globe");
+  const d3 = window.d3;
+  const svg = d3.select(svgElement);
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const tilt = -0.16;
+  const projection = d3.geoOrthographic().clipAngle(90).precision(0.2);
+  const path = d3.geoPath(projection);
+  const graticule = d3.geoGraticule10();
+  const sphere = { type: "Sphere" };
+  const spherePath = svg.append("path").attr("class", "contact-globe__sphere").datum(sphere);
+  const graticulePath = svg.append("path").attr("class", "contact-globe__graticule").datum(graticule);
+  const countriesLayer = svg.append("g").attr("class", "contact-globe__countries");
+
   let width = 0;
   let height = 0;
-  let ratio = 1;
-  let rotation = -0.78;
+  let rotation = [18, -16];
+  let countries = [];
   let visible = false;
+  let dragging = false;
+  let pointerId = null;
+  let lastPointer = [0, 0];
   let frameId = 0;
   let previousTime = 0;
 
   const syncSize = () => {
-    const rect = canvas.getBoundingClientRect();
+    const rect = svgElement.getBoundingClientRect();
     const nextWidth = Math.max(1, rect.width);
     const nextHeight = Math.max(1, rect.height);
-    const nextRatio = Math.min(window.devicePixelRatio || 1, 2);
-    if (nextWidth === width && nextHeight === height && nextRatio === ratio) return;
+    if (nextWidth === width && nextHeight === height) return false;
 
     width = nextWidth;
     height = nextHeight;
-    ratio = nextRatio;
-    canvas.width = Math.round(width * ratio);
-    canvas.height = Math.round(height * ratio);
-    context.setTransform(ratio, 0, 0, ratio, 0, 0);
-  };
-
-  const project = (latitude, longitude) => {
-    const phi = (latitude * Math.PI) / 180;
-    const lambda = (longitude * Math.PI) / 180 + rotation;
-    const baseX = Math.cos(phi) * Math.sin(lambda);
-    const baseY = Math.sin(phi);
-    const baseZ = Math.cos(phi) * Math.cos(lambda);
-    const y = baseY * Math.cos(tilt) - baseZ * Math.sin(tilt);
-    const z = baseY * Math.sin(tilt) + baseZ * Math.cos(tilt);
-    return { x: baseX, y, z };
-  };
-
-  const drawLine = (points, centerX, centerY, radius, alpha = 1) => {
-    let drawing = false;
-    context.beginPath();
-
-    points.forEach(([latitude, longitude]) => {
-      const point = project(latitude, longitude);
-      const x = centerX + point.x * radius;
-      const y = centerY - point.y * radius;
-
-      if (point.z > 0.005) {
-        if (!drawing) context.moveTo(x, y);
-        else context.lineTo(x, y);
-        drawing = true;
-      } else {
-        drawing = false;
-      }
-    });
-
-    context.globalAlpha = alpha;
-    context.stroke();
-  };
-
-  const range = (start, end, step) => {
-    const values = [];
-    for (let value = start; value <= end; value += step) values.push(value);
-    return values;
+    svgElement.setAttribute("viewBox", `0 0 ${width} ${height}`);
+    projection
+      .scale(Math.min(width, height) * 0.455)
+      .translate([width / 2, height * 0.5]);
+    return true;
   };
 
   const draw = () => {
     syncSize();
-    context.clearRect(0, 0, width, height);
-
-    const radius = Math.min(width, height) * 0.43;
-    const centerX = width / 2;
-    const centerY = height * 0.49;
-    const glow = context.createRadialGradient(centerX, centerY, radius * 0.2, centerX, centerY, radius * 1.12);
-    glow.addColorStop(0, "rgba(114, 201, 139, 0.10)");
-    glow.addColorStop(0.72, "rgba(114, 201, 139, 0.025)");
-    glow.addColorStop(1, "rgba(114, 201, 139, 0)");
-    context.fillStyle = glow;
-    context.beginPath();
-    context.arc(centerX, centerY, radius * 1.12, 0, Math.PI * 2);
-    context.fill();
-
-    context.lineWidth = 0.8;
-    context.strokeStyle = "rgba(244, 243, 238, 0.38)";
-    range(-60, 60, 20).forEach((latitude) => {
-      const points = range(-180, 180, 3).map((longitude) => [latitude, longitude]);
-      drawLine(points, centerX, centerY, radius, 0.38);
-    });
-
-    range(-150, 180, 30).forEach((longitude) => {
-      const points = range(-90, 90, 3).map((latitude) => [latitude, longitude]);
-      drawLine(points, centerX, centerY, radius, 0.3);
-    });
-
-    context.globalAlpha = 1;
-    context.lineWidth = 1.15;
-    context.strokeStyle = "rgba(244, 243, 238, 0.72)";
-    context.beginPath();
-    context.arc(centerX, centerY, radius, 0, Math.PI * 2);
-    context.stroke();
-
-    const marker = project(40.18, 44.51);
-    if (marker.z > 0) {
-      const x = centerX + marker.x * radius;
-      const y = centerY - marker.y * radius;
-      context.fillStyle = "rgba(114, 201, 139, 0.18)";
-      context.beginPath();
-      context.arc(x, y, 8, 0, Math.PI * 2);
-      context.fill();
-      context.fillStyle = "#72c98b";
-      context.beginPath();
-      context.arc(x, y, 3, 0, Math.PI * 2);
-      context.fill();
-    }
-
-    context.globalAlpha = 1;
+    projection.rotate(rotation);
+    spherePath.attr("d", path);
+    graticulePath.attr("d", path);
+    countriesLayer.selectAll(".contact-globe__country").attr("d", path);
   };
 
   const animate = (time) => {
@@ -1158,14 +1086,16 @@ function initContactGlobe() {
       return;
     }
 
-    if (previousTime) rotation += Math.min(time - previousTime, 32) * 0.000055;
+    if (previousTime && !dragging && !reduceMotion) {
+      rotation[0] = (rotation[0] + Math.min(time - previousTime, 32) * 0.0035) % 360;
+    }
     previousTime = time;
     draw();
     frameId = window.requestAnimationFrame(animate);
   };
 
   const start = () => {
-    if (reduceMotion) {
+    if (reduceMotion && !dragging) {
       draw();
       return;
     }
@@ -1187,9 +1117,62 @@ function initContactGlobe() {
     { threshold: 0.08 },
   );
 
-  observer.observe(container || canvas);
-  new ResizeObserver(() => draw()).observe(container || canvas);
-  document.addEventListener("visibilitychange", start);
+  observer.observe(container);
+  new ResizeObserver(draw).observe(container);
+
+  svgElement.addEventListener("pointerdown", (event) => {
+    dragging = true;
+    pointerId = event.pointerId;
+    lastPointer = [event.clientX, event.clientY];
+    svgElement.setPointerCapture(pointerId);
+    start();
+  });
+
+  svgElement.addEventListener("pointermove", (event) => {
+    if (!dragging || event.pointerId !== pointerId) return;
+    const dx = event.clientX - lastPointer[0];
+    const dy = event.clientY - lastPointer[1];
+    rotation[0] += dx * 0.28;
+    rotation[1] = Math.max(-75, Math.min(75, rotation[1] - dy * 0.28));
+    lastPointer = [event.clientX, event.clientY];
+    draw();
+  });
+
+  const endDrag = (event) => {
+    if (!dragging || event.pointerId !== pointerId) return;
+    dragging = false;
+    if (svgElement.hasPointerCapture(pointerId)) svgElement.releasePointerCapture(pointerId);
+    pointerId = null;
+    start();
+  };
+
+  svgElement.addEventListener("pointerup", endDrag);
+  svgElement.addEventListener("pointercancel", endDrag);
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden && frameId) {
+      window.cancelAnimationFrame(frameId);
+      frameId = 0;
+    } else {
+      start();
+    }
+  });
+
+  fetch("vendor/countries-110m.json")
+    .then((response) => {
+      if (!response.ok) throw new Error(`World atlas request failed: ${response.status}`);
+      return response.json();
+    })
+    .then((world) => {
+      countries = window.topojson.feature(world, world.objects.countries).features;
+      countriesLayer
+        .selectAll("path")
+        .data(countries)
+        .join("path")
+        .attr("class", "contact-globe__country");
+      draw();
+    })
+    .catch(() => draw());
+
   draw();
 }
 
@@ -1341,15 +1324,9 @@ if (window.TastemakerMotion && window.gsap && window.ScrollTrigger) {
     const contact = scrollScene("[data-motion-section='contact']", "top 76%");
     contact
       .fromTo(
-        ".contact__kicker",
-        { autoAlpha: 0, y: -12 },
-        { autoAlpha: 1, y: 0, duration: 0.48 },
-      )
-      .fromTo(
         ".contact h2",
         { autoAlpha: 0, y: 14 },
         { autoAlpha: 1, y: 0, duration: 0.55 },
-        "-=0.28",
       )
       .fromTo(
         ".contact__intro",

@@ -20,7 +20,7 @@
       type="image/svg+xml"
       href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23050505'/%3E%3Cpath d='M13 43V20h7l12 15 12-15h7v23h-7V31L32 46 20 31v12z' fill='%2372c98b'/%3E%3C/svg%3E"
     />
-    <link rel="stylesheet" href="styles.css?v=20261009-faq-smooth" />
+    <link rel="stylesheet" href="styles.css?v=20261010-contact-globe" />
     <script>
       document.documentElement.classList.replace("no-js", "js");
     </script>
@@ -561,7 +561,6 @@
 
       <section class="contact shell" id="contact" aria-labelledby="contact-title" data-motion-section="contact">
         <header class="contact__heading">
-          <p class="contact__kicker">Контакты</p>
           <h2 id="contact-title">Давайте обсудим задачу.</h2>
           <p class="contact__intro">
             Расскажите о продукте, команде и том, что сейчас важно изменить. Отвечу и предложу следующий шаг.
@@ -603,8 +602,7 @@
             </ul>
 
             <div class="contact-globe" aria-hidden="true">
-              <canvas width="600" height="600" data-contact-globe></canvas>
-              <span class="contact-globe__place">Ереван · GMT+4</span>
+              <svg viewBox="0 0 600 600" focusable="false" data-contact-globe></svg>
               <span class="contact-globe__fade"></span>
             </div>
           </div>
@@ -621,10 +619,6 @@
               <label>
                 <span>Имя</span>
                 <input name="name" type="text" value="Анна" autocomplete="name" required />
-              </label>
-              <label>
-                <span>Компания</span>
-                <input name="company" type="text" value="Новый продукт" autocomplete="organization" />
               </label>
             </div>
 
@@ -750,9 +744,11 @@
     </section>
 
     <script src="vendor/matter.min.js"></script>
+    <script src="vendor/d3.min.js"></script>
+    <script src="vendor/topojson-client.min.js"></script>
     <script src="vendor/gsap.min.js"></script>
     <script src="vendor/ScrollTrigger.min.js"></script>
     <script src="gsap-starter.js"></script>
-    <script src="script.js?v=20261009-faq-smooth"></script>
+    <script src="script.js?v=20261010-contact-globe"></script>
   </body>
 </html>

@@ -1665,19 +1665,6 @@ body.has-spider-cursor .spider-cursor {
   text-align: center;
 }
 
-.contact__kicker {
-  display: inline-flex;
-  min-height: 36px;
-  align-items: center;
-  padding-inline: 18px;
-  border: 1px solid rgba(114, 201, 139, 0.35);
-  border-radius: var(--radius-small);
-  background: rgba(114, 201, 139, 0.08);
-  color: var(--color-accent);
-  font-size: 0.875rem;
-  font-weight: 700;
-}
-
 .contact h2 {
   font-family: var(--font-display);
   font-size: clamp(3rem, 5.5vw, 5.8rem);
@@ -1695,10 +1682,10 @@ body.has-spider-cursor .spider-cursor {
 
 .contact__grid {
   display: grid;
-  max-width: 1120px;
-  grid-template-columns: minmax(0, 0.9fr) minmax(420px, 1.1fr);
-  align-items: stretch;
-  gap: 40px;
+  max-width: 1240px;
+  grid-template-columns: minmax(0, 1.5fr) minmax(340px, 1fr);
+  align-items: start;
+  gap: 28px;
   margin: 64px auto 0;
 }
 
@@ -1709,7 +1696,7 @@ body.has-spider-cursor .spider-cursor {
 
 .contact__details {
   display: flex;
-  min-height: 610px;
+  min-height: 640px;
   flex-direction: column;
   gap: 28px;
   overflow: hidden;
@@ -1780,34 +1767,46 @@ body.has-spider-cursor .spider-cursor {
 
 .contact-globe {
   position: relative;
-  min-height: 260px;
+  min-height: 330px;
   flex: 1;
-  margin: 0 -10px;
+  margin: 0 -18px;
   overflow: hidden;
 }
 
-.contact-globe canvas {
+.contact-globe svg {
   position: absolute;
-  inset: -8% 50% auto auto;
-  width: min(520px, 118%);
+  inset: 0 auto auto 50%;
+  width: min(740px, 122%);
   max-width: none;
   aspect-ratio: 1;
-  transform: translateX(50%);
+  color: var(--color-primary);
+  cursor: grab;
+  touch-action: none;
+  transform: translateX(-50%);
+  user-select: none;
 }
 
-.contact-globe__place {
-  position: absolute;
-  z-index: 2;
-  inset: auto auto 42px 50%;
-  min-width: max-content;
-  padding: 7px 12px;
-  border: 1px solid rgba(114, 201, 139, 0.35);
-  border-radius: var(--radius-small);
-  background: rgba(5, 5, 5, 0.86);
-  color: var(--color-accent);
-  font-size: 0.75rem;
-  font-weight: 700;
-  transform: translateX(-50%);
+.contact-globe svg:active {
+  cursor: grabbing;
+}
+
+.contact-globe__sphere {
+  fill: rgba(114, 201, 139, 0.018);
+  stroke: rgba(244, 243, 238, 0.66);
+  stroke-width: 1.15;
+}
+
+.contact-globe__graticule {
+  fill: none;
+  stroke: rgba(244, 243, 238, 0.15);
+  stroke-width: 0.65;
+}
+
+.contact-globe__country {
+  fill: rgba(114, 201, 139, 0.018);
+  stroke: rgba(244, 243, 238, 0.42);
+  stroke-width: 0.62;
+  vector-effect: non-scaling-stroke;
 }
 
 .contact-globe__fade {
@@ -1823,7 +1822,7 @@ body.has-spider-cursor .spider-cursor {
   display: flex;
   flex-direction: column;
   gap: 22px;
-  padding: 34px;
+  padding: 30px;
   border: 1px solid rgba(244, 243, 238, 0.13);
   border-radius: var(--radius-large);
   background: rgba(11, 13, 11, 0.94);
@@ -1836,7 +1835,7 @@ body.has-spider-cursor .spider-cursor {
 
 .contact-form__row {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
   gap: 16px;
 }
 
@@ -2451,10 +2450,6 @@ body.has-spider-cursor .spider-cursor {
   .contact-form__submit,
   .contact-form__submit span {
     transition-duration: var(--motion-fast);
-  }
-
-  .contact-globe canvas {
-    transform: translateX(50%);
   }
 
   .project-hover-highlight {
