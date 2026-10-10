@@ -31,7 +31,7 @@ Established: 2026-09-27. Source: Figma reference node 13:18 supplied by the user
 
 ## Density & spacing
 - Base unit: 4px
-- Section padding: connective 96px, standard 128px, pivotal 160 to 192px
+- Section rhythm: exactly 180px between the visible content of every adjacent top-level block, including the capability tape, footer, and skills playground
 - Content card internal padding: 32px
 - Showcase internal padding: 24px
 - Overall density: generous editorial whitespace
