@@ -550,6 +550,10 @@ body.has-spider-cursor .spider-cursor {
   --project-accent: var(--color-accent);
 }
 
+.case-visual[data-project-visual="amo-crm"] {
+  --project-accent: #59b7df;
+}
+
 .case-visual[data-project-visual="eme-app"] {
   --project-accent: #c8d88d;
 }
@@ -614,6 +618,11 @@ body.has-spider-cursor .spider-cursor {
 
 .time-machine__card.is-current {
   border-color: color-mix(in srgb, var(--card-accent) 62%, transparent);
+}
+
+.time-machine__card--amo {
+  --card-accent: #59b7df;
+  background: linear-gradient(145deg, #172a34, #10181d 72%);
 }
 
 .time-machine__card--eme-web {
@@ -714,6 +723,36 @@ body.has-spider-cursor .spider-cursor {
   background-size: auto, auto, auto, 18px 18px, 18px 18px;
 }
 
+.time-machine__graphic--amo {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(5px, 0.75vw, 10px);
+  padding: clamp(7px, 1vw, 13px);
+  background-image:
+    radial-gradient(circle at 76% 22%, color-mix(in srgb, var(--card-accent) 86%, white) 0 3px, transparent 4px),
+    linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+  background-size: auto, 18px 18px, 18px 18px;
+}
+
+.time-machine__graphic--amo > span {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(4px, 0.6vw, 8px);
+  align-self: stretch;
+  padding: clamp(5px, 0.7vw, 9px);
+  border-radius: clamp(5px, 0.65vw, 8px);
+  background: rgba(89, 183, 223, 0.08);
+}
+
+.time-machine__graphic--amo i {
+  display: block;
+  height: clamp(12px, 1.9vw, 24px);
+  border: 1px solid color-mix(in srgb, var(--card-accent) 34%, transparent);
+  border-radius: clamp(4px, 0.55vw, 7px);
+  background: color-mix(in srgb, var(--card-accent) 12%, #10181d);
+}
+
 .time-machine__graphic--warehouse {
   background-image:
     linear-gradient(to top, var(--card-accent) 0 48%, transparent 49%) 16% 100% / 13% 72%,
@@ -791,7 +830,7 @@ body.has-spider-cursor .spider-cursor {
   grid-column: 2;
   grid-row: 1;
   height: min(72%, 400px);
-  grid-template-rows: repeat(5, minmax(0, 1fr));
+  grid-template-rows: repeat(6, minmax(0, 1fr));
   row-gap: 0;
   align-self: center;
 }
@@ -2297,7 +2336,7 @@ body.has-spider-cursor .spider-cursor {
   }
 
   .time-machine__timeline {
-    height: 240px;
+    height: 276px;
   }
 
   .time-machine__stop {
