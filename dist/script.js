@@ -1202,28 +1202,31 @@ function initAboutBadgeMorph() {
     return (progress) => response(progress * seconds) / endValue;
   };
 
-  const shapeSpring = springEase(380, 20, 0.8, 0.52);
-  const tabSpring = springEase(320, 22, 0.8, 0.56);
+  const shapeSpring = springEase(380, 20, 0.8, 0.34);
+  const tabSpring = springEase(320, 22, 0.8, 0.38);
 
   const play = () => {
     const timeline = window.gsap.timeline({ defaults: { overwrite: "auto" } });
-    timeline
-      .to(shapes, {
+
+    badges.forEach((badge, index) => {
+      const shape = shapes[index];
+      const label = labels[index];
+      const start = index * 0.13;
+
+      timeline.to(shape, {
         autoAlpha: 1,
         scale: 1,
-        duration: 0.52,
+        duration: 0.34,
         ease: shapeSpring,
-        stagger: 0.1,
-      })
-      .to(shapes, {
+      }, start)
+      .to(shape, {
         autoAlpha: 0,
         scale: 0.2,
-        duration: 0.35,
+        duration: 0.18,
         ease: "power2.inOut",
-        stagger: 0.035,
-      }, "+=0.68")
+      }, start + 0.38)
       .fromTo(
-        badges,
+        badge,
         {
           scale: 0.2,
           backgroundColor: "rgba(244, 243, 238, 0)",
@@ -1231,18 +1234,17 @@ function initAboutBadgeMorph() {
         {
           scale: 1,
           backgroundColor: "rgb(244, 243, 238)",
-          duration: 0.56,
+          duration: 0.38,
           ease: tabSpring,
-          stagger: 0.085,
         },
-        "-=0.25",
+        start + 0.43,
       )
-      .to(labels, {
+      .to(label, {
         autoAlpha: 1,
-        duration: 0.2,
+        duration: 0.14,
         ease: "power2.out",
-        stagger: 0.085,
-      }, "-=0.5");
+      }, start + 0.52);
+    });
   };
 
   const observer = new IntersectionObserver(
@@ -1251,7 +1253,7 @@ function initAboutBadgeMorph() {
       observer.disconnect();
       play();
     },
-    { threshold: 0.38 },
+    { threshold: 0.01 },
   );
 
   observer.observe(section);
