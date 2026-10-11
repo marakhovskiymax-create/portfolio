@@ -1,8 +1,10 @@
 # Third-party notices
 
-## Amicro Time Machine Stack
+## Amicro Time Machine Stack and Shapes Heart Morph
 
-The portfolio card-stack interaction is adapted from `card-time-machine` in
+The portfolio card-stack interaction is adapted from `card-time-machine`, and
+the about-badge entrance is adapted from `ShapesHeartMorph` (`Cartoon Shapes to
+Heart`) in
 [Amicro](https://github.com/Subhan-code/Amicro--Micro-transitions-), created by
 Syed Subhan Uddin and distributed under the MIT License.
 

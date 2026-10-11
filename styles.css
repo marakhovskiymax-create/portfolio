@@ -1443,6 +1443,38 @@ body.has-spider-cursor .spider-cursor {
   white-space: nowrap;
 }
 
+.about-badge__label {
+  position: relative;
+  z-index: 1;
+}
+
+.about-badge__shape {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  left: 50%;
+  width: 58px;
+  height: 58px;
+  overflow: visible;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  visibility: hidden;
+}
+
+.about-badge__shape--wide {
+  width: 66px;
+  height: 66px;
+}
+
+.about-badge__shape path,
+.about-badge__shape .about-badge__shape-body {
+  fill: var(--color-primary);
+}
+
+.about-badge__shape circle:not(.about-badge__shape-body) {
+  fill: var(--color-ink);
+}
+
 .about-badge--vibe {
   inset: 158px auto auto 1.5%;
   transform: rotate(-1.5deg);

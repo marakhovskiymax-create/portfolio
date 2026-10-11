@@ -1179,6 +1179,86 @@ function initContactGlobe() {
 initContactForm();
 initContactGlobe();
 
+function initAboutBadgeMorph() {
+  const section = document.querySelector("[data-motion-section='about']");
+  const badges = Array.from(section?.querySelectorAll(".about-badge") ?? []);
+  const shapes = badges.map((badge) => badge.querySelector(".about-badge__shape"));
+  const labels = badges.map((badge) => badge.querySelector(".about-badge__label"));
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (!section || !badges.length || shapes.some((shape) => !shape) || labels.some((label) => !label) || !window.gsap || reduceMotion) return;
+
+  window.gsap.set(badges, { autoAlpha: 1, backgroundColor: "rgba(244, 243, 238, 0)" });
+  window.gsap.set(labels, { autoAlpha: 0 });
+  window.gsap.set(shapes, { autoAlpha: 0, scale: 0, transformOrigin: "50% 50%" });
+
+  const springEase = (stiffness, damping, mass, seconds) => {
+    const naturalFrequency = Math.sqrt(stiffness / mass);
+    const dampingRatio = damping / (2 * Math.sqrt(stiffness * mass));
+    const dampedFrequency = naturalFrequency * Math.sqrt(1 - dampingRatio * dampingRatio);
+    const response = (time) => 1 - Math.exp(-dampingRatio * naturalFrequency * time)
+      * (Math.cos(dampedFrequency * time) + (dampingRatio * naturalFrequency / dampedFrequency) * Math.sin(dampedFrequency * time));
+    const endValue = response(seconds);
+    return (progress) => response(progress * seconds) / endValue;
+  };
+
+  const shapeSpring = springEase(380, 20, 0.8, 0.52);
+  const tabSpring = springEase(320, 22, 0.8, 0.56);
+
+  const play = () => {
+    const timeline = window.gsap.timeline({ defaults: { overwrite: "auto" } });
+    timeline
+      .to(shapes, {
+        autoAlpha: 1,
+        scale: 1,
+        duration: 0.52,
+        ease: shapeSpring,
+        stagger: 0.1,
+      })
+      .to(shapes, {
+        autoAlpha: 0,
+        scale: 0.2,
+        duration: 0.35,
+        ease: "power2.inOut",
+        stagger: 0.035,
+      }, "+=0.68")
+      .fromTo(
+        badges,
+        {
+          scale: 0.2,
+          backgroundColor: "rgba(244, 243, 238, 0)",
+        },
+        {
+          scale: 1,
+          backgroundColor: "rgb(244, 243, 238)",
+          duration: 0.56,
+          ease: tabSpring,
+          stagger: 0.085,
+        },
+        "-=0.25",
+      )
+      .to(labels, {
+        autoAlpha: 1,
+        duration: 0.2,
+        ease: "power2.out",
+        stagger: 0.085,
+      }, "-=0.5");
+  };
+
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      if (!entry.isIntersecting) return;
+      observer.disconnect();
+      play();
+    },
+    { threshold: 0.38 },
+  );
+
+  observer.observe(section);
+}
+
+initAboutBadgeMorph();
+
 if (window.TastemakerMotion && window.gsap && window.ScrollTrigger) {
   window.TastemakerMotion.init({
     duration: 0.24,
@@ -1274,12 +1354,6 @@ if (window.TastemakerMotion && window.gsap && window.ScrollTrigger) {
         { autoAlpha: 0, x: 32 },
         { autoAlpha: 1, x: 0, duration: 0.48 },
         "-=0.36",
-      )
-      .fromTo(
-        ".about-badge",
-        { autoAlpha: 0, y: 16, scale: 0.94 },
-        { autoAlpha: 1, y: 0, scale: 1, duration: 0.24, stagger: 0.06 },
-        "-=0.18",
       );
 
     const faq = scrollScene("[data-motion-section='faq']", "top 74%");
