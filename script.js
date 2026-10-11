@@ -24,6 +24,7 @@ const visualCaption = visual?.querySelector("[data-visual-caption]");
 const stageCards = Array.from(visual?.querySelectorAll("[data-stage-card]") ?? []);
 const timeMachineStops = Array.from(visual?.querySelectorAll("[data-stage-index]") ?? []);
 const timeMachineTimeline = visual?.querySelector(".time-machine__timeline");
+const timeMachineStageLink = visual?.querySelector("[data-stage-link]");
 const reduceTimeMachineMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 function syncTimeMachine(activeIndex, immediate = false) {
@@ -40,6 +41,9 @@ function syncTimeMachine(activeIndex, immediate = false) {
     };
 
     card.classList.toggle("is-current", offset === 0);
+    card.setAttribute("aria-hidden", String(offset !== 0));
+    card.style.pointerEvents = offset === 0 ? "auto" : "none";
+    if (card.matches("a[href]")) card.tabIndex = offset === 0 ? 0 : -1;
     card.style.zIndex = String(stageCards.length - index);
 
     if (window.gsap && !reduceTimeMachineMotion && !immediate) {
@@ -58,8 +62,29 @@ function syncTimeMachine(activeIndex, immediate = false) {
     if (!stop.classList.contains("time-machine__stop--main")) return;
     const isActive = Number(stop.dataset.stageIndex) === activeIndex;
     stop.classList.toggle("is-active", isActive);
-    stop.setAttribute("aria-pressed", String(isActive));
+    if (stop.matches("a[href]")) {
+      if (isActive) stop.setAttribute("aria-current", "true");
+      else stop.removeAttribute("aria-current");
+    } else {
+      stop.setAttribute("aria-pressed", String(isActive));
+    }
   });
+
+  const activeCard = stageCards[activeIndex];
+  const activeCaseHref = activeCard?.dataset.caseHref;
+  if (timeMachineStageLink) {
+    if (activeCaseHref) {
+      timeMachineStageLink.href = activeCaseHref;
+      timeMachineStageLink.setAttribute("aria-label", `Открыть кейс ${activeCard.dataset.stageCard === "amo-crm" ? "amoCRM" : "проекта"}`);
+      timeMachineStageLink.classList.add("is-active");
+      timeMachineStageLink.tabIndex = 0;
+    } else {
+      timeMachineStageLink.removeAttribute("href");
+      timeMachineStageLink.removeAttribute("aria-label");
+      timeMachineStageLink.classList.remove("is-active");
+      timeMachineStageLink.tabIndex = -1;
+    }
+  }
 }
 
 function syncTimeMachineHover(hoveredIndex = null) {
@@ -93,7 +118,10 @@ function activateProject(index) {
 timeMachineStops.forEach((stop) => {
   const stopIndex = Number(stop.dataset.stageIndex);
   const activate = () => activateProject(Math.round(stopIndex));
-  stop.addEventListener("click", activate);
+  stop.addEventListener("click", () => {
+    if (stop.matches("a[href]")) return;
+    activate();
+  });
   stop.addEventListener("pointerenter", () => {
     syncTimeMachineHover(stopIndex);
     activate();

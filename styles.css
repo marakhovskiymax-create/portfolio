@@ -620,6 +620,33 @@ body.has-spider-cursor .spider-cursor {
   border-color: color-mix(in srgb, var(--card-accent) 62%, transparent);
 }
 
+.time-machine__card[data-case-href].is-current {
+  cursor: pointer;
+}
+
+.time-machine__card[data-case-href]:focus-visible {
+  outline: 2px solid var(--card-accent);
+  outline-offset: 5px;
+}
+
+.time-machine__stage-link {
+  position: absolute;
+  z-index: 20;
+  inset: 0;
+  display: none;
+  border-radius: clamp(14px, 1.6vw, 24px);
+}
+
+.time-machine__stage-link.is-active {
+  display: block;
+  cursor: pointer;
+}
+
+.time-machine__stage-link:focus-visible {
+  outline: 2px solid var(--project-accent);
+  outline-offset: 5px;
+}
+
 .time-machine__card--amo {
   --card-accent: #59b7df;
   background: linear-gradient(145deg, #172a34, #10181d 72%);

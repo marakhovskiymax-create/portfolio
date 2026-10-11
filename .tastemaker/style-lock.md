@@ -44,6 +44,7 @@ Established: 2026-09-27. Source: Figma reference node 13:18 supplied by the user
 - Body archetypes: H2 oversized split-title typographic hero, F6 project ledger with focused visual, P2 pull quotes, C2 statement close
 - Personal context: three asymmetrically placed text islands with seven white pill badges floating between them on wide screens; stacked reading order with a two-column badge cloud on mobile
 - Build stamp and `.tastemaker/log.json` record this implementation.
+- Case studies: an eight-section editorial narrative with a persistent contents rail, a manual interface carousel, a split context accordion, an interactive work-area canvas, concise image-led product stories, and a verified impact close. The homepage card and its matching project stop are equal entry points into the case.
 
 ## Taste memory
 - Profile priors used: none
@@ -61,6 +62,7 @@ Quiet, cosmic, editorial, assured.
 - Motion runtime: vendored GSAP 3.12.5 and ScrollTrigger 3.12.5, so the scroll story does not depend on CDN availability
 - Illustration versus photography: no photography in this first homepage pass
 - Logo: typographic wordmark from the supplied design; favicon uses a simple M motif
+- amoCRM case assets: use only the three product images extracted from the supplied blueprint; unsupported product areas are represented with clearly diagrammatic, code-native flows rather than invented screenshots
 
 ## Motion
 - Feel: quick, fluid, and restrained; inspired by Fluid Functionalism without copying its visual identity
@@ -74,6 +76,7 @@ Quiet, cosmic, editorial, assured.
 - Contact behavior: the close uses a 3:2 desktop split with the wider direct-contact panel carrying a source-faithful orthographic wireframe globe; 177 country outlines and a restrained graticule rotate only while visible, accept direct pointer or touch rotation, and become static under reduced motion; the compact message form omits company, while the heading omits the former contact badge and the globe omits location or time labels
 - Frequency: one shared highlight glides between adjacent project rows while the single preview updates; the star field changes composition with page scroll and adds low-amplitude drift plus restrained twinkle to free stars; particles connected to the cursor remain stable; the cursor entity has no autonomous drift and smoothly dissolves into a bright white organic perimeter around links, buttons, project rows, quote cards, or interest badges; career tabs retain a generous hit area while their cursor perimeter hugs only the visible logo; every perimeter inherits its target's actual corner geometry
 - Reduced motion: the global Spider Cursor is removed and the hero keeps its static star field; no parallax or sliding highlight; marquee paused; opacity and color feedback remain short
+- Case-study behavior: the interface carousel is manual-only with arrows, keyboard and swipe control; the context accordion keeps one item open; the left contents rail follows the current section; the work-area canvas updates its explanation without navigating; metrics are restricted to the three delivery counts documented in the supplied blueprint
 - Verified by: scripted motion, coherence, and anti-slop audits plus desktop and 390px browser QA on 2026-09-28
 
 ## Do not
