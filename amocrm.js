@@ -202,6 +202,267 @@ function selectWorkChip(chip) {
 workChips.forEach((chip) => chip.addEventListener("click", () => selectWorkChip(chip)));
 if (workChips[0]) selectWorkChip(workChips[0]);
 
+function initWorkAreasPhysics() {
+  const surface = document.querySelector("[data-work-areas]");
+  const items = surface ? Array.from(surface.querySelectorAll(".work-chip")) : [];
+  if (!surface || !items.length || !window.Matter || prefersReducedMotion) return;
+
+  const { Body, Bodies, Composite, Engine, Sleeping } = window.Matter;
+  const engine = Engine.create({ enableSleeping: true, positionIterations: 8, velocityIterations: 6 });
+  const states = new Map();
+  let frame = 0;
+  let previousTime = 0;
+  let accumulatedTime = 0;
+  let sceneActive = false;
+  let topLayer = 20;
+  let resizeFrame = 0;
+
+  engine.gravity.y = 1;
+  engine.gravity.scale = 0.00145;
+
+  const renderState = (item, state) => {
+    if (!state.body) return;
+    item.style.setProperty("--work-x", `${state.body.position.x - item.offsetWidth / 2}px`);
+    item.style.setProperty("--work-y", `${state.body.position.y - item.offsetHeight / 2}px`);
+    item.style.setProperty("--work-rotate", `${state.body.angle}rad`);
+  };
+
+  const buildWorld = (preserve = false) => {
+    const width = surface.clientWidth;
+    const height = surface.clientHeight;
+    const selection = surface.querySelector(".work-areas__selection");
+    const usableHeight = Math.max(260, height - (selection?.offsetHeight || 0) - 34);
+    const oldStates = items.map((item) => {
+      const body = states.get(item)?.body;
+      return body
+        ? {
+            x: body.position.x / Math.max(1, width),
+            y: body.position.y / Math.max(1, usableHeight),
+            angle: body.angle,
+            velocity: { ...body.velocity },
+            angularVelocity: body.angularVelocity,
+          }
+        : null;
+    });
+
+    Composite.clear(engine.world, false);
+    const wallDepth = 120;
+    Composite.add(engine.world, [
+      Bodies.rectangle(width / 2, usableHeight + wallDepth / 2, width + wallDepth * 2, wallDepth, { isStatic: true }),
+      Bodies.rectangle(-wallDepth / 2, usableHeight / 2, wallDepth, usableHeight + wallDepth * 2, { isStatic: true }),
+      Bodies.rectangle(width + wallDepth / 2, usableHeight / 2, wallDepth, usableHeight + wallDepth * 2, { isStatic: true }),
+      Bodies.rectangle(width / 2, -wallDepth / 2, width + wallDepth * 2, wallDepth, { isStatic: true }),
+    ]);
+
+    items.forEach((item, index) => {
+      const state = states.get(item);
+      const old = oldStates[index];
+      const style = getComputedStyle(item);
+      const desktopSpawnX = [0.1, 0.45, 0.18, 0.65, 0.05, 0.55];
+      const compact = width < 600;
+      const xRatio = compact ? (index % 2 ? 0.98 : 0.02) : desktopSpawnX[index] ?? index / items.length;
+      const spawnRow = compact ? Math.floor(index / 2) : index % 3;
+      const halfWidth = item.offsetWidth / 2;
+      const halfHeight = item.offsetHeight / 2;
+      const body = Bodies.rectangle(
+        preserve && old
+          ? Math.min(width - halfWidth, Math.max(halfWidth, old.x * width))
+          : halfWidth + Math.max(0, width - item.offsetWidth) * xRatio,
+        preserve && old
+          ? Math.min(usableHeight - halfHeight, Math.max(halfHeight, old.y * usableHeight))
+          : 48 + halfHeight + spawnRow * (compact ? 82 : 88),
+        item.offsetWidth,
+        item.offsetHeight,
+        {
+          angle: preserve && old ? old.angle : (Number.parseFloat(style.getPropertyValue("--r")) * Math.PI) / 180 || 0,
+          chamfer: { radius: 8 },
+          density: 0.00125,
+          friction: 0.42,
+          frictionStatic: 0.72,
+          frictionAir: 0.012,
+          restitution: 0.24,
+          sleepThreshold: 42,
+        },
+      );
+      Body.setInertia(body, body.inertia * 20);
+
+      state.body = body;
+      if (preserve && old) {
+        Body.setVelocity(body, old.velocity);
+        Body.setAngularVelocity(body, old.angularVelocity);
+      } else {
+        Body.setVelocity(body, { x: index % 2 ? -0.7 : 0.7, y: index * 0.08 });
+        Body.setAngularVelocity(body, (index % 2 ? -1 : 1) * 0.006);
+      }
+      Composite.add(engine.world, body);
+      renderState(item, state);
+    });
+  };
+
+  const tick = (time) => {
+    if (!sceneActive) {
+      frame = 0;
+      return;
+    }
+    const fixedStep = 1000 / 60;
+    const delta = previousTime ? Math.min(50, time - previousTime) : fixedStep;
+    previousTime = time;
+    accumulatedTime += delta;
+    while (accumulatedTime >= fixedStep) {
+      Engine.update(engine, fixedStep);
+      accumulatedTime -= fixedStep;
+    }
+    items.forEach((item) => renderState(item, states.get(item)));
+    frame = window.requestAnimationFrame(tick);
+  };
+
+  const startScene = () => {
+    if (frame) return;
+    sceneActive = true;
+    previousTime = 0;
+    accumulatedTime = 0;
+    frame = window.requestAnimationFrame(tick);
+  };
+
+  const stopScene = () => {
+    sceneActive = false;
+    if (frame) window.cancelAnimationFrame(frame);
+    frame = 0;
+  };
+
+  surface.classList.add("is-physics-ready");
+  items.forEach((item) => {
+    const state = {
+      body: null,
+      pointerId: null,
+      pointerOffsetX: 0,
+      pointerOffsetY: 0,
+      previousX: 0,
+      previousY: 0,
+      previousTime: 0,
+      throwX: 0,
+      throwY: 0,
+      dragDistance: 0,
+      suppressClick: false,
+    };
+    states.set(item, state);
+
+    item.addEventListener("click", (event) => {
+      if (!state.suppressClick) return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      state.suppressClick = false;
+    }, true);
+
+    item.addEventListener("pointerdown", (event) => {
+      if (!state.body || (event.pointerType === "mouse" && event.button !== 0)) return;
+      event.preventDefault();
+      const surfaceRect = surface.getBoundingClientRect();
+      state.pointerId = event.pointerId;
+      state.pointerOffsetX = event.clientX - surfaceRect.left - state.body.position.x;
+      state.pointerOffsetY = event.clientY - surfaceRect.top - state.body.position.y;
+      state.previousX = event.clientX;
+      state.previousY = event.clientY;
+      state.previousTime = performance.now();
+      state.throwX = 0;
+      state.throwY = 0;
+      state.dragDistance = 0;
+      state.suppressClick = false;
+      Sleeping.set(state.body, false);
+      Body.setStatic(state.body, true);
+      topLayer += 1;
+      item.style.zIndex = String(topLayer);
+      item.classList.add("is-dragging");
+      item.setPointerCapture(event.pointerId);
+      startScene();
+    });
+
+    item.addEventListener("pointermove", (event) => {
+      if (!state.body || state.pointerId !== event.pointerId) return;
+      const surfaceRect = surface.getBoundingClientRect();
+      const halfWidth = item.offsetWidth / 2;
+      const halfHeight = item.offsetHeight / 2;
+      const footerHeight = surface.querySelector(".work-areas__selection")?.offsetHeight || 0;
+      const maxY = surface.clientHeight - footerHeight - 34 - halfHeight;
+      const x = Math.min(surface.clientWidth - halfWidth, Math.max(halfWidth, event.clientX - surfaceRect.left - state.pointerOffsetX));
+      const y = Math.min(maxY, Math.max(halfHeight, event.clientY - surfaceRect.top - state.pointerOffsetY));
+      const now = performance.now();
+      const delta = Math.max(8, now - state.previousTime);
+      const moveX = event.clientX - state.previousX;
+      const moveY = event.clientY - state.previousY;
+      state.dragDistance += Math.hypot(moveX, moveY);
+      state.throwX = (moveX / delta) * (1000 / 60);
+      state.throwY = (moveY / delta) * (1000 / 60);
+      state.previousX = event.clientX;
+      state.previousY = event.clientY;
+      state.previousTime = now;
+      Body.setPosition(state.body, { x, y });
+      renderState(item, state);
+    });
+
+    const release = (event) => {
+      if (!state.body || state.pointerId !== event.pointerId) return;
+      state.pointerId = null;
+      state.suppressClick = state.dragDistance > 6;
+      item.classList.remove("is-dragging");
+      if (item.hasPointerCapture(event.pointerId)) item.releasePointerCapture(event.pointerId);
+      Body.setStatic(state.body, false);
+      Sleeping.set(state.body, false);
+      Body.setVelocity(state.body, {
+        x: Math.max(-22, Math.min(22, state.throwX)),
+        y: Math.max(-22, Math.min(22, state.throwY)),
+      });
+      Body.setAngularVelocity(state.body, Math.max(-0.12, Math.min(0.12, state.throwX * 0.006)));
+      startScene();
+    };
+
+    item.addEventListener("pointerup", release);
+    item.addEventListener("pointercancel", release);
+    item.addEventListener("keydown", (event) => {
+      if (!state.body) return;
+      const step = event.shiftKey ? 32 : 12;
+      const movement = {
+        ArrowLeft: [-step, 0],
+        ArrowRight: [step, 0],
+        ArrowUp: [0, -step],
+        ArrowDown: [0, step],
+      }[event.key];
+      if (!movement) return;
+      event.preventDefault();
+      const halfWidth = item.offsetWidth / 2;
+      const halfHeight = item.offsetHeight / 2;
+      const footerHeight = surface.querySelector(".work-areas__selection")?.offsetHeight || 0;
+      const maxY = surface.clientHeight - footerHeight - 34 - halfHeight;
+      Body.setPosition(state.body, {
+        x: Math.min(surface.clientWidth - halfWidth, Math.max(halfWidth, state.body.position.x + movement[0])),
+        y: Math.min(maxY, Math.max(halfHeight, state.body.position.y + movement[1])),
+      });
+      Body.setVelocity(state.body, { x: movement[0] * 0.12, y: movement[1] * 0.12 });
+      Sleeping.set(state.body, false);
+      topLayer += 1;
+      item.style.zIndex = String(topLayer);
+      renderState(item, state);
+      startScene();
+    });
+  });
+
+  window.requestAnimationFrame(() => buildWorld(false));
+  const resizeObserver = new ResizeObserver(() => {
+    window.cancelAnimationFrame(resizeFrame);
+    resizeFrame = window.requestAnimationFrame(() => buildWorld(true));
+  });
+  resizeObserver.observe(surface);
+
+  const visibilityObserver = new IntersectionObserver(([entry]) => {
+    if (entry.isIntersecting) startScene();
+    else stopScene();
+  }, { threshold: 0.08 });
+  visibilityObserver.observe(surface);
+  window.addEventListener("pagehide", stopScene, { once: true });
+}
+
+initWorkAreasPhysics();
+
 const revealItems = Array.from(document.querySelectorAll("[data-case-reveal]"));
 if (prefersReducedMotion || !("IntersectionObserver" in window)) {
   revealItems.forEach((item) => item.classList.add("is-visible"));
