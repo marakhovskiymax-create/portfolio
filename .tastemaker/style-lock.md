@@ -44,7 +44,7 @@ Established: 2026-09-27. Source: Figma reference node 13:18 supplied by the user
 - Body archetypes: H2 oversized split-title typographic hero, F6 project ledger with focused visual, P2 pull quotes, C2 statement close
 - Personal context: three asymmetrically placed text islands with seven white pill badges floating between them on wide screens; stacked reading order with a two-column badge cloud on mobile
 - Build stamp and `.tastemaker/log.json` record this implementation.
-- Case studies: an eight-section editorial narrative with a full-shell hero before the persistent contents rail, a manual interface carousel, a split context accordion, an interactive work-area canvas, concise image-led product stories, and a verified impact close. The contents rail begins with the first narrative section rather than competing with the hero. Hero metadata uses four left-aligned columns: Name, Role, Product with Scope in parentheses, and Period; values use the stronger 17px/600 treatment. The homepage card and its matching project stop are equal entry points into the case.
+- Case studies: an eight-section editorial narrative with a full-shell hero before the persistent contents rail, a manual interface carousel, a split context accordion styled like the site's FAQ with separated dark answer cards, an interactive work-area canvas, concise image-led product stories, and a verified impact close. The contents rail begins with the first narrative section rather than competing with the hero. Hero metadata uses four left-aligned columns: Name, Role, Product with Scope in parentheses, and Period; values use the stronger 17px/600 treatment. The homepage card and its matching project stop are equal entry points into the case.
 
 ## Taste memory
 - Profile priors used: none

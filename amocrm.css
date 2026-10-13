@@ -419,71 +419,84 @@ body.case-page {
   border-top: 1px solid var(--case-line);
 }
 
-.case-accordion details {
+.case-accordion__item {
   border-bottom: 1px solid var(--case-line);
 }
 
-.case-accordion summary {
+.case-accordion__item h3 {
+  margin: 0;
+}
+
+.case-accordion__trigger {
   display: flex;
+  width: 100%;
   min-height: 72px;
   align-items: center;
   justify-content: space-between;
   gap: 20px;
+  padding: 18px 0;
+  border: 0;
+  background: transparent;
   color: var(--color-text);
   cursor: pointer;
   font-size: clamp(1.15rem, 1.8vw, 1.5rem);
   font-weight: 600;
-  list-style: none;
+  line-height: 1.35;
+  text-align: left;
 }
 
-.case-accordion summary::-webkit-details-marker {
-  display: none;
+.case-accordion__trigger:focus-visible {
+  outline: 1px solid var(--case-accent);
+  outline-offset: 6px;
 }
 
-.case-accordion summary i {
+.case-accordion__trigger i {
   position: relative;
-  width: 18px;
-  height: 18px;
-  flex: 0 0 18px;
+  width: 22px;
+  height: 22px;
+  flex: 0 0 22px;
+  transition: transform 240ms var(--ease-out);
 }
 
-.case-accordion summary i::before,
-.case-accordion summary i::after {
+.case-accordion__trigger i::before,
+.case-accordion__trigger i::after {
   position: absolute;
-  top: 8px;
-  left: 1px;
-  width: 16px;
-  height: 1px;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 1.5px;
   background: currentColor;
   content: "";
-  transition: transform 220ms var(--ease-out);
+  transform: translate(-50%, -50%);
 }
 
-.case-accordion summary i::after {
-  transform: rotate(90deg);
+.case-accordion__trigger i::after {
+  transform: translate(-50%, -50%) rotate(90deg);
 }
 
-.case-accordion details[open] summary i::after {
-  transform: rotate(0deg);
+.case-accordion__item.is-open .case-accordion__trigger i {
+  transform: rotate(45deg);
 }
 
 .case-accordion__answer {
-  display: grid;
-  grid-template-rows: 0fr;
-  opacity: 0;
-  transition: grid-template-rows 240ms var(--ease-out), opacity 180ms var(--ease-out);
-}
-
-.case-accordion details[open] .case-accordion__answer {
-  grid-template-rows: 1fr;
-  opacity: 1;
-}
-
-.case-accordion__answer p {
-  min-height: 0;
+  height: 0;
   overflow: hidden;
-  padding: 0 42px 22px 0;
+  opacity: 0;
+  transition: height 200ms var(--ease-out), opacity 180ms var(--ease-out);
+  will-change: height, opacity;
+}
+
+.case-accordion__card {
+  margin-bottom: 20px;
+  padding: 22px 24px;
+  border: 1px solid rgba(244, 243, 238, 0.1);
+  border-radius: 20px;
+  background: rgba(244, 243, 238, 0.055);
+}
+
+.case-accordion__card p {
   color: var(--color-muted);
+  font-size: 1rem;
   line-height: 1.65;
 }
 
@@ -1018,7 +1031,7 @@ body.case-page {
   .case-carousel__slide,
   .case-carousel__slide figcaption,
   .case-accordion__answer,
-  .case-accordion summary i::after,
+  .case-accordion__trigger i,
   .work-chip,
   .case-nav__links a { transition: none; }
   .renewal-flow__result i::after { animation: none; }

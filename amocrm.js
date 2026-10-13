@@ -117,13 +117,59 @@ carouselViewport?.addEventListener("pointercancel", () => {
 
 renderCarousel(0);
 
-const accordionItems = Array.from(document.querySelectorAll("[data-accordion] details"));
+const accordionItems = Array.from(document.querySelectorAll("[data-accordion-item]"));
+
+function setAccordionItem(item, shouldOpen, animate = true) {
+  const trigger = item.querySelector(".case-accordion__trigger");
+  const answer = item.querySelector("[data-accordion-answer]");
+  if (!trigger || !answer) return;
+
+  window.clearTimeout(answer.closeTimer);
+  answer.animationToken = (answer.animationToken || 0) + 1;
+  const animationToken = answer.animationToken;
+  const currentHeight = answer.getBoundingClientRect().height;
+
+  trigger.setAttribute("aria-expanded", String(shouldOpen));
+  answer.setAttribute("aria-hidden", String(!shouldOpen));
+  item.classList.toggle("is-open", shouldOpen);
+
+  if (prefersReducedMotion || !animate) {
+    answer.style.height = shouldOpen ? "auto" : "0px";
+    answer.style.opacity = shouldOpen ? "1" : "0";
+    delete answer.dataset.animating;
+    return;
+  }
+
+  answer.dataset.animating = "true";
+  answer.style.height = `${currentHeight}px`;
+  void answer.offsetHeight;
+
+  const targetHeight = shouldOpen ? answer.scrollHeight : 0;
+  window.requestAnimationFrame(() => {
+    if (answer.animationToken !== animationToken) return;
+    answer.style.height = `${targetHeight}px`;
+    answer.style.opacity = shouldOpen ? "1" : "0";
+  });
+
+  const finishTransition = (event) => {
+    if (event.propertyName !== "height") return;
+    answer.removeEventListener("transitionend", finishTransition);
+    if (answer.animationToken !== animationToken) return;
+    answer.style.height = item.classList.contains("is-open") ? "auto" : "0px";
+    delete answer.dataset.animating;
+  };
+
+  answer.addEventListener("transitionend", finishTransition);
+}
+
 accordionItems.forEach((item) => {
-  item.addEventListener("toggle", () => {
-    if (!item.open) return;
-    accordionItems.forEach((peer) => {
-      if (peer !== item) peer.open = false;
-    });
+  const trigger = item.querySelector(".case-accordion__trigger");
+  if (!trigger) return;
+
+  setAccordionItem(item, item.classList.contains("is-open"), false);
+  trigger.addEventListener("click", () => {
+    const willOpen = trigger.getAttribute("aria-expanded") !== "true";
+    accordionItems.forEach((peer) => setAccordionItem(peer, peer === item && willOpen));
   });
 });
 
