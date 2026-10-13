@@ -196,9 +196,45 @@ body.case-page {
   position: relative;
   height: clamp(340px, 36vw, 610px);
   overflow: hidden;
+  isolation: isolate;
   background: transparent;
   touch-action: pan-y;
   overscroll-behavior-x: contain;
+}
+
+.case-carousel__viewport::before,
+.case-carousel__viewport::after {
+  position: absolute;
+  z-index: 4;
+  top: 0;
+  bottom: 0;
+  width: clamp(96px, 14vw, 240px);
+  pointer-events: none;
+  content: "";
+}
+
+.case-carousel__viewport::before {
+  left: 0;
+  background: linear-gradient(
+    90deg,
+    var(--color-bg) 0%,
+    rgba(5, 5, 5, 0.92) 18%,
+    rgba(5, 5, 5, 0.7) 42%,
+    rgba(5, 5, 5, 0.26) 72%,
+    transparent 100%
+  );
+}
+
+.case-carousel__viewport::after {
+  right: 0;
+  background: linear-gradient(
+    270deg,
+    var(--color-bg) 0%,
+    rgba(5, 5, 5, 0.92) 18%,
+    rgba(5, 5, 5, 0.7) 42%,
+    rgba(5, 5, 5, 0.26) 72%,
+    transparent 100%
+  );
 }
 
 .case-carousel__track {
@@ -881,6 +917,8 @@ body.case-page {
   .case-meta { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .case-meta div { padding-top: 16px; }
   .case-carousel__viewport { height: clamp(250px, 62vw, 370px); }
+  .case-carousel__viewport::before,
+  .case-carousel__viewport::after { width: clamp(44px, 13vw, 72px); }
   .case-carousel__slide { width: 86%; border-radius: 16px; }
   .case-carousel__slide[data-carousel-position="-1"] {
     transform: translate(-50%, -50%) translateX(-76%) scale(0.8);
