@@ -135,10 +135,6 @@ body.case-page {
   text-transform: uppercase;
 }
 
-.case-hero__copy > .case-eyebrow {
-  grid-column: 1 / -1;
-}
-
 .case-hero h1 {
   max-width: 12ch;
   color: var(--color-text);
@@ -166,6 +162,8 @@ body.case-page {
 
 .case-meta div {
   display: grid;
+  align-content: start;
+  justify-items: start;
   gap: 7px;
   padding: 20px 16px 0 0;
 }
@@ -178,8 +176,16 @@ body.case-page {
 }
 
 .case-meta dd {
+  margin: 0;
   color: var(--color-text);
-  font-size: 0.94rem;
+  font-size: 1.0625rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.case-meta dd span {
+  color: var(--color-muted);
+  font-weight: 500;
 }
 
 .case-carousel {
