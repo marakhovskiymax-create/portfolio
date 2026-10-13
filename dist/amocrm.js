@@ -12,7 +12,10 @@ function setActiveCaseSection(id) {
     link.classList.toggle("is-active", active);
     if (active) {
       link.setAttribute("aria-current", "location");
-      link.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth", block: "nearest", inline: "center" });
+      const navBounds = link.closest(".case-nav")?.getBoundingClientRect();
+      if (navBounds && navBounds.top < window.innerHeight && navBounds.bottom > 0) {
+        link.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth", block: "nearest", inline: "center" });
+      }
     } else {
       link.removeAttribute("aria-current");
     }
@@ -49,20 +52,34 @@ let carouselIndex = 0;
 let carouselPointerId = null;
 let carouselStartX = 0;
 let carouselDeltaX = 0;
+let carouselDidDrag = false;
 
 function renderCarousel(nextIndex) {
   if (!carouselTrack || !carouselSlides.length) return;
   carouselIndex = (nextIndex + carouselSlides.length) % carouselSlides.length;
-  carouselTrack.style.transform = `translate3d(${-carouselIndex * 100}%, 0, 0)`;
   if (carouselCurrent) carouselCurrent.textContent = String(carouselIndex + 1).padStart(2, "0");
 
   carouselSlides.forEach((slide, index) => {
-    slide.setAttribute("aria-hidden", String(index !== carouselIndex));
+    let position = index - carouselIndex;
+    const midpoint = carouselSlides.length / 2;
+    if (position > midpoint) position -= carouselSlides.length;
+    if (position < -midpoint) position += carouselSlides.length;
+
+    slide.dataset.carouselPosition = String(position);
+    slide.setAttribute("aria-hidden", String(position !== 0));
   });
 }
 
 carousel?.querySelector("[data-carousel-prev]")?.addEventListener("click", () => renderCarousel(carouselIndex - 1));
 carousel?.querySelector("[data-carousel-next]")?.addEventListener("click", () => renderCarousel(carouselIndex + 1));
+
+carouselSlides.forEach((slide) => {
+  slide.addEventListener("click", () => {
+    if (carouselDidDrag) return;
+    const position = Number(slide.dataset.carouselPosition);
+    if (position) renderCarousel(carouselIndex + Math.sign(position));
+  });
+});
 
 carousel?.addEventListener("keydown", (event) => {
   if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
@@ -75,12 +92,14 @@ carouselViewport?.addEventListener("pointerdown", (event) => {
   carouselPointerId = event.pointerId;
   carouselStartX = event.clientX;
   carouselDeltaX = 0;
+  carouselDidDrag = false;
   carouselViewport.setPointerCapture(event.pointerId);
 });
 
 carouselViewport?.addEventListener("pointermove", (event) => {
   if (event.pointerId !== carouselPointerId) return;
   carouselDeltaX = event.clientX - carouselStartX;
+  if (Math.abs(carouselDeltaX) > 8) carouselDidDrag = true;
 });
 
 carouselViewport?.addEventListener("pointerup", (event) => {
@@ -88,6 +107,12 @@ carouselViewport?.addEventListener("pointerup", (event) => {
   carouselViewport.releasePointerCapture(event.pointerId);
   if (Math.abs(carouselDeltaX) > 42) renderCarousel(carouselIndex + (carouselDeltaX < 0 ? 1 : -1));
   carouselPointerId = null;
+  window.setTimeout(() => { carouselDidDrag = false; }, 0);
+});
+
+carouselViewport?.addEventListener("pointercancel", () => {
+  carouselPointerId = null;
+  carouselDidDrag = false;
 });
 
 renderCarousel(0);
