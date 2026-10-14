@@ -815,8 +815,17 @@ body.case-page {
   font-size: 0.9rem;
 }
 
-.case-footer {
+body.case-page > .case-footer {
   margin-top: 0;
+  padding-bottom: 0;
+}
+
+.case-page .skills-playground {
+  padding-top: 0;
+}
+
+.case-page .skills-playground__hint {
+  top: 50px;
 }
 
   opacity: 0;
