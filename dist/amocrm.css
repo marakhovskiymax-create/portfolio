@@ -490,7 +490,7 @@ body.case-page {
 
 .work-areas__canvas {
   position: relative;
-  min-height: 570px;
+  min-height: 520px;
   overflow: hidden;
   border-radius: 24px;
   background:
@@ -965,7 +965,7 @@ body.case-page > .case-footer {
 
   .work-areas__canvas.is-physics-ready {
     display: block;
-    min-height: 620px;
+    min-height: 570px;
     padding: 0;
   }
 
