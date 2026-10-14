@@ -249,36 +249,14 @@ accordionItems.forEach((item) => {
   });
 });
 
-const workCopy = {
-  marketing: "Homepage structure, product framing, and feature discovery.",
-  navigation: "A clearer product map for finding features and use cases.",
-  "ai-page": "A focused page that makes the AI offer easier to understand.",
-  pricing: "Plan comparison and pricing information with clearer hierarchy.",
-  landings: "In-product pages that introduce features in context.",
-  integrations: "Integration pages that explain value and setup.",
-  upgrades: "Plan comparison, AI plan, and feature-led upgrade paths.",
-  trial: "A clearer end-of-trial state with the next action in view.",
-  renewal: "Clear progress feedback while a request is processing.",
-  system: "Reusable components and release-quality review.",
-};
-
-const workChips = Array.from(document.querySelectorAll("[data-work-target]"));
-const workIndex = document.querySelector("[data-work-index]");
-const workDescription = document.querySelector("[data-work-description]");
-const workLink = document.querySelector("[data-work-link]");
+const workChips = Array.from(document.querySelectorAll(".work-chip"));
 
 function selectWorkChip(chip) {
-  const index = workChips.indexOf(chip);
-  const target = chip.dataset.workTarget;
-  const key = chip.dataset.workKey;
   workChips.forEach((item) => {
     const active = item === chip;
     item.classList.toggle("is-active", active);
     item.setAttribute("aria-pressed", String(active));
   });
-  if (workIndex) workIndex.textContent = `${String(index + 1).padStart(2, "0")} / ${String(workChips.length).padStart(2, "0")}`;
-  if (workDescription) workDescription.textContent = workCopy[key] ?? "";
-  if (workLink) workLink.href = `#${target}`;
 }
 
 workChips.forEach((chip) => chip.addEventListener("click", () => selectWorkChip(chip)));
@@ -312,8 +290,7 @@ function initWorkAreasPhysics() {
   const buildWorld = (preserve = false) => {
     const width = surface.clientWidth;
     const height = surface.clientHeight;
-    const selection = surface.querySelector(".work-areas__selection");
-    const usableHeight = Math.max(260, height - (selection?.offsetHeight || 0) - 34);
+    const usableHeight = Math.max(260, height - 20);
     const oldStates = items.map((item) => {
       const body = states.get(item)?.body;
       return body
@@ -462,8 +439,7 @@ function initWorkAreasPhysics() {
       const surfaceRect = surface.getBoundingClientRect();
       const halfWidth = item.offsetWidth / 2;
       const halfHeight = item.offsetHeight / 2;
-      const footerHeight = surface.querySelector(".work-areas__selection")?.offsetHeight || 0;
-      const maxY = surface.clientHeight - footerHeight - 34 - halfHeight;
+      const maxY = surface.clientHeight - 20 - halfHeight;
       const x = Math.min(surface.clientWidth - halfWidth, Math.max(halfWidth, event.clientX - surfaceRect.left - state.pointerOffsetX));
       const y = Math.min(maxY, Math.max(halfHeight, event.clientY - surfaceRect.top - state.pointerOffsetY));
       const now = performance.now();
@@ -511,8 +487,7 @@ function initWorkAreasPhysics() {
       event.preventDefault();
       const halfWidth = item.offsetWidth / 2;
       const halfHeight = item.offsetHeight / 2;
-      const footerHeight = surface.querySelector(".work-areas__selection")?.offsetHeight || 0;
-      const maxY = surface.clientHeight - footerHeight - 34 - halfHeight;
+      const maxY = surface.clientHeight - 20 - halfHeight;
       Body.setPosition(state.body, {
         x: Math.min(surface.clientWidth - halfWidth, Math.max(halfWidth, state.body.position.x + movement[0])),
         y: Math.min(maxY, Math.max(halfHeight, state.body.position.y + movement[1])),

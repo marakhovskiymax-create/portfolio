@@ -216,11 +216,12 @@ function initSpiderCursor() {
   let frame = 0;
   let targetRadiusCache = new WeakMap();
   const interactiveSelector = "a, button, [role='button'], input:not([type='hidden']), select, textarea, [data-cursor-target]";
+  const dragItemSelector = ".skill-drag-item, .work-chip";
 
   function resolveInteractiveTarget(element) {
     const interactive = element instanceof Element ? element.closest(interactiveSelector) : null;
     if (!interactive || interactive.matches(":disabled, [aria-disabled='true']")) return null;
-    if (interactive.matches(".skill-drag-item")) return null;
+    if (interactive.matches(dragItemSelector)) return null;
     if (interactive.matches(".career-tab")) return interactive.querySelector(".career-tab__logo");
     if (interactive.matches(".time-machine__stop")) return interactive.querySelector(".time-machine__stop-target");
     return interactive;
@@ -487,7 +488,7 @@ function initSpiderCursor() {
     pointerX = event.clientX;
     pointerY = event.clientY;
 
-    pointerOverDragItem = event.target instanceof Element && Boolean(event.target.closest(".skill-drag-item"));
+    pointerOverDragItem = event.target instanceof Element && Boolean(event.target.closest(dragItemSelector));
     activeTarget = resolveInteractiveTarget(event.target);
     swarms.forEach((swarm) => swarm.follow(pointerX, pointerY));
   }
@@ -499,7 +500,7 @@ function initSpiderCursor() {
   }
 
   function handleFocusIn(event) {
-    pointerOverDragItem = event.target instanceof Element && event.target.matches(".skill-drag-item");
+    pointerOverDragItem = event.target instanceof Element && event.target.matches(dragItemSelector);
     activeTarget = resolveInteractiveTarget(event.target);
   }
 
