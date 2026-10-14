@@ -726,14 +726,19 @@ body.case-page {
 
 .renewal-flow article h3 {
   margin: 38px 0 12px;
+  min-height: 2em;
   color: var(--color-text);
   font-size: clamp(1.35rem, 2.2vw, 2rem);
   font-weight: 600;
+  line-height: 1;
+  text-wrap: balance;
 }
 
 .renewal-flow article p {
+  min-height: 4.5em;
   color: var(--color-muted);
   line-height: 1.5;
+  text-wrap: pretty;
 }
 
 .renewal-flow__result {
