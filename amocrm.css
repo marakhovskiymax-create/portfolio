@@ -657,6 +657,10 @@ body.case-page {
   margin-bottom: var(--case-gap);
 }
 
+#website .case-decision:not(.case-role) {
+  margin-block: 150px;
+}
+
 .integration-map {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, auto));
