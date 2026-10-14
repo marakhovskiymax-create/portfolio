@@ -216,7 +216,7 @@ function initSpiderCursor() {
   let frame = 0;
   let targetRadiusCache = new WeakMap();
   const interactiveSelector = "a, button, [role='button'], input:not([type='hidden']), select, textarea, [data-cursor-target]";
-  const dragItemSelector = ".skill-drag-item, .work-chip, .gravity-piece";
+  const dragItemSelector = ".skill-drag-item, .work-chip";
 
   function resolveInteractiveTarget(element) {
     const interactive = element instanceof Element ? element.closest(interactiveSelector) : null;

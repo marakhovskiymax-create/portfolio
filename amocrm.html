@@ -16,7 +16,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css?v=20261011-amocrm-case" />
-    <link rel="stylesheet" href="amocrm.css?v=20261014-4" />
+    <link rel="stylesheet" href="amocrm.css?v=20261014-5" />
     <script>document.documentElement.classList.replace("no-js", "js");</script>
   </head>
   <body class="case-page">
@@ -267,30 +267,78 @@
       </nav>
     </footer>
 
-    <section class="case-gravity" aria-labelledby="case-gravity-title" data-case-gravity>
-      <div class="case-gravity__surface shell">
-        <header class="case-gravity__heading">
-          <p>One last thing</p>
-          <h2 id="case-gravity-title">Ideas move when you do.</h2>
-          <span>Drag or throw the pieces</span>
-        </header>
+    <section class="skills-playground" id="skills-playground" aria-labelledby="skills-playground-title" data-skills-playground>
+      <div class="skills-playground__surface">
+        <div class="skills-playground__hint">
+          <svg viewBox="0 0 120 74" aria-hidden="true">
+            <path d="M112 8C75 18 42 37 20 65" />
+            <path d="m18 53 2 12 12-2" />
+          </svg>
+          <div>
+            <p class="skills-playground__eyebrow">Мои навыки и инструменты</p>
+            <h2 id="skills-playground-title">Можно двигать</h2>
+          </div>
+        </div>
 
-        <button class="gravity-piece gravity-piece--make" type="button" data-gravity-piece data-x="0.04" data-rotate="-5" aria-describedby="case-gravity-instruction">MAKE</button>
-        <button class="gravity-piece gravity-piece--good" type="button" data-gravity-piece data-x="0.28" data-rotate="4" aria-describedby="case-gravity-instruction">GOOD</button>
-        <button class="gravity-piece gravity-piece--things" type="button" data-gravity-piece data-x="0.51" data-rotate="-3" aria-describedby="case-gravity-instruction">THINGS</button>
-        <button class="gravity-piece gravity-piece--together" type="button" data-gravity-piece data-x="0.72" data-rotate="5" aria-describedby="case-gravity-instruction">TOGETHER</button>
-        <button class="gravity-piece gravity-piece--round gravity-piece--arrow" type="button" data-gravity-piece data-x="0.16" data-rotate="0" aria-label="Move arrow piece" aria-describedby="case-gravity-instruction">↗</button>
-        <button class="gravity-piece gravity-piece--round gravity-piece--dot" type="button" data-gravity-piece data-x="0.6" data-rotate="0" aria-label="Move circle piece" aria-describedby="case-gravity-instruction"></button>
-        <button class="gravity-piece gravity-piece--plus" type="button" data-gravity-piece data-x="0.84" data-rotate="8" aria-label="Move plus piece" aria-describedby="case-gravity-instruction"><span aria-hidden="true"></span></button>
-        <button class="gravity-piece gravity-piece--slash" type="button" data-gravity-piece data-x="0.4" data-rotate="-12" aria-label="Move slash piece" aria-describedby="case-gravity-instruction"></button>
-        <p class="sr-only" id="case-gravity-instruction">Drag the pieces with a pointer, or focus one and use the arrow keys.</p>
+        <button class="skill-drag-item skill-drag-item--pill" type="button" data-drag-item data-x="0.018" data-y="0.28" data-mobile-x="0.02" data-mobile-y="0.16" data-rotate="-2" aria-describedby="skills-playground-instruction">
+          <span class="skill-drag-item__glyph" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M12 3.5v2M12 18.5v2M3.5 12h2M18.5 12h2M6 6l1.4 1.4M16.6 16.6 18 18M18 6l-1.4 1.4M7.4 16.6 6 18"/></svg>
+          </span>
+          <span>Дизайн-системы</span>
+        </button>
+        <button class="skill-drag-item skill-drag-item--pill" type="button" data-drag-item data-x="0.17" data-y="0.34" data-mobile-x="0.62" data-mobile-y="0.24" data-rotate="-1.5" aria-describedby="skills-playground-instruction">
+          <span class="skill-drag-item__glyph" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="m6 4 11 7-5 1.4L9.6 18 6 4Z"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>
+          </span>
+          <span>Интерактивный дизайн</span>
+        </button>
+        <button class="skill-drag-item skill-drag-item--pill" type="button" data-drag-item data-x="0.63" data-y="0.34" data-mobile-x="0.3" data-mobile-y="0.37" data-rotate="1" aria-describedby="skills-playground-instruction">
+          <span class="skill-drag-item__glyph" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="2"/><path d="M4 9h16M8 5v4M15 12h2M8 13h4M8 16h7"/></svg>
+          </span>
+          <span>Продуктовый дизайн</span>
+        </button>
+        <button class="skill-drag-item skill-drag-item--pill" type="button" data-drag-item data-x="0.24" data-y="0.61" data-mobile-x="0.54" data-mobile-y="0.5" data-rotate="0.8" aria-describedby="skills-playground-instruction">
+          <span class="skill-drag-item__glyph" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="14" rx="2"/><path d="M3.5 9h17M7 7h.01M10 7h.01"/></svg>
+          </span>
+          <span>Веб-дизайн</span>
+        </button>
+        <button class="skill-drag-item skill-drag-item--pill" type="button" data-drag-item data-x="0.56" data-y="0.61" data-mobile-x="0.2" data-mobile-y="0.62" data-rotate="-1" aria-describedby="skills-playground-instruction">
+          <span class="skill-drag-item__glyph" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="5.5"/><path d="m15 15 5 5M8.2 10.5h4.6M10.5 8.2v4.6"/></svg>
+          </span>
+          <span>Исследования</span>
+        </button>
+
+        <button class="skill-drag-item skill-drag-item--tool skill-drag-item--js" type="button" data-drag-item data-x="0.09" data-y="0.69" data-mobile-x="0.02" data-mobile-y="0.79" data-rotate="3" aria-label="JavaScript, можно перемещать" aria-describedby="skills-playground-instruction">
+          <span class="brand-mark brand-mark--js" aria-hidden="true">JS</span>
+        </button>
+        <button class="skill-drag-item skill-drag-item--tool skill-drag-item--framer" type="button" data-drag-item data-x="0.16" data-y="0.72" data-mobile-x="0.25" data-mobile-y="0.84" data-rotate="-4" aria-label="Framer, можно перемещать" aria-describedby="skills-playground-instruction">
+          <svg class="brand-mark brand-mark--framer" viewBox="0 0 32 32" aria-hidden="true"><path d="M7 4h18v8H16l9 8h-9v8L7 20h9L7 12V4Z"/></svg>
+        </button>
+        <button class="skill-drag-item skill-drag-item--tool skill-drag-item--vscode" type="button" data-drag-item data-x="0.42" data-y="0.73" data-mobile-x="0.49" data-mobile-y="0.78" data-rotate="2" aria-label="Visual Studio Code, можно перемещать" aria-describedby="skills-playground-instruction">
+          <svg class="brand-mark brand-mark--vscode" viewBox="0 0 32 32" aria-hidden="true"><path d="m23.8 4.2 5 2.4v18.8l-5 2.4L13 19.4 6.3 24.6 3 22l7-6-7-6 3.3-2.6L13 12.6l10.8-8.4ZM23.6 10 16.7 16l6.9 6V10Z"/></svg>
+        </button>
+        <button class="skill-drag-item skill-drag-item--tool skill-drag-item--figma" type="button" data-drag-item data-x="0.75" data-y="0.57" data-mobile-x="0.72" data-mobile-y="0.84" data-rotate="5" aria-label="Figma, можно перемещать" aria-describedby="skills-playground-instruction">
+          <span class="figma-mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+        </button>
+        <button class="skill-drag-item skill-drag-item--tool skill-drag-item--slack" type="button" data-drag-item data-x="0.84" data-y="0.72" data-mobile-x="0.88" data-mobile-y="0.68" data-rotate="-3" aria-label="Slack, можно перемещать" aria-describedby="skills-playground-instruction">
+          <svg class="brand-mark brand-mark--slack" viewBox="0 0 32 32" aria-hidden="true">
+            <path class="slack-blue" d="M12.7 4a3 3 0 0 1 3 3v3h-3a3 3 0 1 1 0-6Z"/><path class="slack-green" d="M28 12.7a3 3 0 0 1-3 3h-3v-3a3 3 0 1 1 6 0Z"/><path class="slack-yellow" d="M19.3 28a3 3 0 0 1-3-3v-3h3a3 3 0 1 1 0 6Z"/><path class="slack-red" d="M4 19.3a3 3 0 0 1 3-3h3v3a3 3 0 1 1-6 0Z"/><path class="slack-blue" d="M10 12.7v3H7a3 3 0 1 1 3-3Z"/><path class="slack-green" d="M19.3 10h-3V7a3 3 0 1 1 3 3Z"/><path class="slack-yellow" d="M22 19.3v-3h3a3 3 0 1 1-3 3Z"/><path class="slack-red" d="M12.7 22h3v3a3 3 0 1 1-3-3Z"/>
+          </svg>
+        </button>
+
+        <p class="sr-only" id="skills-playground-instruction">
+          Перетаскивайте элемент указателем или двигайте его клавишами со стрелками. С клавишей Shift шаг будет больше.
+        </p>
       </div>
     </section>
 
+    <script src="vendor/matter.min.js"></script>
     <script src="vendor/gsap.min.js"></script>
     <script src="vendor/ScrollTrigger.min.js"></script>
-    <script src="script.js?v=20261014-footer-physics"></script>
-    <script src="vendor/matter.min.js"></script>
-    <script src="amocrm.js?v=20261014-3"></script>
+    <script src="script.js?v=20261014-skills-copy"></script>
+    <script src="amocrm.js?v=20261014-4"></script>
   </body>
 </html>
