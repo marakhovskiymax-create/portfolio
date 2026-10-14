@@ -209,14 +209,12 @@
             <div class="case-story__copy">
               <p class="case-eyebrow">Renewal</p>
               <h2 id="renewal-title">The problem wasn’t the number of steps</h2>
-              <p>The renewal flow needed clearer feedback, not a shorter path. I added a waiting state so users could see when their request was being processed.</p>
+              <p>When a renewal took time to process, users couldn’t tell whether their request had gone through.</p>
             </div>
             <div class="renewal-flow">
-              <article><span>Assumption</span><h3>Remove steps</h3><p>A shorter flow looked like the obvious answer.</p></article>
-              <div class="renewal-flow__arrow" aria-hidden="true">→</div>
-              <article><span>Finding</span><h3>Show progress</h3><p>People needed feedback while the request was processing.</p></article>
-              <div class="renewal-flow__arrow" aria-hidden="true">→</div>
-              <article class="renewal-flow__result"><span>Decision</span><h3>Waiting state</h3><p>Status stays visible until the renewal is confirmed.</p><i aria-hidden="true"></i></article>
+              <article><span>01 / Initial Assumption</span><h3>Fewer steps?</h3><p>I first considered shortening the renewal flow.</p></article>
+              <article><span>02 / Technical Constraint</span><h3>Confirmation takes time</h3><p>Status updates weren’t instant, so showing success too early could mislead users.</p></article>
+              <article class="renewal-flow__result"><span>03 / Design Decision</span><h3>Make the wait visible</h3><p>I added a processing state to show what was happening before confirmation.</p><i aria-hidden="true"></i></article>
             </div>
           </section>
 
