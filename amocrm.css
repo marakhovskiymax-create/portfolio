@@ -725,7 +725,9 @@ body.case-page {
 }
 
 .case-impact {
-  padding: clamp(32px, 5vw, 72px) 0;
+  --impact-inset: clamp(32px, 5vw, 72px);
+  margin-bottom: 0;
+  padding: var(--impact-inset);
   border-radius: 28px;
   background: #141414;
 }
@@ -771,7 +773,15 @@ body.case-page {
 }
 
 .case-next {
+  width: var(--shell);
+  margin-top: var(--case-gap);
   padding: 0 0 100px;
+}
+
+@media (min-width: 1200px) {
+  .case-next {
+    padding-inline-start: calc(196px + clamp(32px, 5vw, 76px));
+  }
 }
 
 .case-next > p {
@@ -982,7 +992,7 @@ body.case-page {
   .renewal-flow article h3 { margin-top: 44px; }
   .renewal-flow__arrow { transform: rotate(90deg); justify-self: center; }
 
-  .case-impact { margin-inline: 0; padding: 28px 0; border-radius: 20px; }
+  .case-impact { margin-inline: 0; padding: 28px; border-radius: 20px; }
   .case-impact__metrics { grid-template-columns: minmax(0, 1fr); }
   .case-impact__metrics div { min-height: 160px; padding: 22px 0; }
   .case-impact__metrics div + div { padding-left: 0; border-top: 1px solid var(--case-line); border-left: 0; }
