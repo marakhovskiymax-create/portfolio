@@ -48,11 +48,16 @@ const carouselTrack = carousel?.querySelector("[data-carousel-track]");
 const carouselSlides = Array.from(carousel?.querySelectorAll("[data-carousel-slide]") ?? []);
 const carouselCurrent = carousel?.querySelector("[data-carousel-current]");
 const carouselViewport = carousel?.querySelector(".case-carousel__viewport");
+const carouselAutoplayDelay = 4000;
 let carouselIndex = 0;
 let carouselPointerId = null;
 let carouselStartX = 0;
 let carouselDeltaX = 0;
 let carouselDidDrag = false;
+let carouselAutoplayTimer = 0;
+let carouselIsVisible = false;
+let carouselIsHovered = false;
+let carouselHasFocus = false;
 
 function renderCarousel(nextIndex) {
   if (!carouselTrack || !carouselSlides.length) return;
@@ -70,25 +75,79 @@ function renderCarousel(nextIndex) {
   });
 }
 
-carousel?.querySelector("[data-carousel-prev]")?.addEventListener("click", () => renderCarousel(carouselIndex - 1));
-carousel?.querySelector("[data-carousel-next]")?.addEventListener("click", () => renderCarousel(carouselIndex + 1));
+function stopCarouselAutoplay() {
+  window.clearTimeout(carouselAutoplayTimer);
+  carouselAutoplayTimer = 0;
+}
+
+function canAutoplayCarousel() {
+  return Boolean(
+    carouselSlides.length > 1
+    && carouselIsVisible
+    && !carouselIsHovered
+    && !carouselHasFocus
+    && carouselPointerId === null
+    && !document.hidden
+    && !prefersReducedMotion
+  );
+}
+
+function scheduleCarouselAutoplay() {
+  stopCarouselAutoplay();
+  if (!canAutoplayCarousel()) return;
+
+  carouselAutoplayTimer = window.setTimeout(() => {
+    renderCarousel(carouselIndex + 1);
+    scheduleCarouselAutoplay();
+  }, carouselAutoplayDelay);
+}
+
+function moveCarousel(nextIndex) {
+  renderCarousel(nextIndex);
+  scheduleCarouselAutoplay();
+}
+
+carousel?.querySelector("[data-carousel-prev]")?.addEventListener("click", () => moveCarousel(carouselIndex - 1));
+carousel?.querySelector("[data-carousel-next]")?.addEventListener("click", () => moveCarousel(carouselIndex + 1));
 
 carouselSlides.forEach((slide) => {
   slide.addEventListener("click", () => {
     if (carouselDidDrag) return;
     const position = Number(slide.dataset.carouselPosition);
-    if (position) renderCarousel(carouselIndex + Math.sign(position));
+    if (position) moveCarousel(carouselIndex + Math.sign(position));
   });
 });
 
 carousel?.addEventListener("keydown", (event) => {
   if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
   event.preventDefault();
-  renderCarousel(carouselIndex + (event.key === "ArrowRight" ? 1 : -1));
+  moveCarousel(carouselIndex + (event.key === "ArrowRight" ? 1 : -1));
+});
+
+carousel?.addEventListener("mouseenter", () => {
+  carouselIsHovered = true;
+  stopCarouselAutoplay();
+});
+
+carousel?.addEventListener("mouseleave", () => {
+  carouselIsHovered = false;
+  scheduleCarouselAutoplay();
+});
+
+carousel?.addEventListener("focusin", () => {
+  carouselHasFocus = true;
+  stopCarouselAutoplay();
+});
+
+carousel?.addEventListener("focusout", (event) => {
+  if (carousel?.contains(event.relatedTarget)) return;
+  carouselHasFocus = false;
+  scheduleCarouselAutoplay();
 });
 
 carouselViewport?.addEventListener("pointerdown", (event) => {
   if (event.pointerType === "mouse" && event.button !== 0) return;
+  stopCarouselAutoplay();
   carouselPointerId = event.pointerId;
   carouselStartX = event.clientX;
   carouselDeltaX = 0;
@@ -107,15 +166,37 @@ carouselViewport?.addEventListener("pointerup", (event) => {
   carouselViewport.releasePointerCapture(event.pointerId);
   if (Math.abs(carouselDeltaX) > 42) renderCarousel(carouselIndex + (carouselDeltaX < 0 ? 1 : -1));
   carouselPointerId = null;
+  scheduleCarouselAutoplay();
   window.setTimeout(() => { carouselDidDrag = false; }, 0);
 });
 
 carouselViewport?.addEventListener("pointercancel", () => {
   carouselPointerId = null;
   carouselDidDrag = false;
+  scheduleCarouselAutoplay();
 });
 
 renderCarousel(0);
+
+if (carousel && "IntersectionObserver" in window) {
+  const carouselObserver = new IntersectionObserver(([entry]) => {
+    carouselIsVisible = entry.isIntersecting;
+    if (carouselIsVisible) scheduleCarouselAutoplay();
+    else stopCarouselAutoplay();
+  }, { threshold: 0.35 });
+
+  carouselObserver.observe(carousel);
+} else {
+  carouselIsVisible = Boolean(carousel);
+  scheduleCarouselAutoplay();
+}
+
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) stopCarouselAutoplay();
+  else scheduleCarouselAutoplay();
+});
+
+window.addEventListener("pagehide", stopCarouselAutoplay);
 
 const accordionItems = Array.from(document.querySelectorAll("[data-accordion-item]"));
 
@@ -174,11 +255,16 @@ accordionItems.forEach((item) => {
 });
 
 const workCopy = {
-  website: "Homepage, navigation, AI page, and pricing.",
-  "in-app": "Integration pages that explain value and setup.",
-  upgrades: "Plan comparison, AI plan, feature videos, and trial end.",
+  marketing: "Homepage structure, product framing, and feature discovery.",
+  navigation: "A clearer product map for finding features and use cases.",
+  "ai-page": "A focused page that makes the AI offer easier to understand.",
+  pricing: "Plan comparison and pricing information with clearer hierarchy.",
+  landings: "In-product pages that introduce features in context.",
+  integrations: "Integration pages that explain value and setup.",
+  upgrades: "Plan comparison, AI plan, and feature-led upgrade paths.",
+  trial: "A clearer end-of-trial state with the next action in view.",
   renewal: "Clear progress feedback while a request is processing.",
-  impact: "Reusable components and release-quality review.",
+  system: "Reusable components and release-quality review.",
 };
 
 const workChips = Array.from(document.querySelectorAll("[data-work-target]"));
@@ -189,13 +275,14 @@ const workLink = document.querySelector("[data-work-link]");
 function selectWorkChip(chip) {
   const index = workChips.indexOf(chip);
   const target = chip.dataset.workTarget;
+  const key = chip.dataset.workKey;
   workChips.forEach((item) => {
     const active = item === chip;
     item.classList.toggle("is-active", active);
     item.setAttribute("aria-pressed", String(active));
   });
   if (workIndex) workIndex.textContent = `${String(index + 1).padStart(2, "0")} / ${String(workChips.length).padStart(2, "0")}`;
-  if (workDescription) workDescription.textContent = workCopy[target] ?? "";
+  if (workDescription) workDescription.textContent = workCopy[key] ?? "";
   if (workLink) workLink.href = `#${target}`;
 }
 
@@ -258,10 +345,10 @@ function initWorkAreasPhysics() {
       const state = states.get(item);
       const old = oldStates[index];
       const style = getComputedStyle(item);
-      const desktopSpawnX = [0.1, 0.45, 0.18, 0.65, 0.05, 0.55];
+      const desktopSpawnX = [0.04, 0.31, 0.65, 0.16, 0.48, 0.74, 0.03, 0.36, 0.67, 0.27];
       const compact = width < 600;
       const xRatio = compact ? (index % 2 ? 0.98 : 0.02) : desktopSpawnX[index] ?? index / items.length;
-      const spawnRow = compact ? Math.floor(index / 2) : index % 3;
+      const spawnRow = compact ? Math.floor(index / 2) : index % 4;
       const halfWidth = item.offsetWidth / 2;
       const halfHeight = item.offsetHeight / 2;
       const body = Bodies.rectangle(
@@ -275,8 +362,8 @@ function initWorkAreasPhysics() {
         item.offsetHeight,
         {
           angle: preserve && old ? old.angle : (Number.parseFloat(style.getPropertyValue("--r")) * Math.PI) / 180 || 0,
-          chamfer: { radius: 8 },
-          density: 0.00125,
+          chamfer: { radius: item.offsetHeight / 2 },
+          density: 0.0012,
           friction: 0.42,
           frictionStatic: 0.72,
           frictionAir: 0.012,
@@ -284,8 +371,6 @@ function initWorkAreasPhysics() {
           sleepThreshold: 42,
         },
       );
-      Body.setInertia(body, body.inertia * 20);
-
       state.body = body;
       if (preserve && old) {
         Body.setVelocity(body, old.velocity);

@@ -546,31 +546,47 @@ body.case-page {
   position: absolute;
   top: var(--y);
   left: var(--x);
-  max-width: 42%;
-  padding: 14px 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: max-content;
+  max-width: min(46%, 360px);
+  height: 72px;
+  padding: 0 28px;
   border: 0;
-  border-radius: 8px;
-  background: #101114;
-  color: var(--color-text);
-  font-size: clamp(0.9rem, 1.45vw, 1.2rem);
-  cursor: pointer;
+  border-radius: 999px;
+  color: #f1f4ff;
+  background: rgba(25, 55, 126, 0.68);
+  font: inherit;
+  font-size: clamp(0.92rem, 1.5vw, 1.2rem);
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  box-shadow: 0 16px 34px rgba(1, 8, 28, 0.24);
   transform: rotate(var(--r));
   transition:
     color 180ms var(--ease-out),
-    background 180ms var(--ease-out);
+    background 180ms var(--ease-out),
+    box-shadow 160ms var(--ease-out),
+    filter 160ms var(--ease-out);
+  backdrop-filter: blur(16px) saturate(120%);
   touch-action: manipulation;
+  cursor: grab;
 }
 
-.work-chip:focus-visible,
+.work-chip:focus-visible {
+  outline: 3px solid #9bb8ff;
+  outline-offset: 5px;
+}
+
 .work-chip.is-active {
-  background: linear-gradient(100deg, #ff5f83, #9f76ff);
   color: #fff;
+  background: rgba(40, 82, 181, 0.94);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .work-chip:hover {
-    background: linear-gradient(100deg, #ff5f83, #9f76ff);
-    color: #fff;
+    filter: brightness(1.16) saturate(1.08);
   }
 }
 
@@ -584,6 +600,8 @@ body.case-page {
 }
 
 .work-areas__canvas.is-physics-ready .work-chip.is-dragging {
+  filter: brightness(1.16) saturate(1.1);
+  box-shadow: 0 24px 54px rgba(0, 8, 32, 0.42);
   cursor: grabbing;
 }
 
@@ -986,15 +1004,13 @@ body.case-page {
   .work-chip {
     position: static;
     max-width: none;
+    width: 100%;
+    height: 60px;
     min-height: 60px;
-    padding: 12px;
+    padding: 0 16px;
     font-size: 0.86rem;
     transform: none;
   }
-
-  .work-chip:hover,
-  .work-chip:focus-visible,
-  .work-chip.is-active { transform: translateY(-2px); }
 
   .work-areas__canvas.is-physics-ready {
     display: block;
@@ -1004,7 +1020,8 @@ body.case-page {
 
   .work-areas__canvas.is-physics-ready .work-chip {
     position: absolute;
-    max-width: 80%;
+    width: max-content;
+    max-width: 84%;
     min-height: 60px;
     transform: translate3d(var(--work-x, 0), var(--work-y, 0), 0) rotate(var(--work-rotate, 0rad));
   }
