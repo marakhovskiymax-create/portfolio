@@ -317,10 +317,11 @@ function initWorkAreasPhysics() {
       const state = states.get(item);
       const old = oldStates[index];
       const style = getComputedStyle(item);
-      const desktopSpawnX = [0.04, 0.31, 0.65, 0.16, 0.48, 0.74, 0.03, 0.36, 0.67, 0.27];
+      const desktopSpawnX = [0.03, 0.25, 0.5, 0.76, 0.1, 0.36, 0.7, 0.02, 0.27, 0.54, 0.78, 0.08, 0.34, 0.61, 0.8];
       const compact = width < 600;
-      const xRatio = compact ? (index % 2 ? 0.98 : 0.02) : desktopSpawnX[index] ?? index / items.length;
-      const spawnRow = compact ? Math.floor(index / 2) : index % 4;
+      const compactSpawnX = [0.02, 0.5, 0.98];
+      const xRatio = compact ? compactSpawnX[index % compactSpawnX.length] : desktopSpawnX[index] ?? index / items.length;
+      const spawnRow = compact ? Math.floor(index / compactSpawnX.length) : index % 5;
       const halfWidth = item.offsetWidth / 2;
       const halfHeight = item.offsetHeight / 2;
       const body = Bodies.rectangle(
@@ -329,7 +330,7 @@ function initWorkAreasPhysics() {
           : halfWidth + Math.max(0, width - item.offsetWidth) * xRatio,
         preserve && old
           ? Math.min(usableHeight - halfHeight, Math.max(halfHeight, old.y * usableHeight))
-          : 48 + halfHeight + spawnRow * (compact ? 82 : 88),
+          : 40 + halfHeight + spawnRow * (compact ? 76 : 74),
         item.offsetWidth,
         item.offsetHeight,
         {
