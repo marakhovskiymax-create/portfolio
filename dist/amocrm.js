@@ -46,7 +46,6 @@ caseNavLinks.forEach((link) => {
 const carousel = document.querySelector("[data-case-carousel]");
 const carouselTrack = carousel?.querySelector("[data-carousel-track]");
 const carouselSlides = Array.from(carousel?.querySelectorAll("[data-carousel-slide]") ?? []);
-const carouselCurrent = carousel?.querySelector("[data-carousel-current]");
 const carouselViewport = carousel?.querySelector(".case-carousel__viewport");
 const carouselAutoplayDelay = 4000;
 let carouselIndex = 0;
@@ -62,7 +61,6 @@ let carouselHasFocus = false;
 function renderCarousel(nextIndex) {
   if (!carouselTrack || !carouselSlides.length) return;
   carouselIndex = (nextIndex + carouselSlides.length) % carouselSlides.length;
-  if (carouselCurrent) carouselCurrent.textContent = String(carouselIndex + 1).padStart(2, "0");
 
   carouselSlides.forEach((slide, index) => {
     let position = index - carouselIndex;
@@ -106,9 +104,6 @@ function moveCarousel(nextIndex) {
   renderCarousel(nextIndex);
   scheduleCarouselAutoplay();
 }
-
-carousel?.querySelector("[data-carousel-prev]")?.addEventListener("click", () => moveCarousel(carouselIndex - 1));
-carousel?.querySelector("[data-carousel-next]")?.addEventListener("click", () => moveCarousel(carouselIndex + 1));
 
 carouselSlides.forEach((slide) => {
   slide.addEventListener("click", () => {

@@ -324,48 +324,6 @@ body.case-page {
   transform: none;
 }
 
-.case-carousel__controls {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 16px;
-}
-
-.case-carousel__controls p {
-  color: var(--color-muted);
-  font-size: 0.78rem;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0.08em;
-}
-
-.case-carousel__controls div {
-  display: flex;
-  gap: 8px;
-}
-
-.case-carousel__controls button {
-  display: grid;
-  width: 48px;
-  height: 48px;
-  place-items: center;
-  border: 1px solid var(--case-line);
-  border-radius: 50%;
-  background: transparent;
-  color: var(--color-text);
-  font-size: 1.1rem;
-  cursor: pointer;
-  transition: background 160ms var(--ease-out), transform 160ms var(--ease-out);
-}
-
-.case-carousel__controls button:hover {
-  background: rgba(244, 243, 238, 0.1);
-}
-
-.case-carousel__controls button:active {
-  transform: scale(0.97);
-  transition-duration: 0ms;
-}
-
 .case-carousel:focus-visible {
   outline: 1px solid var(--case-accent);
   outline-offset: 8px;
@@ -975,9 +933,6 @@ body.case-page {
     transform: translate(-50%, -50%) translateX(76%) scale(0.8);
   }
   .case-carousel__slide figcaption { right: 10px; bottom: 10px; }
-  .case-carousel__controls { margin-top: 12px; }
-  .case-carousel__controls button { width: 44px; height: 44px; }
-
   .case-wide-visual,
   .case-story__media--wide,
   .case-story__media--inset { border-radius: 16px; }
