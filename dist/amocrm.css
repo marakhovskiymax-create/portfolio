@@ -516,7 +516,7 @@ body.case-page {
   color: #f1f4ff;
   background: #1d3d82;
   font-family: var(--font-body);
-  font-size: clamp(0.88rem, 1.25vw, 1.05rem);
+  font-size: 24px;
   font-weight: 400;
   line-height: 1;
   white-space: nowrap;
@@ -1005,7 +1005,7 @@ body.case-page > .case-footer {
     height: 52px;
     min-height: 52px;
     padding: 0 16px;
-    font-size: 0.875rem;
+    font-size: 24px;
     transform: none;
   }
 
