@@ -16,7 +16,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css?v=20261011-amocrm-case" />
-    <link rel="stylesheet" href="amocrm.css?v=20261014-3" />
+    <link rel="stylesheet" href="amocrm.css?v=20261014-4" />
     <script>document.documentElement.classList.replace("no-js", "js");</script>
   </head>
   <body class="case-page">
@@ -236,10 +236,61 @@
       </div>
     </main>
 
+    <footer class="footer case-footer shell" data-motion-section="footer">
+      <div class="footer__identity" data-case-reveal>
+        <a class="footer__wordmark" href="index.html">marakhovskiy</a>
+        <p>Product designer.<br />Turning complex systems into clear experiences.</p>
+        <span class="footer__copyright">© 2026 Maxim Marakhovskiy</span>
+      </div>
+
+      <nav class="footer__nav" aria-label="Footer links">
+        <div class="footer__group" data-case-reveal>
+          <h2>Work</h2>
+          <ul>
+            <li><a href="index.html#portfolio">Selected work</a></li>
+            <li><a href="index.html#career">Career</a></li>
+          </ul>
+        </div>
+        <div class="footer__group" data-case-reveal>
+          <h2>About</h2>
+          <ul>
+            <li><a href="index.html#about">Profile</a></li>
+            <li><a href="#overview">Back to top <span aria-hidden="true">↑</span></a></li>
+          </ul>
+        </div>
+        <div class="footer__group" data-case-reveal>
+          <h2>Contact</h2>
+          <ul>
+            <li><a href="index.html#contact">Discuss a project <span aria-hidden="true">↗</span></a></li>
+          </ul>
+        </div>
+      </nav>
+    </footer>
+
+    <section class="case-gravity" aria-labelledby="case-gravity-title" data-case-gravity>
+      <div class="case-gravity__surface shell">
+        <header class="case-gravity__heading">
+          <p>One last thing</p>
+          <h2 id="case-gravity-title">Ideas move when you do.</h2>
+          <span>Drag or throw the pieces</span>
+        </header>
+
+        <button class="gravity-piece gravity-piece--make" type="button" data-gravity-piece data-x="0.04" data-rotate="-5" aria-describedby="case-gravity-instruction">MAKE</button>
+        <button class="gravity-piece gravity-piece--good" type="button" data-gravity-piece data-x="0.28" data-rotate="4" aria-describedby="case-gravity-instruction">GOOD</button>
+        <button class="gravity-piece gravity-piece--things" type="button" data-gravity-piece data-x="0.51" data-rotate="-3" aria-describedby="case-gravity-instruction">THINGS</button>
+        <button class="gravity-piece gravity-piece--together" type="button" data-gravity-piece data-x="0.72" data-rotate="5" aria-describedby="case-gravity-instruction">TOGETHER</button>
+        <button class="gravity-piece gravity-piece--round gravity-piece--arrow" type="button" data-gravity-piece data-x="0.16" data-rotate="0" aria-label="Move arrow piece" aria-describedby="case-gravity-instruction">↗</button>
+        <button class="gravity-piece gravity-piece--round gravity-piece--dot" type="button" data-gravity-piece data-x="0.6" data-rotate="0" aria-label="Move circle piece" aria-describedby="case-gravity-instruction"></button>
+        <button class="gravity-piece gravity-piece--plus" type="button" data-gravity-piece data-x="0.84" data-rotate="8" aria-label="Move plus piece" aria-describedby="case-gravity-instruction"><span aria-hidden="true"></span></button>
+        <button class="gravity-piece gravity-piece--slash" type="button" data-gravity-piece data-x="0.4" data-rotate="-12" aria-label="Move slash piece" aria-describedby="case-gravity-instruction"></button>
+        <p class="sr-only" id="case-gravity-instruction">Drag the pieces with a pointer, or focus one and use the arrow keys.</p>
+      </div>
+    </section>
+
     <script src="vendor/gsap.min.js"></script>
     <script src="vendor/ScrollTrigger.min.js"></script>
-    <script src="script.js?v=20261014-work-areas"></script>
+    <script src="script.js?v=20261014-footer-physics"></script>
     <script src="vendor/matter.min.js"></script>
-    <script src="amocrm.js?v=20261014-2"></script>
+    <script src="amocrm.js?v=20261014-3"></script>
   </body>
 </html>

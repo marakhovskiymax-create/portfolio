@@ -518,6 +518,252 @@ function initWorkAreasPhysics() {
 
 initWorkAreasPhysics();
 
+function initCaseGravity() {
+  const scene = document.querySelector("[data-case-gravity]");
+  const surface = scene?.querySelector(".case-gravity__surface");
+  const items = surface ? Array.from(surface.querySelectorAll("[data-gravity-piece]")) : [];
+  if (!scene || !surface || !items.length || !window.Matter) return;
+
+  const { Body, Bodies, Composite, Engine, Sleeping } = window.Matter;
+  const engine = Engine.create({ enableSleeping: true, positionIterations: 8, velocityIterations: 6 });
+  const states = new Map();
+  let frame = 0;
+  let previousTime = 0;
+  let accumulatedTime = 0;
+  let sceneActive = false;
+  let topLayer = 20;
+  let resizeFrame = 0;
+
+  engine.gravity.y = prefersReducedMotion ? 0 : 1;
+  engine.gravity.scale = prefersReducedMotion ? 0 : 0.0015;
+
+  const renderState = (item, state) => {
+    if (!state.body) return;
+    item.style.setProperty("--gravity-x", `${state.body.position.x - item.offsetWidth / 2}px`);
+    item.style.setProperty("--gravity-y", `${state.body.position.y - item.offsetHeight / 2}px`);
+    item.style.setProperty("--gravity-rotate", `${state.body.angle}rad`);
+  };
+
+  const buildWorld = (preserve = false) => {
+    const width = surface.clientWidth;
+    const height = surface.clientHeight;
+    const oldStates = items.map((item) => {
+      const body = states.get(item)?.body;
+      return body
+        ? {
+            x: body.position.x / Math.max(1, width),
+            y: body.position.y / Math.max(1, height),
+            angle: body.angle,
+            velocity: { ...body.velocity },
+            angularVelocity: body.angularVelocity,
+          }
+        : null;
+    });
+
+    Composite.clear(engine.world, false);
+    const wallDepth = 120;
+    Composite.add(engine.world, [
+      Bodies.rectangle(width / 2, height + wallDepth / 2, width + wallDepth * 2, wallDepth, { isStatic: true }),
+      Bodies.rectangle(-wallDepth / 2, height / 2, wallDepth, height + wallDepth * 2, { isStatic: true }),
+      Bodies.rectangle(width + wallDepth / 2, height / 2, wallDepth, height + wallDepth * 2, { isStatic: true }),
+      Bodies.rectangle(width / 2, -wallDepth / 2, width + wallDepth * 2, wallDepth, { isStatic: true }),
+    ]);
+
+    const reducedY = [0.7, 0.63, 0.78, 0.58, 0.42, 0.82, 0.38, 0.6];
+    items.forEach((item, index) => {
+      const state = states.get(item);
+      const old = oldStates[index];
+      const halfWidth = item.offsetWidth / 2;
+      const halfHeight = item.offsetHeight / 2;
+      const maxX = Math.max(0, width - item.offsetWidth);
+      const xRatio = Number(item.dataset.x || 0);
+      const x = preserve && old
+        ? Math.min(width - halfWidth, Math.max(halfWidth, old.x * width))
+        : halfWidth + maxX * xRatio;
+      const y = preserve && old
+        ? Math.min(height - halfHeight, Math.max(halfHeight, old.y * height))
+        : prefersReducedMotion
+          ? Math.min(height - halfHeight - 10, Math.max(halfHeight, height * reducedY[index]))
+          : 150 + halfHeight + (index % 3) * 42;
+      const options = {
+        angle: preserve && old ? old.angle : (Number(item.dataset.rotate || 0) * Math.PI) / 180,
+        density: item.classList.contains("gravity-piece--slash") ? 0.0018 : 0.00125,
+        friction: 0.44,
+        frictionStatic: 0.74,
+        frictionAir: 0.012,
+        restitution: 0.26,
+        sleepThreshold: 42,
+        isStatic: prefersReducedMotion,
+      };
+      const body = item.classList.contains("gravity-piece--round")
+        ? Bodies.circle(x, y, Math.min(item.offsetWidth, item.offsetHeight) / 2, options)
+        : Bodies.rectangle(x, y, item.offsetWidth, item.offsetHeight, {
+            ...options,
+            chamfer: { radius: item.classList.contains("gravity-piece--together") || item.classList.contains("gravity-piece--make") || item.classList.contains("gravity-piece--slash") ? item.offsetHeight / 2 : Math.min(24, item.offsetHeight * 0.22) },
+          });
+
+      state.body = body;
+      if (preserve && old && !prefersReducedMotion) {
+        Body.setVelocity(body, old.velocity);
+        Body.setAngularVelocity(body, old.angularVelocity);
+      } else if (!prefersReducedMotion) {
+        Body.setVelocity(body, { x: index % 2 ? -0.65 : 0.65, y: index * 0.06 });
+        Body.setAngularVelocity(body, (index % 2 ? -1 : 1) * 0.007);
+      }
+      Composite.add(engine.world, body);
+      renderState(item, state);
+    });
+  };
+
+  const tick = (time) => {
+    if (!sceneActive) {
+      frame = 0;
+      return;
+    }
+    const fixedStep = 1000 / 60;
+    const delta = previousTime ? Math.min(50, time - previousTime) : fixedStep;
+    previousTime = time;
+    accumulatedTime += delta;
+    while (accumulatedTime >= fixedStep) {
+      Engine.update(engine, fixedStep);
+      accumulatedTime -= fixedStep;
+    }
+    items.forEach((item) => renderState(item, states.get(item)));
+    frame = window.requestAnimationFrame(tick);
+  };
+
+  const startScene = () => {
+    if (frame || prefersReducedMotion) return;
+    sceneActive = true;
+    previousTime = 0;
+    accumulatedTime = 0;
+    frame = window.requestAnimationFrame(tick);
+  };
+
+  const stopScene = () => {
+    sceneActive = false;
+    if (frame) window.cancelAnimationFrame(frame);
+    frame = 0;
+  };
+
+  items.forEach((item) => {
+    const state = {
+      body: null,
+      pointerId: null,
+      pointerOffsetX: 0,
+      pointerOffsetY: 0,
+      previousX: 0,
+      previousY: 0,
+      previousTime: 0,
+      throwX: 0,
+      throwY: 0,
+    };
+    states.set(item, state);
+
+    item.addEventListener("pointerdown", (event) => {
+      if (!state.body || prefersReducedMotion || (event.pointerType === "mouse" && event.button !== 0)) return;
+      event.preventDefault();
+      const bounds = surface.getBoundingClientRect();
+      state.pointerId = event.pointerId;
+      state.pointerOffsetX = event.clientX - bounds.left - state.body.position.x;
+      state.pointerOffsetY = event.clientY - bounds.top - state.body.position.y;
+      state.previousX = event.clientX;
+      state.previousY = event.clientY;
+      state.previousTime = performance.now();
+      state.throwX = 0;
+      state.throwY = 0;
+      Sleeping.set(state.body, false);
+      Body.setStatic(state.body, true);
+      topLayer += 1;
+      item.style.zIndex = String(topLayer);
+      item.classList.add("is-dragging");
+      item.setPointerCapture(event.pointerId);
+      startScene();
+    });
+
+    item.addEventListener("pointermove", (event) => {
+      if (!state.body || state.pointerId !== event.pointerId) return;
+      const bounds = surface.getBoundingClientRect();
+      const halfWidth = item.offsetWidth / 2;
+      const halfHeight = item.offsetHeight / 2;
+      const x = Math.min(surface.clientWidth - halfWidth, Math.max(halfWidth, event.clientX - bounds.left - state.pointerOffsetX));
+      const y = Math.min(surface.clientHeight - halfHeight, Math.max(halfHeight, event.clientY - bounds.top - state.pointerOffsetY));
+      const now = performance.now();
+      const delta = Math.max(8, now - state.previousTime);
+      const moveX = event.clientX - state.previousX;
+      const moveY = event.clientY - state.previousY;
+      state.throwX = (moveX / delta) * (1000 / 60);
+      state.throwY = (moveY / delta) * (1000 / 60);
+      state.previousX = event.clientX;
+      state.previousY = event.clientY;
+      state.previousTime = now;
+      Body.setPosition(state.body, { x, y });
+      renderState(item, state);
+    });
+
+    const release = (event) => {
+      if (!state.body || state.pointerId !== event.pointerId) return;
+      state.pointerId = null;
+      item.classList.remove("is-dragging");
+      if (item.hasPointerCapture(event.pointerId)) item.releasePointerCapture(event.pointerId);
+      Body.setStatic(state.body, false);
+      Sleeping.set(state.body, false);
+      Body.setVelocity(state.body, {
+        x: Math.max(-22, Math.min(22, state.throwX)),
+        y: Math.max(-22, Math.min(22, state.throwY)),
+      });
+      Body.setAngularVelocity(state.body, Math.max(-0.12, Math.min(0.12, state.throwX * 0.006)));
+      startScene();
+    };
+
+    item.addEventListener("pointerup", release);
+    item.addEventListener("pointercancel", release);
+    item.addEventListener("keydown", (event) => {
+      if (!state.body || prefersReducedMotion) return;
+      const step = event.shiftKey ? 32 : 12;
+      const movement = {
+        ArrowLeft: [-step, 0],
+        ArrowRight: [step, 0],
+        ArrowUp: [0, -step],
+        ArrowDown: [0, step],
+      }[event.key];
+      if (!movement) return;
+      event.preventDefault();
+      const halfWidth = item.offsetWidth / 2;
+      const halfHeight = item.offsetHeight / 2;
+      Body.setPosition(state.body, {
+        x: Math.min(surface.clientWidth - halfWidth, Math.max(halfWidth, state.body.position.x + movement[0])),
+        y: Math.min(surface.clientHeight - halfHeight, Math.max(halfHeight, state.body.position.y + movement[1])),
+      });
+      Body.setVelocity(state.body, { x: movement[0] * 0.12, y: movement[1] * 0.12 });
+      Sleeping.set(state.body, false);
+      topLayer += 1;
+      item.style.zIndex = String(topLayer);
+      renderState(item, state);
+      startScene();
+    });
+  });
+
+  scene.classList.add("is-ready");
+  window.requestAnimationFrame(() => buildWorld(false));
+  const resizeObserver = new ResizeObserver(() => {
+    window.cancelAnimationFrame(resizeFrame);
+    resizeFrame = window.requestAnimationFrame(() => buildWorld(true));
+  });
+  resizeObserver.observe(surface);
+
+  if (!prefersReducedMotion) {
+    const visibilityObserver = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) startScene();
+      else stopScene();
+    }, { threshold: 0.08 });
+    visibilityObserver.observe(surface);
+  }
+  window.addEventListener("pagehide", stopScene, { once: true });
+}
+
+initCaseGravity();
+
 const revealItems = Array.from(document.querySelectorAll("[data-case-reveal]"));
 if (prefersReducedMotion || !("IntersectionObserver" in window)) {
   revealItems.forEach((item) => item.classList.add("is-visible"));
