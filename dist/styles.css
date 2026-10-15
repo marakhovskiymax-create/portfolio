@@ -182,11 +182,11 @@ main {
 }
 
 .masthead__links--primary {
-  justify-content: flex-start;
+  justify-content: flex-end;
 }
 
 .masthead__links--meta {
-  justify-content: flex-end;
+  justify-content: flex-start;
 }
 
 .masthead__links a {
@@ -211,7 +211,7 @@ main {
 .wordmark {
   color: var(--color-text) !important;
   font-family: var(--font-display);
-  font-size: 1.625rem;
+  font-size: 1.875rem;
   font-style: italic;
   font-weight: 600;
   letter-spacing: -0.035em;
