@@ -90,6 +90,7 @@ body.case-page {
 
 .case-nav__links a span {
   color: rgba(244, 243, 238, 0.28);
+  font-weight: 600;
   font-variant-numeric: tabular-nums;
 }
 
