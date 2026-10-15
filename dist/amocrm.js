@@ -546,6 +546,20 @@ function playMetricScramble(element, delay = 0) {
   }, delay);
 }
 
+function initMetricScrambleInView() {
+  if (prefersReducedMotion || !("IntersectionObserver" in window) || !metricScrambles.length) return;
+
+  const metricObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      playMetricScramble(entry.target);
+      observer.unobserve(entry.target);
+    });
+  }, { rootMargin: "0px 0px -6% 0px", threshold: 0.6 });
+
+  metricScrambles.forEach((metric) => metricObserver.observe(metric));
+}
+
 function initCaseTextMotion() {
   if (prefersReducedMotion || !window.gsap || !("IntersectionObserver" in window)) return;
 
@@ -628,10 +642,6 @@ function initCaseTextMotion() {
         clearProps: "transform,opacity,visibility",
       });
 
-      if (entry.target.id === "impact") {
-        metricScrambles.forEach((metric, index) => playMetricScramble(metric, 160 + index * 80));
-      }
-
       observer.unobserve(entry.target);
     });
   }, { rootMargin: "0px 0px -10% 0px", threshold: 0.16 });
@@ -640,6 +650,7 @@ function initCaseTextMotion() {
 }
 
 initCaseTextMotion();
+initMetricScrambleInView();
 
 
 const revealItems = Array.from(document.querySelectorAll("[data-case-reveal]"));
