@@ -568,6 +568,10 @@ body.has-spider-cursor .spider-cursor {
   --project-accent: #59b7df;
 }
 
+.case-visual[data-project-visual="eme"] {
+  --project-accent: #72c98b;
+}
+
 .case-visual[data-project-visual="eme-app"] {
   --project-accent: #c8d88d;
 }
@@ -582,6 +586,10 @@ body.has-spider-cursor .spider-cursor {
 
 .case-visual[data-project-visual="don-ballon"] {
   --project-accent: #ff4d67;
+}
+
+.case-visual[data-project-visual="shable"] {
+  --project-accent: #a879ff;
 }
 
 .case-visual::before {
@@ -689,6 +697,11 @@ body.has-spider-cursor .spider-cursor {
 .time-machine__card--don {
   --card-accent: #ff4d67;
   background: linear-gradient(145deg, #301a20, #181114 72%);
+}
+
+.time-machine__card--shable {
+  --card-accent: #a879ff;
+  background: linear-gradient(145deg, #281b3f, #151020 72%);
 }
 
 .time-machine__card-chrome {
@@ -864,6 +877,14 @@ body.has-spider-cursor .spider-cursor {
   background-size: auto, auto, 33.333% 50%, 33.333% 50%, auto;
 }
 
+.time-machine__graphic--shable {
+  background-image:
+    radial-gradient(circle at 72% 24%, #cdb5ff 0 5%, transparent 5.5%),
+    linear-gradient(150deg, transparent 0 28%, rgba(168, 121, 255, 0.52) 28.5% 31%, transparent 31.5%),
+    repeating-linear-gradient(90deg, rgba(168, 121, 255, 0.16) 0 14%, transparent 14% 22%),
+    linear-gradient(145deg, rgba(168, 121, 255, 0.3), rgba(94, 54, 166, 0.08));
+}
+
 .time-machine__timeline {
   position: relative;
   z-index: 2;
@@ -871,7 +892,7 @@ body.has-spider-cursor .spider-cursor {
   grid-column: 2;
   grid-row: 1;
   height: min(72%, 400px);
-  grid-template-rows: repeat(6, minmax(0, 1fr));
+  grid-template-rows: repeat(5, minmax(0, 1fr));
   row-gap: 0;
   align-self: center;
 }
