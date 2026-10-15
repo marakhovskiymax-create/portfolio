@@ -3,7 +3,7 @@ const projectContent = {
     caption: "Интерактивный предпросмотр проекта amoCRM для управления сделками и воронкой продаж.",
   },
   eme: {
-    caption: "Интерактивный предпросмотр проекта EME, экосистемы грузоперевозок.",
+    caption: "Интерактивный предпросмотр проекта EME.WEB, экосистемы грузоперевозок.",
   },
   "eme-app": {
     caption: "Интерактивный предпросмотр проекта EME.APP, приложения для работы на складе.",
@@ -71,7 +71,7 @@ function syncTimeMachine(activeIndex, immediate = false) {
   const activeCaseHref = activeCard?.dataset.caseHref;
   if (timeMachineStageLink) {
     if (activeCaseHref) {
-      const projectLabel = { "amo-crm": "amoCRM", eme: "EME", "don-ballon": "Дон Баллон" }[activeCard.dataset.stageCard] || "проекта";
+      const projectLabel = { "amo-crm": "amoCRM", eme: "EME.WEB", "don-ballon": "Дон Баллон" }[activeCard.dataset.stageCard] || "проекта";
       timeMachineStageLink.href = activeCaseHref;
       timeMachineStageLink.setAttribute("aria-label", `Открыть кейс ${projectLabel}`);
       timeMachineStageLink.classList.add("is-active");
