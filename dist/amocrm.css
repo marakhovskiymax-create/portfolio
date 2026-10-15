@@ -60,8 +60,8 @@ body.case-page {
 .case-nav__label,
 .case-nav__mobile-status {
   color: rgba(244, 243, 238, 0.42);
-  font-size: 0.72rem;
-  font-weight: 700;
+  font-size: 1rem;
+  font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
@@ -83,7 +83,8 @@ body.case-page {
   min-height: 48px;
   border-bottom: 1px solid var(--case-line);
   color: rgba(244, 243, 238, 0.46);
-  font-size: 0.86rem;
+  font-size: 1rem;
+  font-weight: 600;
   transition: color 180ms var(--ease-out), transform 180ms var(--ease-out);
 }
 
@@ -989,7 +990,7 @@ body.case-page > .case-footer {
   .case-nav__label { display: none; }
   .case-nav__mobile-status { order: 2; text-align: right; }
   .case-nav__links { order: 1; }
-  .case-nav__links a { padding-inline: 10px; font-size: 0.78rem; }
+  .case-nav__links a { padding-inline: 10px; font-size: 1rem; }
   .case-nav__links a:first-child { padding-left: 0; }
 
   .case-hero__copy {
