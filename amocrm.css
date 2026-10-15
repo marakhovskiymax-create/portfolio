@@ -640,7 +640,7 @@ body.case-page {
   border-bottom: 1px solid var(--case-line);
 }
 
-.case-decision span {
+.case-decision > span {
   color: rgba(244, 243, 238, 0.42);
   font-size: 0.72rem;
   letter-spacing: 0.08em;
@@ -850,6 +850,10 @@ body.case-page {
 }
 
 .case-motion-title {
+  perspective: 700px;
+}
+
+.case-decision__text-effect {
   perspective: 700px;
 }
 
