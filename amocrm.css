@@ -626,8 +626,8 @@ body.case-page {
 }
 
 .case-story__media--inset {
-  width: min(88%, 1050px);
-  justify-self: end;
+  width: 100%;
+  justify-self: stretch;
 }
 
 .case-decision {
@@ -660,9 +660,9 @@ body.case-page {
 }
 
 #website .case-decision:not(.case-role) {
-  width: min(88%, 1050px);
+  width: 100%;
   margin-block: 150px;
-  justify-self: end;
+  justify-self: stretch;
 }
 
 .integration-map {
