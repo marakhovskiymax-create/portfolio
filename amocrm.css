@@ -33,7 +33,7 @@ body.case-page {
 }
 
 .case-header {
-  background: linear-gradient(to bottom, rgba(5, 5, 5, 0.94), rgba(5, 5, 5, 0.72) 76%, transparent);
+  background: transparent;
 }
 
 .case-main {
@@ -990,7 +990,6 @@ body.case-page > .case-footer {
 @media (max-width: 760px) {
   :root { --case-gap: 112px; }
   .case-main { padding-top: 104px; }
-  .case-header .masthead__links--meta { display: flex; }
 
   .case-nav {
     top: 62px;
