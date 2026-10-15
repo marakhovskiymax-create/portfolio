@@ -847,6 +847,20 @@ body.case-page {
   line-height: 0.86;
 }
 
+.case-motion-title {
+  perspective: 700px;
+}
+
+.case-motion-word,
+.case-motion-char {
+  display: inline-block;
+}
+
+.case-motion-char {
+  transform-origin: 50% 70%;
+  backface-visibility: hidden;
+}
+
 .case-next {
   width: var(--shell);
   margin-top: var(--case-gap);

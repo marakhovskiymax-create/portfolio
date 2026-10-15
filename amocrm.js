@@ -519,6 +519,128 @@ function initWorkAreasPhysics() {
 
 initWorkAreasPhysics();
 
+const metricScrambles = Array.from(document.querySelectorAll("[data-text-scramble]"));
+
+function playMetricScramble(element, delay = 0) {
+  const finalText = element.textContent ?? "";
+  const duration = 720;
+  const glyphs = "0123456789";
+
+  window.setTimeout(() => {
+    const startedAt = performance.now();
+
+    function render(now) {
+      const progress = Math.min(1, (now - startedAt) / duration);
+      const revealed = Math.floor(progress * (finalText.length + 1));
+
+      element.textContent = Array.from(finalText, (character, index) => {
+        if (!/\d/.test(character) || index < revealed) return character;
+        return glyphs[Math.floor(Math.random() * glyphs.length)];
+      }).join("");
+
+      if (progress < 1) window.requestAnimationFrame(render);
+      else element.textContent = finalText;
+    }
+
+    window.requestAnimationFrame(render);
+  }, delay);
+}
+
+function initCaseTextMotion() {
+  if (prefersReducedMotion || !window.gsap || !("IntersectionObserver" in window)) return;
+
+  const sectionMotion = [
+    { selector: "#overview", title: "h1", support: [".case-hero__lede", ".case-meta"] },
+    { selector: "#context", title: "h2", support: [".case-context__intro > p:last-child", ".case-accordion"] },
+    { selector: "#work-areas", title: "h2", support: [".work-areas__canvas"] },
+    { selector: "#website", title: "h2", support: [".case-story__copy > p", ".case-story__notes"] },
+    { selector: "#in-app", title: "h2", support: [".case-story__copy > p", ".case-story__notes"] },
+    { selector: "#upgrades", title: "h2", support: [".case-story__copy > p", ".case-story__notes"] },
+    { selector: "#renewal", title: "h2", support: [".case-story__copy > p:last-child", ".renewal-flow"] },
+    { selector: "#impact", title: "h2", support: [".case-impact__intro > p:last-child", ".case-impact__metrics"] },
+  ];
+
+  function splitTitle(title) {
+    const text = title.textContent.trim();
+    const visual = document.createElement("span");
+
+    visual.setAttribute("aria-hidden", "true");
+    title.setAttribute("aria-label", text);
+
+    text.split(/\s+/).forEach((word, wordIndex, words) => {
+      const wordElement = document.createElement("span");
+      wordElement.className = "case-motion-word";
+
+      Array.from(word).forEach((character) => {
+        const characterElement = document.createElement("span");
+        characterElement.className = "case-motion-char";
+        characterElement.textContent = character;
+        wordElement.append(characterElement);
+      });
+
+      visual.append(wordElement);
+      if (wordIndex < words.length - 1) visual.append(" ");
+    });
+
+    title.textContent = "";
+    title.classList.add("case-motion-title");
+    title.append(visual);
+    return Array.from(title.querySelectorAll(".case-motion-char"));
+  }
+
+  const preparedSections = sectionMotion.map((config) => {
+    const section = document.querySelector(config.selector);
+    const title = section?.querySelector(config.title);
+    if (!section || !title) return null;
+
+    const characters = splitTitle(title);
+    const supportingElements = config.support.flatMap((selector) => Array.from(section.querySelectorAll(selector)));
+
+    window.gsap.set(characters, { autoAlpha: 0, rotateX: 90, y: 10 });
+    window.gsap.set(supportingElements, { autoAlpha: 0, y: 10 });
+
+    return { section, characters, supportingElements };
+  }).filter(Boolean);
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      const prepared = preparedSections.find((item) => item.section === entry.target);
+      if (!prepared) return;
+
+      window.gsap.to(prepared.characters, {
+        autoAlpha: 1,
+        rotateX: 0,
+        y: 0,
+        duration: 0.2,
+        stagger: 0.035,
+        ease: "power3.out",
+        clearProps: "transform,opacity,visibility",
+      });
+
+      window.gsap.to(prepared.supportingElements, {
+        autoAlpha: 1,
+        y: 0,
+        duration: 0.32,
+        delay: 0.12,
+        stagger: 0.08,
+        ease: "power3.out",
+        clearProps: "transform,opacity,visibility",
+      });
+
+      if (entry.target.id === "impact") {
+        metricScrambles.forEach((metric, index) => playMetricScramble(metric, 160 + index * 80));
+      }
+
+      observer.unobserve(entry.target);
+    });
+  }, { rootMargin: "0px 0px -10% 0px", threshold: 0.16 });
+
+  preparedSections.forEach(({ section }) => observer.observe(section));
+}
+
+initCaseTextMotion();
+
 
 const revealItems = Array.from(document.querySelectorAll("[data-case-reveal]"));
 if (prefersReducedMotion || !("IntersectionObserver" in window)) {
