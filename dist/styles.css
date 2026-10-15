@@ -154,7 +154,7 @@ main {
   inset: 24px auto auto 50%;
   display: flex;
   justify-content: center;
-  width: min(calc(100% - 48px), 980px);
+  width: min(calc(100% - 48px), 994px);
   transform: translateX(-50%);
 }
 
@@ -178,7 +178,7 @@ main {
 .masthead__links {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 24px;
 }
 
 .masthead__links--primary {
@@ -220,6 +220,7 @@ main {
   font-weight: 600;
   line-height: 1;
   letter-spacing: -0.035em;
+  transform: translateY(-4px);
 }
 
 .masthead__actions {
@@ -2322,11 +2323,11 @@ body.has-spider-cursor .spider-cursor {
 
 @media (min-width: 1001px) and (max-width: 1080px) {
   .site-header {
-    width: min(calc(100% - 32px), 980px);
+    width: min(calc(100% - 32px), 994px);
   }
 
   .masthead__links {
-    gap: 12px;
+    gap: 24px;
   }
 
   .masthead__links a {
