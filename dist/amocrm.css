@@ -497,7 +497,7 @@ body.case-page {
 .work-areas__drag-hint {
   position: absolute;
   right: clamp(24px, 5vw, 72px);
-  bottom: -48px;
+  bottom: -24px;
   z-index: 2;
   display: grid;
   justify-items: end;
@@ -507,15 +507,15 @@ body.case-page {
 
 .work-areas__drag-hint span {
   margin-right: 2px;
-  font-size: 0.875rem;
+  font-size: 1.25rem;
   font-weight: 700;
   letter-spacing: 0.04em;
 }
 
 .work-areas__drag-hint svg {
   display: block;
-  width: 112px;
-  height: 58px;
+  width: 150px;
+  height: 78px;
   margin-top: -2px;
   overflow: visible;
 }
@@ -523,7 +523,7 @@ body.case-page {
 .work-areas__drag-hint path {
   fill: none;
   stroke: currentColor;
-  stroke-width: 1.75;
+  stroke-width: 2;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
@@ -1088,15 +1088,15 @@ body.case-page > .case-footer {
   .work-areas__drag-hint {
     position: static;
     width: max-content;
-    margin: 20px 12px 0 auto;
+    margin: 24px 12px 0 auto;
   }
 
   .work-areas__drag-hint span {
-    font-size: 0.8125rem;
+    font-size: 1.25rem;
   }
 
   .work-areas__drag-hint svg {
-    width: 92px;
+    width: 128px;
     height: auto;
   }
 
