@@ -61,7 +61,7 @@ body.case-page {
 .case-nav__mobile-status {
   color: rgba(244, 243, 238, 0.42);
   font-size: 1rem;
-  font-weight: 700;
+  font-weight: 900;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
@@ -82,15 +82,15 @@ body.case-page {
   align-items: center;
   min-height: 48px;
   border-bottom: 1px solid var(--case-line);
-  color: rgba(244, 243, 238, 0.46);
+  color: rgba(244, 243, 238, 0.36);
   font-size: 1rem;
-  font-weight: 700;
+  font-weight: 900;
   transition: color 180ms var(--ease-out), transform 180ms var(--ease-out);
 }
 
 .case-nav__links a span {
-  color: rgba(244, 243, 238, 0.28);
-  font-weight: 700;
+  color: rgba(244, 243, 238, 0.22);
+  font-weight: 900;
   font-variant-numeric: tabular-nums;
 }
 
