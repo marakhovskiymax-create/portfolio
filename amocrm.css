@@ -490,6 +490,44 @@ body.case-page {
   margin-bottom: 56px;
 }
 
+.work-areas .case-heading {
+  position: relative;
+}
+
+.work-areas__drag-hint {
+  position: absolute;
+  right: clamp(24px, 5vw, 72px);
+  bottom: -48px;
+  z-index: 2;
+  display: grid;
+  justify-items: end;
+  color: rgba(244, 243, 238, 0.78);
+  pointer-events: none;
+}
+
+.work-areas__drag-hint span {
+  margin-right: 2px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.work-areas__drag-hint svg {
+  display: block;
+  width: 112px;
+  height: 58px;
+  margin-top: -2px;
+  overflow: visible;
+}
+
+.work-areas__drag-hint path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 .work-areas__canvas {
   position: relative;
   min-height: 480px;
@@ -1045,6 +1083,21 @@ body.case-page > .case-footer {
     gap: 8px;
     padding: 16px;
     background-size: 20px 20px;
+  }
+
+  .work-areas__drag-hint {
+    position: static;
+    width: max-content;
+    margin: 20px 12px 0 auto;
+  }
+
+  .work-areas__drag-hint span {
+    font-size: 0.8125rem;
+  }
+
+  .work-areas__drag-hint svg {
+    width: 92px;
+    height: auto;
   }
 
   .work-chip {
