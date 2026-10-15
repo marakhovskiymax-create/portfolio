@@ -181,7 +181,7 @@ main {
 }
 
 .masthead__links--primary {
-  justify-content: flex-start;
+  justify-content: flex-end;
 }
 
 .masthead__links--meta {
@@ -191,7 +191,7 @@ main {
 .masthead__links a {
   color: rgba(244, 243, 238, 0.76);
   font-size: 0.875rem;
-  font-weight: 600;
+  font-weight: 800;
   transition: color var(--motion-moderate) var(--ease-out);
 }
 
@@ -2202,7 +2202,7 @@ body.has-spider-cursor .spider-cursor {
     border-bottom: 1px solid var(--color-border);
     color: #d0d0ce;
     font-size: 1rem;
-    font-weight: 600;
+    font-weight: 800;
   }
 
   .mobile-menu a:last-child {
