@@ -723,9 +723,79 @@ function initDecisionTextEffects() {
   preparedBlocks.forEach(({ block }) => observer.observe(block));
 }
 
+function initNextProjectTextEffect() {
+  if (prefersReducedMotion || !window.gsap || !("IntersectionObserver" in window)) return;
+
+  const block = document.querySelector(".case-next");
+  const label = block?.querySelector(":scope > p");
+  const textElements = block ? Array.from(block.querySelectorAll(":scope > a > span")) : [];
+  if (!block || !label || !textElements.length) return;
+
+  const characters = textElements.flatMap((element) => {
+    const text = element.textContent.trim();
+    const visual = document.createElement("span");
+    visual.setAttribute("aria-hidden", "true");
+
+    text.split(/\s+/).forEach((word, wordIndex, words) => {
+      const wordElement = document.createElement("span");
+      wordElement.className = "case-motion-word";
+
+      Array.from(word).forEach((character) => {
+        const characterElement = document.createElement("span");
+        characterElement.className = "case-motion-char";
+        characterElement.textContent = character;
+        wordElement.append(characterElement);
+      });
+
+      visual.append(wordElement);
+      if (wordIndex < words.length - 1) visual.append(" ");
+    });
+
+    element.textContent = "";
+    element.setAttribute("aria-label", text);
+    element.classList.add("case-next__text-effect");
+    element.append(visual);
+    return Array.from(element.querySelectorAll(".case-motion-char"));
+  });
+
+  window.gsap.set(label, { autoAlpha: 0, y: 8, filter: "blur(8px)" });
+  window.gsap.set(characters, { autoAlpha: 0, rotateX: 90, y: 10 });
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+
+      window.gsap.to(label, {
+        autoAlpha: 1,
+        y: 0,
+        filter: "blur(0px)",
+        duration: 0.5,
+        ease: "power3.out",
+        clearProps: "transform,opacity,visibility,filter",
+      });
+
+      window.gsap.to(characters, {
+        autoAlpha: 1,
+        rotateX: 0,
+        y: 0,
+        duration: 0.2,
+        delay: 0.5,
+        stagger: 0.05,
+        ease: "power3.out",
+        clearProps: "transform,opacity,visibility",
+      });
+
+      observer.unobserve(entry.target);
+    });
+  }, { rootMargin: "0px 0px -8% 0px", threshold: 0.35 });
+
+  observer.observe(block);
+}
+
 initCaseTextMotion();
 initMetricScrambleInView();
 initDecisionTextEffects();
+initNextProjectTextEffect();
 
 
 const revealItems = Array.from(document.querySelectorAll("[data-case-reveal]"));

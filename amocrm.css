@@ -891,7 +891,7 @@ body.case-page {
 
 .case-next a {
   display: flex;
-  align-items: end;
+  align-items: center;
   justify-content: space-between;
   gap: 32px;
   padding: 32px 0;
@@ -899,7 +899,7 @@ body.case-page {
   border-bottom: 1px solid var(--case-line);
 }
 
-.case-next a span:first-child {
+.case-next a > span:first-child {
   color: var(--color-text);
   font-family: var(--font-hero, "Inter Tight", sans-serif);
   font-size: clamp(2.8rem, 6vw, 6rem);
@@ -907,9 +907,13 @@ body.case-page {
   letter-spacing: -0.045em;
 }
 
-.case-next a span:last-child {
-  color: var(--color-muted);
+.case-next a > span:last-child {
+  color: var(--color-text);
   font-size: 0.9rem;
+}
+
+.case-next__text-effect {
+  perspective: 700px;
 }
 
 body.case-page > .case-footer {
