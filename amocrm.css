@@ -660,7 +660,9 @@ body.case-page {
 }
 
 #website .case-decision:not(.case-role) {
+  width: min(88%, 1050px);
   margin-block: 150px;
+  justify-self: end;
 }
 
 .integration-map {
@@ -1077,6 +1079,11 @@ body.case-page > .case-footer {
     grid-template-columns: minmax(0, 1fr);
     gap: 14px;
     width: 100%;
+  }
+
+  #website .case-decision:not(.case-role) {
+    width: 100%;
+    justify-self: stretch;
   }
 
   .integration-map {
