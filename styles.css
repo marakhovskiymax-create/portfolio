@@ -184,7 +184,7 @@ main {
 .masthead__links--primary {
   grid-column: 2;
   justify-content: flex-start;
-  gap: 54px;
+  gap: 32px;
 }
 
 .masthead__links--meta {
