@@ -154,7 +154,7 @@ main {
   inset: 24px auto auto 50%;
   display: flex;
   justify-content: center;
-  width: min(calc(100% - 48px), 920px);
+  width: min(calc(100% - 48px), 980px);
   transform: translateX(-50%);
 }
 
@@ -162,7 +162,7 @@ main {
   position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-  column-gap: 16px;
+  column-gap: 20px;
   align-items: center;
   width: 100%;
   min-height: 56px;
@@ -209,11 +209,16 @@ main {
 }
 
 .wordmark {
+  display: inline-flex;
+  align-self: center;
+  align-items: center;
+  justify-content: center;
   color: var(--color-text) !important;
   font-family: var(--font-display);
-  font-size: 1.875rem;
+  font-size: 2.125rem;
   font-style: italic;
   font-weight: 600;
+  line-height: 1;
   letter-spacing: -0.035em;
 }
 
@@ -2131,7 +2136,7 @@ body.has-spider-cursor .spider-cursor {
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
   .site-header {
     inset-block-start: 16px;
     width: min(calc(100% - 24px), 620px);
@@ -2315,9 +2320,9 @@ body.has-spider-cursor .spider-cursor {
   }
 }
 
-@media (min-width: 901px) and (max-width: 1080px) {
+@media (min-width: 1001px) and (max-width: 1080px) {
   .site-header {
-    width: min(calc(100% - 32px), 920px);
+    width: min(calc(100% - 32px), 980px);
   }
 
   .masthead__links {
