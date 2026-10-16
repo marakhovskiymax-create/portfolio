@@ -1352,25 +1352,45 @@ function initAboutNoteTextEffects() {
     return { note, characters };
   }).filter(Boolean);
 
+  const tweenFor = ({ characters }) => ({
+    autoAlpha: 1,
+    rotateX: 0,
+    y: 0,
+    duration: 0.2,
+    stagger: Math.min(0.05, 2.4 / Math.max(1, characters.length)),
+    ease: "power3.out",
+    clearProps: "transform,opacity,visibility",
+  });
+
+  if (window.matchMedia("(min-width: 1021px)").matches) {
+    const map = document.querySelector(".about-map");
+    if (!map) return;
+
+    const orderedNotes = ["about-note--fashion", "about-note--games", "about-note--film"]
+      .map((className) => preparedNotes.find(({ note }) => note.classList.contains(className)))
+      .filter(Boolean);
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return;
+      observer.disconnect();
+
+      const timeline = window.gsap.timeline({ delay: 0.5 });
+      orderedNotes.forEach((prepared, index) => {
+        timeline.to(prepared.characters, tweenFor(prepared), index * 0.75);
+      });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.25 });
+
+    observer.observe(map);
+    return;
+  }
+
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (!entry.isIntersecting) return;
-      const prepared = preparedNotes.find((item) => item.note === entry.target);
+      const prepared = preparedNotes.find(({ note }) => note === entry.target);
       if (!prepared) return;
 
-      const stagger = Math.min(0.05, 2.4 / Math.max(1, prepared.characters.length));
-
-      window.gsap.to(prepared.characters, {
-        autoAlpha: 1,
-        rotateX: 0,
-        y: 0,
-        duration: 0.2,
-        delay: 0.5,
-        stagger,
-        ease: "power3.out",
-        clearProps: "transform,opacity,visibility",
-      });
-
+      window.gsap.to(prepared.characters, { ...tweenFor(prepared), delay: 0.5 });
       observer.unobserve(entry.target);
     });
   }, { rootMargin: "0px 0px -8% 0px", threshold: 0.25 });
