@@ -2724,8 +2724,9 @@ body.has-spider-cursor .spider-cursor {
 .footer {
   position: relative;
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(4, max-content);
   align-items: start;
+  justify-content: space-between;
   column-gap: 32px;
   margin-top: var(--block-gap);
   width: var(--shell);
@@ -2771,10 +2772,7 @@ body.has-spider-cursor .spider-cursor {
 }
 
 .footer__nav {
-  display: grid;
-  grid-column: 2 / -1;
-  grid-template-columns: subgrid;
-  column-gap: inherit;
+  display: contents;
 }
 
 .footer__group h2 {
@@ -2808,6 +2806,8 @@ body.has-spider-cursor .spider-cursor {
 
 .footer__group--social a > .tabler-icon {
   color: inherit;
+  width: 20px;
+  height: 20px;
 }
 
 .footer__group a:hover {
@@ -2826,13 +2826,8 @@ body.has-spider-cursor .spider-cursor {
 @media (max-width: 1320px) {
   .footer {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    justify-content: normal;
     gap: 40px 32px;
-  }
-
-  .footer__nav {
-    grid-column: 1 / -1;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 32px;
   }
 }
 
@@ -2853,10 +2848,6 @@ body.has-spider-cursor .spider-cursor {
 
 @media (max-width: 480px) {
   .footer {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .footer__nav {
     grid-template-columns: minmax(0, 1fr);
   }
 }
