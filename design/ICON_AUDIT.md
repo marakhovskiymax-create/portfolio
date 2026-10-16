@@ -12,4 +12,6 @@ The homepage, five linked case studies, and the legacy `eme.html` page share the
 
 The SVG files are from [Tabler Icons](https://github.com/tabler/tabler-icons/tree/main/icons/outline) and are used locally through CSS masks so they inherit each element's existing colour. The 21 icons share Tabler's 24×24 grid and 2px outline stroke.
 
+Outside the interactive skills playground beneath the footer, every interface icon renders at 24×24 CSS pixels. Icon-and-label controls use a 10px gap. The playground keeps its deliberate, responsive icon sizes and spacing.
+
 Not replaced: the portfolio wordmark and company logos (brand identities); the morphing cartoon shapes in About, the hand-drawn drag hints, the interactive globe, the cursor illustration, the case imagery, and the mock-interface graphics (illustration or content rather than interface pictograms). Their existing animation and appearance are preserved.

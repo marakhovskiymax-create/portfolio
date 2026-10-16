@@ -393,7 +393,7 @@ body.case-page {
   min-height: 72px;
   align-items: center;
   justify-content: space-between;
-  gap: 20px;
+  gap: 10px;
   padding: 18px 0;
   border: 0;
   background: transparent;
@@ -412,9 +412,9 @@ body.case-page {
 
 .case-accordion__trigger i {
   display: block;
-  width: 22px;
-  height: 22px;
-  flex: 0 0 22px;
+  width: 24px;
+  height: 24px;
+  flex: 0 0 24px;
   transition: transform 240ms var(--ease-out);
 }
 
@@ -932,7 +932,7 @@ body.case-page {
 .case-next a > span:last-child {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   color: var(--color-text);
   font-size: 0.9rem;
 }

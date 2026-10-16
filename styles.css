@@ -49,8 +49,8 @@
 /* Tabler Icons: one 24px, 2px-stroke system for interface pictograms. */
 .tabler-icon {
   display: inline-block;
-  width: 1em;
-  height: 1em;
+  width: 24px;
+  height: 24px;
   flex: none;
   background-color: currentColor;
   -webkit-mask: var(--tabler-icon) center / contain no-repeat;
@@ -454,6 +454,7 @@ body.has-spider-cursor .spider-cursor {
   min-height: 48px;
   align-items: center;
   justify-content: center;
+  gap: 10px;
   padding: 0 var(--space-6);
   border-radius: var(--radius-small);
   font-size: 0.9375rem;
@@ -505,6 +506,9 @@ body.has-spider-cursor .spider-cursor {
 }
 
 .hero__strip > :last-child {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   justify-self: end;
   color: var(--color-text);
   white-space: nowrap;
@@ -1751,7 +1755,7 @@ body.has-spider-cursor .spider-cursor {
   min-height: 76px;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-6);
+  gap: 10px;
   padding: 20px 0;
   border: 0;
   background: transparent;
@@ -1765,9 +1769,9 @@ body.has-spider-cursor .spider-cursor {
 
 .faq-trigger__icon {
   display: block;
-  width: 20px;
-  height: 20px;
-  flex: 0 0 20px;
+  width: 24px;
+  height: 24px;
+  flex: 0 0 24px;
   transition: transform 300ms var(--curve-cinematic);
 }
 
@@ -1819,8 +1823,8 @@ body.has-spider-cursor .spider-cursor {
 }
 
 .faq-contact__message .tabler-icon {
-  width: 30px;
-  height: 30px;
+  width: 24px;
+  height: 24px;
 }
 
 .faq-contact__copy h3 {
@@ -1838,7 +1842,7 @@ body.has-spider-cursor .spider-cursor {
   min-height: 52px;
   align-items: center;
   justify-content: center;
-  gap: 18px;
+  gap: 10px;
   padding-inline: 24px;
   border: 1px solid rgba(5, 5, 5, 0.35);
   border-radius: var(--radius-small);
@@ -1942,7 +1946,7 @@ body.has-spider-cursor .spider-cursor {
 .contact-method {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   color: var(--color-muted);
   font-size: 0.95rem;
   transition:
@@ -1967,8 +1971,8 @@ body.has-spider-cursor .spider-cursor {
 }
 
 .contact-method__icon .tabler-icon {
-  width: 18px;
-  height: 18px;
+  width: 24px;
+  height: 24px;
 }
 
 .contact-globe {
@@ -2105,7 +2109,7 @@ body.has-spider-cursor .spider-cursor {
   min-height: 48px;
   align-items: center;
   justify-content: center;
-  gap: 18px;
+  gap: 10px;
   padding-inline: 22px;
   border: 0;
   border-radius: 14px;
@@ -2210,7 +2214,7 @@ body.has-spider-cursor .spider-cursor {
     min-height: 42px;
     align-items: center;
     justify-content: flex-end;
-    gap: var(--space-3);
+    gap: 10px;
     padding: 0;
     border: 0;
     background: transparent;
@@ -2221,8 +2225,8 @@ body.has-spider-cursor .spider-cursor {
   }
 
   .menu-toggle__line {
-    width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 24px;
   }
 
   .menu-toggle[aria-expanded="true"] .menu-toggle__line {
@@ -2587,7 +2591,7 @@ body.has-spider-cursor .spider-cursor {
 
   .faq-trigger {
     min-height: 68px;
-    gap: 18px;
+    gap: 10px;
     padding-block: 18px;
   }
 
@@ -2778,8 +2782,8 @@ body.has-spider-cursor .spider-cursor {
 
 .footer__group a {
   display: inline-flex;
-  align-items: baseline;
-  gap: 6px;
+  align-items: center;
+  gap: 10px;
   white-space: normal;
   transition: color var(--motion-moderate), transform var(--motion-moderate);
 }
