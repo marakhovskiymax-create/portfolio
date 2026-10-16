@@ -846,7 +846,8 @@ function initSkillsPlayground() {
       const old = oldStates[index];
       const mobile = width < 960;
       const maxX = Math.max(0, width - item.offsetWidth);
-      const initialX = item.offsetWidth / 2 + maxX * Number((mobile ? item.dataset.mobileX : item.dataset.x) || 0);
+      const targetX = item.offsetWidth / 2 + maxX * Number((mobile ? item.dataset.mobileX : item.dataset.x) || 0);
+      const initialX = reduceMotion ? targetX : width / 2 + (targetX - width / 2) * 0.12;
       const initialY = reduceMotion
         ? height - item.offsetHeight / 2 - 8 - (index % 3) * 6
         : 100 + item.offsetHeight / 2 + (index % 4) * 18;
@@ -873,7 +874,8 @@ function initSkillsPlayground() {
         Body.setVelocity(body, old.velocity);
         Body.setAngularVelocity(body, old.angularVelocity);
       } else if (!reduceMotion) {
-        Body.setVelocity(body, { x: index % 2 ? -0.7 : 0.7, y: index * 0.08 });
+        const launchX = Math.max(-24, Math.min(24, (targetX - initialX) * 0.027));
+        Body.setVelocity(body, { x: launchX, y: index * 0.08 });
         Body.setAngularVelocity(body, (index % 2 ? -1 : 1) * 0.006);
       }
       Composite.add(engine.world, body);
