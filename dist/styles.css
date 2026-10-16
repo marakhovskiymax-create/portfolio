@@ -46,6 +46,42 @@
   --shell: min(90vw, 2300px);
 }
 
+/* Tabler Icons: one 24px, 2px-stroke system for interface pictograms. */
+.tabler-icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  flex: none;
+  background-color: currentColor;
+  -webkit-mask: var(--tabler-icon) center / contain no-repeat;
+  mask: var(--tabler-icon) center / contain no-repeat;
+  -webkit-mask-mode: alpha;
+  mask-mode: alpha;
+  vertical-align: -0.125em;
+}
+
+.tabler-icon--arrow-right { --tabler-icon: url("design/assets/icons/tabler/arrow-right.svg"); }
+.tabler-icon--arrow-down { --tabler-icon: url("design/assets/icons/tabler/arrow-down.svg"); }
+.tabler-icon--arrow-up { --tabler-icon: url("design/assets/icons/tabler/arrow-up.svg"); }
+.tabler-icon--arrow-up-right { --tabler-icon: url("design/assets/icons/tabler/arrow-up-right.svg"); }
+.tabler-icon--plus { --tabler-icon: url("design/assets/icons/tabler/plus.svg"); }
+.tabler-icon--menu { --tabler-icon: url("design/assets/icons/tabler/menu-2.svg"); }
+.tabler-icon--close { --tabler-icon: url("design/assets/icons/tabler/x.svg"); }
+.tabler-icon--message { --tabler-icon: url("design/assets/icons/tabler/message-circle.svg"); }
+.tabler-icon--mail { --tabler-icon: url("design/assets/icons/tabler/mail.svg"); }
+.tabler-icon--phone { --tabler-icon: url("design/assets/icons/tabler/phone.svg"); }
+.tabler-icon--telegram { --tabler-icon: url("design/assets/icons/tabler/brand-telegram.svg"); }
+.tabler-icon--components { --tabler-icon: url("design/assets/icons/tabler/components.svg"); }
+.tabler-icon--pointer { --tabler-icon: url("design/assets/icons/tabler/pointer.svg"); }
+.tabler-icon--dashboard { --tabler-icon: url("design/assets/icons/tabler/layout-dashboard.svg"); }
+.tabler-icon--browser { --tabler-icon: url("design/assets/icons/tabler/browser.svg"); }
+.tabler-icon--research { --tabler-icon: url("design/assets/icons/tabler/zoom-in.svg"); }
+.tabler-icon--javascript { --tabler-icon: url("design/assets/icons/tabler/brand-javascript.svg"); }
+.tabler-icon--framer { --tabler-icon: url("design/assets/icons/tabler/brand-framer.svg"); }
+.tabler-icon--vscode { --tabler-icon: url("design/assets/icons/tabler/brand-vscode.svg"); }
+.tabler-icon--figma { --tabler-icon: url("design/assets/icons/tabler/brand-figma.svg"); }
+.tabler-icon--slack { --tabler-icon: url("design/assets/icons/tabler/brand-slack.svg"); }
+
 *,
 *::before,
 *::after {
@@ -1728,26 +1764,11 @@ body.has-spider-cursor .spider-cursor {
 }
 
 .faq-trigger__icon {
-  position: relative;
+  display: block;
   width: 20px;
   height: 20px;
   flex: 0 0 20px;
   transition: transform 300ms var(--curve-cinematic);
-}
-
-.faq-trigger__icon::before,
-.faq-trigger__icon::after {
-  position: absolute;
-  inset: 50% auto auto 50%;
-  width: 18px;
-  height: 1.5px;
-  background: currentColor;
-  content: "";
-  transform: translate(-50%, -50%);
-}
-
-.faq-trigger__icon::after {
-  transform: translate(-50%, -50%) rotate(90deg);
 }
 
 .faq-item.is-open .faq-trigger__icon {
@@ -1797,7 +1818,7 @@ body.has-spider-cursor .spider-cursor {
   color: var(--color-ink);
 }
 
-.faq-contact__message svg {
+.faq-contact__message .tabler-icon {
   width: 30px;
   height: 30px;
 }
@@ -1945,7 +1966,7 @@ body.has-spider-cursor .spider-cursor {
     color var(--motion-moderate) var(--ease-out);
 }
 
-.contact-method__icon svg {
+.contact-method__icon .tabler-icon {
   width: 18px;
   height: 18px;
 }
@@ -2201,9 +2222,11 @@ body.has-spider-cursor .spider-cursor {
 
   .menu-toggle__line {
     width: 20px;
-    height: 2px;
-    background: currentColor;
-    box-shadow: 0 6px currentColor;
+    height: 20px;
+  }
+
+  .menu-toggle[aria-expanded="true"] .menu-toggle__line {
+    --tabler-icon: url("design/assets/icons/tabler/x.svg");
   }
 
   .mobile-menu {
@@ -3014,14 +3037,9 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
   background: rgba(92, 135, 255, 0.22);
 }
 
-.skill-drag-item__glyph svg {
+.skill-drag-item__glyph .tabler-icon {
   width: 24px;
   height: 24px;
-  fill: none;
-  stroke: currentColor;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 1.6;
 }
 
 .skill-drag-item--tool {
@@ -3043,13 +3061,7 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
 }
 
 .brand-mark--js {
-  display: flex;
-  align-items: flex-end;
-  justify-content: flex-end;
-  padding: 8px 5px 3px;
-  font-size: 1.65rem;
-  font-weight: 800;
-  letter-spacing: -0.08em;
+  display: inline-block;
 }
 
 .skill-drag-item--framer {
@@ -3057,38 +3069,14 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
   background: rgba(20, 66, 183, 0.76);
 }
 
-.brand-mark--framer {
-  fill: currentColor;
-}
-
 .skill-drag-item--vscode {
   color: #72b8ff;
   background: rgba(7, 35, 77, 0.78);
 }
 
-.brand-mark--vscode {
-  fill: currentColor;
-}
-
 .skill-drag-item--figma {
   background: rgba(19, 47, 106, 0.74);
 }
-
-.figma-mark {
-  display: grid;
-  grid-template-columns: repeat(2, 17px);
-  grid-template-rows: repeat(3, 17px);
-}
-
-.figma-mark i {
-  display: block;
-}
-
-.figma-mark i:nth-child(1) { border-radius: 9px 0 0 9px; background: #f24e1e; }
-.figma-mark i:nth-child(2) { border-radius: 0 9px 9px 0; background: #ff7262; }
-.figma-mark i:nth-child(3) { border-radius: 9px 0 0 9px; background: #a259ff; }
-.figma-mark i:nth-child(4) { border-radius: 50%; background: #1abcfe; }
-.figma-mark i:nth-child(5) { border-radius: 9px 0 9px 9px; background: #0acf83; }
 
 .skill-drag-item--slack {
   background: rgba(22, 50, 111, 0.74);
@@ -3098,11 +3086,6 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
   width: 58px;
   height: 58px;
 }
-
-.slack-blue { fill: #36c5f0; }
-.slack-green { fill: #2eb67d; }
-.slack-yellow { fill: #ecb22e; }
-.slack-red { fill: #e01e5a; }
 
 @media (max-width: 960px) {
   .skills-playground {
@@ -3136,7 +3119,7 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
     border-radius: 9px;
   }
 
-  .skill-drag-item__glyph svg {
+  .skill-drag-item__glyph .tabler-icon {
     width: 19px;
     height: 19px;
   }
@@ -3153,10 +3136,21 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
     width: 40px;
     height: 40px;
   }
+}
 
-  .figma-mark {
-    grid-template-columns: repeat(2, 12px);
-    grid-template-rows: repeat(3, 12px);
+@media (max-width: 430px) {
+  .menu-toggle {
+    min-width: 20px;
+    gap: 0;
+  }
+
+  .menu-toggle > span:first-child {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 }
 
