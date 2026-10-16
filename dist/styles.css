@@ -46,7 +46,7 @@
   --shell: min(90vw, 2300px);
 }
 
-/* Tabler interface icons render at 20px with a 1.5px SVG stroke. */
+/* Tabler interface icons render at 20px with a 2px SVG stroke. */
 .tabler-icon {
   display: inline-block;
   width: 20px;
@@ -298,6 +298,7 @@ main {
   border-radius: 999px;
   background: var(--color-text);
   color: #111 !important;
+  font-weight: 800;
 }
 
 .masthead__resume:hover {
@@ -454,11 +455,11 @@ body.has-spider-cursor .spider-cursor {
   min-height: 48px;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 6px;
   padding: 0 var(--space-6);
   border-radius: var(--radius-small);
   font-size: 0.9375rem;
-  font-weight: 600;
+  font-weight: 800;
   white-space: nowrap;
   transition:
     color var(--duration-press) var(--ease-out),
@@ -508,7 +509,7 @@ body.has-spider-cursor .spider-cursor {
 .hero__strip > :last-child {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   justify-self: end;
   color: var(--color-text);
   white-space: nowrap;
@@ -1755,7 +1756,7 @@ body.has-spider-cursor .spider-cursor {
   min-height: 76px;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
+  gap: 6px;
   padding: 20px 0;
   border: 0;
   background: transparent;
@@ -1842,13 +1843,13 @@ body.has-spider-cursor .spider-cursor {
   min-height: 52px;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 6px;
   padding-inline: 24px;
   border: 1px solid rgba(5, 5, 5, 0.35);
   border-radius: var(--radius-small);
   background: var(--color-primary);
   color: var(--color-ink);
-  font-weight: 700;
+  font-weight: 800;
   transition:
     transform var(--motion-moderate) var(--ease-out),
     background-color var(--motion-moderate) var(--ease-out);
@@ -1946,7 +1947,7 @@ body.has-spider-cursor .spider-cursor {
 .contact-method {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   color: var(--color-muted);
   font-size: 0.95rem;
   transition:
@@ -2109,7 +2110,7 @@ body.has-spider-cursor .spider-cursor {
   min-height: 48px;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 6px;
   padding-inline: 22px;
   border: 0;
   border-radius: 14px;
@@ -2214,7 +2215,7 @@ body.has-spider-cursor .spider-cursor {
     min-height: 42px;
     align-items: center;
     justify-content: flex-end;
-    gap: 8px;
+    gap: 6px;
     padding: 0;
     border: 0;
     background: transparent;
@@ -2591,7 +2592,7 @@ body.has-spider-cursor .spider-cursor {
 
   .faq-trigger {
     min-height: 68px;
-    gap: 8px;
+    gap: 6px;
     padding-block: 18px;
   }
 
@@ -2783,7 +2784,7 @@ body.has-spider-cursor .spider-cursor {
 .footer__group a {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   white-space: normal;
   transition: color var(--motion-moderate), transform var(--motion-moderate);
 }
