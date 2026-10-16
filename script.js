@@ -1291,6 +1291,95 @@ function initAboutBadgeMorph() {
 
 initAboutBadgeMorph();
 
+function initAboutNoteTextEffects() {
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduceMotion || !window.gsap || !("IntersectionObserver" in window)) return;
+
+  const wrapTextNodes = (root) => {
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    const textNodes = [];
+    let node = walker.nextNode();
+
+    while (node) {
+      if (node.nodeValue.trim()) textNodes.push(node);
+      node = walker.nextNode();
+    }
+
+    textNodes.forEach((textNode) => {
+      const fragment = document.createDocumentFragment();
+
+      textNode.nodeValue.split(/(\s+)/).forEach((token) => {
+        if (!token) return;
+        if (/^\s+$/.test(token)) {
+          fragment.append(token);
+          return;
+        }
+
+        const word = document.createElement("span");
+        word.className = "about-motion-word";
+
+        Array.from(token).forEach((character) => {
+          const characterElement = document.createElement("span");
+          characterElement.className = "about-motion-char";
+          characterElement.textContent = character;
+          word.append(characterElement);
+        });
+
+        fragment.append(word);
+      });
+
+      textNode.replaceWith(fragment);
+    });
+  };
+
+  const preparedNotes = Array.from(document.querySelectorAll(".about-note")).map((note) => {
+    const paragraph = note.querySelector(":scope > p");
+    if (!paragraph) return null;
+
+    const accessibleText = paragraph.textContent.trim().replace(/\s+/g, " ");
+    const visual = document.createElement("span");
+    visual.setAttribute("aria-hidden", "true");
+
+    while (paragraph.firstChild) visual.append(paragraph.firstChild);
+    paragraph.append(visual);
+    paragraph.setAttribute("aria-label", accessibleText);
+    paragraph.classList.add("about-note__text-effect");
+    wrapTextNodes(visual);
+
+    const characters = Array.from(paragraph.querySelectorAll(".about-motion-char"));
+    window.gsap.set(characters, { autoAlpha: 0, rotateX: 90, y: 10 });
+
+    return { note, characters };
+  }).filter(Boolean);
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      const prepared = preparedNotes.find((item) => item.note === entry.target);
+      if (!prepared) return;
+
+      const stagger = Math.min(0.05, 2.4 / Math.max(1, prepared.characters.length));
+
+      window.gsap.to(prepared.characters, {
+        autoAlpha: 1,
+        rotateX: 0,
+        y: 0,
+        duration: 0.2,
+        delay: 0.5,
+        stagger,
+        ease: "power3.out",
+        clearProps: "transform,opacity,visibility",
+      });
+
+      observer.unobserve(entry.target);
+    });
+  }, { rootMargin: "0px 0px -8% 0px", threshold: 0.25 });
+
+  preparedNotes.forEach(({ note }) => observer.observe(note));
+}
+
+initAboutNoteTextEffects();
+
 if (window.TastemakerMotion && window.gsap && window.ScrollTrigger) {
   window.TastemakerMotion.init({
     duration: 0.24,
@@ -1368,24 +1457,6 @@ if (window.TastemakerMotion && window.gsap && window.ScrollTrigger) {
         ".section--about .section-heading h2",
         { autoAlpha: 0, yPercent: 55, clipPath: "inset(0 0 100% 0)" },
         { autoAlpha: 1, yPercent: 0, clipPath: "inset(0 0 0% 0)", duration: 0.48 },
-      )
-      .fromTo(
-        ".about-note--fashion",
-        { autoAlpha: 0, x: -32 },
-        { autoAlpha: 1, x: 0, duration: 0.48 },
-        "-=0.18",
-      )
-      .fromTo(
-        ".about-note--film",
-        { autoAlpha: 0, y: 32 },
-        { autoAlpha: 1, y: 0, duration: 0.48 },
-        "-=0.36",
-      )
-      .fromTo(
-        ".about-note--games",
-        { autoAlpha: 0, x: 32 },
-        { autoAlpha: 1, x: 0, duration: 0.48 },
-        "-=0.36",
       );
 
     const faq = scrollScene("[data-motion-section='faq']", "top 74%");

@@ -1534,6 +1534,20 @@ body.has-spider-cursor .spider-cursor {
   line-height: 1.36;
 }
 
+.about-note__text-effect {
+  perspective: 700px;
+}
+
+.about-motion-word,
+.about-motion-char {
+  display: inline-block;
+}
+
+.about-motion-char {
+  transform-origin: 50% 70%;
+  backface-visibility: hidden;
+}
+
 .about-note strong {
   color: var(--color-text);
   font-size: 1.42em;
@@ -2818,6 +2832,10 @@ main > .contact {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .about-motion-char {
+    transform: none !important;
+  }
+
   .faq-title__word {
     will-change: auto;
   }
