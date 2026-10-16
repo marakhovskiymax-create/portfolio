@@ -1,0 +1,108 @@
+body.shable-page {
+  --case-accent: #b996ff;
+  --case-accent-2: #8558e8;
+  --case-panel: #160d27;
+  --case-panel-raised: #201238;
+  --case-line: rgba(185, 150, 255, 0.22);
+  background:
+    radial-gradient(circle at 78% 8%, rgba(185, 150, 255, 0.17), transparent 29rem),
+    radial-gradient(circle at 14% 40%, rgba(112, 62, 195, 0.13), transparent 32rem),
+    #08050e;
+}
+
+.shable-page::before {
+  background-image:
+    radial-gradient(circle, rgba(251, 247, 255, 0.72) 0 1px, transparent 1.4px),
+    radial-gradient(circle, rgba(185, 150, 255, 0.6) 0 0.8px, transparent 1.2px);
+}
+
+.shable-page .case-carousel__slide,
+.shable-page .case-wide-visual,
+.shable-page .case-story__media--wide,
+.shable-page .case-story__media--inset {
+  background: #ece2ff;
+}
+
+.shable-page .case-carousel__slide img,
+.shable-page .case-wide-visual img,
+.shable-page .case-story__media img {
+  filter: saturate(0.78) contrast(1.06);
+}
+
+.shable-page .case-accordion__card,
+.shable-page .case-story__notes article {
+  border-color: rgba(185, 150, 255, 0.2);
+  background: rgba(185, 150, 255, 0.08);
+}
+
+.shable-page .work-areas__canvas {
+  background:
+    linear-gradient(rgba(185, 150, 255, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(185, 150, 255, 0.055) 1px, transparent 1px),
+    #140c22;
+  background-size: 24px 24px;
+}
+
+.shable-page .work-chip,
+.shable-page .work-chip.is-active {
+  color: #fcf9ff;
+  background: #6d43bd;
+  box-shadow: 0 16px 34px rgba(50, 24, 94, 0.4);
+}
+
+.shable-page .work-chip:focus-visible {
+  outline-color: #d6c2ff;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .shable-page .work-chip:hover {
+    background: #8052d8;
+  }
+}
+
+.shable-page .integration-map {
+  background: #f1eaff;
+  color: #25143e;
+}
+
+.shable-page .integration-map__step span {
+  color: #7950cc;
+}
+
+.shable-page .integration-map__step p {
+  color: rgba(37, 20, 62, 0.66);
+}
+
+.shable-page .integration-map__line {
+  background: #9b71eb;
+}
+
+.shable-page .renewal-flow__result {
+  background: linear-gradient(145deg, #7248c3, #28143f 68%) !important;
+}
+
+.shable-page .renewal-flow__trail {
+  box-shadow:
+    0 0 18px 8px rgba(255, 250, 255, 0.5),
+    0 0 42px 20px rgba(185, 150, 255, 0.34),
+    0 0 72px 34px rgba(68, 30, 124, 0.46);
+}
+
+.shable-page .case-impact {
+  background: #130b21;
+  box-shadow: inset 0 1px 0 rgba(185, 150, 255, 0.13);
+}
+
+.shable-page .case-next a:hover,
+.shable-page .case-next a:focus-visible,
+.shable-page .footer a:hover,
+.shable-page .footer a:focus-visible {
+  color: var(--case-accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shable-page .case-carousel__slide,
+  .shable-page .work-chip {
+    transition-duration: 180ms;
+  }
+}

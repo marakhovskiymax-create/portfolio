@@ -71,7 +71,7 @@ function syncTimeMachine(activeIndex, immediate = false) {
   const activeCaseHref = activeCard?.dataset.caseHref;
   if (timeMachineStageLink) {
     if (activeCaseHref) {
-      const projectLabel = { "amo-crm": "amoCRM", eme: "EME.WEB", "don-ballon": "Дон Баллон", "eme-app": "EME.APP" }[activeCard.dataset.stageCard] || "проекта";
+      const projectLabel = { "amo-crm": "amoCRM", eme: "EME.WEB", "don-ballon": "Дон Баллон", "eme-app": "EME.APP", shable: "Shable" }[activeCard.dataset.stageCard] || "проекта";
       timeMachineStageLink.href = activeCaseHref;
       timeMachineStageLink.setAttribute("aria-label", `Открыть кейс ${projectLabel}`);
       timeMachineStageLink.classList.add("is-active");
