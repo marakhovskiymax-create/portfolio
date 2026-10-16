@@ -458,7 +458,7 @@ body.has-spider-cursor .spider-cursor {
   gap: 6px;
   padding: 0 var(--space-6);
   border-radius: var(--radius-small);
-  font-size: 0.9375rem;
+  font-size: 1rem;
   font-weight: 800;
   white-space: nowrap;
   transition:
@@ -1849,6 +1849,7 @@ body.has-spider-cursor .spider-cursor {
   border-radius: var(--radius-small);
   background: var(--color-primary);
   color: var(--color-ink);
+  font-size: 1rem;
   font-weight: 800;
   transition:
     transform var(--motion-moderate) var(--ease-out),
@@ -2117,6 +2118,7 @@ body.has-spider-cursor .spider-cursor {
   background: var(--color-primary);
   color: var(--color-ink);
   cursor: pointer;
+  font-size: 1rem;
   font-weight: 800;
   transition:
     transform var(--duration-press) var(--ease-out),
@@ -2440,7 +2442,7 @@ body.has-spider-cursor .spider-cursor {
   .hero__actions .button {
     min-width: 0;
     padding-inline: 14px;
-    font-size: 0.8125rem;
+    font-size: 1rem;
   }
 
   .hero__strip {
@@ -2642,6 +2644,12 @@ body.has-spider-cursor .spider-cursor {
 
   .contact-form__submit {
     width: 100%;
+  }
+}
+
+@media (max-width: 400px) {
+  .hero__actions {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 

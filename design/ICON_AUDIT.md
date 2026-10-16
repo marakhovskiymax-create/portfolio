@@ -14,4 +14,6 @@ The SVG files are from [Tabler Icons](https://github.com/tabler/tabler-icons/tre
 
 Outside the interactive skills playground beneath the footer, every interface icon renders at 20×20 CSS pixels. Icon-and-label controls use a 6px gap. Pill-style call-to-action labels use weight 800. The playground keeps its original assets and responsive icon sizes and spacing.
 
+For future interface icons, choose the appropriate icon from the [Tabler collection on 21st.dev](https://21st.dev/community/icons/tabler), then add it to the local Tabler icon system. Keep the established 20×20 px rendered size, 2px SVG stroke, inherited colour, and 6px icon-to-label gap. Do not apply these interface rules to the interactive skills playground below the footer. Pill-style call-to-action labels are 16px and weight 800.
+
 Not replaced: the portfolio wordmark and company logos (brand identities); the morphing cartoon shapes in About, the hand-drawn drag hints, the interactive globe, the cursor illustration, the case imagery, and the mock-interface graphics (illustration or content rather than interface pictograms). Their existing animation and appearance are preserved.
