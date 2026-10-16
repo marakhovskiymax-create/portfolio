@@ -2835,6 +2835,10 @@ body > .footer {
   padding-block: 90px;
 }
 
+body:not(.case-page) > .footer {
+  padding-bottom: 0;
+}
+
 /* Footer playground — a bounded, tactile field inspired by the supplied reference. */
 .skills-playground {
   position: relative;
@@ -2843,6 +2847,10 @@ body > .footer {
   padding: 90px 16px 16px;
   color: #e8eeff;
   background: var(--color-bg);
+}
+
+body:not(.case-page) > .skills-playground {
+  padding-top: 0;
 }
 
 .skills-playground__surface {
