@@ -1068,6 +1068,7 @@ body.has-spider-cursor .spider-cursor {
   width: 100%;
   overflow: hidden;
   padding-block: var(--space-4);
+  border-block: 1px solid var(--color-border);
   color: var(--color-muted);
 }
 
@@ -1076,7 +1077,7 @@ body.has-spider-cursor .spider-cursor {
   width: max-content;
   gap: var(--space-8);
   animation: tape 32s linear infinite;
-  font-size: 18px;
+  font-size: 24px;
   font-weight: 500;
   white-space: nowrap;
 }
