@@ -46,11 +46,11 @@
   --shell: min(90vw, 2300px);
 }
 
-/* Tabler Icons: one 24px, 2px-stroke system for interface pictograms. */
+/* Tabler interface icons render at 20px with a 1.5px SVG stroke. */
 .tabler-icon {
   display: inline-block;
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   flex: none;
   background-color: currentColor;
   -webkit-mask: var(--tabler-icon) center / contain no-repeat;
@@ -60,17 +60,17 @@
   vertical-align: -0.125em;
 }
 
-.tabler-icon--arrow-right { --tabler-icon: url("design/assets/icons/tabler/arrow-right.svg"); }
-.tabler-icon--arrow-down { --tabler-icon: url("design/assets/icons/tabler/arrow-down.svg"); }
-.tabler-icon--arrow-up { --tabler-icon: url("design/assets/icons/tabler/arrow-up.svg"); }
-.tabler-icon--arrow-up-right { --tabler-icon: url("design/assets/icons/tabler/arrow-up-right.svg"); }
-.tabler-icon--plus { --tabler-icon: url("design/assets/icons/tabler/plus.svg"); }
-.tabler-icon--menu { --tabler-icon: url("design/assets/icons/tabler/menu-2.svg"); }
-.tabler-icon--close { --tabler-icon: url("design/assets/icons/tabler/x.svg"); }
-.tabler-icon--message { --tabler-icon: url("design/assets/icons/tabler/message-circle.svg"); }
-.tabler-icon--mail { --tabler-icon: url("design/assets/icons/tabler/mail.svg"); }
-.tabler-icon--phone { --tabler-icon: url("design/assets/icons/tabler/phone.svg"); }
-.tabler-icon--telegram { --tabler-icon: url("design/assets/icons/tabler/brand-telegram.svg"); }
+.tabler-icon--arrow-right { --tabler-icon: url("design/assets/icons/tabler-ui/arrow-right.svg"); }
+.tabler-icon--arrow-down { --tabler-icon: url("design/assets/icons/tabler-ui/arrow-down.svg"); }
+.tabler-icon--arrow-up { --tabler-icon: url("design/assets/icons/tabler-ui/arrow-up.svg"); }
+.tabler-icon--arrow-up-right { --tabler-icon: url("design/assets/icons/tabler-ui/arrow-up-right.svg"); }
+.tabler-icon--plus { --tabler-icon: url("design/assets/icons/tabler-ui/plus.svg"); }
+.tabler-icon--menu { --tabler-icon: url("design/assets/icons/tabler-ui/menu-2.svg"); }
+.tabler-icon--close { --tabler-icon: url("design/assets/icons/tabler-ui/x.svg"); }
+.tabler-icon--message { --tabler-icon: url("design/assets/icons/tabler-ui/message-circle.svg"); }
+.tabler-icon--mail { --tabler-icon: url("design/assets/icons/tabler-ui/mail.svg"); }
+.tabler-icon--phone { --tabler-icon: url("design/assets/icons/tabler-ui/phone.svg"); }
+.tabler-icon--telegram { --tabler-icon: url("design/assets/icons/tabler-ui/brand-telegram.svg"); }
 .tabler-icon--components { --tabler-icon: url("design/assets/icons/tabler/components.svg"); }
 .tabler-icon--pointer { --tabler-icon: url("design/assets/icons/tabler/pointer.svg"); }
 .tabler-icon--dashboard { --tabler-icon: url("design/assets/icons/tabler/layout-dashboard.svg"); }
@@ -454,7 +454,7 @@ body.has-spider-cursor .spider-cursor {
   min-height: 48px;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
   padding: 0 var(--space-6);
   border-radius: var(--radius-small);
   font-size: 0.9375rem;
@@ -508,7 +508,7 @@ body.has-spider-cursor .spider-cursor {
 .hero__strip > :last-child {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   justify-self: end;
   color: var(--color-text);
   white-space: nowrap;
@@ -1755,7 +1755,7 @@ body.has-spider-cursor .spider-cursor {
   min-height: 76px;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  gap: 8px;
   padding: 20px 0;
   border: 0;
   background: transparent;
@@ -1769,9 +1769,9 @@ body.has-spider-cursor .spider-cursor {
 
 .faq-trigger__icon {
   display: block;
-  width: 24px;
-  height: 24px;
-  flex: 0 0 24px;
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
   transition: transform 300ms var(--curve-cinematic);
 }
 
@@ -1823,8 +1823,8 @@ body.has-spider-cursor .spider-cursor {
 }
 
 .faq-contact__message .tabler-icon {
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
 }
 
 .faq-contact__copy h3 {
@@ -1842,7 +1842,7 @@ body.has-spider-cursor .spider-cursor {
   min-height: 52px;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
   padding-inline: 24px;
   border: 1px solid rgba(5, 5, 5, 0.35);
   border-radius: var(--radius-small);
@@ -1946,7 +1946,7 @@ body.has-spider-cursor .spider-cursor {
 .contact-method {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   color: var(--color-muted);
   font-size: 0.95rem;
   transition:
@@ -1971,8 +1971,8 @@ body.has-spider-cursor .spider-cursor {
 }
 
 .contact-method__icon .tabler-icon {
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
 }
 
 .contact-globe {
@@ -2109,7 +2109,7 @@ body.has-spider-cursor .spider-cursor {
   min-height: 48px;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
   padding-inline: 22px;
   border: 0;
   border-radius: 14px;
@@ -2214,7 +2214,7 @@ body.has-spider-cursor .spider-cursor {
     min-height: 42px;
     align-items: center;
     justify-content: flex-end;
-    gap: 10px;
+    gap: 8px;
     padding: 0;
     border: 0;
     background: transparent;
@@ -2225,12 +2225,12 @@ body.has-spider-cursor .spider-cursor {
   }
 
   .menu-toggle__line {
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
   }
 
   .menu-toggle[aria-expanded="true"] .menu-toggle__line {
-    --tabler-icon: url("design/assets/icons/tabler/x.svg");
+    --tabler-icon: url("design/assets/icons/tabler-ui/x.svg");
   }
 
   .mobile-menu {
@@ -2591,7 +2591,7 @@ body.has-spider-cursor .spider-cursor {
 
   .faq-trigger {
     min-height: 68px;
-    gap: 10px;
+    gap: 8px;
     padding-block: 18px;
   }
 
@@ -2783,7 +2783,7 @@ body.has-spider-cursor .spider-cursor {
 .footer__group a {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   white-space: normal;
   transition: color var(--motion-moderate), transform var(--motion-moderate);
 }
