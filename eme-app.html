@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#101207" />
+    <meta
+      name="description"
+      content="EME.APP warehouse operations case study by product designer Maxim Marakhovskiy: picking queues, barcode scanning, packing, dispatch, and mobile design system work."
+    />
+    <title>EME.APP · Warehouse Product Design · Maxim Marakhovskiy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@700;800;900&family=Nunito+Sans:opsz,wght@6..12,400;6..12,500;6..12,600;6..12,700;6..12,800;6..12,900&family=Playfair+Display:ital,wght@1,500;1,600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css?v=20261016-header-13" />
+    <link rel="stylesheet" href="amocrm.css?v=20261015-28" />
+    <link rel="stylesheet" href="eme-app.css?v=20261016-01" />
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
+  </head>
+  <body class="case-page eme-app-page">
+    <a class="skip-link" href="#case-content">Skip to case study</a>
+    <canvas class="spider-cursor" data-spider-cursor aria-hidden="true"></canvas>
+
+    <header class="site-header case-header" aria-label="Main navigation">
+      <nav class="masthead" aria-label="Main navigation">
+        <div class="masthead__links masthead__links--primary">
+          <a href="index.html#top">Home</a>
+          <a href="index.html#portfolio">Portfolio</a>
+          <a href="index.html#career">Career</a>
+          <a href="index.html#faq">FAQ</a>
+        </div>
+        <a class="wordmark" href="index.html#top" aria-label="Maxim Marakhovskiy home">marakhovskiy</a>
+        <div class="masthead__links masthead__links--meta">
+          <span class="masthead__actions">
+            <a class="masthead__email" href="mailto:marakhovskiymax@gmail.com">marakhovskiymax@gmail.com</a>
+            <a class="masthead__resume" href="https://www.behance.net/whymmax/resume" target="_blank" rel="noreferrer">Résumé</a>
+          </span>
+        </div>
+
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu">
+          <span>Menu</span>
+          <span class="menu-toggle__line" aria-hidden="true"></span>
+        </button>
+      </nav>
+
+      <div class="mobile-menu" id="mobile-menu" hidden>
+        <a href="index.html#top">Home</a>
+        <a href="index.html#portfolio">Portfolio</a>
+        <a href="index.html#career">Career</a>
+        <a href="index.html#faq">FAQ</a>
+        <a href="mailto:marakhovskiymax@gmail.com">marakhovskiymax@gmail.com</a>
+        <a href="https://www.behance.net/whymmax/resume" target="_blank" rel="noreferrer">Résumé</a>
+      </div>
+    </header>
+
+    <main class="case-main" id="case-content">
+      <section class="case-hero case-anchor shell" id="overview" aria-labelledby="case-title" data-case-section>
+        <div class="case-hero__copy">
+          <h1 id="case-title">Designing warehouse work for speed and certainty</h1>
+          <p class="case-hero__lede">
+            I designed EME.APP for picking, scanning, packing, and dispatching orders inside fast-moving warehouse operations.
+          </p>
+          <dl class="case-meta" aria-label="Project details">
+            <div><dt>Name</dt><dd>EME.APP</dd></div>
+            <div><dt>Role</dt><dd>Product Designer</dd></div>
+            <div><dt>Product</dt><dd>Warehouse App <span>(Mobile · Operations)</span></dd></div>
+            <div><dt>Period</dt><dd>2022–2023</dd></div>
+          </dl>
+        </div>
+
+        <div class="case-carousel case-carousel--peek" data-case-carousel aria-roledescription="carousel" aria-label="Selected EME.APP warehouse interfaces" tabindex="0">
+          <div class="case-carousel__viewport">
+            <div class="case-carousel__track" data-carousel-track>
+              <figure class="case-carousel__slide" data-carousel-slide>
+                <img src="design/assets/career/eme-warehouse.jpg" width="1450" height="816" alt="EME.APP warehouse picking queue" fetchpriority="high" />
+                <figcaption>Picking queue</figcaption>
+              </figure>
+              <figure class="case-carousel__slide" data-carousel-slide>
+                <img src="design/assets/career/eme-warehouse.jpg" width="1450" height="816" alt="EME.APP barcode scanning flow" />
+                <figcaption>Barcode scanning</figcaption>
+              </figure>
+              <figure class="case-carousel__slide" data-carousel-slide>
+                <img src="design/assets/career/eme-warehouse.jpg" width="1450" height="816" alt="EME.APP dispatch confirmation flow" />
+                <figcaption>Dispatch confirmation</figcaption>
+              </figure>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="case-layout shell">
+        <aside class="case-nav" aria-label="Case study sections">
+          <p class="case-nav__label">Contents</p>
+          <p class="case-nav__mobile-status" aria-live="polite"><span data-case-position>01</span> of 08</p>
+          <nav class="case-nav__links">
+            <a class="is-active" href="#overview" data-case-nav><span>01</span> Overview</a>
+            <a href="#context" data-case-nav><span>02</span> Context</a>
+            <a href="#work-areas" data-case-nav><span>03</span> Work areas</a>
+            <a href="#website" data-case-nav><span>04</span> Queue</a>
+            <a href="#in-app" data-case-nav><span>05</span> Picking</a>
+            <a href="#upgrades" data-case-nav><span>06</span> Dispatch</a>
+            <a href="#renewal" data-case-nav><span>07</span> System</a>
+            <a href="#impact" data-case-nav><span>08</span> Impact</a>
+          </nav>
+        </aside>
+
+        <div class="case-content">
+          <section class="case-section case-anchor case-context" id="context" aria-labelledby="context-title" data-case-section>
+            <div class="case-context__intro">
+              <p class="case-eyebrow">Context</p>
+              <h2 id="context-title">One reliable flow from assignment to dispatch</h2>
+              <p>
+                EME.APP supports the people who receive, pick, verify, pack, and hand off orders. My work focused on turning time-sensitive warehouse tasks into a clear mobile workflow.
+              </p>
+            </div>
+            <div class="case-accordion" data-accordion>
+              <article class="case-accordion__item is-open" data-accordion-item>
+                <h3>
+                  <button class="case-accordion__trigger" type="button" id="case-question-1" aria-expanded="true" aria-controls="case-answer-1">
+                    <span>The challenge</span><i aria-hidden="true"></i>
+                  </button>
+                </h3>
+                <div class="case-accordion__answer" id="case-answer-1" role="region" aria-labelledby="case-question-1" aria-hidden="false" data-accordion-answer>
+                  <div class="case-accordion__card"><p>Warehouse staff needed to move quickly between orders while staying certain about the right item, quantity, location, and next action.</p></div>
+                </div>
+              </article>
+              <article class="case-accordion__item" data-accordion-item>
+                <h3>
+                  <button class="case-accordion__trigger" type="button" id="case-question-2" aria-expanded="false" aria-controls="case-answer-2">
+                    <span>The approach</span><i aria-hidden="true"></i>
+                  </button>
+                </h3>
+                <div class="case-accordion__answer" id="case-answer-2" role="region" aria-labelledby="case-question-2" aria-hidden="true" data-accordion-answer>
+                  <div class="case-accordion__card"><p>I mapped the critical warehouse paths, reduced decisions at each step, and designed feedback for scanning, quantity checks, exceptions, and handoffs.</p></div>
+                </div>
+              </article>
+              <article class="case-accordion__item" data-accordion-item>
+                <h3>
+                  <button class="case-accordion__trigger" type="button" id="case-question-3" aria-expanded="false" aria-controls="case-answer-3">
+                    <span>The solution</span><i aria-hidden="true"></i>
+                  </button>
+                </h3>
+                <div class="case-accordion__answer" id="case-answer-3" role="region" aria-labelledby="case-question-3" aria-hidden="true" data-accordion-answer>
+                  <div class="case-accordion__card"><p>I created a focused operational app with a prioritized queue, explicit scan states, recoverable exceptions, and clear confirmation before dispatch.</p></div>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <figure class="case-wide-visual" data-case-reveal>
+            <img src="design/assets/career/eme-warehouse.jpg" width="1450" height="816" alt="EME.APP in its warehouse operational context" loading="lazy" decoding="async" />
+            <figcaption>Warehouse operations</figcaption>
+          </figure>
+
+          <div class="case-decision case-role">
+            <span>My role</span>
+            <p>I worked across EME.APP, from task prioritization and picking sequences to barcode feedback, packing, dispatch, exception states, and reusable mobile patterns. I collaborated with product and engineering to refine workflows before release.</p>
+          </div>
+
+          <section class="case-section case-anchor work-areas" id="work-areas" aria-labelledby="work-areas-title" data-case-section>
+            <header class="case-heading">
+              <p class="case-eyebrow">Work areas</p>
+              <h2 id="work-areas-title">Every warehouse action in one connected flow</h2>
+              <div class="work-areas__drag-hint" aria-hidden="true">
+                <span>Drag to move</span>
+                <svg viewBox="0 0 112 58" role="presentation">
+                  <path d="M106 7C78 12 48 25 16 48" />
+                  <path d="M20 34L16 48L31 46" />
+                </svg>
+              </div>
+            </header>
+            <div class="work-areas__canvas" data-work-areas>
+              <button class="work-chip is-active" type="button" data-work-key="queue" data-work-target="website" style="--x: 2%; --y: 8%; --r: -5deg">Picking Queue</button>
+              <button class="work-chip" type="button" data-work-key="priority" data-work-target="website" style="--x: 23%; --y: 9%; --r: 3deg">Task Priority</button>
+              <button class="work-chip" type="button" data-work-key="scan" data-work-target="in-app" style="--x: 48%; --y: 8%; --r: -3deg">Barcode Scan</button>
+              <button class="work-chip" type="button" data-work-key="check" data-work-target="in-app" style="--x: 74%; --y: 10%; --r: 4deg">Item Check</button>
+              <button class="work-chip" type="button" data-work-key="location" data-work-target="in-app" style="--x: 6%; --y: 31%; --r: 4deg">Bin Location</button>
+              <button class="work-chip" type="button" data-work-key="quantity" data-work-target="in-app" style="--x: 32%; --y: 32%; --r: -4deg">Quantity</button>
+              <button class="work-chip" type="button" data-work-key="exceptions" data-work-target="in-app" style="--x: 64%; --y: 31%; --r: 5deg">Exceptions</button>
+              <button class="work-chip" type="button" data-work-key="substitutions" data-work-target="upgrades" style="--x: 2%; --y: 54%; --r: -4deg">Substitutions</button>
+              <button class="work-chip" type="button" data-work-key="packing" data-work-target="upgrades" style="--x: 23%; --y: 55%; --r: 4deg">Packing</button>
+              <button class="work-chip" type="button" data-work-key="dispatch" data-work-target="upgrades" style="--x: 49%; --y: 53%; --r: -3deg">Dispatch</button>
+              <button class="work-chip" type="button" data-work-key="handoff" data-work-target="renewal" style="--x: 71%; --y: 56%; --r: 3deg">Handoff</button>
+              <button class="work-chip" type="button" data-work-key="offline" data-work-target="renewal" style="--x: 5%; --y: 78%; --r: 3deg">Offline States</button>
+              <button class="work-chip" type="button" data-work-key="system" data-work-target="impact" style="--x: 29%; --y: 77%; --r: -3deg">Design System</button>
+              <button class="work-chip" type="button" data-work-key="mobile" data-work-target="impact" style="--x: 54%; --y: 79%; --r: 4deg">Mobile Patterns</button>
+              <button class="work-chip" type="button" data-work-key="reviews" data-work-target="impact" style="--x: 77%; --y: 77%; --r: -4deg">Design Reviews</button>
+            </div>
+          </section>
+
+          <section class="case-story case-story--detailed case-anchor" id="website" aria-labelledby="website-title" data-case-section>
+            <div class="case-story__intro">
+              <div class="case-story__copy">
+                <h2 id="website-title">Showing what needs attention next</h2>
+                <p>I designed a prioritized queue that makes the current workload, deadlines, and next task clear at a glance.</p>
+              </div>
+              <div class="case-story__notes">
+                <article><h3>Queue &amp; Priority</h3><p>Grouped tasks by operational urgency and kept the information required to start visible without opening each order.</p></article>
+              </div>
+            </div>
+            <figure class="case-story__media case-story__media--wide">
+              <img src="design/assets/career/eme-warehouse.jpg" width="1450" height="816" alt="EME.APP picking queue and warehouse task overview" loading="lazy" decoding="async" />
+            </figure>
+            <div class="case-decision">
+              <span>Design decision</span>
+              <p>I kept the queue focused on three questions: what to pick, where to find it, and when it is needed. The same priority language continues through every task state.</p>
+            </div>
+            <figure class="case-story__media case-story__media--inset">
+              <img src="design/assets/career/eme-warehouse.jpg" width="1450" height="816" alt="EME.APP warehouse task navigation" loading="lazy" decoding="async" />
+              <figcaption>Picking queue</figcaption>
+            </figure>
+          </section>
+
+          <section class="case-story case-story--detailed case-anchor" id="in-app" aria-labelledby="in-app-title" data-case-section>
+            <div class="case-story__intro">
+              <div class="case-story__copy">
+                <h2 id="in-app-title">Turning every scan into clear feedback</h2>
+                <p>I connected barcode scanning with item, quantity, and location checks so each action confirms progress or explains how to recover.</p>
+              </div>
+              <div class="case-story__notes">
+                <article><h3>Immediate Feedback</h3><p>Designed clear success, mismatch, and retry states that can be understood quickly in a busy warehouse environment.</p></article>
+              </div>
+            </div>
+            <div class="integration-map" role="img" aria-label="Flow map from receiving a warehouse task to confirming the picked item">
+              <div class="integration-map__step"><span>01</span><strong>Receive</strong><p>Open the next prioritized task.</p></div>
+              <div class="integration-map__line" aria-hidden="true"></div>
+              <div class="integration-map__step"><span>02</span><strong>Scan</strong><p>Verify the item and storage location.</p></div>
+              <div class="integration-map__line" aria-hidden="true"></div>
+              <div class="integration-map__step"><span>03</span><strong>Confirm</strong><p>Complete the quantity and continue.</p></div>
+            </div>
+          </section>
+
+          <section class="case-story case-story--detailed case-anchor" id="upgrades" aria-labelledby="upgrades-title" data-case-section>
+            <div class="case-story__intro">
+              <div class="case-story__copy">
+                <h2 id="upgrades-title">Keeping dispatch moving under pressure</h2>
+                <p>I worked on packing, final checks, handoff, and exception recovery so completed work never becomes an ambiguous state.</p>
+              </div>
+              <div class="case-story__notes">
+                <article><h3>Operational Confidence</h3><p>Used clear progress, explicit confirmations, and recoverable errors to keep irreversible steps safe without slowing the team down.</p></article>
+              </div>
+            </div>
+            <figure class="case-story__media case-story__media--wide">
+              <img src="design/assets/career/eme-warehouse.jpg" width="1450" height="816" alt="EME.APP packing and dispatch workflow" loading="lazy" decoding="async" />
+              <figcaption>Dispatch workflow</figcaption>
+            </figure>
+          </section>
+
+          <section class="case-story case-anchor" id="renewal" aria-labelledby="renewal-title" data-case-section>
+            <div class="case-story__copy">
+              <p class="case-eyebrow">System</p>
+              <h2 id="renewal-title">The challenge wasn’t the number of taps</h2>
+              <p>The app needed to minimize effort while still preventing the wrong item, quantity, or order from moving forward.</p>
+            </div>
+            <div class="renewal-flow">
+              <article><span>01 / Initial Assumption</span><h3>Fewer confirmations?</h3><p>The first instinct was to remove every step that looked repetitive.</p></article>
+              <article><span>02 / Operational Risk</span><h3>Mistakes travel downstream</h3><p>A wrong scan or quantity can affect packing, dispatch, and delivery.</p></article>
+              <article class="renewal-flow__result"><span>03 / Design Decision</span><h3>Confirm the irreversible moments</h3><p>I kept feedback instant and reserved explicit confirmation for actions that are difficult to undo.</p><b class="renewal-flow__trail" aria-hidden="true"></b><i aria-hidden="true"></i></article>
+            </div>
+          </section>
+
+          <section class="case-impact case-anchor" id="impact" aria-labelledby="impact-title" data-case-section>
+            <div class="case-impact__intro">
+              <p class="case-eyebrow">Impact</p>
+              <h2 id="impact-title">From warehouse tasks to a reliable handoff</h2>
+              <p>Across the app, I connected the essential warehouse stages, established reusable mobile patterns, and made every completed action visible to the next person in the operation.</p>
+            </div>
+            <dl class="case-impact__metrics">
+              <div><dt>Connected warehouse workflow</dt><dd><span data-text-scramble aria-hidden="true">01</span><span class="sr-only">01</span></dd></div>
+              <div><dt>Core operational stages connected</dt><dd><span data-text-scramble aria-hidden="true">03</span><span class="sr-only">03</span></dd></div>
+              <div><dt>Warehouse-ready operation</dt><dd><span data-text-scramble aria-hidden="true">24/7</span><span class="sr-only">24/7</span></dd></div>
+            </dl>
+          </section>
+        </div>
+      </div>
+
+      <footer class="case-next shell">
+        <p>Next project</p>
+        <a href="index.html#portfolio"><span>SHABLE</span><span>Back to selected work →</span></a>
+      </footer>
+    </main>
+
+    <footer class="footer case-footer shell" data-motion-section="footer">
+      <div class="footer__identity" data-case-reveal>
+        <a class="footer__wordmark" href="index.html">marakhovskiy</a>
+        <p>Product designer.<br />Turning complex systems into clear experiences.</p>
+        <span class="footer__copyright">© 2026 Maxim Marakhovskiy</span>
+      </div>
+
+      <nav class="footer__nav" aria-label="Footer links">
+        <div class="footer__group" data-case-reveal>
+          <h2>Work</h2>
+          <ul>
+            <li><a href="index.html#portfolio">Selected work</a></li>
+            <li><a href="index.html#career">Career</a></li>
+          </ul>
+        </div>
+        <div class="footer__group" data-case-reveal>
+          <h2>About</h2>
+          <ul>
+            <li><a href="index.html#about">Profile</a></li>
+            <li><a href="#overview">Back to top <span aria-hidden="true">↑</span></a></li>
+          </ul>
+        </div>
+        <div class="footer__group" data-case-reveal>
+          <h2>Contact</h2>
+          <ul>
+            <li><a href="index.html#contact">Discuss a project <span aria-hidden="true">↗</span></a></li>
+          </ul>
+        </div>
+      </nav>
+    </footer>
+
+    <section class="skills-playground" id="skills-playground" aria-labelledby="skills-playground-title" data-skills-playground>
+      <div class="skills-playground__surface">
+        <div class="skills-playground__hint">
+          <svg viewBox="0 0 120 74" aria-hidden="true">
+            <path d="M112 8C75 18 42 37 20 65" />
+            <path d="m18 53 2 12 12-2" />
+          </svg>
+          <div>
+            <p class="skills-playground__eyebrow">Мои навыки и инструменты</p>
+            <h2 id="skills-playground-title">Можно двигать</h2>
+          </div>
+        </div>
+
+        <button class="skill-drag-item skill-drag-item--pill" type="button" data-drag-item data-x="0.018" data-y="0.28" data-mobile-x="0.02" data-mobile-y="0.16" data-rotate="-2" aria-describedby="skills-playground-instruction">
+          <span class="skill-drag-item__glyph" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M12 3.5v2M12 18.5v2M3.5 12h2M18.5 12h2M6 6l1.4 1.4M16.6 16.6 18 18M18 6l-1.4 1.4M7.4 16.6 6 18"/></svg>
+          </span>
+          <span>Дизайн-системы</span>
+        </button>
+        <button class="skill-drag-item skill-drag-item--pill" type="button" data-drag-item data-x="0.17" data-y="0.34" data-mobile-x="0.62" data-mobile-y="0.24" data-rotate="-1.5" aria-describedby="skills-playground-instruction">
+          <span class="skill-drag-item__glyph" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="m6 4 11 7-5 1.4L9.6 18 6 4Z"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>
+          </span>
+          <span>Интерактивный дизайн</span>
+        </button>
+        <button class="skill-drag-item skill-drag-item--pill" type="button" data-drag-item data-x="0.63" data-y="0.34" data-mobile-x="0.3" data-mobile-y="0.37" data-rotate="1" aria-describedby="skills-playground-instruction">
+          <span class="skill-drag-item__glyph" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="2"/><path d="M4 9h16M8 5v4M15 12h2M8 13h4M8 16h7"/></svg>
+          </span>
+          <span>Продуктовый дизайн</span>
+        </button>
+        <button class="skill-drag-item skill-drag-item--pill" type="button" data-drag-item data-x="0.24" data-y="0.61" data-mobile-x="0.54" data-mobile-y="0.5" data-rotate="0.8" aria-describedby="skills-playground-instruction">
+          <span class="skill-drag-item__glyph" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="14" rx="2"/><path d="M3.5 9h17M7 7h.01M10 7h.01"/></svg>
+          </span>
+          <span>Веб-дизайн</span>
+        </button>
+        <button class="skill-drag-item skill-drag-item--pill" type="button" data-drag-item data-x="0.56" data-y="0.61" data-mobile-x="0.2" data-mobile-y="0.62" data-rotate="-1" aria-describedby="skills-playground-instruction">
+          <span class="skill-drag-item__glyph" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="5.5"/><path d="m15 15 5 5M8.2 10.5h4.6M10.5 8.2v4.6"/></svg>
+          </span>
+          <span>Исследования</span>
+        </button>
+
+        <button class="skill-drag-item skill-drag-item--tool skill-drag-item--js" type="button" data-drag-item data-x="0.09" data-y="0.69" data-mobile-x="0.02" data-mobile-y="0.79" data-rotate="3" aria-label="JavaScript, можно перемещать" aria-describedby="skills-playground-instruction">
+          <span class="brand-mark brand-mark--js" aria-hidden="true">JS</span>
+        </button>
+        <button class="skill-drag-item skill-drag-item--tool skill-drag-item--framer" type="button" data-drag-item data-x="0.16" data-y="0.72" data-mobile-x="0.25" data-mobile-y="0.84" data-rotate="-4" aria-label="Framer, можно перемещать" aria-describedby="skills-playground-instruction">
+          <svg class="brand-mark brand-mark--framer" viewBox="0 0 32 32" aria-hidden="true"><path d="M7 4h18v8H16l9 8h-9v8L7 20h9L7 12V4Z"/></svg>
+        </button>
+        <button class="skill-drag-item skill-drag-item--tool skill-drag-item--vscode" type="button" data-drag-item data-x="0.42" data-y="0.73" data-mobile-x="0.49" data-mobile-y="0.78" data-rotate="2" aria-label="Visual Studio Code, можно перемещать" aria-describedby="skills-playground-instruction">
+          <svg class="brand-mark brand-mark--vscode" viewBox="0 0 32 32" aria-hidden="true"><path d="m23.8 4.2 5 2.4v18.8l-5 2.4L13 19.4 6.3 24.6 3 22l7-6-7-6 3.3-2.6L13 12.6l10.8-8.4ZM23.6 10 16.7 16l6.9 6V10Z"/></svg>
+        </button>
+        <button class="skill-drag-item skill-drag-item--tool skill-drag-item--figma" type="button" data-drag-item data-x="0.75" data-y="0.57" data-mobile-x="0.72" data-mobile-y="0.84" data-rotate="5" aria-label="Figma, можно перемещать" aria-describedby="skills-playground-instruction">
+          <span class="figma-mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+        </button>
+        <button class="skill-drag-item skill-drag-item--tool skill-drag-item--slack" type="button" data-drag-item data-x="0.84" data-y="0.72" data-mobile-x="0.88" data-mobile-y="0.68" data-rotate="-3" aria-label="Slack, можно перемещать" aria-describedby="skills-playground-instruction">
+          <svg class="brand-mark brand-mark--slack" viewBox="0 0 32 32" aria-hidden="true">
+            <path class="slack-blue" d="M12.7 4a3 3 0 0 1 3 3v3h-3a3 3 0 1 1 0-6Z"/><path class="slack-green" d="M28 12.7a3 3 0 0 1-3 3h-3v-3a3 3 0 1 1 6 0Z"/><path class="slack-yellow" d="M19.3 28a3 3 0 0 1-3-3v-3h3a3 3 0 1 1 0 6Z"/><path class="slack-red" d="M4 19.3a3 3 0 0 1 3-3h3v3a3 3 0 1 1-6 0Z"/><path class="slack-blue" d="M10 12.7v3H7a3 3 0 1 1 3-3Z"/><path class="slack-green" d="M19.3 10h-3V7a3 3 0 1 1 3 3Z"/><path class="slack-yellow" d="M22 19.3v-3h3a3 3 0 1 1-3 3Z"/><path class="slack-red" d="M12.7 22h3v3a3 3 0 1 1-3-3Z"/>
+          </svg>
+        </button>
+
+        <p class="sr-only" id="skills-playground-instruction">
+          Перетаскивайте элемент указателем или двигайте его клавишами со стрелками. С клавишей Shift шаг будет больше.
+        </p>
+      </div>
+    </section>
+
+    <script src="vendor/matter.min.js"></script>
+    <script src="vendor/gsap.min.js"></script>
+    <script src="vendor/ScrollTrigger.min.js"></script>
+    <script src="script.js?v=20261016-eme-app-case"></script>
+    <script src="amocrm.js?v=20261015-10"></script>
+  </body>
+</html>
