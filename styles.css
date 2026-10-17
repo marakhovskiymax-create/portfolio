@@ -1011,7 +1011,7 @@ body.has-spider-cursor .spider-cursor {
 .time-machine__stop-label {
   color: rgba(244, 243, 238, 0.9);
   filter: blur(2px);
-  font-size: 20px;
+  font-size: 24px;
   font-weight: 500;
   opacity: 0;
   pointer-events: none;
@@ -2542,7 +2542,7 @@ body.has-spider-cursor .spider-cursor {
   }
 
   .time-machine__stop-target { --stop-mark-width: 20px; --stop-mark-growth: 8px; gap: 10px; }
-  .time-machine__stop-label { font-size: 20px; }
+  .time-machine__stop-label { font-size: 24px; }
   .time-machine__stop-mark { width: var(--stop-mark-width); }
 
   .career-story {
