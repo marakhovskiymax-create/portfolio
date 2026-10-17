@@ -83,6 +83,10 @@
 .tabler-icon--vscode { --tabler-icon: url("design/assets/icons/tabler/brand-vscode.svg"); }
 .tabler-icon--figma { --tabler-icon: url("design/assets/icons/tabler/brand-figma.svg"); }
 .tabler-icon--slack { --tabler-icon: url("design/assets/icons/tabler/brand-slack.svg"); }
+.tabler-icon--openai { --tabler-icon: url("design/assets/icons/tabler/brand-openai.svg"); }
+.tabler-icon--claude { --tabler-icon: url("design/assets/icons/tabler/asterisk.svg"); }
+.tabler-icon--vercel { --tabler-icon: url("design/assets/icons/tabler/brand-vercel.svg"); }
+.tabler-icon--git { --tabler-icon: url("design/assets/icons/tabler/brand-git.svg"); }
 
 *,
 *::before,
@@ -3097,6 +3101,23 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
 
 .skill-drag-item--slack {
   background: rgba(22, 50, 111, 0.74);
+}
+
+.skill-drag-item--openai {
+  background: rgba(18, 83, 76, 0.86);
+}
+
+.skill-drag-item--claude {
+  color: #fff5ea;
+  background: rgba(171, 88, 62, 0.9);
+}
+
+.skill-drag-item--vercel {
+  background: rgba(22, 30, 49, 0.94);
+}
+
+.skill-drag-item--git {
+  background: rgba(214, 79, 48, 0.92);
 }
 
 .brand-mark--slack {
