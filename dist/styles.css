@@ -3088,63 +3088,39 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
 .skill-drag-item--tool {
   width: 106px;
   height: 106px;
+  border: 1px solid rgba(158, 187, 255, 0.2);
   border-radius: 26px;
+  background: #173467;
   font-size: 1.75rem;
   font-weight: 800;
 }
 
 .brand-mark {
+  display: block;
   width: 54px;
   height: 54px;
+  object-fit: contain;
+  pointer-events: none;
 }
 
-.skill-drag-item--js {
-  color: #101114;
-  background: rgba(245, 217, 10, 0.9);
+.brand-mark--monochrome {
+  filter: brightness(0) invert(1);
 }
 
-.brand-mark--js {
-  display: inline-block;
+.brand-mark--figma {
+  width: 36px;
 }
 
-.skill-drag-item--framer {
-  color: white;
-  background: rgba(20, 66, 183, 0.76);
+.brand-mark--cursor {
+  width: 48px;
 }
 
-.skill-drag-item--vscode {
-  color: #72b8ff;
-  background: rgba(7, 35, 77, 0.78);
-}
-
-.skill-drag-item--figma {
-  background: rgba(19, 47, 106, 0.74);
-}
-
-.skill-drag-item--slack {
-  background: rgba(22, 50, 111, 0.74);
-}
-
-.skill-drag-item--openai {
-  background: rgba(18, 83, 76, 0.86);
-}
-
-.skill-drag-item--claude {
-  color: #fff5ea;
-  background: rgba(171, 88, 62, 0.9);
-}
-
-.skill-drag-item--vercel {
-  background: rgba(22, 30, 49, 0.94);
-}
-
-.skill-drag-item--git {
-  background: rgba(214, 79, 48, 0.92);
-}
-
-.brand-mark--slack {
+.brand-mark--claude {
   width: 58px;
-  height: 58px;
+}
+
+.skill-drag-item--tool:focus-visible {
+  outline-color: #b5c9ff;
 }
 
 @media (max-width: 960px) {
@@ -3191,10 +3167,21 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
     font-size: 1.2rem;
   }
 
-  .brand-mark,
-  .brand-mark--slack {
+  .brand-mark {
     width: 40px;
     height: 40px;
+  }
+
+  .brand-mark--figma {
+    width: 27px;
+  }
+
+  .brand-mark--cursor {
+    width: 36px;
+  }
+
+  .brand-mark--claude {
+    width: 44px;
   }
 }
 
