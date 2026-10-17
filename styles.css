@@ -737,24 +737,6 @@ body.has-spider-cursor .spider-cursor {
   outline-offset: 5px;
 }
 
-.time-machine__stage-link {
-  position: absolute;
-  z-index: 20;
-  inset: 0;
-  display: none;
-  border-radius: clamp(14px, 1.6vw, 24px);
-}
-
-.time-machine__stage-link.is-active {
-  display: block;
-  cursor: pointer;
-}
-
-.time-machine__stage-link:focus-visible {
-  outline: 2px solid var(--project-accent);
-  outline-offset: 5px;
-}
-
 .time-machine__card--amo {
   --card-accent: #59b7df;
   background: linear-gradient(145deg, #172a34, #10181d 72%);
@@ -978,6 +960,7 @@ body.has-spider-cursor .spider-cursor {
   grid-column: 2;
   grid-row: 1;
   height: min(72%, 400px);
+  margin-right: 24px;
   grid-template-rows: repeat(5, minmax(0, 1fr));
   row-gap: 0;
   align-self: center;
@@ -2533,8 +2516,8 @@ body.has-spider-cursor .spider-cursor {
   }
 
   .time-machine__card {
-    width: 94%;
-    left: 50%;
+    width: 84%;
+    left: 44%;
   }
 
   .time-machine__card-body {

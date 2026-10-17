@@ -1,18 +1,18 @@
 const projectContent = {
   "amo-crm": {
-    caption: "Интерактивный предпросмотр проекта amoCRM для управления сделками и воронкой продаж.",
+    caption: "Interactive preview of the amoCRM deal management case study.",
   },
   eme: {
-    caption: "Интерактивный предпросмотр проекта EME.WEB, экосистемы грузоперевозок.",
+    caption: "Interactive preview of the EME.WEB freight platform case study.",
   },
   "eme-app": {
-    caption: "Интерактивный предпросмотр проекта EME.APP, приложения для работы на складе.",
+    caption: "Interactive preview of the EME.APP warehouse app case study.",
   },
   "don-ballon": {
-    caption: "Интерактивный предпросмотр e-commerce проекта Дон Баллон и полного пути покупки.",
+    caption: "Interactive preview of the Don Ballon e-commerce case study.",
   },
   shable: {
-    caption: "Интерактивный предпросмотр цифрового продукта Shable.",
+    caption: "Interactive preview of the Shable digital product case study.",
   },
 };
 
@@ -63,7 +63,6 @@ const visualCaption = visual?.querySelector("[data-visual-caption]");
 const stageCards = Array.from(visual?.querySelectorAll("[data-stage-card]") ?? []);
 const timeMachineStops = Array.from(visual?.querySelectorAll("[data-stage-index]") ?? []);
 const timeMachineTimeline = visual?.querySelector(".time-machine__timeline");
-const timeMachineStageLink = visual?.querySelector("[data-stage-link]");
 const reduceTimeMachineMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 function syncTimeMachine(activeIndex, immediate = false) {
@@ -108,23 +107,6 @@ function syncTimeMachine(activeIndex, immediate = false) {
       stop.setAttribute("aria-pressed", String(isActive));
     }
   });
-
-  const activeCard = stageCards[activeIndex];
-  const activeCaseHref = activeCard?.dataset.caseHref;
-  if (timeMachineStageLink) {
-    if (activeCaseHref) {
-      const projectLabel = { "amo-crm": "amoCRM", eme: "EME.WEB", "don-ballon": "Дон Баллон", "eme-app": "EME.APP", shable: "Shable" }[activeCard.dataset.stageCard] || "проекта";
-      timeMachineStageLink.href = activeCaseHref;
-      timeMachineStageLink.setAttribute("aria-label", `Открыть кейс ${projectLabel}`);
-      timeMachineStageLink.classList.add("is-active");
-      timeMachineStageLink.tabIndex = 0;
-    } else {
-      timeMachineStageLink.removeAttribute("href");
-      timeMachineStageLink.removeAttribute("aria-label");
-      timeMachineStageLink.classList.remove("is-active");
-      timeMachineStageLink.tabIndex = -1;
-    }
-  }
 }
 
 function syncTimeMachineHover(hoveredIndex = null) {
@@ -1557,12 +1539,6 @@ if (window.TastemakerMotion && window.gsap && window.ScrollTrigger) {
     if (portfolioTitle.length) {
       const portfolio = scrollScene("[data-motion-section='portfolio']", "top 72%");
       animateTitle(portfolio, portfolioTitle)
-        .fromTo(
-          ".section--portfolio .section-heading p",
-          { autoAlpha: 0, y: 18 },
-          { autoAlpha: 1, y: 0, duration: 0.24 },
-          "-=0.24",
-        )
         .fromTo(
           ".case-visual",
           { autoAlpha: 0, x: 32, clipPath: "inset(0 0 0 18%)" },
