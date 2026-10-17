@@ -1114,15 +1114,17 @@ body.has-spider-cursor .spider-cursor {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   align-items: end;
+  justify-items: start;
   gap: var(--space-8);
   margin-bottom: var(--space-16);
 }
 
 .career-stage__heading h2 {
   grid-column: 1;
+  width: 100%;
   max-width: none;
   justify-self: start;
-  text-align: left;
+  text-align: start;
   color: var(--color-text);
   font-family: var(--font-body);
   font-size: clamp(1.6rem, 3vw, 3.4rem);
