@@ -16,6 +16,48 @@ const projectContent = {
   },
 };
 
+// Give repeated navigation and contact links the same label roll and icon turn as the main CTAs.
+function initLinkReveal() {
+  const links = document.querySelectorAll(
+    ".masthead__links a, .mobile-menu a, .hero__strip a, .contact-method, .footer__group a",
+  );
+
+  links.forEach((link) => {
+    if (link.classList.contains("cta-reveal")) return;
+
+    const labelElement = link.matches(".contact-method") ? link.lastElementChild : null;
+    const labelNode = labelElement || Array.from(link.childNodes).find(
+      (node) => node.nodeType === Node.TEXT_NODE && node.textContent.trim(),
+    );
+    const label = labelNode?.textContent.trim();
+    if (!label) return;
+
+    const viewport = document.createElement("span");
+    viewport.className = "cta-reveal__text";
+    const track = document.createElement("span");
+    track.className = "cta-reveal__track";
+
+    for (let index = 0; index < 2; index += 1) {
+      const line = document.createElement("span");
+      line.className = "cta-reveal__line";
+      line.textContent = label;
+      if (index === 1) line.setAttribute("aria-hidden", "true");
+      track.append(line);
+    }
+
+    viewport.append(track);
+    labelNode.replaceWith(viewport);
+    const icon = link.querySelector(".tabler-icon");
+    icon?.classList.add("cta-reveal__icon");
+    if (icon?.classList.contains("tabler-icon--arrow-down")) {
+      link.classList.add("cta-reveal--arrow-right-on-hover");
+    }
+    link.classList.add("cta-reveal");
+  });
+}
+
+initLinkReveal();
+
 const visual = document.querySelector("[data-project-visual]");
 const visualCaption = visual?.querySelector("[data-visual-caption]");
 const stageCards = Array.from(visual?.querySelectorAll("[data-stage-card]") ?? []);

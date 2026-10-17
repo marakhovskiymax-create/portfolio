@@ -3228,7 +3228,15 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
   white-space: nowrap;
 }
 
-.cta-reveal > .cta-reveal__icon {
+.cta-reveal {
+  --cta-icon-hover-rotation: 45deg;
+}
+
+.cta-reveal--arrow-right-on-hover {
+  --cta-icon-hover-rotation: -90deg;
+}
+
+.cta-reveal .cta-reveal__icon {
   transition: transform 300ms cubic-bezier(0.22, 1.05, 0.3, 1);
 }
 
@@ -3236,8 +3244,8 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
   transform: translateY(-50%);
 }
 
-.cta-reveal:focus-visible > .cta-reveal__icon {
-  transform: rotate(45deg);
+.cta-reveal:focus-visible .cta-reveal__icon {
+  transform: rotate(var(--cta-icon-hover-rotation));
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -3245,8 +3253,9 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
     transform: translateY(-50%);
   }
 
-  .cta-reveal:hover > .cta-reveal__icon {
-    transform: rotate(45deg);
+  .cta-reveal:hover .cta-reveal__icon,
+  .footer__group a.cta-reveal:hover > .cta-reveal__icon {
+    transform: rotate(var(--cta-icon-hover-rotation));
   }
 
   .button.cta-reveal:hover,
@@ -3267,7 +3276,7 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
 @media (prefers-reduced-motion: reduce) {
   .cta-reveal,
   .cta-reveal__track,
-  .cta-reveal > .cta-reveal__icon {
+  .cta-reveal .cta-reveal__icon {
     transition-duration: 0ms;
   }
 
@@ -3276,9 +3285,9 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
   .faq-contact__link.cta-reveal:hover,
   .contact-form__submit.cta-reveal:hover,
   .cta-reveal:hover .cta-reveal__track,
-  .cta-reveal:hover > .cta-reveal__icon,
+  .cta-reveal:hover .cta-reveal__icon,
   .cta-reveal:focus-visible .cta-reveal__track,
-  .cta-reveal:focus-visible > .cta-reveal__icon,
+  .cta-reveal:focus-visible .cta-reveal__icon,
   .cta-reveal:active {
     transform: none;
   }
