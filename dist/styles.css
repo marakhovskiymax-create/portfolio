@@ -17,6 +17,7 @@
   --font-display: "Playfair Display", Georgia, serif;
   --font-hero: "Inter Tight", "Arial Narrow", Arial, sans-serif;
   --font-body: "Nunito Sans", Arial, sans-serif;
+  --section-heading-size: 52px;
   --radius-small: 999px;
   --radius-medium: 20px;
   --radius-large: 32px;
@@ -535,12 +536,12 @@ body.has-spider-cursor .spider-cursor {
 
 .section-heading h2 {
   color: var(--color-text);
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 3.25vw, 3.75rem);
-  font-style: italic;
-  font-weight: 500;
-  letter-spacing: -0.035em;
-  line-height: 1.12;
+  font-family: var(--font-hero);
+  font-size: var(--section-heading-size);
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  line-height: 0.98;
+  text-wrap: balance;
 }
 
 .section-heading p {
@@ -1127,7 +1128,7 @@ body.has-spider-cursor .spider-cursor {
   text-align: start;
   color: var(--color-text);
   font-family: var(--font-hero, "Inter Tight", sans-serif);
-  font-size: clamp(2.2rem, 4.5vw, 4.7rem);
+  font-size: var(--section-heading-size);
   font-weight: 700;
   letter-spacing: -0.045em;
   line-height: 0.98;
@@ -1412,6 +1413,10 @@ body.has-spider-cursor .spider-cursor {
 }
 
 @media (max-width: 900px) {
+  :root {
+    --section-heading-size: clamp(2.35rem, 6vw, 52px);
+  }
+
   .career-stage__heading {
     grid-template-columns: minmax(0, 1fr);
     gap: var(--space-6);
@@ -1437,7 +1442,7 @@ body.has-spider-cursor .spider-cursor {
   }
 
   .career-stage__heading h2 {
-    font-size: clamp(2.35rem, 11vw, 4rem);
+    font-size: var(--section-heading-size);
   }
 
   .career-tab {
@@ -1760,7 +1765,7 @@ body.has-spider-cursor .spider-cursor {
 .faq__heading h2 {
   color: var(--color-text);
   font-family: var(--font-hero, "Inter Tight", sans-serif);
-  font-size: clamp(2.2rem, 4.5vw, 4.7rem);
+  font-size: var(--section-heading-size);
   font-weight: 700;
   letter-spacing: -0.045em;
   line-height: 0.98;
@@ -1768,6 +1773,7 @@ body.has-spider-cursor .spider-cursor {
 
 .site-motion-title {
   perspective: 700px;
+  word-spacing: 0.14em;
 }
 
 .site-motion-word,
@@ -1922,7 +1928,7 @@ body.has-spider-cursor .spider-cursor {
 
 .contact h2 {
   font-family: var(--font-hero, "Inter Tight", sans-serif);
-  font-size: clamp(2.2rem, 4.5vw, 4.7rem);
+  font-size: var(--section-heading-size);
   font-weight: 700;
   letter-spacing: -0.045em;
   line-height: 0.98;
@@ -2595,11 +2601,11 @@ body.has-spider-cursor .spider-cursor {
   }
 
   .contact h2 {
-    font-size: clamp(2.35rem, 11vw, 4rem);
+    font-size: var(--section-heading-size);
   }
 
   .faq__heading h2 {
-    font-size: clamp(2.35rem, 11vw, 4rem);
+    font-size: var(--section-heading-size);
   }
 
   .contact__heading {
@@ -3016,9 +3022,11 @@ body:not(.case-page) > .skills-playground {
 
 .skills-playground__hint h2 {
   margin: 0;
-  font-size: clamp(1.25rem, 2vw, 1.75rem);
+  font-family: var(--font-hero);
+  font-size: var(--section-heading-size);
   font-weight: 700;
-  letter-spacing: -0.035em;
+  letter-spacing: -0.045em;
+  line-height: 0.98;
 }
 
 .skill-drag-item {

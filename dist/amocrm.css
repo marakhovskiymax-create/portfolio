@@ -359,7 +359,7 @@ body.case-page {
   max-width: 16ch;
   color: var(--color-text);
   font-family: var(--font-hero, "Inter Tight", sans-serif);
-  font-size: clamp(2.2rem, 4.5vw, 4.7rem);
+  font-size: var(--section-heading-size);
   font-weight: 700;
   letter-spacing: -0.045em;
   line-height: 0.98;
@@ -875,6 +875,7 @@ body.case-page {
 
 .case-motion-title {
   perspective: 700px;
+  word-spacing: 0.14em;
 }
 
 .case-decision__text-effect {
@@ -1061,7 +1062,7 @@ body.case-page > .case-footer {
   .case-context h2,
   .case-heading h2,
   .case-story h2,
-  .case-impact h2 { font-size: clamp(2.35rem, 11vw, 4rem); }
+  .case-impact h2 { font-size: var(--section-heading-size); }
 
   .work-areas__canvas {
     display: grid;

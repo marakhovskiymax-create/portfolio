@@ -1501,7 +1501,7 @@ if (window.TastemakerMotion && window.gsap && window.ScrollTrigger) {
   const sectionMotion = window.gsap.matchMedia();
 
   sectionMotion.add("(prefers-reduced-motion: no-preference)", () => {
-    // Keep the three section titles in step with the character-flip reveal on case pages.
+    // Use the case-page character reveal for section titles throughout the site.
     const prepareCaseLikeHeading = (selector) => {
       const title = document.querySelector(selector);
       if (!title) return [];
@@ -1541,31 +1541,40 @@ if (window.TastemakerMotion && window.gsap && window.ScrollTrigger) {
       },
     });
 
-    const portfolio = scrollScene("[data-motion-section='portfolio']", "top 72%");
-    portfolio
-      .fromTo(
-        ".section--portfolio .section-heading h2",
-        { autoAlpha: 0, yPercent: 55, clipPath: "inset(0 0 100% 0)" },
-        { autoAlpha: 1, yPercent: 0, clipPath: "inset(0 0 0% 0)", duration: 0.48 },
-      )
-      .fromTo(
-        ".section--portfolio .section-heading p",
-        { autoAlpha: 0, y: 18 },
-        { autoAlpha: 1, y: 0, duration: 0.24 },
-        "-=0.24",
-      )
-      .fromTo(
-        ".case-visual",
-        { autoAlpha: 0, x: 32, clipPath: "inset(0 0 0 18%)" },
-        { autoAlpha: 1, x: 0, clipPath: "inset(0 0 0 0%)", duration: 0.48 },
-        "-=0.06",
-      )
-      .fromTo(
-        ".time-machine__stop",
-        { autoAlpha: 0, x: 18 },
-        { autoAlpha: 1, x: 0, duration: 0.22, stagger: 0.055 },
-        "-=0.22",
-      );
+    const animateTitle = (scene, characters) => scene.to(characters, {
+      autoAlpha: 1,
+      rotateX: 0,
+      y: 0,
+      duration: 0.2,
+      stagger: 0.035,
+      ease: "power3.out",
+      clearProps: "transform,opacity,visibility",
+    });
+
+    const portfolioTitle = prepareCaseLikeHeading("#portfolio-title");
+    const aboutTitle = prepareCaseLikeHeading("#about-title");
+    if (portfolioTitle.length) {
+      const portfolio = scrollScene("[data-motion-section='portfolio']", "top 72%");
+      animateTitle(portfolio, portfolioTitle)
+        .fromTo(
+          ".section--portfolio .section-heading p",
+          { autoAlpha: 0, y: 18 },
+          { autoAlpha: 1, y: 0, duration: 0.24 },
+          "-=0.24",
+        )
+        .fromTo(
+          ".case-visual",
+          { autoAlpha: 0, x: 32, clipPath: "inset(0 0 0 18%)" },
+          { autoAlpha: 1, x: 0, clipPath: "inset(0 0 0 0%)", duration: 0.48 },
+          "-=0.06",
+        )
+        .fromTo(
+          ".time-machine__stop",
+          { autoAlpha: 0, x: 18 },
+          { autoAlpha: 1, x: 0, duration: 0.22, stagger: 0.055 },
+          "-=0.22",
+        );
+    }
 
     scrollScene("[data-motion-section='capabilities']", "top 88%").fromTo(
       "[data-motion-section='capabilities']",
@@ -1579,28 +1588,19 @@ if (window.TastemakerMotion && window.gsap && window.ScrollTrigger) {
       { autoAlpha: 1, y: 0, duration: 0.48, stagger: 0.1 },
     );
 
-    const about = scrollScene("[data-motion-section='about']", "top 74%");
-    about
-      .fromTo(
-        ".section--about .section-heading h2",
-        { autoAlpha: 0, yPercent: 55, clipPath: "inset(0 0 100% 0)" },
-        { autoAlpha: 1, yPercent: 0, clipPath: "inset(0 0 0% 0)", duration: 0.48, clearProps: "clipPath,transform" },
-      );
+    if (aboutTitle.length) {
+      const about = scrollScene("[data-motion-section='about']", "top 74%");
+      animateTitle(about, aboutTitle);
+    }
 
     const faqTitle = prepareCaseLikeHeading("#faq-title");
     const contactTitle = prepareCaseLikeHeading("#contact-title");
     const careerTitle = prepareCaseLikeHeading("#career-title");
+    const skillsTitle = prepareCaseLikeHeading("#skills-playground-title");
     const revealTitle = (trigger, characters, support, start = "top 76%") => {
+      if (!characters.length || !document.querySelector(trigger)) return null;
       const scene = scrollScene(trigger, start);
-      scene.to(characters, {
-        autoAlpha: 1,
-        rotateX: 0,
-        y: 0,
-        duration: 0.2,
-        stagger: 0.035,
-        ease: "power3.out",
-        clearProps: "transform,opacity,visibility",
-      });
+      animateTitle(scene, characters);
       if (support) scene.fromTo(support,
         { autoAlpha: 0, y: 10 },
         { autoAlpha: 1, y: 0, duration: 0.32, ease: "power3.out", clearProps: "transform,opacity,visibility" },
@@ -1644,6 +1644,7 @@ if (window.TastemakerMotion && window.gsap && window.ScrollTrigger) {
       );
 
     revealTitle(".career-stage__heading", careerTitle, null, "top 76%");
+    revealTitle(".skills-playground__hint", skillsTitle, null, "top 82%");
     scrollScene(".career-timeline", "top 82%")
       .fromTo(".career-tabs__rail",
         { autoAlpha: 0, scaleX: 0, transformOrigin: "left center" },
