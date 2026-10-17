@@ -1563,13 +1563,21 @@ body.has-spider-cursor .spider-cursor {
 
 .about-map {
   position: relative;
-  min-height: 470px;
+  min-height: 560px;
 }
 
 .about-note {
   position: absolute;
   z-index: 1;
   min-width: 0;
+}
+
+.about-note h3 {
+  margin-bottom: 12px;
+  color: var(--color-text);
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
 }
 
 .about-note p {
@@ -1594,10 +1602,7 @@ body.has-spider-cursor .spider-cursor {
 
 .about-note strong {
   color: var(--color-text);
-  font-size: 1.42em;
-  font-weight: 500;
-  letter-spacing: -0.025em;
-  text-transform: uppercase;
+  font-weight: 600;
 }
 
 .about-note--fashion {
@@ -1606,7 +1611,7 @@ body.has-spider-cursor .spider-cursor {
 }
 
 .about-note--film {
-  inset: 150px auto auto 35%;
+  inset: 210px auto auto 35%;
   width: min(31%, 380px);
   text-align: right;
 }
@@ -1673,7 +1678,7 @@ body.has-spider-cursor .spider-cursor {
 }
 
 .about-badge--vibe {
-  inset: 158px auto auto 1.5%;
+  inset: 210px auto auto 1.5%;
   transform: rotate(-1.5deg);
 }
 
