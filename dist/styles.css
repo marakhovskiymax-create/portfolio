@@ -1274,9 +1274,9 @@ body.has-spider-cursor .spider-cursor {
 
 .career-logo--hse { width: 34px; height: 34px; }
 .career-logo--match { width: 96px; height: 34px; }
-.career-logo--geleos { width: 42px; height: 42px; }
 .career-logo--don { width: 132px; height: 30px; }
 .career-logo--eme { width: 66px; height: 30px; }
+.career-logo--amocrm { width: 112px; height: 26px; }
 
 .career-showcase {
   position: relative;
@@ -1382,6 +1382,33 @@ body.has-spider-cursor .spider-cursor {
   line-height: 1.55;
 }
 
+.career-panel__case-link {
+  display: inline-flex;
+  min-height: 52px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 24px;
+  padding: 0 24px;
+  border: 1px solid rgba(10, 10, 10, 0.18);
+  border-radius: 999px;
+  background: var(--color-primary);
+  color: var(--color-bg);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+  transition: background-color var(--motion-moderate) var(--ease-out), transform var(--motion-moderate) var(--ease-out);
+}
+
+.career-panel__case-link .tabler-icon { width: 20px; height: 20px; }
+
+.career-panel__case-link:hover,
+.career-panel__case-link:focus-visible {
+  background: #fff;
+  transform: translateY(-2px);
+}
+
 @media (max-width: 900px) {
   .career-stage__heading {
     grid-template-columns: minmax(0, 1fr);
@@ -1393,6 +1420,8 @@ body.has-spider-cursor .spider-cursor {
     max-width: 620px;
     justify-self: start;
   }
+
+  .career-title__line { white-space: normal; }
 
   .career-panel {
     grid-template-columns: minmax(0, 1.2fr) minmax(120px, 0.45fr) minmax(220px, 0.8fr);
@@ -1416,9 +1445,9 @@ body.has-spider-cursor .spider-cursor {
 
   .career-logo--hse { width: 28px; height: 28px; }
   .career-logo--match { width: 58px; height: 26px; }
-  .career-logo--geleos { width: 32px; height: 32px; }
   .career-logo--don { width: 66px; height: 22px; }
   .career-logo--eme { width: 48px; height: 24px; }
+  .career-logo--amocrm { width: 66px; height: 20px; }
 
   .career-showcase {
     min-height: 590px;
