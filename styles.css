@@ -1884,10 +1884,9 @@ body.has-spider-cursor .spider-cursor {
     background-color var(--motion-moderate) var(--ease-out);
 }
 
-.faq-contact__link span {
+.faq-contact__link > .cta-reveal__icon {
   font-size: 1.5rem;
   line-height: 1;
-  transition: transform var(--motion-moderate) var(--ease-out);
 }
 
 .contact {
@@ -2153,9 +2152,8 @@ body.has-spider-cursor .spider-cursor {
     background-color var(--motion-moderate) var(--ease-out);
 }
 
-.contact-form__submit span {
+.contact-form__submit > .cta-reveal__icon {
   font-size: 1.2rem;
-  transition: transform var(--motion-moderate) var(--ease-out);
 }
 
 .contact-form__submit:active {
@@ -2198,10 +2196,6 @@ body.has-spider-cursor .spider-cursor {
     background: var(--color-accent);
   }
 
-  .contact-form__submit:hover span {
-    transform: translateX(3px);
-  }
-
   .faq-trigger:hover {
     color: var(--color-accent);
   }
@@ -2210,9 +2204,6 @@ body.has-spider-cursor .spider-cursor {
     transform: translateY(-2px);
   }
 
-  .faq-contact__link:hover span {
-    transform: translateX(4px);
-  }
 }
 
 @media (max-width: 1020px) {
@@ -2719,7 +2710,7 @@ body.has-spider-cursor .spider-cursor {
   .contact-form input,
   .contact-form textarea,
   .contact-form__submit,
-  .contact-form__submit span {
+  .contact-form__submit > .cta-reveal__icon {
     transition-duration: var(--motion-fast);
   }
 
@@ -2918,7 +2909,7 @@ main > .contact {
   .faq-answer,
   .faq-trigger__icon,
   .faq-contact__link,
-  .faq-contact__link span {
+  .faq-contact__link > .cta-reveal__icon {
     transition-duration: 0ms;
   }
 }
@@ -3226,5 +3217,82 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
 @media (prefers-reduced-motion: reduce) {
   .skill-drag-item {
     transition: none;
+  }
+}
+
+/* Primary actions roll their label and rotate their arrow in one coordinated hover. */
+.cta-reveal__text {
+  display: block;
+  height: 1.2em;
+  overflow: hidden;
+  line-height: 1.2;
+}
+
+.cta-reveal__track {
+  display: flex;
+  flex-direction: column;
+  transition: transform 300ms cubic-bezier(0.22, 1.05, 0.3, 1);
+}
+
+.cta-reveal__line {
+  display: block;
+  height: 1.2em;
+  flex: none;
+  white-space: nowrap;
+}
+
+.cta-reveal > .cta-reveal__icon {
+  transition: transform 300ms cubic-bezier(0.22, 1.05, 0.3, 1);
+}
+
+.cta-reveal:focus-visible .cta-reveal__track {
+  transform: translateY(-50%);
+}
+
+.cta-reveal:focus-visible > .cta-reveal__icon {
+  transform: rotate(45deg);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .cta-reveal:hover .cta-reveal__track {
+    transform: translateY(-50%);
+  }
+
+  .cta-reveal:hover > .cta-reveal__icon {
+    transform: rotate(45deg);
+  }
+
+  .button.cta-reveal:hover,
+  .career-panel__case-link.cta-reveal:hover,
+  .faq-contact__link.cta-reveal:hover,
+  .contact-form__submit.cta-reveal:hover {
+    transform: scale(1.02);
+  }
+}
+
+.button.cta-reveal:active,
+.career-panel__case-link.cta-reveal:active,
+.faq-contact__link.cta-reveal:active,
+.contact-form__submit.cta-reveal:active {
+  transform: scale(0.96);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cta-reveal,
+  .cta-reveal__track,
+  .cta-reveal > .cta-reveal__icon {
+    transition-duration: 0ms;
+  }
+
+  .button.cta-reveal:hover,
+  .career-panel__case-link.cta-reveal:hover,
+  .faq-contact__link.cta-reveal:hover,
+  .contact-form__submit.cta-reveal:hover,
+  .cta-reveal:hover .cta-reveal__track,
+  .cta-reveal:hover > .cta-reveal__icon,
+  .cta-reveal:focus-visible .cta-reveal__track,
+  .cta-reveal:focus-visible > .cta-reveal__icon,
+  .cta-reveal:active {
+    transform: none;
   }
 }
