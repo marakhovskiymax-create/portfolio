@@ -635,7 +635,7 @@ function initFAQAccordion() {
     title.append(fragment);
   }
 
-  const setOpen = (item, shouldOpen) => {
+  const setOpen = (item, shouldOpen, instant = false) => {
     const trigger = item.querySelector(".faq-trigger");
     const answer = item.querySelector("[data-faq-answer]");
     if (!trigger || !answer) return;
@@ -652,10 +652,14 @@ function initFAQAccordion() {
     answer.setAttribute("aria-hidden", String(!shouldOpen));
     item.classList.toggle("is-open", shouldOpen);
 
-    if (reduceMotion) {
+    if (reduceMotion || instant) {
+      if (instant && !reduceMotion) answer.style.transition = "none";
       answer.style.height = shouldOpen ? "auto" : "0px";
       answer.style.opacity = shouldOpen ? "1" : "0";
       delete answer.dataset.animating;
+      if (instant && !reduceMotion) {
+        window.requestAnimationFrame(() => answer.style.removeProperty("transition"));
+      }
       return;
     }
 
@@ -691,6 +695,19 @@ function initFAQAccordion() {
 
     trigger.addEventListener("click", () => {
       const willOpen = trigger.getAttribute("aria-expanded") !== "true";
+      if (willOpen) {
+        const triggerTop = trigger.getBoundingClientRect().top;
+        items.forEach((otherItem) => {
+          if (otherItem !== item) setOpen(otherItem, false, true);
+        });
+        const topShift = trigger.getBoundingClientRect().top - triggerTop;
+        if (topShift) {
+          const previousScrollBehavior = document.documentElement.style.scrollBehavior;
+          document.documentElement.style.scrollBehavior = "auto";
+          window.scrollBy(0, topShift);
+          document.documentElement.style.scrollBehavior = previousScrollBehavior;
+        }
+      }
       setOpen(item, willOpen);
     });
 

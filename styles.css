@@ -1811,7 +1811,7 @@ body.has-spider-cursor .spider-cursor {
 .faq-contact {
   display: grid;
   max-width: 780px;
-  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   gap: 24px;
   margin: 64px auto 0;
@@ -1819,21 +1819,6 @@ body.has-spider-cursor .spider-cursor {
   border: 1px dashed rgba(244, 243, 238, 0.18);
   border-radius: 28px;
   background: rgba(244, 243, 238, 0.035);
-}
-
-.faq-contact__message {
-  display: grid;
-  width: 64px;
-  height: 64px;
-  place-items: center;
-  border-radius: 50%;
-  background: var(--color-primary);
-  color: var(--color-ink);
-}
-
-.faq-contact__message .tabler-icon {
-  width: 40px;
-  height: 40px;
 }
 
 .faq-contact__copy h3 {
@@ -2607,21 +2592,15 @@ body.has-spider-cursor .spider-cursor {
   }
 
   .faq-contact {
-    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr);
     gap: 18px;
     margin-top: 48px;
     padding: 24px;
     border-radius: 22px;
   }
 
-  .faq-contact__message {
-    width: 52px;
-    height: 52px;
-  }
-
   .faq-contact__link {
     width: 100%;
-    grid-column: 1 / -1;
   }
 
   .footer {
