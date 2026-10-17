@@ -266,6 +266,16 @@ function initSpiderCursor() {
     return (PI * sum * (1 + (3 * h) / (10 + sqrt(4 - 3 * h)))) / 4;
   }
 
+  function orientTargetPoint(rect, x, y) {
+    if (!rect.rotation) return point(x, y);
+    const offsetX = x - rect.centerX;
+    const offsetY = y - rect.centerY;
+    return point(
+      rect.centerX + offsetX * cos(rect.rotation) - offsetY * sin(rect.rotation),
+      rect.centerY + offsetX * sin(rect.rotation) + offsetY * cos(rect.rotation),
+    );
+  }
+
   function perimeterPoint(rect, progress) {
     let distance = ((progress % 1) + 1) % 1 * rect.perimeter;
 
@@ -273,14 +283,14 @@ function initSpiderCursor() {
       if (distance <= segment.length || segment === rect.segments.at(-1)) {
         const amount = segment.length ? min(1, distance / segment.length) : 0;
         if (segment.type === "line") {
-          return point(
+          return orientTargetPoint(rect,
             lerp(segment.startX, segment.endX, amount),
             lerp(segment.startY, segment.endY, amount),
           );
         }
 
         const angle = lerp(segment.startAngle, segment.endAngle, amount);
-        return point(
+        return orientTargetPoint(rect,
           segment.centerX + cos(angle) * segment.radiusX,
           segment.centerY + sin(angle) * segment.radiusY,
         );
@@ -288,7 +298,7 @@ function initSpiderCursor() {
       distance -= segment.length;
     }
 
-    return point(rect.left, rect.top);
+    return orientTargetPoint(rect, rect.left, rect.top);
   }
 
   function readTargetRadii(target) {
@@ -314,10 +324,21 @@ function initSpiderCursor() {
     if (!target?.isConnected) return null;
     const bounds = target.getBoundingClientRect();
     const padding = 3;
+    const badgeTransform = target.matches(".about-badge") ? window.getComputedStyle(target).transform : null;
+    const badgeMatrix = badgeTransform && badgeTransform !== "none" && window.DOMMatrixReadOnly
+      ? new DOMMatrixReadOnly(badgeTransform)
+      : null;
+    const rotation = badgeMatrix ? Math.atan2(badgeMatrix.b, badgeMatrix.a) : 0;
+    const scaleX = badgeMatrix ? hypot(badgeMatrix.a, badgeMatrix.b) : 1;
+    const scaleY = badgeMatrix ? hypot(badgeMatrix.c, badgeMatrix.d) : 1;
+    const centerX = bounds.left + bounds.width / 2;
+    const centerY = bounds.top + bounds.height / 2;
+    const targetWidth = badgeMatrix ? target.offsetWidth * scaleX : bounds.width;
+    const targetHeight = badgeMatrix ? target.offsetHeight * scaleY : bounds.height;
     const baseRadii = readTargetRadii(target);
     const expand = (radius) => point(
-      radius.x > 0 ? radius.x + padding : 0,
-      radius.y > 0 ? radius.y + padding : 0,
+      radius.x > 0 ? radius.x * scaleX + padding : 0,
+      radius.y > 0 ? radius.y * scaleY + padding : 0,
     );
     const radii = {
       topLeft: expand(baseRadii.topLeft),
@@ -326,12 +347,15 @@ function initSpiderCursor() {
       bottomLeft: expand(baseRadii.bottomLeft),
     };
     const rect = {
-      left: bounds.left - padding,
-      top: bounds.top - padding,
-      right: bounds.right + padding,
-      bottom: bounds.bottom + padding,
-      width: bounds.width + padding * 2,
-      height: bounds.height + padding * 2,
+      left: centerX - targetWidth / 2 - padding,
+      top: centerY - targetHeight / 2 - padding,
+      right: centerX + targetWidth / 2 + padding,
+      bottom: centerY + targetHeight / 2 + padding,
+      width: targetWidth + padding * 2,
+      height: targetHeight + padding * 2,
+      centerX,
+      centerY,
+      rotation,
     };
 
     const radiusScale = min(
@@ -1495,7 +1519,7 @@ if (window.TastemakerMotion && window.gsap && window.ScrollTrigger) {
       .fromTo(
         ".section--about .section-heading h2",
         { autoAlpha: 0, yPercent: 55, clipPath: "inset(0 0 100% 0)" },
-        { autoAlpha: 1, yPercent: 0, clipPath: "inset(0 0 0% 0)", duration: 0.48 },
+        { autoAlpha: 1, yPercent: 0, clipPath: "inset(0 0 0% 0)", duration: 0.48, clearProps: "clipPath,transform" },
       );
 
     const faq = scrollScene("[data-motion-section='faq']", "top 74%");

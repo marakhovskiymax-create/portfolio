@@ -1573,7 +1573,7 @@ body.has-spider-cursor .spider-cursor {
 }
 
 .about-note h3 {
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   color: var(--color-text);
   font-size: 1.1rem;
   font-weight: 600;
@@ -1678,17 +1678,17 @@ body.has-spider-cursor .spider-cursor {
 }
 
 .about-badge--vibe {
-  inset: 210px auto auto 1.5%;
+  inset: 235px auto auto 1.5%;
   transform: rotate(-1.5deg);
 }
 
 .about-badge--cinema {
-  inset: 286px auto auto 16.5%;
+  inset: 311px auto auto 16.5%;
   transform: rotate(-4deg);
 }
 
 .about-badge--shooting {
-  inset: 148px auto auto 25.5%;
+  inset: 173px auto auto 25.5%;
   transform: rotate(-1.5deg);
 }
 
@@ -1698,7 +1698,7 @@ body.has-spider-cursor .spider-cursor {
 }
 
 .about-badge--science {
-  inset: 141px auto auto 67%;
+  inset: 131px auto auto calc(67% - 10px);
   transform: rotate(2.5deg);
 }
 
