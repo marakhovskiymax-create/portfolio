@@ -2351,9 +2351,9 @@ body.has-spider-cursor .spider-cursor {
   }
 
   .contact__heading {
-    align-items: flex-start;
-    margin-inline: 0;
-    text-align: left;
+    align-items: center;
+    margin-inline: auto;
+    text-align: center;
   }
 
   .contact__grid {
@@ -2558,9 +2558,9 @@ body.has-spider-cursor .spider-cursor {
   }
 
   .contact__heading {
-    align-items: flex-start;
-    margin-inline: 0;
-    text-align: left;
+    align-items: center;
+    margin-inline: auto;
+    text-align: center;
   }
 
   .contact__grid {

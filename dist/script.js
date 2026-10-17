@@ -1097,7 +1097,15 @@ function initContactForm() {
     event.preventDefault();
     if (!form.reportValidity()) return;
 
-    status.textContent = "Тестовое сообщение готово. Отправка пока не подключена.";
+    const formData = new FormData(form);
+    const name = String(formData.get("name") || "").trim();
+    const email = String(formData.get("email") || "").trim();
+    const message = String(formData.get("message") || "").trim();
+    const subject = encodeURIComponent(`Project inquiry from ${name}`);
+    const body = encodeURIComponent(`${message}\n\nFrom: ${name}\nEmail: ${email}`);
+
+    status.textContent = "Opening your email app. Please send the draft there to finish.";
+    window.location.href = `mailto:marakhovskiymax@gmail.com?subject=${subject}&body=${body}`;
   });
 }
 
