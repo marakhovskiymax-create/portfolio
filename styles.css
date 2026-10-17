@@ -1078,7 +1078,7 @@ body.has-spider-cursor .spider-cursor {
   display: flex;
   width: max-content;
   gap: var(--space-8);
-  animation: tape 32s linear infinite;
+  animation: tape 54s linear infinite;
   font-size: 24px;
   font-weight: 500;
   white-space: nowrap;
@@ -1092,7 +1092,7 @@ body.has-spider-cursor .spider-cursor {
 
 @keyframes tape {
   to {
-    transform: translateX(-50%);
+    transform: translateX(calc(-50% - 16px));
   }
 }
 
