@@ -681,25 +681,8 @@ function initHeroTextEffect() {
 initHeroTextEffect();
 
 function initFAQAccordion() {
-  const title = document.querySelector("[data-faq-title]");
   const items = Array.from(document.querySelectorAll("[data-faq-item]"));
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-  if (title) {
-    const words = title.textContent.trim().split(/\s+/);
-    const fragment = document.createDocumentFragment();
-    title.textContent = "";
-
-    words.forEach((word) => {
-      const span = document.createElement("span");
-      span.className = "faq-title__word";
-      span.textContent = word;
-      span.setAttribute("aria-hidden", "true");
-      fragment.append(span, document.createTextNode(" "));
-    });
-
-    title.append(fragment);
-  }
 
   const setOpen = (item, shouldOpen, instant = false) => {
     const trigger = item.querySelector(".faq-trigger");
@@ -762,17 +745,9 @@ function initFAQAccordion() {
     trigger.addEventListener("click", () => {
       const willOpen = trigger.getAttribute("aria-expanded") !== "true";
       if (willOpen) {
-        const triggerTop = trigger.getBoundingClientRect().top;
         items.forEach((otherItem) => {
-          if (otherItem !== item) setOpen(otherItem, false, true);
+          if (otherItem !== item) setOpen(otherItem, false);
         });
-        const topShift = trigger.getBoundingClientRect().top - triggerTop;
-        if (topShift) {
-          const previousScrollBehavior = document.documentElement.style.scrollBehavior;
-          document.documentElement.style.scrollBehavior = "auto";
-          window.scrollBy(0, topShift);
-          document.documentElement.style.scrollBehavior = previousScrollBehavior;
-        }
       }
       setOpen(item, willOpen);
     });
@@ -827,6 +802,15 @@ function initCareerTimeline() {
     nextPanel.classList.remove("is-leaving");
     nextPanel.setAttribute("aria-hidden", "false");
     window.requestAnimationFrame(() => nextPanel.classList.add("is-active"));
+
+    if (!reduceMotion && window.gsap) {
+      const content = nextPanel.querySelectorAll(".career-panel__media, .career-panel__year, .career-panel__copy");
+      window.gsap.killTweensOf(content);
+      window.gsap.fromTo(content,
+        { autoAlpha: 0, y: 18 },
+        { autoAlpha: 1, y: 0, duration: 0.38, stagger: 0.07, ease: "power3.out", clearProps: "opacity,visibility,transform" },
+      );
+    }
 
     tabs.forEach((tab, index) => {
       const isActive = index === nextIndex;
@@ -1517,6 +1501,37 @@ if (window.TastemakerMotion && window.gsap && window.ScrollTrigger) {
   const sectionMotion = window.gsap.matchMedia();
 
   sectionMotion.add("(prefers-reduced-motion: no-preference)", () => {
+    // Keep the three section titles in step with the character-flip reveal on case pages.
+    const prepareCaseLikeHeading = (selector) => {
+      const title = document.querySelector(selector);
+      if (!title) return [];
+
+      title.setAttribute("aria-label", title.textContent.trim().replace(/\s+/g, " "));
+      const lines = title.querySelectorAll(".career-title__line");
+      const containers = lines.length ? Array.from(lines) : [title];
+      containers.forEach((container) => {
+        const words = container.textContent.trim().split(/\s+/);
+        const fragment = document.createDocumentFragment();
+        words.forEach((word, index) => {
+          const wordElement = document.createElement("span");
+          wordElement.className = "site-motion-word";
+          Array.from(word).forEach((character) => {
+            const characterElement = document.createElement("span");
+            characterElement.className = "site-motion-char";
+            characterElement.textContent = character;
+            wordElement.append(characterElement);
+          });
+          fragment.append(wordElement);
+          if (index < words.length - 1) fragment.append(" ");
+        });
+        container.replaceChildren(fragment);
+      });
+      title.classList.add("site-motion-title");
+      const characters = Array.from(title.querySelectorAll(".site-motion-char"));
+      window.gsap.set(characters, { autoAlpha: 0, rotateX: 90, y: 10 });
+      return characters;
+    };
+
     const scrollScene = (trigger, start = "top 78%") => window.gsap.timeline({
       defaults: { ease: "power3.out" },
       scrollTrigger: {
@@ -1572,75 +1587,77 @@ if (window.TastemakerMotion && window.gsap && window.ScrollTrigger) {
         { autoAlpha: 1, yPercent: 0, clipPath: "inset(0 0 0% 0)", duration: 0.48, clearProps: "clipPath,transform" },
       );
 
-    const faq = scrollScene(".faq__heading", "top 65%");
-    faq
-      .fromTo(
-        ".faq-title__word",
-        { autoAlpha: 0, filter: "blur(6px)", y: 12 },
-        {
-          autoAlpha: 1,
-          filter: "blur(0px)",
-          y: 0,
-          duration: 0.4,
-          stagger: 0.08,
-          ease: "power2.inOut",
-        },
-      )
-      .fromTo(
-        ".faq__intro",
-        { autoAlpha: 0 },
-        { autoAlpha: 1, duration: 0.5 },
-        0.4,
-      )
-      .fromTo(
-        ".faq__list",
-        { autoAlpha: 0, y: 20 },
-        { autoAlpha: 1, y: 0, duration: 0.5 },
-        0.5,
-      )
-      .fromTo(
-        ".faq-item",
+    const faqTitle = prepareCaseLikeHeading("#faq-title");
+    const contactTitle = prepareCaseLikeHeading("#contact-title");
+    const careerTitle = prepareCaseLikeHeading("#career-title");
+    const revealTitle = (trigger, characters, support, start = "top 76%") => {
+      const scene = scrollScene(trigger, start);
+      scene.to(characters, {
+        autoAlpha: 1,
+        rotateX: 0,
+        y: 0,
+        duration: 0.2,
+        stagger: 0.035,
+        ease: "power3.out",
+        clearProps: "transform,opacity,visibility",
+      });
+      if (support) scene.fromTo(support,
         { autoAlpha: 0, y: 10 },
-        { autoAlpha: 1, y: 0, duration: 0.35, stagger: 0.07, ease: "power2.out" },
-        0.5,
-      )
-      .fromTo(
-        ".faq-contact",
-        { autoAlpha: 0, y: 20 },
-        { autoAlpha: 1, y: 0, duration: 0.5 },
-        0.72,
+        { autoAlpha: 1, y: 0, duration: 0.32, ease: "power3.out", clearProps: "transform,opacity,visibility" },
+        0.12,
+      );
+      return scene;
+    };
+
+    revealTitle(".faq__heading", faqTitle, ".faq__intro", "top 76%");
+    scrollScene(".faq__list", "top 82%")
+      .fromTo(".faq-item",
+        { autoAlpha: 0, y: 18, filter: "blur(4px)" },
+        { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.42, stagger: 0.075, clearProps: "transform,opacity,visibility,filter" },
+      );
+    scrollScene(".faq-contact", "top 88%")
+      .fromTo(".faq-contact",
+        { autoAlpha: 0, y: 24 },
+        { autoAlpha: 1, y: 0, duration: 0.52, clearProps: "transform,opacity,visibility" },
       );
 
-    const contact = scrollScene("[data-motion-section='contact']", "top 76%");
-    contact
-      .fromTo(
-        ".contact h2",
-        { autoAlpha: 0, y: 14 },
-        { autoAlpha: 1, y: 0, duration: 0.55 },
+    revealTitle(".contact__heading", contactTitle, ".contact__intro", "top 76%");
+    scrollScene(".contact__grid", "top 82%")
+      .fromTo(".contact__details, .contact-form",
+        { autoAlpha: 0, y: 34, scale: 0.985 },
+        { autoAlpha: 1, y: 0, scale: 1, duration: 0.56, stagger: 0.14, clearProps: "transform,opacity,visibility" },
       )
-      .fromTo(
-        ".contact__intro",
-        { autoAlpha: 0, y: 12 },
-        { autoAlpha: 1, y: 0, duration: 0.5 },
+      .fromTo(".contact-method",
+        { autoAlpha: 0, x: -14 },
+        { autoAlpha: 1, x: 0, duration: 0.34, stagger: 0.07, clearProps: "transform,opacity,visibility" },
+        "-=0.28",
+      )
+      .fromTo(".contact-globe",
+        { autoAlpha: 0, y: 28, scale: 0.94 },
+        { autoAlpha: 1, y: 0, scale: 1, duration: 0.68, clearProps: "transform,opacity,visibility" },
         "-=0.3",
       )
-      .fromTo(
-        ".contact__details",
-        { autoAlpha: 0, y: 28 },
-        { autoAlpha: 1, y: 0, duration: 0.6 },
-        "-=0.2",
+      .fromTo(".contact-form__heading, .contact-form__row, .contact-form > label, .contact-form__footer",
+        { autoAlpha: 0, y: 12 },
+        { autoAlpha: 1, y: 0, duration: 0.32, stagger: 0.045, clearProps: "transform,opacity,visibility" },
+        "-=0.58",
+      );
+
+    revealTitle(".career-stage__heading", careerTitle, null, "top 76%");
+    scrollScene(".career-timeline", "top 82%")
+      .fromTo(".career-tabs__rail",
+        { autoAlpha: 0, scaleX: 0, transformOrigin: "left center" },
+        { autoAlpha: 1, scaleX: 1, duration: 0.68, clearProps: "transform,opacity,visibility" },
       )
-      .fromTo(
-        ".contact-form",
-        { autoAlpha: 0, y: 28 },
-        { autoAlpha: 1, y: 0, duration: 0.6 },
-        "-=0.42",
+      .fromTo(".career-tab",
+        { autoAlpha: 0, y: 18, scale: 0.92 },
+        { autoAlpha: 1, y: 0, scale: 1, duration: 0.34, stagger: 0.075, clearProps: "transform,opacity,visibility" },
+        "-=0.46",
       )
-      .fromTo(
-        ".contact-method",
-        { autoAlpha: 0, x: -12 },
-        { autoAlpha: 1, x: 0, duration: 0.35, stagger: 0.08 },
-        "-=0.28",
+      .fromTo(".career-panel.is-active > *",
+        { autoAlpha: 0, y: 22 },
+        { autoAlpha: 1, y: 0, duration: 0.48, stagger: 0.08, clearProps: "transform,opacity,visibility" },
+        "-=0.12",
       );
 
     const footer = scrollScene("[data-motion-section='footer']", "top 96%");
@@ -1657,53 +1674,6 @@ if (window.TastemakerMotion && window.gsap && window.ScrollTrigger) {
         { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.8, stagger: 0.1 },
         0.1,
       );
-  });
-
-  const careerMotion = window.gsap.matchMedia();
-
-  careerMotion.add("(prefers-reduced-motion: no-preference)", () => {
-    const career = window.gsap.timeline({
-      defaults: { ease: "power3.out" },
-      scrollTrigger: {
-        trigger: ".career-stage__heading",
-        start: "top 65%",
-        toggleActions: "play none none none",
-      },
-    });
-
-    career
-      .fromTo(
-        ".career-stage__heading > *",
-        { autoAlpha: 0, y: 18 },
-        { autoAlpha: 1, y: 0, duration: 0.48, stagger: 0.08 },
-      )
-      .fromTo(
-        ".career-tabs__rail",
-        { autoAlpha: 0, scaleX: 0, transformOrigin: "left center" },
-        { autoAlpha: 1, scaleX: 1, duration: 0.48 },
-        "-=0.24",
-      )
-      .fromTo(
-        ".career-tab",
-        { autoAlpha: 0, y: 10 },
-        { autoAlpha: 1, y: 0, duration: 0.32, stagger: 0.06 },
-        "-=0.24",
-      )
-      .fromTo(
-        ".career-panel.is-active > *",
-        { autoAlpha: 0, y: 16 },
-        { autoAlpha: 1, y: 0, duration: 0.48, stagger: 0.08 },
-        "-=0.18",
-      );
-  });
-
-  careerMotion.add("(prefers-reduced-motion: reduce)", () => {
-    window.gsap.set(".career-stage__heading > *, .career-tabs__rail, .career-tab, .career-panel.is-active > *", {
-      autoAlpha: 1,
-      x: 0,
-      y: 0,
-      scaleX: 1,
-    });
   });
 
 }

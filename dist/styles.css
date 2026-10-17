@@ -1126,11 +1126,11 @@ body.has-spider-cursor .spider-cursor {
   justify-self: start;
   text-align: start;
   color: var(--color-text);
-  font-family: var(--font-body);
-  font-size: clamp(1.6rem, 3vw, 3.4rem);
+  font-family: var(--font-hero, "Inter Tight", sans-serif);
+  font-size: clamp(2.2rem, 4.5vw, 4.7rem);
   font-weight: 700;
   letter-spacing: -0.045em;
-  line-height: 1.05;
+  line-height: 0.98;
   text-wrap: balance;
 }
 
@@ -1437,7 +1437,7 @@ body.has-spider-cursor .spider-cursor {
   }
 
   .career-stage__heading h2 {
-    font-size: clamp(1rem, 4.7vw, 1.45rem);
+    font-size: clamp(2.35rem, 11vw, 4rem);
   }
 
   .career-tab {
@@ -1759,17 +1759,25 @@ body.has-spider-cursor .spider-cursor {
 
 .faq__heading h2 {
   color: var(--color-text);
-  font-family: var(--font-display);
-  font-size: clamp(2.4rem, 4.8vw, 5rem);
-  font-style: italic;
-  font-weight: 500;
+  font-family: var(--font-hero, "Inter Tight", sans-serif);
+  font-size: clamp(2.2rem, 4.5vw, 4.7rem);
+  font-weight: 700;
   letter-spacing: -0.045em;
-  line-height: 1.02;
+  line-height: 0.98;
 }
 
-.faq-title__word {
+.site-motion-title {
+  perspective: 700px;
+}
+
+.site-motion-word,
+.site-motion-char {
   display: inline-block;
-  will-change: transform, opacity, filter;
+}
+
+.site-motion-char {
+  transform-origin: 50% 70%;
+  backface-visibility: hidden;
 }
 
 .faq__intro {
@@ -1841,6 +1849,14 @@ body.has-spider-cursor .spider-cursor {
   background: rgba(244, 243, 238, 0.055);
   color: var(--color-muted);
   line-height: 1.6;
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: opacity 180ms var(--ease-out), transform 200ms var(--ease-out);
+}
+
+.faq-item.is-open .faq-answer__card {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .faq-contact {
@@ -1905,12 +1921,11 @@ body.has-spider-cursor .spider-cursor {
 }
 
 .contact h2 {
-  font-family: var(--font-display);
-  font-size: clamp(3rem, 5.5vw, 5.8rem);
-  font-style: italic;
-  font-weight: 500;
+  font-family: var(--font-hero, "Inter Tight", sans-serif);
+  font-size: clamp(2.2rem, 4.5vw, 4.7rem);
+  font-weight: 700;
   letter-spacing: -0.045em;
-  line-height: 1.02;
+  line-height: 0.98;
 }
 
 .contact__intro {
@@ -2580,7 +2595,11 @@ body.has-spider-cursor .spider-cursor {
   }
 
   .contact h2 {
-    font-size: clamp(2.8rem, 13vw, 4.1rem);
+    font-size: clamp(2.35rem, 11vw, 4rem);
+  }
+
+  .faq__heading h2 {
+    font-size: clamp(2.35rem, 11vw, 4rem);
   }
 
   .contact__heading {
@@ -2902,11 +2921,8 @@ main > .contact {
     transform: none !important;
   }
 
-  .faq-title__word {
-    will-change: auto;
-  }
-
   .faq-answer,
+  .faq-answer__card,
   .faq-trigger__icon,
   .faq-contact__link,
   .faq-contact__link > .cta-reveal__icon {
