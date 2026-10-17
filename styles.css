@@ -2208,7 +2208,7 @@ body.has-spider-cursor .spider-cursor {
   }
 
   .contact-form__submit:hover {
-    background: var(--color-accent);
+    background: var(--color-primary);
   }
 
   .faq-trigger:hover {
@@ -3280,6 +3280,21 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
   .contact-form__submit.cta-reveal:hover {
     transform: scale(1.02);
   }
+
+  .contact-method.cta-reveal:hover,
+  .footer__group--social a.cta-reveal:hover {
+    transform: none;
+  }
+
+  .contact-method.cta-reveal:hover .cta-reveal__icon,
+  .footer__group--social a.cta-reveal:hover > .cta-reveal__icon {
+    transform: none;
+  }
+}
+
+.contact-method.cta-reveal:focus-visible .cta-reveal__icon,
+.footer__group--social a.cta-reveal:focus-visible > .cta-reveal__icon {
+  transform: none;
 }
 
 .button.cta-reveal:active,
