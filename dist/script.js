@@ -313,7 +313,7 @@ function initSpiderCursor() {
   function getTargetRect(target) {
     if (!target?.isConnected) return null;
     const bounds = target.getBoundingClientRect();
-    const padding = 10;
+    const padding = 3;
     const baseRadii = readTargetRadii(target);
     const expand = (radius) => point(
       radius.x > 0 ? radius.x + padding : 0,
