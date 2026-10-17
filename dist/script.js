@@ -1530,7 +1530,7 @@ if (window.TastemakerMotion && window.gsap && window.ScrollTrigger) {
         { autoAlpha: 1, yPercent: 0, clipPath: "inset(0 0 0% 0)", duration: 0.48, clearProps: "clipPath,transform" },
       );
 
-    const faq = scrollScene("[data-motion-section='faq']", "top 74%");
+    const faq = scrollScene(".faq__heading", "top 65%");
     faq
       .fromTo(
         ".faq-title__word",
@@ -1623,8 +1623,8 @@ if (window.TastemakerMotion && window.gsap && window.ScrollTrigger) {
     const career = window.gsap.timeline({
       defaults: { ease: "power3.out" },
       scrollTrigger: {
-        trigger: ".career-story",
-        start: "top 72%",
+        trigger: ".career-stage__heading",
+        start: "top 65%",
         toggleActions: "play none none none",
       },
     });
