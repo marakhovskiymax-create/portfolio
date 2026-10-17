@@ -480,6 +480,7 @@ function initSpiderCursor() {
     }));
     let centerX = pointerX;
     let centerY = pointerY;
+    const creatureScale = 0.5;
 
     function paintParticle(particle, creatureAmount, reach, time, connected) {
       if (creatureAmount > 0.01 && particle.length) {
@@ -522,7 +523,7 @@ function initSpiderCursor() {
       },
       tick(time, delta, creatureAmount = 1) {
         const skyScroll = window.scrollY;
-        const reach = width / 125;
+        const reach = (width / 125) * creatureScale;
 
         let connected = 0;
         particles.forEach((particle) => {
@@ -530,7 +531,7 @@ function initSpiderCursor() {
           particle.y = wrap(particle.originY - skyScroll * particle.parallaxY, height);
           const distance = hypot(particle.x - centerX, particle.y - centerY);
           let radius = min(2, width / distance / 5);
-          const nearCursor = creatureAmount > 0.05 && distance < width / 10 && connected < 8;
+          const nearCursor = creatureAmount > 0.05 && distance < (width / 10) * creatureScale && connected < 8;
           if (nearCursor) {
             connected += 1;
             radius *= 1.5;
