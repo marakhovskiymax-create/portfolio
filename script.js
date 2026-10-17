@@ -691,7 +691,7 @@ function initFAQAccordion() {
 
     trigger.addEventListener("click", () => {
       const willOpen = trigger.getAttribute("aria-expanded") !== "true";
-      items.forEach((otherItem) => setOpen(otherItem, otherItem === item && willOpen));
+      setOpen(item, willOpen);
     });
 
   });

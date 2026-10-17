@@ -1745,7 +1745,7 @@ body.has-spider-cursor .spider-cursor {
 }
 
 .faq__list {
-  max-width: 720px;
+  max-width: 780px;
   margin: 56px auto 0;
   border-top: 1px solid var(--color-border);
 }
@@ -1810,7 +1810,7 @@ body.has-spider-cursor .spider-cursor {
 
 .faq-contact {
   display: grid;
-  max-width: 1080px;
+  max-width: 780px;
   grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
   gap: 24px;
