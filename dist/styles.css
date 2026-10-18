@@ -644,7 +644,7 @@ body.has-spider-cursor .spider-cursor {
   border-radius: var(--radius-medium);
   border: 1px solid rgba(255, 255, 255, 0.1);
   padding: clamp(18px, 2.5vw, 40px);
-  padding-inline: 60px;
+  padding-inline: 60px 90px;
   background: #09090b;
   color: var(--color-text);
   --project-accent: var(--color-accent);
@@ -960,7 +960,7 @@ body.has-spider-cursor .spider-cursor {
   grid-column: 2;
   grid-row: 1;
   height: min(72%, 400px);
-  margin-right: 24px;
+  margin-right: 0;
   grid-template-rows: repeat(5, minmax(0, 1fr));
   row-gap: 0;
   align-self: center;
@@ -2532,6 +2532,7 @@ body.has-spider-cursor .spider-cursor {
 
   .time-machine__timeline {
     height: 276px;
+    margin-right: 24px;
   }
 
   .time-machine__stop {
