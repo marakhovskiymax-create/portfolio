@@ -499,7 +499,7 @@ body.has-spider-cursor .spider-cursor {
 .hero__strip {
   display: grid;
   min-height: 58px;
-  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   gap: var(--space-6);
   border-top: 1px solid var(--color-border);
@@ -510,16 +510,8 @@ body.has-spider-cursor .spider-cursor {
 }
 
 .hero__strip > :nth-child(2) {
-  text-align: center;
-}
-
-.hero__strip > :last-child {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
   justify-self: end;
-  color: var(--color-text);
-  white-space: nowrap;
+  text-align: right;
 }
 
 .section {
@@ -2446,13 +2438,15 @@ body.has-spider-cursor .spider-cursor {
 
   .hero__strip {
     min-height: 52px;
-    grid-template-columns: 1fr auto;
-    gap: var(--space-3);
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4px;
+    padding-block: var(--space-3);
     font-size: 0.625rem;
   }
 
   .hero__strip > :nth-child(2) {
-    display: none;
+    justify-self: start;
+    text-align: left;
   }
 
   .section {
