@@ -1544,7 +1544,7 @@ body.has-spider-cursor .spider-cursor {
 
 .quote-card blockquote {
   font-family: var(--font-display);
-  font-size: 24px;
+  font-size: 20px;
   font-style: italic;
   line-height: 1.42;
   overflow-wrap: break-word;
@@ -1568,7 +1568,7 @@ body.has-spider-cursor .spider-cursor {
 
 .quote-card__name {
   color: var(--color-text);
-  font-size: 16px;
+  font-size: 20px;
   font-weight: 500;
   line-height: 1.35;
 }
@@ -1580,39 +1580,26 @@ body.has-spider-cursor .spider-cursor {
   line-height: 1.4;
 }
 
-.quote-card__logo,
-.quote-card__logo-placeholder {
+.quote-card__logo {
   display: block;
   width: auto;
-  height: auto;
-  max-width: 120px;
-  max-height: 52px;
+  height: 40px;
+  max-width: 40%;
   flex: none;
   object-fit: contain;
   object-position: right bottom;
 }
 
-.quote-card__logo--don-ballon {
-  width: 150px;
-  max-width: 40%;
-}
-
-.quote-card__logo--amocrm {
-  width: 110px;
-  max-width: 40%;
-}
-
-.quote-card__logo--loccitane {
-  width: 124px;
-  max-width: 40%;
-}
-
 .quote-card__logo--geleos {
   width: 46px;
+  height: auto;
   max-width: 20%;
 }
 
 .quote-card__logo-placeholder {
+  display: block;
+  max-width: 40%;
+  flex: none;
   color: var(--color-muted);
   font-size: 18px;
   font-weight: 600;
@@ -2613,27 +2600,6 @@ body.has-spider-cursor .spider-cursor {
 
   .quote-card blockquote {
     font-size: 20px;
-  }
-
-  .quote-card__logo,
-  .quote-card__logo-placeholder {
-    max-width: 96px;
-    max-height: 42px;
-  }
-
-  .quote-card__logo--don-ballon {
-    width: 108px;
-    max-width: 40%;
-  }
-
-  .quote-card__logo--amocrm {
-    width: 88px;
-    max-width: 40%;
-  }
-
-  .quote-card__logo--loccitane {
-    width: 100px;
-    max-width: 40%;
   }
 
   .quote-card__logo--geleos {
