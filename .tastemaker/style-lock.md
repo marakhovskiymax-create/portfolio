@@ -19,7 +19,7 @@ Established: 2026-09-27. Source: Figma reference node 13:18 supplied by the user
 - Decorative only: bg/border, border/on-primary, text/accent, primary/accent, surface/border, bg/surface, surface/on-primary, text/primary, bg/on-primary
 
 ## Typography
-- Hero display: Inter Tight 900, uppercase and upright, with near-neutral tracking (-0.01em desktop, 0 on mobile)
+- Hero display: Inter Tight 900, uppercase and upright, with near-neutral tracking (-0.01em desktop, 0 on mobile); PRODUCT / DESIGNER runs at 125% of the former fluid type scale (144px at a 1280px viewport)
 - Editorial headings and wordmark: Playfair Display, retained outside the hero to preserve the supplied Figma direction
 - Body and UI: Nunito Sans, matching the rounded sans-serif used in the supplied Figma frame
 - Base: 16px. Hero display uses fluid clamps with a 1.0 line-height floor; editorial display keeps a 1.02 floor.
@@ -44,7 +44,7 @@ Established: 2026-09-27. Source: Figma reference node 13:18 supplied by the user
 - Narrative arc: hook H2, work/proof F6, capability index, proof P2, FAQ, personal context, close C2
 - Shared chrome: N4 editorial masthead and Ft2 inline footer
 - Body archetypes: H2 oversized split-title typographic hero, F6 project ledger with focused visual, P2 pull quotes, C2 statement close
-- Homepage hero copy: English introduction, split PRODUCT / DESIGNER headline, concise web-and-mobile positioning, View Projects and Get in Touch actions, and a two-part portfolio metadata strip
+- Homepage hero copy: English introduction, split PRODUCT / DESIGNER headline, concise web-and-mobile positioning, View Projects and Get in Touch actions, and a three-position metadata strip with PORTFOLIO '26 left, UX · UI · RESEARCH · DESIGN SYSTEMS centered, and a non-interactive SCROLL cue right
 - Personal context: three asymmetrically placed text islands with seven white pill badges floating between them on wide screens; stacked reading order with a two-column badge cloud on mobile
 - Build stamp and `.tastemaker/log.json` record this implementation.
 - Case studies: an eight-section editorial narrative with a full-shell hero before the persistent contents rail, a manual interface carousel, a split context accordion styled like the site's FAQ with separated dark answer cards, an interactive work-area canvas, concise image-led product stories, and a verified impact close. The contents rail begins with the first narrative section rather than competing with the hero. Hero metadata uses four left-aligned columns: Name, Role, Product with Scope in parentheses, and Period; values use the stronger 17px/600 treatment. The homepage card and its matching project stop are equal entry points into the case.
@@ -52,7 +52,7 @@ Established: 2026-09-27. Source: Figma reference node 13:18 supplied by the user
 ## Taste memory
 - Profile priors used: none
 - Decision log: `.tastemaker/decisions.log`
-- Last resolved decisions: career panel switches crossfade through opacity only, without directional content movement (2026-10-18); How I Work precedes Beyond Design with an 18px title-to-intro gap and 180px between adjacent sections (2026-10-18); Beyond Design has no artificial bottom height before contact (2026-10-18); homepage hero copy and metadata are in English (2026-10-18); the interactive footer has no blue gradient, a square lower edge, a 100px title gap after the ordinary footer, and a 30% taller play area (2026-10-18)
+- Last resolved decisions: career panel switches crossfade through opacity only, without directional content movement (2026-10-18); How I Work precedes Beyond Design with an 18px title-to-intro gap and 180px between adjacent sections (2026-10-18); Beyond Design has no artificial bottom height before contact (2026-10-18); homepage hero copy and metadata are in English, PRODUCT / DESIGNER is 25% larger, the discipline line is centered, and SCROLL is static at bottom-right (2026-10-18); the interactive footer has no blue gradient, a square lower edge, a 100px title gap after the ordinary footer, and a 30% taller play area (2026-10-18)
 - Pending review: none
 - Profile promotion: none
 

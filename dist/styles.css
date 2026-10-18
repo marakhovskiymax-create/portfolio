@@ -399,7 +399,7 @@ body.has-spider-cursor .spider-cursor {
   min-width: 0;
   color: var(--color-text);
   font-family: var(--font-hero);
-  font-size: clamp(5rem, 9vw, 11.25rem);
+  font-size: clamp(6.25rem, 11.25vw, 14.0625rem);
   font-style: normal;
   font-weight: 900;
   letter-spacing: -0.01em;
@@ -499,7 +499,7 @@ body.has-spider-cursor .spider-cursor {
 .hero__strip {
   display: grid;
   min-height: 58px;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
   gap: var(--space-6);
   border-top: 1px solid var(--color-border);
@@ -509,9 +509,23 @@ body.has-spider-cursor .spider-cursor {
   letter-spacing: 0.06em;
 }
 
-.hero__strip > :nth-child(2) {
+.hero__disciplines {
+  justify-self: center;
+  text-align: center;
+}
+
+.hero__scroll {
+  display: inline-flex;
+  align-items: center;
   justify-self: end;
-  text-align: right;
+  gap: var(--space-2);
+  pointer-events: none;
+  user-select: none;
+}
+
+.hero__scroll .tabler-icon {
+  width: 14px;
+  height: 14px;
 }
 
 .section {
@@ -2263,7 +2277,7 @@ body.has-spider-cursor .spider-cursor {
   }
 
   .hero h1 {
-    font-size: clamp(4.4rem, 9vw, 6.8rem);
+    font-size: clamp(5.5rem, 11.25vw, 8.5rem);
   }
 
   .hero__bottom {
@@ -2403,7 +2417,7 @@ body.has-spider-cursor .spider-cursor {
   }
 
   .hero h1 {
-    font-size: clamp(2.55rem, 11.8vw, 4.65rem);
+    font-size: clamp(3.1875rem, 14.75vw, 5.8125rem);
     letter-spacing: 0;
     text-wrap: nowrap;
   }
@@ -2436,16 +2450,21 @@ body.has-spider-cursor .spider-cursor {
   }
 
   .hero__strip {
-    min-height: 52px;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 4px;
+    min-height: 68px;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 4px var(--space-2);
     padding-block: var(--space-3);
     font-size: 0.625rem;
   }
 
-  .hero__strip > :nth-child(2) {
-    justify-self: start;
-    text-align: left;
+  .hero__disciplines {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .hero__scroll {
+    grid-column: 2;
+    grid-row: 1;
   }
 
   .section {
