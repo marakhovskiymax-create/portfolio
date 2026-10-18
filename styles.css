@@ -3027,9 +3027,15 @@ body:not(.case-page) > .footer {
   position: relative;
   z-index: 2;
   width: 100%;
-  padding: 35px 16px 0;
+  padding: 35px 0 0;
   color: #e8eeff;
-  background: var(--color-bg);
+  background-color: var(--color-bg);
+  background-image: linear-gradient(
+    to top,
+    rgba(35, 82, 204, 0.46) 0%,
+    rgba(20, 51, 132, 0.2) 27%,
+    rgba(5, 5, 5, 0) 58%
+  );
 }
 
 .skills-playground__surface {
@@ -3037,7 +3043,7 @@ body:not(.case-page) > .footer {
   min-height: clamp(728px, 93.6vh, 988px);
   overflow: hidden;
   border: 0;
-  border-radius: 42px 42px 0 0;
+  border-radius: 0;
   background: transparent;
   box-shadow: none;
   backdrop-filter: none;
@@ -3098,8 +3104,6 @@ body:not(.case-page) > .footer {
 }
 
 .skill-drag-item {
-  --drag-x: 0px;
-  --drag-y: 0px;
   position: absolute;
   top: 0;
   left: 0;
@@ -3109,21 +3113,20 @@ body:not(.case-page) > .footer {
   justify-content: center;
   border: 0;
   color: #f1f4ff;
-  background: rgba(25, 55, 126, 0.58);
+  background: rgba(25, 55, 126, 0.96);
   font: inherit;
   font-size: clamp(1rem, 1.8vw, 1.55rem);
   font-weight: 600;
   line-height: 1;
   opacity: 0;
   box-shadow: 0 16px 34px rgba(1, 8, 28, 0.24);
-  transform: translate3d(var(--drag-x), var(--drag-y), 0) rotate(var(--physics-rotate, 0deg));
+  transform: translate3d(0, 0, 0);
   transition:
     opacity 360ms var(--ease-out),
     box-shadow 160ms var(--ease-out),
     filter 160ms var(--ease-out);
   transition-delay: calc(var(--item-order, 0) * 45ms);
   user-select: none;
-  backdrop-filter: blur(16px) saturate(120%);
   touch-action: none;
   cursor: grab;
   will-change: transform;
@@ -3217,12 +3220,12 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
 
 @media (max-width: 960px) {
   .skills-playground {
-    padding-inline: 8px;
+    padding-inline: 0;
   }
 
   .skills-playground__surface {
     min-height: 1066px;
-    border-radius: 28px 28px 0 0;
+    border-radius: 0;
   }
 
   .skills-playground__hint {

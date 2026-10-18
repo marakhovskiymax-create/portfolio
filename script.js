@@ -832,7 +832,7 @@ function initSkillsPlayground() {
 
   const { Body, Bodies, Composite, Engine, Sleeping } = window.Matter;
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const engine = Engine.create({ enableSleeping: true, positionIterations: 8, velocityIterations: 6 });
+  const engine = Engine.create({ enableSleeping: true, positionIterations: 6, velocityIterations: 4 });
   const states = new Map();
   let frame = 0;
   let previousTime = 0;
@@ -845,20 +845,30 @@ function initSkillsPlayground() {
 
   const renderState = (item, state) => {
     if (!state.body) return;
-    item.style.setProperty("--drag-x", `${state.body.position.x - item.offsetWidth / 2}px`);
-    item.style.setProperty("--drag-y", `${state.body.position.y - item.offsetHeight / 2}px`);
-    item.style.setProperty("--physics-rotate", `${state.body.angle}rad`);
+    const x = state.body.position.x - state.width / 2;
+    const y = state.body.position.y - state.height / 2;
+    const angle = state.body.angle;
+    if (
+      Math.abs(x - state.renderedX) < 0.1 &&
+      Math.abs(y - state.renderedY) < 0.1 &&
+      Math.abs(angle - state.renderedAngle) < 0.0005
+    ) return;
+    item.style.transform = `translate3d(${x.toFixed(2)}px, ${y.toFixed(2)}px, 0) rotate(${angle.toFixed(4)}rad)`;
+    state.renderedX = x;
+    state.renderedY = y;
+    state.renderedAngle = angle;
   };
 
-  const bodyRadius = (item) => {
-    if (item.classList.contains("skill-drag-item--pill")) return item.offsetHeight / 2;
-    if (item.classList.contains("skill-drag-item--vertical")) return item.offsetWidth / 2;
-    return Math.min(24, item.offsetWidth * 0.24);
+  const bodyRadius = (item, width, height) => {
+    if (item.classList.contains("skill-drag-item--pill")) return height / 2;
+    if (item.classList.contains("skill-drag-item--vertical")) return width / 2;
+    return Math.min(24, width * 0.24);
   };
 
   const buildWorld = (preserve = false) => {
     const width = surface.clientWidth;
     const height = surface.clientHeight;
+    const sizes = items.map((item) => ({ width: item.offsetWidth, height: item.offsetHeight }));
     const oldStates = items.map((item) => {
       const state = states.get(item);
       return state?.body
@@ -885,27 +895,30 @@ function initSkillsPlayground() {
     items.forEach((item, index) => {
       const state = states.get(item);
       const old = oldStates[index];
+      const { width: itemWidth, height: itemHeight } = sizes[index];
+      state.width = itemWidth;
+      state.height = itemHeight;
       const mobile = width < 960;
-      const maxX = Math.max(0, width - item.offsetWidth);
-      const targetX = item.offsetWidth / 2 + maxX * Number((mobile ? item.dataset.mobileX : item.dataset.x) || 0);
+      const maxX = Math.max(0, width - itemWidth);
+      const targetX = itemWidth / 2 + maxX * Number((mobile ? item.dataset.mobileX : item.dataset.x) || 0);
       const initialX = reduceMotion ? targetX : width / 2 + (targetX - width / 2) * 0.12;
       const initialY = reduceMotion
-        ? height - item.offsetHeight / 2 - 8 - (index % 3) * 6
-        : 100 + item.offsetHeight / 2 + (index % 4) * 18;
+        ? height - itemHeight / 2 - 8 - (index % 3) * 6
+        : 100 + itemHeight / 2 + (index % 4) * 18;
       const body = Bodies.rectangle(
-        preserve && old ? Math.min(width - item.offsetWidth / 2, Math.max(item.offsetWidth / 2, old.x * width)) : initialX,
-        preserve && old ? Math.min(height - item.offsetHeight / 2, Math.max(item.offsetHeight / 2, old.y * height)) : initialY,
-        item.offsetWidth,
-        item.offsetHeight,
+        preserve && old ? Math.min(width - itemWidth / 2, Math.max(itemWidth / 2, old.x * width)) : initialX,
+        preserve && old ? Math.min(height - itemHeight / 2, Math.max(itemHeight / 2, old.y * height)) : initialY,
+        itemWidth,
+        itemHeight,
         {
           angle: preserve && old ? old.angle : (Number(item.dataset.rotate || 0) * Math.PI) / 180,
-          chamfer: { radius: bodyRadius(item) },
+          chamfer: { radius: bodyRadius(item, itemWidth, itemHeight) },
           density: item.classList.contains("skill-drag-item--pill") ? 0.0012 : 0.0016,
           friction: 0.42,
           frictionStatic: 0.72,
-          frictionAir: 0.012,
-          restitution: 0.24,
-          sleepThreshold: 42,
+          frictionAir: 0.025,
+          restitution: 0.16,
+          sleepThreshold: 30,
           isStatic: reduceMotion,
         },
       );
@@ -937,8 +950,19 @@ function initSkillsPlayground() {
       Engine.update(engine, fixedStep);
       accumulatedTime -= fixedStep;
     }
-    items.forEach((item) => renderState(item, states.get(item)));
-    frame = requestAnimationFrame(tick);
+    let hasMovingBody = false;
+    items.forEach((item) => {
+      const state = states.get(item);
+      renderState(item, state);
+      if (state.pointerId !== null || !state.body.isSleeping) hasMovingBody = true;
+    });
+    if (hasMovingBody) {
+      frame = requestAnimationFrame(tick);
+    } else {
+      frame = 0;
+      previousTime = 0;
+      accumulatedTime = 0;
+    }
   };
 
   const startScene = () => {
@@ -994,8 +1018,8 @@ function initSkillsPlayground() {
     item.addEventListener("pointermove", (event) => {
       if (!state.body || state.pointerId !== event.pointerId) return;
       const surfaceRect = surface.getBoundingClientRect();
-      const halfWidth = item.offsetWidth / 2;
-      const halfHeight = item.offsetHeight / 2;
+      const halfWidth = state.width / 2;
+      const halfHeight = state.height / 2;
       const x = Math.min(
         surface.clientWidth - halfWidth,
         Math.max(halfWidth, event.clientX - surfaceRect.left - state.pointerOffsetX),
@@ -1045,8 +1069,8 @@ function initSkillsPlayground() {
       }[event.key];
       if (!movement) return;
       event.preventDefault();
-      const halfWidth = item.offsetWidth / 2;
-      const halfHeight = item.offsetHeight / 2;
+      const halfWidth = state.width / 2;
+      const halfHeight = state.height / 2;
       Body.setPosition(state.body, {
         x: Math.min(surface.clientWidth - halfWidth, Math.max(halfWidth, state.body.position.x + movement[0])),
         y: Math.min(surface.clientHeight - halfHeight, Math.max(halfHeight, state.body.position.y + movement[1])),
@@ -1067,7 +1091,10 @@ function initSkillsPlayground() {
   let resizeFrame = 0;
   const resizeObserver = new ResizeObserver(() => {
     cancelAnimationFrame(resizeFrame);
-    resizeFrame = requestAnimationFrame(() => buildWorld(true));
+    resizeFrame = requestAnimationFrame(() => {
+      buildWorld(true);
+      if (sceneActive) startScene();
+    });
   });
   resizeObserver.observe(surface);
 
