@@ -24,7 +24,7 @@ body.case-page {
   inset: 0;
   background-image:
     radial-gradient(circle, rgba(244, 243, 238, 0.58) 0 1px, transparent 1.4px),
-    radial-gradient(circle, rgba(114, 201, 139, 0.38) 0 0.8px, transparent 1.2px);
+    radial-gradient(circle, rgba(155, 184, 255, 0.38) 0 0.8px, transparent 1.2px);
   background-position: 0 0, 41px 63px;
   background-size: 137px 151px, 193px 179px;
   content: "";
@@ -557,7 +557,7 @@ body.case-page {
 }
 
 .work-chip:focus-visible {
-  outline: 3px solid #9bb8ff;
+  outline: 3px solid var(--color-accent);
   outline-offset: 5px;
 }
 

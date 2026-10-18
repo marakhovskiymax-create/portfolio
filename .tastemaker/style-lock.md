@@ -6,7 +6,7 @@ Established: 2026-09-27. Source: Figma reference node 13:18 supplied by the user
 - Background: #050505 (page background)
 - Surface: #0b0d0b (raised dark panels)
 - Primary: #f4f3ee (primary button fill and bright text)
-- Accent: #72c98b (project highlight and focus state)
+- Interface accent: #9bb8ff for small marks, focus, and interactive text; #19377e for solid blue objects, matching the footer playground. Brand-specific project accents retain their own colors (including EME green).
 - Text primary: #f4f3ee, contrast vs background 18.34:1 (WCAG AA pass)
 - Text muted: #b9b8b2
 - Button label: #050505, contrast vs Primary 18.34:1 (WCAG AA pass)
@@ -54,7 +54,7 @@ Established: 2026-09-27. Source: Figma reference node 13:18 supplied by the user
 ## Taste memory
 - Profile priors used: none
 - Decision log: `.tastemaker/decisions.log`
-- Last resolved decisions: career panel switches crossfade through opacity only, without directional content movement (2026-10-18); How I Work precedes Beyond Design with an 18px title-to-intro gap and 180px between adjacent sections (2026-10-18); Beyond Design has no artificial bottom height before contact (2026-10-18); homepage hero copy and metadata are in English, PRODUCT / DESIGNER is 25% larger, the discipline line is centered, and SCROLL is static at bottom-right (2026-10-18); the interactive footer restores its blue gradient across the full viewport width through the page bottom while keeping square corners, a 100px title gap after the ordinary footer, and a 30% taller play area (2026-10-18); testimonial cards and their company logos are wider/larger while keeping the two-row carousel (2026-10-18); the Geleos text placeholder is replaced by the mark already used in the career timeline, three wordmarks are optically balanced, and first-name copy reads Maxim (2026-10-18)
+- Last resolved decisions: career panel switches crossfade through opacity only, without directional content movement (2026-10-18); How I Work precedes Beyond Design with an 18px title-to-intro gap and 180px between adjacent sections (2026-10-18); Beyond Design has no artificial bottom height before contact (2026-10-18); homepage hero copy and metadata are in English, PRODUCT / DESIGNER is 25% larger, the discipline line is centered, and SCROLL is static at bottom-right (2026-10-18); the interactive footer restores its blue gradient across the full viewport width through the page bottom while keeping square corners, a 100px title gap after the ordinary footer, and a 30% taller play area (2026-10-18); testimonial cards and their company logos are wider/larger while keeping the two-row carousel (2026-10-18); the Geleos text placeholder is replaced by the mark already used in the career timeline, three wordmarks are optically balanced, and first-name copy reads Maxim (2026-10-18); system accents move from green to the footer's blue family while EME keeps its brand green, the FAQ hover stays neutral, and the capability ticker dots use blue (2026-10-19)
 - Pending review: none for the approved eight testimonials; the user confirmed author approval on 2026-10-18
 - Profile promotion: none
 

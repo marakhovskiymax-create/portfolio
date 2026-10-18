@@ -9,7 +9,8 @@
   --color-bg: #050505;
   --color-surface: #0b0d0b;
   --color-primary: #f4f3ee;
-  --color-accent: #72c98b;
+  --color-accent: #9bb8ff;
+  --color-accent-solid: #19377e;
   --color-text: #f4f3ee;
   --color-muted: #b9b8b2;
   --color-border: #3b3d39;
@@ -112,7 +113,7 @@ body {
   font-size: 1rem;
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
-  -webkit-tap-highlight-color: rgba(114, 201, 139, 0.24);
+  -webkit-tap-highlight-color: rgba(155, 184, 255, 0.24);
 }
 
 button,
@@ -342,7 +343,7 @@ main {
   opacity: 0.72;
   background-image:
     radial-gradient(circle, rgba(255, 255, 255, 0.82) 0 1px, transparent 1.5px),
-    radial-gradient(circle, rgba(114, 201, 139, 0.68) 0 1px, transparent 1.4px),
+    radial-gradient(circle, rgba(155, 184, 255, 0.68) 0 1px, transparent 1.4px),
     radial-gradient(circle, rgba(255, 255, 255, 0.42) 0 1.25px, transparent 1.6px);
   background-position: 7px 11px, 38px 29px, 91px 67px;
   background-size: 83px 79px, 137px 149px, 211px 197px;
@@ -576,8 +577,8 @@ body.has-spider-cursor .spider-cursor {
   z-index: -1;
   inset: 0 0 auto;
   height: var(--fluid-row-height, 84px);
-  border: 1px solid rgba(114, 201, 139, 0.18);
-  background: rgba(114, 201, 139, 0.07);
+  border: 1px solid rgba(155, 184, 255, 0.18);
+  background: rgba(155, 184, 255, 0.07);
   opacity: 0;
   pointer-events: none;
   transform: translate3d(0, var(--fluid-highlight-y, 0), 0);
@@ -2021,7 +2022,7 @@ body.has-spider-cursor .spider-cursor {
   border: 0;
   border-radius: var(--radius-large);
   background:
-    radial-gradient(circle at 50% 106%, rgba(114, 201, 139, 0.13), transparent 48%),
+    radial-gradient(circle at 50% 106%, rgba(155, 184, 255, 0.13), transparent 48%),
     rgba(244, 243, 238, 0.025);
 }
 
@@ -2108,7 +2109,7 @@ body.has-spider-cursor .spider-cursor {
 }
 
 .contact-globe__sphere {
-  fill: rgba(114, 201, 139, 0.018);
+  fill: rgba(155, 184, 255, 0.018);
   stroke: rgba(244, 243, 238, 0.66);
   stroke-width: 1.15;
 }
@@ -2120,7 +2121,7 @@ body.has-spider-cursor .spider-cursor {
 }
 
 .contact-globe__country {
-  fill: rgba(114, 201, 139, 0.018);
+  fill: rgba(155, 184, 255, 0.018);
   stroke: rgba(244, 243, 238, 0.42);
   stroke-width: 0.62;
   vector-effect: non-scaling-stroke;
@@ -2203,9 +2204,9 @@ body.has-spider-cursor .spider-cursor {
 
 .contact-form input:focus,
 .contact-form textarea:focus {
-  border-color: rgba(114, 201, 139, 0.72);
+  border-color: rgba(155, 184, 255, 0.72);
   background: rgba(5, 5, 5, 0.7);
-  box-shadow: 0 0 0 3px rgba(114, 201, 139, 0.1);
+  box-shadow: 0 0 0 3px rgba(155, 184, 255, 0.1);
 }
 
 .contact-form input[aria-invalid="true"],
@@ -2288,17 +2289,13 @@ body.has-spider-cursor .spider-cursor {
   }
 
   .contact-method:hover .contact-method__icon {
-    border-color: rgba(114, 201, 139, 0.55);
-    background: rgba(114, 201, 139, 0.1);
+    border-color: rgba(155, 184, 255, 0.55);
+    background: rgba(155, 184, 255, 0.1);
     color: var(--color-accent);
   }
 
   .contact-form__submit:hover {
     background: var(--color-primary);
-  }
-
-  .faq-trigger:hover {
-    color: var(--color-accent);
   }
 
   .faq-contact__link:hover {
@@ -3148,7 +3145,7 @@ body:not(.case-page) > .footer {
   justify-content: center;
   border: 0;
   color: #f1f4ff;
-  background: rgba(25, 55, 126, 0.96);
+  background: var(--color-accent-solid);
   font: inherit;
   font-size: clamp(1rem, 1.8vw, 1.55rem);
   font-weight: 600;
@@ -3172,7 +3169,7 @@ body:not(.case-page) > .footer {
 }
 
 .skill-drag-item:focus-visible {
-  outline: 3px solid #9bb8ff;
+  outline: 3px solid var(--color-accent);
   outline-offset: 5px;
 }
 
