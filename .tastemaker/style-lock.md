@@ -32,7 +32,7 @@ Established: 2026-09-27. Source: Figma reference node 13:18 supplied by the user
 
 ## Density & spacing
 - Base unit: 4px
-- Section rhythm: exactly 180px between the visible content of every adjacent top-level block, including the capability tape, footer, and skills playground
+- Section rhythm: exactly 180px between the visible content of every adjacent top-level block, including the capability tape, footer, and skills playground; the FAQ heading and intro are 18px apart
 - Content card internal padding: 32px
 - Showcase internal padding: 24px
 - Overall density: generous editorial whitespace
@@ -40,7 +40,7 @@ Established: 2026-09-27. Source: Figma reference node 13:18 supplied by the user
 
 ## Structure
 - Macrostructure: Editorial Index
-- Narrative arc: hook H2, work/proof F6, capability index, proof P2, personal context, FAQ, close C2
+- Narrative arc: hook H2, work/proof F6, capability index, proof P2, FAQ, personal context, close C2
 - Shared chrome: N4 editorial masthead and Ft2 inline footer
 - Body archetypes: H2 oversized split-title typographic hero, F6 project ledger with focused visual, P2 pull quotes, C2 statement close
 - Personal context: three asymmetrically placed text islands with seven white pill badges floating between them on wide screens; stacked reading order with a two-column badge cloud on mobile
@@ -50,7 +50,7 @@ Established: 2026-09-27. Source: Figma reference node 13:18 supplied by the user
 ## Taste memory
 - Profile priors used: none
 - Decision log: `.tastemaker/decisions.log`
-- Last resolved decisions: the career statement aligns to the left edge of the shared shell, and year ranges use explicit 4px spacing around the separator (2026-10-09)
+- Last resolved decisions: How I Work precedes Beyond Design, with an 18px title-to-intro gap and 180px between adjacent sections (2026-10-18)
 - Pending review: none
 - Profile promotion: none
 

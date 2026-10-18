@@ -1,5 +1,5 @@
 /* tastemaker · macrostructure: Editorial Index · mood: elegant · page: landing
- * arc: hook(H2) -> proof/work(F6) -> capability -> proof(P2) -> person -> FAQ -> close(C2)
+ * arc: hook(H2) -> proof/work(F6) -> capability -> proof(P2) -> FAQ -> person -> close(C2)
  * nav: N4 · hero: H2 · footer: Ft2 · knobs: hero=oversized-split/upright/stars; work=editorial-index/case-panel
  * palette: Figma reference (elegant/dark) · contrast: pass (matrix)
  * critique: ShowTell 5 · Phil 5 · Hier 5 · Spec 5 · Restr 5 · Var 5 */
@@ -1771,7 +1771,7 @@ body.has-spider-cursor .spider-cursor {
 
 .faq__intro {
   max-width: 610px;
-  margin: var(--space-6) auto 0;
+  margin: 18px auto 0;
   color: var(--color-muted);
   font-size: 1rem;
 }
@@ -2902,7 +2902,7 @@ main > .section--proof,
 main > .section--about,
 main > .section--faq,
 main > .contact {
-  padding-block: 90px;
+  padding-block: calc(var(--block-gap) / 2);
 }
 
 @media (prefers-reduced-motion: reduce) {
