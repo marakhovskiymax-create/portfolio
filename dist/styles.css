@@ -1627,6 +1627,10 @@ body.has-spider-cursor .spider-cursor {
   object-position: right bottom;
 }
 
+.quote-card__logo--eme {
+  height: 50px;
+}
+
 .quote-card__logo--geleos {
   width: 46px;
   height: auto;
