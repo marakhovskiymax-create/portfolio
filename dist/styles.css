@@ -1524,29 +1524,79 @@ body.has-spider-cursor .spider-cursor {
 
 .quote-card {
   display: flex;
-  width: clamp(290px, 40vw, 500px);
+  width: clamp(320px, 48vw, 620px);
   min-height: 240px;
   flex: 0 0 auto;
   flex-direction: column;
-  justify-content: space-between;
   padding: clamp(20px, 2.3vw, 32px);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-medium);
   background: var(--color-surface);
   cursor: none;
+  transition: border-color var(--motion-moderate) ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .quote-card:hover {
+    border-color: var(--color-muted);
+  }
 }
 
 .quote-card blockquote {
   font-family: var(--font-display);
-  font-size: clamp(1.125rem, 1.55vw, 1.45rem);
+  font-size: 24px;
   font-style: italic;
   line-height: 1.42;
+  overflow-wrap: break-word;
 }
 
-.quote-card figcaption {
-  margin-top: var(--space-8);
+.quote-card__footer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-top: auto;
+  padding-top: var(--space-8);
+}
+
+.quote-card__author {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.quote-card__name {
+  color: var(--color-text);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+.quote-card__company {
   color: var(--color-muted);
-  font-size: 0.75rem;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+.quote-card__logo,
+.quote-card__logo-placeholder {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 120px;
+  max-height: 52px;
+  flex: none;
+  object-fit: contain;
+  object-position: right bottom;
+}
+
+.quote-card__logo-placeholder {
+  color: var(--color-muted);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.4;
 }
 
 .section--about {
@@ -2539,6 +2589,20 @@ body.has-spider-cursor .spider-cursor {
   .quote-card {
     min-height: 250px;
     padding: var(--space-6);
+  }
+
+  .quote-card blockquote {
+    font-size: 20px;
+  }
+
+  .quote-card__logo,
+  .quote-card__logo-placeholder {
+    max-width: 96px;
+    max-height: 42px;
+  }
+
+  .quote-card__logo-placeholder {
+    font-size: 16px;
   }
 
   .about-map {

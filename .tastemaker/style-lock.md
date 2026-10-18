@@ -24,6 +24,7 @@ Established: 2026-09-27. Source: Figma reference node 13:18 supplied by the user
 - Body and UI: Nunito Sans, matching the rounded sans-serif used in the supplied Figma frame
 - Base: 16px. Hero display uses fluid clamps with a 1.0 line-height floor; editorial display keeps a 1.02 floor.
 - Main section headings on the homepage and case pages use Inter Tight 700 at 52px on desktop, with a fluid reduction only on narrow screens; the editorial Playfair treatment remains for the wordmark and other display roles.
+- Testimonial quotes keep one italic Playfair size across all cards: 24px on desktop and 20px on narrow screens. Author names are Nunito Sans 16px/500; company names are 14px/400 and muted.
 
 ## Shape language
 - Corner radius: 20px for showcase panels, 999px for small actions and interest tags; the interactive footer keeps only its upper corners rounded and meets the page bottom squarely
@@ -46,14 +47,15 @@ Established: 2026-09-27. Source: Figma reference node 13:18 supplied by the user
 - Body archetypes: H2 oversized split-title typographic hero, F6 project ledger with focused visual, P2 pull quotes, C2 statement close
 - Homepage hero copy: English introduction, split PRODUCT / DESIGNER headline, concise web-and-mobile positioning, View Projects and Get in Touch actions, and a three-position metadata strip with PORTFOLIO '26 left, UX · UI · RESEARCH · DESIGN SYSTEMS centered, and a non-interactive SCROLL cue right
 - Personal context: three asymmetrically placed text islands with seven white pill badges floating between them on wide screens; stacked reading order with a two-column badge cloud on mobile
+- Testimonials: eight approved English quotes in the existing two-row marquee, four distinct cards per row plus hidden duplicate groups for seamless looping. Cards are 320–620px wide and stretch to one height within each row; the author/company stack stays bottom-left and a genuine company logo stays bottom-right at up to 120×52px on desktop or 96×42px on mobile. Hovering any card pauses only its own row and brightens the card border while the organic cursor traces that card. If a verified logo is missing, use a restrained text placeholder rather than a fabricated mark.
 - Build stamp and `.tastemaker/log.json` record this implementation.
 - Case studies: an eight-section editorial narrative with a full-shell hero before the persistent contents rail, a manual interface carousel, a split context accordion styled like the site's FAQ with separated dark answer cards, an interactive work-area canvas, concise image-led product stories, and a verified impact close. The contents rail begins with the first narrative section rather than competing with the hero. Hero metadata uses four left-aligned columns: Name, Role, Product with Scope in parentheses, and Period; values use the stronger 17px/600 treatment. The homepage card and its matching project stop are equal entry points into the case.
 
 ## Taste memory
 - Profile priors used: none
 - Decision log: `.tastemaker/decisions.log`
-- Last resolved decisions: career panel switches crossfade through opacity only, without directional content movement (2026-10-18); How I Work precedes Beyond Design with an 18px title-to-intro gap and 180px between adjacent sections (2026-10-18); Beyond Design has no artificial bottom height before contact (2026-10-18); homepage hero copy and metadata are in English, PRODUCT / DESIGNER is 25% larger, the discipline line is centered, and SCROLL is static at bottom-right (2026-10-18); the interactive footer has no blue gradient, a square lower edge, a 100px title gap after the ordinary footer, and a 30% taller play area (2026-10-18)
-- Pending review: none
+- Last resolved decisions: career panel switches crossfade through opacity only, without directional content movement (2026-10-18); How I Work precedes Beyond Design with an 18px title-to-intro gap and 180px between adjacent sections (2026-10-18); Beyond Design has no artificial bottom height before contact (2026-10-18); homepage hero copy and metadata are in English, PRODUCT / DESIGNER is 25% larger, the discipline line is centered, and SCROLL is static at bottom-right (2026-10-18); the interactive footer has no blue gradient, a square lower edge, a 100px title gap after the ordinary footer, and a 30% taller play area (2026-10-18); testimonial cards and their company logos are wider/larger while keeping the two-row carousel (2026-10-18)
+- Pending review: Geleos currently uses a text placeholder until a verified logo is supplied; the user confirmed all eight testimonial authors approved publication on 2026-10-18
 - Profile promotion: none
 
 ## Mood descriptors
@@ -66,6 +68,7 @@ Quiet, cosmic, editorial, assured.
 - Illustration versus photography: no photography in this first homepage pass
 - Logo: typographic wordmark from the supplied design; favicon uses a simple M motif
 - amoCRM case assets: use only the three product images extracted from the supplied blueprint; unsupported product areas are represented with clearly diagrammatic, code-native flows rather than invented screenshots
+- Testimonial logos: EME, Match TV, Don Ballon, and amoCRM use existing project vectors; Make Difference, AYO, and L'Occitane use the user's supplied logo files. The user confirmed that `logo.svg` is AYO.
 
 ## Motion
 - Feel: quick, fluid, and restrained; inspired by Fluid Functionalism without copying its visual identity
