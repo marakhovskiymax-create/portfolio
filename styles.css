@@ -2904,27 +2904,18 @@ body:not(.case-page) > .footer {
   position: relative;
   z-index: 2;
   width: 100%;
-  padding: 90px 16px 16px;
+  padding: 35px 16px 0;
   color: #e8eeff;
   background: var(--color-bg);
 }
 
-body:not(.case-page) > .skills-playground {
-  padding-top: 0;
-}
-
 .skills-playground__surface {
   position: relative;
-  min-height: clamp(560px, 72vh, 760px);
+  min-height: clamp(728px, 93.6vh, 988px);
   overflow: hidden;
   border: 0;
-  border-radius: 42px;
-  background: linear-gradient(
-    to top,
-    rgba(35, 82, 204, 0.46) 0%,
-    rgba(20, 51, 132, 0.2) 27%,
-    rgba(5, 5, 5, 0) 58%
-  );
+  border-radius: 42px 42px 0 0;
+  background: transparent;
   box-shadow: none;
   backdrop-filter: none;
   isolation: isolate;
@@ -3107,8 +3098,8 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
   }
 
   .skills-playground__surface {
-    min-height: 820px;
-    border-radius: 28px;
+    min-height: 1066px;
+    border-radius: 28px 28px 0 0;
   }
 
   .skills-playground__hint {
