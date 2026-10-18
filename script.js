@@ -751,6 +751,7 @@ function initCareerTimeline() {
 
   let activeIndex = tabs.findIndex((tab) => tab.classList.contains("is-active"));
   let cleanupTimer = 0;
+  let activationFrame = 0;
   if (activeIndex < 0) activeIndex = 0;
 
   const setProgress = (index) => {
@@ -765,10 +766,10 @@ function initCareerTimeline() {
     if (nextIndex === activeIndex || nextIndex < 0 || nextIndex >= tabs.length) return;
 
     window.clearTimeout(cleanupTimer);
+    window.cancelAnimationFrame(activationFrame);
     const previousIndex = activeIndex;
     const previousPanel = panels[previousIndex];
     const nextPanel = panels[nextIndex];
-    const direction = nextIndex > previousIndex ? "forward" : "backward";
 
     panels.forEach((panel, index) => {
       if (index === previousIndex || index === nextIndex) return;
@@ -776,7 +777,6 @@ function initCareerTimeline() {
       panel.classList.remove("is-active", "is-leaving");
     });
 
-    timeline.dataset.direction = direction;
     previousPanel.classList.remove("is-active");
     previousPanel.classList.add("is-leaving");
     previousPanel.setAttribute("aria-hidden", "true");
@@ -784,16 +784,7 @@ function initCareerTimeline() {
     nextPanel.hidden = false;
     nextPanel.classList.remove("is-leaving");
     nextPanel.setAttribute("aria-hidden", "false");
-    window.requestAnimationFrame(() => nextPanel.classList.add("is-active"));
-
-    if (!reduceMotion && window.gsap) {
-      const content = nextPanel.querySelectorAll(".career-panel__media, .career-panel__year, .career-panel__copy");
-      window.gsap.killTweensOf(content);
-      window.gsap.fromTo(content,
-        { autoAlpha: 0, y: 18 },
-        { autoAlpha: 1, y: 0, duration: 0.38, stagger: 0.07, ease: "power3.out", clearProps: "opacity,visibility,transform" },
-      );
-    }
+    activationFrame = window.requestAnimationFrame(() => nextPanel.classList.add("is-active"));
 
     tabs.forEach((tab, index) => {
       const isActive = index === nextIndex;

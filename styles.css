@@ -1280,29 +1280,13 @@ body.has-spider-cursor .spider-cursor {
   gap: clamp(32px, 5vw, 88px);
   opacity: 0;
   pointer-events: none;
-  transform: translate3d(24px, 0, 0);
-  transition:
-    opacity 240ms var(--ease-out),
-    transform 240ms var(--curve-cinematic);
-}
-
-.career-timeline[data-direction="backward"] .career-panel {
-  transform: translate3d(-24px, 0, 0);
+  transition: opacity var(--duration-panel) var(--ease-out);
 }
 
 .career-panel.is-active {
   z-index: 2;
   opacity: 1;
   pointer-events: auto;
-  transform: translate3d(0, 0, 0);
-}
-
-.career-timeline[data-direction="forward"] .career-panel.is-leaving {
-  transform: translate3d(-24px, 0, 0);
-}
-
-.career-timeline[data-direction="backward"] .career-panel.is-leaving {
-  transform: translate3d(24px, 0, 0);
 }
 
 .career-panel__media {
@@ -1318,12 +1302,6 @@ body.has-spider-cursor .spider-cursor {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transform: scale(1.015);
-  transition: transform 240ms var(--ease-out);
-}
-
-.career-panel.is-active .career-panel__media img {
-  transform: scale(1);
 }
 
 .career-panel__year,
@@ -1475,16 +1453,8 @@ body.has-spider-cursor .spider-cursor {
   .career-tabs__progress,
   .career-tab::after,
   .career-tab__logo,
-  .career-panel,
-  .career-panel__media img {
-    transition-duration: 120ms;
-  }
-
-  .career-panel,
-  .career-timeline[data-direction="backward"] .career-panel,
-  .career-timeline[data-direction="forward"] .career-panel.is-leaving,
-  .career-timeline[data-direction="backward"] .career-panel.is-leaving {
-    transform: none;
+  .career-panel {
+    transition-duration: var(--motion-moderate-exit);
   }
 }
 
