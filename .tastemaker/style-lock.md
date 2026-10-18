@@ -33,6 +33,7 @@ Established: 2026-09-27. Source: Figma reference node 13:18 supplied by the user
 ## Density & spacing
 - Base unit: 4px
 - Section rhythm: exactly 180px between the visible content of every adjacent top-level block, including the capability tape, footer, and skills playground; the FAQ heading and intro are 18px apart
+- Beyond Design: its map grows to the final documentary note instead of reserving a fixed empty floor, keeping the visible gap to the contact heading at 180px on desktop and mobile
 - Content card internal padding: 32px
 - Showcase internal padding: 24px
 - Overall density: generous editorial whitespace
@@ -50,7 +51,7 @@ Established: 2026-09-27. Source: Figma reference node 13:18 supplied by the user
 ## Taste memory
 - Profile priors used: none
 - Decision log: `.tastemaker/decisions.log`
-- Last resolved decisions: career panel switches crossfade through opacity only, without directional content movement (2026-10-18); How I Work precedes Beyond Design with an 18px title-to-intro gap and 180px between adjacent sections (2026-10-18)
+- Last resolved decisions: career panel switches crossfade through opacity only, without directional content movement (2026-10-18); How I Work precedes Beyond Design with an 18px title-to-intro gap and 180px between adjacent sections (2026-10-18); Beyond Design has no artificial bottom height before contact (2026-10-18)
 - Pending review: none
 - Profile promotion: none
 

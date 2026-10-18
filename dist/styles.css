@@ -1546,7 +1546,6 @@ body.has-spider-cursor .spider-cursor {
 
 .section--about {
   width: var(--shell);
-  min-height: 720px;
   padding-block: clamp(40px, 5vw, 72px) var(--space-16);
 }
 
@@ -1556,7 +1555,6 @@ body.has-spider-cursor .spider-cursor {
 
 .about-map {
   position: relative;
-  min-height: 560px;
 }
 
 .about-note {
@@ -1604,8 +1602,11 @@ body.has-spider-cursor .spider-cursor {
 }
 
 .about-note--film {
-  inset: 210px auto auto 35%;
+  position: relative;
+  inset: auto;
   width: min(31%, 380px);
+  margin-left: 35%;
+  padding-top: 210px;
   text-align: right;
 }
 
@@ -2324,6 +2325,11 @@ body.has-spider-cursor .spider-cursor {
     text-align: left;
   }
 
+  .about-note--film {
+    margin-left: 0;
+    padding-top: 0;
+  }
+
   .about-note--games {
     grid-column: 2;
   }
@@ -2899,7 +2905,7 @@ body:not(.case-page) > .footer {
   padding-bottom: 0;
 }
 
-/* Footer playground — a bounded, tactile field inspired by the supplied reference. */
+/* Footer playground: a bounded, tactile field inspired by the supplied reference. */
 .skills-playground {
   position: relative;
   z-index: 2;
