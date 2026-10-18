@@ -649,7 +649,7 @@ body.has-spider-cursor .spider-cursor {
   overflow: hidden;
   border-radius: var(--radius-medium);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 50px 90px 50px 80px;
+  padding: 50px 120px;
   background: #09090b;
   color: var(--color-text);
   --project-accent: var(--color-accent);
@@ -707,9 +707,10 @@ body.has-spider-cursor .spider-cursor {
 .time-machine__card {
   position: absolute;
   top: 56%;
-  left: 43%;
+  left: 0;
   display: grid;
-  width: min(86%, 1080px);
+  /* Preserve the card's old width while the frame gains 40px left and 30px right padding. */
+  width: min(calc(86% + 60px), 1080px);
   aspect-ratio: 220 / 135;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.15);
@@ -721,12 +722,29 @@ body.has-spider-cursor .spider-cursor {
   transition:
     border-color var(--motion-slow) var(--ease-out);
   transform:
-    translate3d(-50%, -50%, var(--card-z, 0px))
+    translate3d(0, -50%, var(--card-z, 0px))
     translateY(var(--card-y, 0px))
     rotateX(var(--card-rotate, 0deg))
     scale(var(--card-scale, 1));
   transform-origin: center;
   will-change: transform, opacity;
+}
+
+.card-time-machine.is-ready .time-machine__card {
+  transition:
+    transform calc(var(--motion-slow) * 2) var(--curve-cinematic),
+    opacity calc(var(--motion-slow) * 2) var(--ease-out),
+    border-color var(--motion-slow) var(--ease-out);
+}
+
+@media (min-width: 641px) and (max-width: 1100px) {
+  .case-visual {
+    padding: 50px 90px 50px 80px;
+  }
+
+  .time-machine__card {
+    width: min(86%, 1080px);
+  }
 }
 
 .time-machine__card.is-current {
@@ -964,6 +982,7 @@ body.has-spider-cursor .spider-cursor {
   display: grid;
   grid-column: 2;
   grid-row: 1;
+  grid-template-columns: minmax(0, 1fr);
   height: min(72%, 400px);
   margin-right: 0;
   grid-template-rows: repeat(5, minmax(0, 1fr));
@@ -1052,6 +1071,12 @@ body.has-spider-cursor .spider-cursor {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .card-time-machine.is-ready .time-machine__card {
+    transition:
+      opacity var(--motion-moderate-exit) var(--ease-out),
+      border-color var(--motion-moderate-exit) var(--ease-out);
+  }
+
   .time-machine__card,
   .time-machine__stop-label,
   .time-machine__stop-mark {
@@ -2576,6 +2601,11 @@ body.has-spider-cursor .spider-cursor {
     width: 84%;
     top: 54%;
     left: 44%;
+    transform:
+      translate3d(-50%, -50%, var(--card-z, 0px))
+      translateY(var(--card-y, 0px))
+      rotateX(var(--card-rotate, 0deg))
+      scale(var(--card-scale, 1));
   }
 
   .time-machine__card-body {
