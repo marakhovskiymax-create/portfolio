@@ -782,8 +782,10 @@ function initCareerTimeline() {
     previousPanel.setAttribute("aria-hidden", "true");
 
     nextPanel.hidden = false;
-    nextPanel.classList.remove("is-leaving");
+    nextPanel.classList.remove("is-active", "is-leaving");
     nextPanel.setAttribute("aria-hidden", "false");
+    // Establish the transparent state before revealing a panel that was hidden.
+    nextPanel.getBoundingClientRect();
     activationFrame = window.requestAnimationFrame(() => nextPanel.classList.add("is-active"));
 
     tabs.forEach((tab, index) => {
