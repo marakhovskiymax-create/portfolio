@@ -1592,6 +1592,26 @@ body.has-spider-cursor .spider-cursor {
   object-position: right bottom;
 }
 
+.quote-card__logo--don-ballon {
+  width: 150px;
+  max-width: 40%;
+}
+
+.quote-card__logo--amocrm {
+  width: 110px;
+  max-width: 40%;
+}
+
+.quote-card__logo--loccitane {
+  width: 124px;
+  max-width: 40%;
+}
+
+.quote-card__logo--geleos {
+  width: 46px;
+  max-width: 20%;
+}
+
 .quote-card__logo-placeholder {
   color: var(--color-muted);
   font-size: 18px;
@@ -2599,6 +2619,26 @@ body.has-spider-cursor .spider-cursor {
   .quote-card__logo-placeholder {
     max-width: 96px;
     max-height: 42px;
+  }
+
+  .quote-card__logo--don-ballon {
+    width: 108px;
+    max-width: 40%;
+  }
+
+  .quote-card__logo--amocrm {
+    width: 88px;
+    max-width: 40%;
+  }
+
+  .quote-card__logo--loccitane {
+    width: 100px;
+    max-width: 40%;
+  }
+
+  .quote-card__logo--geleos {
+    width: 38px;
+    max-width: 20%;
   }
 
   .quote-card__logo-placeholder {
