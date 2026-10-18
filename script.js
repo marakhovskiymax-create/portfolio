@@ -1112,9 +1112,60 @@ function initContactForm() {
   const status = document.querySelector("[data-contact-status]");
   if (!form || !status) return;
 
+  const fields = [...form.querySelectorAll("input[name], textarea[name]")];
+  let attemptedSubmit = false;
+
+  function errorFor(field) {
+    const value = field.value.trim();
+    if (!value) {
+      return {
+        name: "Enter your name so I can address you in my reply.",
+        email: "Enter your email address so I can reply.",
+        message: "Add a short message so I know what you'd like to discuss.",
+      }[field.name];
+    }
+    if (field.name === "email" && !field.validity.valid) {
+      return "This email address doesn't look right. Use a format like you@example.com.";
+    }
+    return "";
+  }
+
+  function validateField(field) {
+    const error = form.querySelector(`#${field.id}-error`);
+    const message = errorFor(field);
+    error.textContent = message;
+    error.hidden = !message;
+    if (message) {
+      field.setAttribute("aria-invalid", "true");
+      field.setAttribute("aria-describedby", error.id);
+    } else {
+      field.removeAttribute("aria-invalid");
+      field.removeAttribute("aria-describedby");
+    }
+    return !message;
+  }
+
+  fields.forEach((field) => {
+    field.addEventListener("input", () => {
+      if (!attemptedSubmit) return;
+      validateField(field);
+      if (fields.every((item) => !errorFor(item))) {
+        status.textContent = "";
+        delete status.dataset.state;
+      }
+    });
+  });
+
   form.addEventListener("submit", (event) => {
     event.preventDefault();
-    if (!form.reportValidity()) return;
+    attemptedSubmit = true;
+    const firstInvalid = fields.filter((field) => !validateField(field))[0];
+    if (firstInvalid) {
+      status.textContent = "Please correct the fields marked above before continuing.";
+      status.dataset.state = "error";
+      firstInvalid.focus();
+      return;
+    }
 
     const formData = new FormData(form);
     const name = String(formData.get("name") || "").trim();
@@ -1123,6 +1174,7 @@ function initContactForm() {
     const subject = encodeURIComponent(`Project inquiry from ${name}`);
     const body = encodeURIComponent(`${message}\n\nFrom: ${name}\nEmail: ${email}`);
 
+    delete status.dataset.state;
     status.textContent = "Opening your email app. Please send the draft there to finish.";
     window.location.href = `mailto:marakhovskiymax@gmail.com?subject=${subject}&body=${body}`;
   });
