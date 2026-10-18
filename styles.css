@@ -635,8 +635,7 @@ body.has-spider-cursor .spider-cursor {
   overflow: hidden;
   border-radius: var(--radius-medium);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: clamp(18px, 2.5vw, 40px);
-  padding-inline: 60px 90px;
+  padding: 50px 90px 50px 80px;
   background: #09090b;
   color: var(--color-text);
   --project-accent: var(--color-accent);
@@ -693,8 +692,8 @@ body.has-spider-cursor .spider-cursor {
 
 .time-machine__card {
   position: absolute;
-  top: 54%;
-  left: 44%;
+  top: 56%;
+  left: 43%;
   display: grid;
   width: min(86%, 1080px);
   aspect-ratio: 220 / 135;
@@ -2487,6 +2486,7 @@ body.has-spider-cursor .spider-cursor {
 
   .time-machine__card {
     width: 84%;
+    top: 54%;
     left: 44%;
   }
 
