@@ -742,6 +742,16 @@ function initFAQAccordion() {
 
 initFAQAccordion();
 
+const careerPanelEnterFrom = { autoAlpha: 0, y: 22 };
+const careerPanelEnterTo = {
+  autoAlpha: 1,
+  y: 0,
+  duration: 0.48,
+  stagger: 0.08,
+  ease: "power3.out",
+  clearProps: "transform,opacity,visibility",
+};
+
 function initCareerTimeline() {
   const timeline = document.querySelector("[data-career-timeline]");
   const rail = timeline?.querySelector(".career-tabs__rail");
@@ -775,20 +785,63 @@ function initCareerTimeline() {
 
     panels.forEach((panel, index) => {
       if (index === previousIndex || index === nextIndex) return;
+      if (window.gsap) {
+        window.gsap.killTweensOf(panel.children);
+        window.gsap.set(panel.children, { clearProps: "transform,opacity,visibility" });
+      }
       panel.hidden = true;
-      panel.classList.remove("is-active", "is-leaving");
+      panel.classList.remove("is-active", "is-leaving", "is-switching");
     });
 
-    previousPanel.classList.remove("is-active");
-    previousPanel.classList.add("is-leaving");
-    previousPanel.setAttribute("aria-hidden", "true");
+    const animatePanels = Boolean(window.gsap) && !reduceMotion;
+    if (animatePanels) {
+      const leavingChildren = Array.from(previousPanel.children);
+      const enteringChildren = Array.from(nextPanel.children);
 
-    nextPanel.hidden = false;
-    nextPanel.classList.remove("is-active", "is-leaving");
-    nextPanel.setAttribute("aria-hidden", "false");
-    // Establish the transparent state before revealing a panel that was hidden.
-    nextPanel.getBoundingClientRect();
-    activationFrame = window.requestAnimationFrame(() => nextPanel.classList.add("is-active"));
+      window.gsap.killTweensOf(leavingChildren);
+      previousPanel.classList.add("is-switching");
+      previousPanel.classList.remove("is-active");
+      previousPanel.classList.add("is-leaving");
+      previousPanel.setAttribute("aria-hidden", "true");
+      window.gsap.to(leavingChildren, {
+        autoAlpha: 0,
+        duration: 0.24,
+        ease: "power3.out",
+        overwrite: "auto",
+        onComplete: () => {
+          if (previousPanel.classList.contains("is-active")) return;
+          previousPanel.hidden = true;
+          previousPanel.classList.remove("is-leaving", "is-switching");
+          window.gsap.set(leavingChildren, { clearProps: "transform,opacity,visibility" });
+        },
+      });
+
+      window.gsap.killTweensOf(enteringChildren);
+      nextPanel.hidden = false;
+      nextPanel.classList.remove("is-leaving");
+      nextPanel.classList.add("is-switching", "is-active");
+      nextPanel.setAttribute("aria-hidden", "false");
+      window.gsap.fromTo(enteringChildren, careerPanelEnterFrom, {
+        ...careerPanelEnterTo,
+        overwrite: "auto",
+        onComplete: () => nextPanel.classList.remove("is-switching"),
+      });
+    } else {
+      previousPanel.classList.remove("is-active");
+      previousPanel.classList.add("is-leaving");
+      previousPanel.setAttribute("aria-hidden", "true");
+
+      nextPanel.hidden = false;
+      nextPanel.classList.remove("is-active", "is-leaving");
+      nextPanel.setAttribute("aria-hidden", "false");
+      // Establish the transparent state before revealing a panel that was hidden.
+      nextPanel.getBoundingClientRect();
+      activationFrame = window.requestAnimationFrame(() => nextPanel.classList.add("is-active"));
+      cleanupTimer = window.setTimeout(() => {
+        previousPanel.hidden = true;
+        previousPanel.classList.remove("is-leaving");
+      }, reduceMotion ? 120 : 240);
+    }
 
     tabs.forEach((tab, index) => {
       const isActive = index === nextIndex;
@@ -799,11 +852,6 @@ function initCareerTimeline() {
 
     setProgress(nextIndex);
     activeIndex = nextIndex;
-
-    cleanupTimer = window.setTimeout(() => {
-      previousPanel.hidden = true;
-      previousPanel.classList.remove("is-leaving");
-    }, reduceMotion ? 120 : 240);
 
     if (shouldFocus) tabs[nextIndex].focus();
   };
@@ -1707,8 +1755,8 @@ if (window.TastemakerMotion && window.gsap && window.ScrollTrigger) {
         "-=0.46",
       )
       .fromTo(".career-panel.is-active > *",
-        { autoAlpha: 0, y: 22 },
-        { autoAlpha: 1, y: 0, duration: 0.48, stagger: 0.08, clearProps: "transform,opacity,visibility" },
+        careerPanelEnterFrom,
+        careerPanelEnterTo,
         "-=0.12",
       );
 

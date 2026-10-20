@@ -1323,6 +1323,10 @@ body.has-spider-cursor .spider-cursor {
   transition: opacity var(--duration-panel) var(--ease-out);
 }
 
+.career-panel.is-switching > * {
+  transition: none;
+}
+
 .career-panel.is-active > * {
   opacity: 1;
 }
