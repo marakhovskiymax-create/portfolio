@@ -63,16 +63,19 @@ const visualCaption = visual?.querySelector("[data-visual-caption]");
 const stageCards = Array.from(visual?.querySelectorAll("[data-stage-card]") ?? []);
 const timeMachineStops = Array.from(visual?.querySelectorAll("[data-stage-index]") ?? []);
 const timeMachineTimeline = visual?.querySelector(".time-machine__timeline");
-function syncTimeMachine(activeIndex) {
+const reduceTimeMachineMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+visual?.classList.toggle("has-gsap", Boolean(window.gsap) && !reduceTimeMachineMotion);
+
+function syncTimeMachine(activeIndex, immediate = false) {
   stageCards.forEach((card, index) => {
     const offset = index - activeIndex;
     const hasPassed = offset < 0;
     const depth = Math.max(0, offset);
     const properties = {
-      "--card-z": hasPassed ? "80px" : `${-depth * 60}px`,
-      "--card-y": hasPassed ? "160px" : `${-depth * 42}px`,
-      "--card-rotate": hasPassed ? "-8deg" : `${depth * 2}deg`,
-      "--card-scale": hasPassed ? 1 : 1 - Math.min(depth, 4) * 0.025,
+      "--card-z": hasPassed ? "200px" : `${-depth * 60}px`,
+      "--card-y": hasPassed ? "300px" : `${-depth * 42}px`,
+      "--card-rotate": hasPassed ? "-20deg" : `${depth * 2}deg`,
+      "--card-scale": hasPassed ? 1.3 : 1 - Math.min(depth, 4) * 0.025,
       "--card-opacity": hasPassed ? 0 : Math.max(0.28, 1 - depth * 0.15),
     };
 
@@ -82,7 +85,16 @@ function syncTimeMachine(activeIndex) {
     if (card.matches("a[href]")) card.tabIndex = offset === 0 ? 0 : -1;
     card.style.zIndex = String(stageCards.length - index);
 
-    Object.entries(properties).forEach(([property, value]) => card.style.setProperty(property, String(value)));
+    if (window.gsap && !reduceTimeMachineMotion && !immediate) {
+      window.gsap.to(card, {
+        ...properties,
+        duration: 0.55,
+        ease: "power3.out",
+        overwrite: "auto",
+      });
+    } else {
+      Object.entries(properties).forEach(([property, value]) => card.style.setProperty(property, String(value)));
+    }
   });
 
   timeMachineStops.forEach((stop) => {
@@ -161,7 +173,7 @@ timeMachineTimeline?.addEventListener("focusout", () => {
   });
 });
 
-syncTimeMachine(0);
+syncTimeMachine(0, true);
 syncTimeMachineHover();
 window.requestAnimationFrame(() => visual?.classList.add("is-ready"));
 

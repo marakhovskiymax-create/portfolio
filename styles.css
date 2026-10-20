@@ -650,7 +650,7 @@ body.has-spider-cursor .spider-cursor {
   overflow: hidden;
   border-radius: var(--radius-medium);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 50px 120px;
+  padding: 50px 110px;
   background: #09090b;
   color: var(--color-text);
   --project-accent: var(--color-accent);
@@ -710,8 +710,8 @@ body.has-spider-cursor .spider-cursor {
   top: 56%;
   left: 0;
   display: grid;
-  /* Preserve the card's old width while the frame gains 40px left and 30px right padding. */
-  width: min(calc(86% + 60px), 1080px);
+  /* Keep the card width stable as the desktop frame inset changes. */
+  width: min(calc(86% + 43px), 1080px);
   aspect-ratio: 220 / 135;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.15);
@@ -731,7 +731,7 @@ body.has-spider-cursor .spider-cursor {
   will-change: transform, opacity;
 }
 
-.card-time-machine.is-ready .time-machine__card {
+.card-time-machine.is-ready:not(.has-gsap) .time-machine__card {
   transition:
     transform calc(var(--motion-slow) * 2) var(--curve-cinematic),
     opacity calc(var(--motion-slow) * 2) var(--ease-out),
@@ -1072,7 +1072,7 @@ body.has-spider-cursor .spider-cursor {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .card-time-machine.is-ready .time-machine__card {
+  .card-time-machine.is-ready:not(.has-gsap) .time-machine__card {
     transition:
       opacity var(--motion-moderate-exit) var(--ease-out),
       border-color var(--motion-moderate-exit) var(--ease-out);
