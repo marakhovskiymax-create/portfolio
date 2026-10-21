@@ -728,7 +728,7 @@ function initNextProjectTextEffect() {
 
   const block = document.querySelector(".case-next");
   const label = block?.querySelector(":scope > p");
-  const textElements = block ? Array.from(block.querySelectorAll(":scope > a > span")) : [];
+  const textElements = block ? Array.from(block.querySelectorAll(":scope > a > .case-next__title")) : [];
   if (!block || !label || !textElements.length) return;
 
   const characters = textElements.flatMap((element) => {
