@@ -945,6 +945,7 @@ body.case-page {
 body.case-page > .case-footer {
   margin-top: 0;
   padding-bottom: 0;
+  background-color: var(--color-bg);
 }
 
 .case-page .skills-playground__hint {

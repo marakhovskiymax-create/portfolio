@@ -94,9 +94,7 @@ body.eme-page {
 }
 
 .eme-page .case-next a:hover,
-.eme-page .case-next a:focus-visible,
-.eme-page .footer a:hover,
-.eme-page .footer a:focus-visible {
+.eme-page .case-next a:focus-visible {
   color: var(--case-accent);
 }
 

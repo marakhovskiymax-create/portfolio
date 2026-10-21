@@ -94,9 +94,7 @@ body.shable-page {
 }
 
 .shable-page .case-next a:hover,
-.shable-page .case-next a:focus-visible,
-.shable-page .footer a:hover,
-.shable-page .footer a:focus-visible {
+.shable-page .case-next a:focus-visible {
   color: var(--case-accent);
 }
 

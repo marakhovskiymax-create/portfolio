@@ -94,9 +94,7 @@ body.don-ballon-page {
 }
 
 .don-ballon-page .case-next a:hover,
-.don-ballon-page .case-next a:focus-visible,
-.don-ballon-page .footer a:hover,
-.don-ballon-page .footer a:focus-visible {
+.don-ballon-page .case-next a:focus-visible {
   color: var(--case-accent);
 }
 
