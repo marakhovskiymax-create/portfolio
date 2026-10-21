@@ -290,7 +290,7 @@ function initWorkAreasPhysics() {
   const buildWorld = (preserve = false) => {
     const width = surface.clientWidth;
     const height = surface.clientHeight;
-    const usableHeight = Math.max(260, height - 20);
+    const usableHeight = height;
     const oldStates = items.map((item) => {
       const body = states.get(item)?.body;
       return body
@@ -440,7 +440,7 @@ function initWorkAreasPhysics() {
       const surfaceRect = surface.getBoundingClientRect();
       const halfWidth = item.offsetWidth / 2;
       const halfHeight = item.offsetHeight / 2;
-      const maxY = surface.clientHeight - 20 - halfHeight;
+      const maxY = surface.clientHeight - halfHeight;
       const x = Math.min(surface.clientWidth - halfWidth, Math.max(halfWidth, event.clientX - surfaceRect.left - state.pointerOffsetX));
       const y = Math.min(maxY, Math.max(halfHeight, event.clientY - surfaceRect.top - state.pointerOffsetY));
       const now = performance.now();
@@ -488,7 +488,7 @@ function initWorkAreasPhysics() {
       event.preventDefault();
       const halfWidth = item.offsetWidth / 2;
       const halfHeight = item.offsetHeight / 2;
-      const maxY = surface.clientHeight - 20 - halfHeight;
+      const maxY = surface.clientHeight - halfHeight;
       Body.setPosition(state.body, {
         x: Math.min(surface.clientWidth - halfWidth, Math.max(halfWidth, state.body.position.x + movement[0])),
         y: Math.min(maxY, Math.max(halfHeight, state.body.position.y + movement[1])),
