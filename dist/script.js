@@ -141,15 +141,25 @@ function activateProject(index) {
 timeMachineStops.forEach((stop) => {
   const stopIndex = Number(stop.dataset.stageIndex);
   const activate = () => activateProject(Math.round(stopIndex));
-  stop.addEventListener("click", () => {
-    if (stop.matches("a[href]")) return;
+  stop.addEventListener("click", (event) => {
+    if (stop.matches("a[href]")) {
+      // On touch-sized layouts the labels are preview controls: the first tap
+      // reveals the card, and a second tap (or the card itself) opens the case.
+      if (window.matchMedia("(max-width: 900px)").matches && !stop.classList.contains("is-active")) {
+        event.preventDefault();
+        activate();
+      }
+      return;
+    }
     activate();
   });
-  stop.addEventListener("pointerenter", () => {
+  stop.addEventListener("pointerenter", (event) => {
+    if (event.pointerType === "touch" || window.matchMedia("(max-width: 900px)").matches) return;
     syncTimeMachineHover(stopIndex);
     activate();
   });
   stop.addEventListener("focus", () => {
+    if (window.matchMedia("(max-width: 900px)").matches) return;
     syncTimeMachineHover(stopIndex);
     activate();
   });

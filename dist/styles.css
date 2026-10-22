@@ -643,6 +643,7 @@ body.has-spider-cursor .spider-cursor {
   position: relative;
   isolation: isolate;
   display: grid;
+  margin: 0;
   grid-template-columns: minmax(0, 1fr) clamp(128px, 12vw, 184px);
   gap: clamp(10px, 2vw, 32px);
   align-items: center;
@@ -3442,5 +3443,280 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
   .cta-reveal:focus-visible .cta-reveal__icon,
   .cta-reveal:active {
     transform: none;
+  }
+}
+
+/* Homepage: let the work preview and long-form content use the space available
+   on phones, while preserving the desktop composition and animation. */
+@media (max-width: 900px) {
+  body:not(.case-page) .section--portfolio {
+    overflow-x: clip;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 900px) {
+  body:not(.case-page) .case-visual {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(420px, auto) auto;
+    gap: 16px;
+    padding: 24px;
+  }
+
+  body:not(.case-page) .time-machine__stage {
+    grid-column: 1;
+    grid-row: 1;
+    min-height: 420px;
+  }
+
+  body:not(.case-page) .time-machine__card {
+    top: 57%;
+    left: 50%;
+    width: min(88%, 560px);
+    transform:
+      translate3d(-50%, -50%, var(--card-z, 0px))
+      translateY(var(--card-y, 0px))
+      rotateX(var(--card-rotate, 0deg))
+      scale(var(--card-scale, 1));
+  }
+
+  body:not(.case-page) .time-machine__card-copy strong {
+    font-size: clamp(1.35rem, 3.2vw, 1.75rem);
+  }
+}
+
+@media (min-width: 641px) and (max-width: 900px) {
+  body:not(.case-page) .time-machine__timeline {
+    grid-column: 1;
+    grid-row: 2;
+    display: flex;
+    width: 100%;
+    height: auto;
+    justify-content: center;
+    gap: 8px;
+    overflow-x: auto;
+    margin: 0;
+    padding: 2px 2px 8px;
+    scrollbar-width: thin;
+    scroll-snap-type: x proximity;
+  }
+
+  body:not(.case-page) .time-machine__stop {
+    flex: 0 0 auto;
+    min-height: 44px;
+    justify-self: auto;
+    scroll-snap-align: start;
+  }
+
+  body:not(.case-page) .time-machine__stop-target {
+    min-height: 44px;
+    justify-content: center;
+    gap: 0;
+    padding: 0 14px;
+    border: 1px solid rgba(244, 243, 238, 0.22);
+    border-radius: 999px;
+    background: rgba(244, 243, 238, 0.04);
+  }
+
+  body:not(.case-page) .time-machine__stop.is-active .time-machine__stop-target {
+    border-color: var(--project-accent);
+    background: color-mix(in srgb, var(--project-accent) 14%, #09090b);
+  }
+
+  body:not(.case-page) .time-machine__stop-label {
+    color: var(--color-text);
+    filter: none;
+    font-size: 0.875rem;
+    opacity: 1;
+    transform: none;
+  }
+
+  body:not(.case-page) .time-machine__stop-mark {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  body:not(.case-page) .case-visual {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(300px, auto) auto;
+    gap: 12px;
+    min-height: 0;
+    padding: 16px 12px 14px;
+  }
+
+  body:not(.case-page) .time-machine__stage {
+    grid-column: 1;
+    grid-row: 1;
+    width: 100%;
+    min-height: 300px;
+  }
+
+  body:not(.case-page) .time-machine__card {
+    top: 57%;
+    left: 50%;
+    width: calc(100% - 8px);
+    height: 224px;
+    aspect-ratio: auto;
+    border-radius: 16px;
+  }
+
+  body:not(.case-page) .time-machine__card-chrome {
+    min-height: 36px;
+    padding-inline: 12px;
+    font-size: 0.63rem;
+  }
+
+  body:not(.case-page) .time-machine__card-body {
+    height: calc(100% - 36px);
+    grid-template-columns: minmax(0, 1fr) minmax(76px, 0.7fr);
+    gap: 10px;
+    padding: 14px;
+  }
+
+  body:not(.case-page) .time-machine__card-copy strong {
+    font-size: clamp(1.13rem, 5.5vw, 1.55rem);
+  }
+
+  body:not(.case-page) .time-machine__card-stat {
+    font-size: 0.75rem;
+  }
+
+  body:not(.case-page) .time-machine__timeline {
+    grid-column: 1;
+    grid-row: 2;
+    display: flex;
+    width: 100%;
+    height: auto;
+    align-items: center;
+    gap: 8px;
+    overflow-x: auto;
+    margin: 0;
+    padding: 2px 2px 8px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(244, 243, 238, 0.35) transparent;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  body:not(.case-page) .time-machine__stop {
+    flex: 0 0 auto;
+    min-height: 44px;
+    justify-self: auto;
+    scroll-snap-align: start;
+  }
+
+  body:not(.case-page) .time-machine__stop-target {
+    min-height: 44px;
+    justify-content: center;
+    gap: 0;
+    padding: 0 14px;
+    border: 1px solid rgba(244, 243, 238, 0.22);
+    border-radius: 999px;
+    background: rgba(244, 243, 238, 0.04);
+  }
+
+  body:not(.case-page) .time-machine__stop.is-active .time-machine__stop-target {
+    border-color: var(--project-accent);
+    background: color-mix(in srgb, var(--project-accent) 14%, #09090b);
+  }
+
+  body:not(.case-page) .time-machine__stop-label {
+    color: var(--color-text);
+    filter: none;
+    font-size: 0.875rem;
+    opacity: 1;
+    transform: none;
+  }
+
+  body:not(.case-page) .time-machine__stop-mark {
+    display: none;
+  }
+
+  body:not(.case-page) .quote-marquee {
+    gap: 14px;
+    mask-image: none;
+  }
+
+  body:not(.case-page) .quote-marquee__row {
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: none;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  body:not(.case-page) .quote-marquee__row::-webkit-scrollbar {
+    display: none;
+  }
+
+  body:not(.case-page) .quote-marquee__track {
+    animation: none;
+    will-change: auto;
+  }
+
+  body:not(.case-page) .quote-marquee__group {
+    padding-left: 16px;
+  }
+
+  body:not(.case-page) .quote-card {
+    width: min(82vw, 400px);
+    scroll-snap-align: center;
+    cursor: auto;
+  }
+
+  body:not(.case-page) .about-badges {
+    grid-template-columns: repeat(2, minmax(0, max-content));
+    gap: 12px;
+  }
+
+  body:not(.case-page) .contact-method {
+    min-height: 44px;
+    overflow-wrap: anywhere;
+  }
+
+  body:not(.case-page) .contact-method__icon {
+    width: 44px;
+    height: 44px;
+    flex-basis: 44px;
+  }
+
+  body:not(.case-page) .contact-form input,
+  body:not(.case-page) .contact-form textarea {
+    font-size: 16px;
+  }
+
+  body:not(.case-page) .contact-globe svg {
+    touch-action: pan-y;
+  }
+}
+
+@media (max-width: 430px) {
+  body:not(.case-page) .menu-toggle {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+
+@media (max-width: 360px) {
+  body:not(.case-page) .wordmark {
+    font-size: 1.8rem;
+  }
+
+  body:not(.case-page) .hero {
+    min-height: 660px;
+  }
+
+  body:not(.case-page) .hero__content {
+    min-height: 660px;
+  }
+
+  body:not(.case-page) .time-machine__card-body {
+    grid-template-columns: minmax(0, 1fr) 76px;
+    gap: 6px;
+    padding: 10px;
+  }
+
+  body:not(.case-page) .time-machine__card-copy strong {
+    font-size: 1.12rem;
   }
 }
