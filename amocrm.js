@@ -12,9 +12,14 @@ function setActiveCaseSection(id) {
     link.classList.toggle("is-active", active);
     if (active) {
       link.setAttribute("aria-current", "location");
-      const navBounds = link.closest(".case-nav")?.getBoundingClientRect();
-      if (navBounds && navBounds.top < window.innerHeight && navBounds.bottom > 0) {
-        link.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth", block: "nearest", inline: "center" });
+      const nav = link.closest(".case-nav");
+      const links = link.closest(".case-nav__links");
+      const navBounds = nav?.getBoundingClientRect();
+      if (links && links.scrollWidth > links.clientWidth && navBounds && navBounds.top < window.innerHeight && navBounds.bottom > 0) {
+        const linkBounds = link.getBoundingClientRect();
+        const linksBounds = links.getBoundingClientRect();
+        const target = links.scrollLeft + linkBounds.left - linksBounds.left - (links.clientWidth - linkBounds.width) / 2;
+        links.scrollTo({ left: target, behavior: prefersReducedMotion ? "auto" : "smooth" });
       }
     } else {
       link.removeAttribute("aria-current");
@@ -267,6 +272,7 @@ function initWorkAreasPhysics() {
   const items = surface ? Array.from(surface.querySelectorAll(".work-chip")) : [];
   if (!surface || !items.length || !window.Matter || prefersReducedMotion) return;
 
+  const compactLayout = window.matchMedia("(max-width: 760px)");
   const { Body, Bodies, Composite, Engine, Sleeping } = window.Matter;
   const engine = Engine.create({ enableSleeping: true, positionIterations: 8, velocityIterations: 6 });
   const states = new Map();
@@ -388,7 +394,6 @@ function initWorkAreasPhysics() {
     frame = 0;
   };
 
-  surface.classList.add("is-physics-ready");
   items.forEach((item) => {
     const state = {
       body: null,
@@ -413,7 +418,7 @@ function initWorkAreasPhysics() {
     }, true);
 
     item.addEventListener("pointerdown", (event) => {
-      if (!state.body || (event.pointerType === "mouse" && event.button !== 0)) return;
+      if (compactLayout.matches || !state.body || (event.pointerType === "mouse" && event.button !== 0)) return;
       event.preventDefault();
       const surfaceRect = surface.getBoundingClientRect();
       state.pointerId = event.pointerId;
@@ -476,7 +481,7 @@ function initWorkAreasPhysics() {
     item.addEventListener("pointerup", release);
     item.addEventListener("pointercancel", release);
     item.addEventListener("keydown", (event) => {
-      if (!state.body) return;
+      if (compactLayout.matches || !state.body) return;
       const step = event.shiftKey ? 32 : 12;
       const movement = {
         ArrowLeft: [-step, 0],
@@ -502,15 +507,31 @@ function initWorkAreasPhysics() {
     });
   });
 
-  window.requestAnimationFrame(() => buildWorld(false));
+  const syncPhysicsLayout = () => {
+    if (compactLayout.matches) {
+      stopScene();
+      surface.classList.remove("is-physics-ready");
+      items.forEach((item) => item.classList.remove("is-dragging"));
+      return;
+    }
+
+    const wasReady = surface.classList.contains("is-physics-ready");
+    surface.classList.add("is-physics-ready");
+    window.cancelAnimationFrame(resizeFrame);
+    resizeFrame = window.requestAnimationFrame(() => buildWorld(wasReady));
+  };
+
+  compactLayout.addEventListener("change", syncPhysicsLayout);
+  syncPhysicsLayout();
   const resizeObserver = new ResizeObserver(() => {
+    if (compactLayout.matches) return;
     window.cancelAnimationFrame(resizeFrame);
     resizeFrame = window.requestAnimationFrame(() => buildWorld(true));
   });
   resizeObserver.observe(surface);
 
   const visibilityObserver = new IntersectionObserver(([entry]) => {
-    if (entry.isIntersecting) startScene();
+    if (entry.isIntersecting && !compactLayout.matches) startScene();
     else stopScene();
   }, { threshold: 0.08 });
   visibilityObserver.observe(surface);
