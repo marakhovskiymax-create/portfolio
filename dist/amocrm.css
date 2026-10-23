@@ -1,5 +1,11 @@
 :root {
   --case-accent: #ff6b8a;
+  --case-work-grid: rgba(255, 107, 138, 0.045);
+  --case-work-surface: #1b1015;
+  --case-work-chip: #8e2d50;
+  --case-decision-start: #4f2344;
+  --case-decision-end: #26192c;
+  --case-decision-glow: rgba(255, 107, 138, 0.26);
   --case-panel: #0d0d0d;
   --case-panel-raised: #181818;
   --case-line: rgba(244, 243, 238, 0.16);
@@ -527,9 +533,9 @@ body.case-page {
   overflow: hidden;
   border-radius: 24px;
   background:
-    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-    #181818;
+    linear-gradient(var(--case-work-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--case-work-grid) 1px, transparent 1px),
+    var(--case-work-surface);
   background-size: 24px 24px;
 }
 
@@ -547,7 +553,7 @@ body.case-page {
   border: 0;
   border-radius: 999px;
   color: var(--color-text);
-  background: #303030;
+  background: var(--case-work-chip);
   font-family: var(--font-body);
   font-size: 24px;
   font-weight: 400;
@@ -572,7 +578,7 @@ body.case-page {
 
 .work-chip.is-active {
   color: var(--color-text);
-  background: #303030;
+  background: var(--case-work-chip);
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -780,9 +786,9 @@ body.case-page {
   text-wrap: pretty;
 }
 
-.renewal-flow__result {
+.renewal-flow article.renewal-flow__result {
   isolation: isolate;
-  background: linear-gradient(145deg, #242424, #111 66%);
+  background: linear-gradient(145deg, var(--case-decision-start), var(--case-decision-end) 68%);
 }
 
 .renewal-flow__trail {
@@ -796,7 +802,7 @@ body.case-page {
   background: #fff;
   box-shadow:
     0 0 18px 8px rgba(255, 255, 255, 0.5),
-    0 0 42px 20px rgba(244, 243, 238, 0.16),
+    0 0 42px 20px var(--case-decision-glow),
     0 0 72px 34px rgba(0, 0, 0, 0.34);
   offset-path: rect(3px auto auto 3px round 18px);
   offset-rotate: 0deg;
@@ -824,7 +830,7 @@ body.case-page {
   width: 54%;
   height: 100%;
   border-radius: inherit;
-  background: var(--color-text);
+  background: var(--case-accent);
   content: "";
   animation: case-progress 1.8s var(--ease-out) infinite alternate;
 }

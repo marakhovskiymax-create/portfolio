@@ -1,6 +1,12 @@
-/* Keep each case's identity in its active navigation number and source media only. */
+/* Case color is limited to navigation, source media, work areas, and the decision card. */
 body.shable-page {
   --case-accent: #b996ff;
+  --case-work-grid: rgba(185, 150, 255, 0.055);
+  --case-work-surface: #140c22;
+  --case-work-chip: #6d43bd;
+  --case-decision-start: #7248c3;
+  --case-decision-end: #28143f;
+  --case-decision-glow: rgba(185, 150, 255, 0.34);
 }
 
 .shable-page .case-carousel__slide,

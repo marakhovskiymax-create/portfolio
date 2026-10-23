@@ -1,6 +1,12 @@
-/* Keep each case's identity in its active navigation number and source media only. */
+/* Case color is limited to navigation, source media, work areas, and the decision card. */
 body.eme-app-page {
   --case-accent: #c8d88d;
+  --case-work-grid: rgba(200, 216, 141, 0.04);
+  --case-work-surface: #15180d;
+  --case-work-chip: #64742f;
+  --case-decision-start: #596923;
+  --case-decision-end: #242a10;
+  --case-decision-glow: rgba(201, 221, 119, 0.31);
 }
 
 .eme-app-page .case-carousel__slide,
