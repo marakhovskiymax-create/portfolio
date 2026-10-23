@@ -1,19 +1,6 @@
+/* Keep each case's identity in its active navigation number and source media only. */
 body.eme-app-page {
   --case-accent: #c8d88d;
-  --case-accent-2: #a8ba63;
-  --case-panel: #14170b;
-  --case-panel-raised: #1b1f10;
-  --case-line: rgba(200, 216, 141, 0.2);
-  background:
-    radial-gradient(circle at 78% 8%, rgba(200, 216, 141, 0.14), transparent 29rem),
-    radial-gradient(circle at 14% 40%, rgba(108, 126, 50, 0.1), transparent 32rem),
-    #070805;
-}
-
-.eme-app-page::before {
-  background-image:
-    radial-gradient(circle, rgba(251, 255, 235, 0.66) 0 1px, transparent 1.4px),
-    radial-gradient(circle, rgba(200, 216, 141, 0.56) 0 0.8px, transparent 1.2px);
 }
 
 .eme-app-page .case-carousel__slide,
@@ -21,86 +8,4 @@ body.eme-app-page {
 .eme-app-page .case-story__media--wide,
 .eme-app-page .case-story__media--inset {
   background: #e9efcf;
-}
-
-.eme-app-page .case-carousel__slide img,
-.eme-app-page .case-wide-visual img,
-.eme-app-page .case-story__media img {
-  filter: saturate(0.82) contrast(1.05) sepia(0.08);
-}
-
-.eme-app-page .case-accordion__card,
-.eme-app-page .case-story__notes article {
-  border-color: rgba(200, 216, 141, 0.18);
-  background: rgba(200, 216, 141, 0.075);
-}
-
-.eme-app-page .work-areas__canvas {
-  background:
-    linear-gradient(rgba(200, 216, 141, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(200, 216, 141, 0.04) 1px, transparent 1px),
-    #15180d;
-  background-size: 24px 24px;
-}
-
-.eme-app-page .work-chip,
-.eme-app-page .work-chip.is-active {
-  color: #fbffe9;
-  background: #64742f;
-  box-shadow: 0 16px 34px rgba(45, 55, 13, 0.34);
-}
-
-.eme-app-page .work-chip:focus-visible {
-  outline-color: #ddeaab;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .eme-app-page .work-chip:hover {
-    background: #778a38;
-  }
-}
-
-.eme-app-page .integration-map {
-  background: #eff3dc;
-  color: #202510;
-}
-
-.eme-app-page .integration-map__step span {
-  color: #71832f;
-}
-
-.eme-app-page .integration-map__step p {
-  color: rgba(32, 37, 16, 0.64);
-}
-
-.eme-app-page .integration-map__line {
-  background: #9aac52;
-}
-
-.eme-app-page .renewal-flow__result {
-  background: linear-gradient(145deg, #596923, #242a10 68%) !important;
-}
-
-.eme-app-page .renewal-flow__trail {
-  box-shadow:
-    0 0 18px 8px rgba(255, 255, 246, 0.48),
-    0 0 42px 20px rgba(201, 221, 119, 0.31),
-    0 0 72px 34px rgba(53, 64, 13, 0.42);
-}
-
-.eme-app-page .case-impact {
-  background: #13150b;
-  box-shadow: inset 0 1px 0 rgba(200, 216, 141, 0.1);
-}
-
-.eme-app-page .case-next a:hover,
-.eme-app-page .case-next a:focus-visible {
-  color: var(--case-accent);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .eme-app-page .case-carousel__slide,
-  .eme-app-page .work-chip {
-    transition-duration: 180ms;
-  }
 }
