@@ -168,7 +168,14 @@ body.case-page {
   align-content: start;
   justify-items: start;
   gap: 7px;
-  padding: 20px 16px 0 0;
+  padding-block-start: 20px;
+  padding-inline-end: 16px;
+}
+
+.case-meta div:last-child {
+  justify-items: end;
+  padding-inline-end: 0;
+  text-align: end;
 }
 
 .case-meta dt {
