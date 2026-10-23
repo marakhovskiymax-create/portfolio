@@ -62,8 +62,62 @@ let carouselAutoplayTimer = 0;
 let carouselIsVisible = false;
 let carouselIsHovered = false;
 let carouselHasFocus = false;
+let carouselManuallyPaused = false;
+let carouselCount = null;
+let carouselAnnouncement = null;
+let carouselToggle = null;
 
-function renderCarousel(nextIndex) {
+if (carousel && carouselSlides.length > 1) {
+  const controls = document.createElement("div");
+  controls.className = "case-carousel__controls";
+
+  carouselCount = document.createElement("span");
+  carouselCount.className = "case-carousel__count";
+  controls.append(carouselCount);
+
+  const actions = document.createElement("div");
+  actions.className = "case-carousel__actions";
+  const makeButton = (className, label) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = `case-carousel__control ${className}`;
+    button.setAttribute("aria-label", label);
+    actions.append(button);
+    return button;
+  };
+
+  makeButton("case-carousel__control--prev", "Previous slide")
+    .addEventListener("click", () => moveCarousel(carouselIndex - 1));
+  carouselToggle = makeButton("case-carousel__control--toggle", "Pause carousel");
+  carouselToggle.addEventListener("click", () => {
+    carouselManuallyPaused = !carouselManuallyPaused;
+    if (!carouselManuallyPaused) carouselHasFocus = false;
+    syncCarouselControls();
+    scheduleCarouselAutoplay();
+  });
+  makeButton("case-carousel__control--next", "Next slide")
+    .addEventListener("click", () => moveCarousel(carouselIndex + 1));
+  controls.append(actions);
+
+  carouselAnnouncement = document.createElement("span");
+  carouselAnnouncement.className = "sr-only";
+  carouselAnnouncement.setAttribute("aria-live", "polite");
+  carouselAnnouncement.setAttribute("aria-atomic", "true");
+  controls.append(carouselAnnouncement);
+  carousel.append(controls);
+}
+
+function syncCarouselControls() {
+  if (carouselCount) {
+    carouselCount.textContent = `${String(carouselIndex + 1).padStart(2, "0")} / ${String(carouselSlides.length).padStart(2, "0")}`;
+  }
+  if (carouselToggle) {
+    carouselToggle.textContent = carouselManuallyPaused ? "Play" : "Pause";
+    carouselToggle.setAttribute("aria-label", carouselManuallyPaused ? "Play carousel" : "Pause carousel");
+  }
+}
+
+function renderCarousel(nextIndex, announce = false) {
   if (!carouselTrack || !carouselSlides.length) return;
   carouselIndex = (nextIndex + carouselSlides.length) % carouselSlides.length;
 
@@ -76,6 +130,12 @@ function renderCarousel(nextIndex) {
     slide.dataset.carouselPosition = String(position);
     slide.setAttribute("aria-hidden", String(position !== 0));
   });
+
+  syncCarouselControls();
+  if (announce && carouselAnnouncement) {
+    const caption = carouselSlides[carouselIndex].querySelector("figcaption")?.textContent?.trim();
+    carouselAnnouncement.textContent = `Slide ${carouselIndex + 1} of ${carouselSlides.length}${caption ? `: ${caption}` : ""}`;
+  }
 }
 
 function stopCarouselAutoplay() {
@@ -92,6 +152,7 @@ function canAutoplayCarousel() {
     && carouselPointerId === null
     && !document.hidden
     && !prefersReducedMotion
+    && !carouselManuallyPaused
   );
 }
 
@@ -106,7 +167,8 @@ function scheduleCarouselAutoplay() {
 }
 
 function moveCarousel(nextIndex) {
-  renderCarousel(nextIndex);
+  carouselManuallyPaused = true;
+  renderCarousel(nextIndex, true);
   scheduleCarouselAutoplay();
 }
 
@@ -164,7 +226,7 @@ carouselViewport?.addEventListener("pointermove", (event) => {
 carouselViewport?.addEventListener("pointerup", (event) => {
   if (event.pointerId !== carouselPointerId) return;
   carouselViewport.releasePointerCapture(event.pointerId);
-  if (Math.abs(carouselDeltaX) > 42) renderCarousel(carouselIndex + (carouselDeltaX < 0 ? 1 : -1));
+  if (Math.abs(carouselDeltaX) > 42) moveCarousel(carouselIndex + (carouselDeltaX < 0 ? 1 : -1));
   carouselPointerId = null;
   scheduleCarouselAutoplay();
   window.setTimeout(() => { carouselDidDrag = false; }, 0);
@@ -264,7 +326,15 @@ function selectWorkChip(chip) {
   });
 }
 
-workChips.forEach((chip) => chip.addEventListener("click", () => selectWorkChip(chip)));
+workChips.forEach((chip) => chip.addEventListener("click", () => {
+  selectWorkChip(chip);
+  if (!window.matchMedia("(max-width: 760px)").matches) return;
+
+  const target = document.getElementById(chip.dataset.workTarget);
+  if (!target) return;
+  if (window.location.hash !== `#${target.id}`) window.location.hash = target.id;
+  else target.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth", block: "start" });
+}));
 if (workChips[0]) selectWorkChip(workChips[0]);
 
 function initWorkAreasPhysics() {
