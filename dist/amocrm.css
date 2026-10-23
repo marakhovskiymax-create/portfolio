@@ -157,24 +157,25 @@ body.case-page {
 
 .case-meta {
   grid-column: 1 / -1;
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
   margin-top: 20px;
   border-top: 1px solid var(--case-line);
 }
 
 .case-meta div {
   display: grid;
+  flex: 0 1 auto;
   align-content: start;
   justify-items: start;
   gap: 7px;
+  min-width: 0;
   padding-block-start: 20px;
-  padding-inline-end: 16px;
 }
 
 .case-meta div:last-child {
   justify-items: end;
-  padding-inline-end: 0;
   text-align: end;
 }
 
@@ -1055,7 +1056,11 @@ body.case-page > .case-footer {
 
   .case-hero h1 { font-size: clamp(3.15rem, 15vw, 5.2rem); }
   .case-hero__lede { font-size: 1rem; }
-  .case-meta { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .case-meta {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 20px;
+  }
   .case-meta div { padding-top: 16px; }
   .case-carousel__viewport { height: clamp(250px, 62vw, 370px); }
   .case-carousel__viewport::before,
