@@ -790,27 +790,7 @@ body.case-page {
 
 .renewal-flow article.renewal-flow__result {
   isolation: isolate;
-  overflow: visible;
   background: linear-gradient(145deg, var(--case-decision-start), var(--case-decision-end) 68%);
-}
-
-.renewal-flow__trail {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 3;
-  width: 26px;
-  height: 26px;
-  background: url("design/assets/case-decision-entity.svg") center / contain no-repeat;
-  offset-path: inset(-15px round 35px);
-  offset-anchor: center;
-  offset-rotate: auto;
-  animation: renewal-border-trail 8s linear infinite;
-  pointer-events: none;
-}
-
-@keyframes renewal-border-trail {
-  to { offset-distance: 100%; }
 }
 
 .renewal-flow__result i {
@@ -1172,7 +1152,6 @@ body.case-page > .case-footer {
 
   .renewal-flow {
     grid-template-columns: minmax(0, 1fr);
-    padding-inline: 12px;
   }
 
   .renewal-flow article { min-height: 220px; }
@@ -1228,12 +1207,5 @@ body.case-page > .case-footer {
   .work-chip,
   .case-nav__links a { transition: none; }
   .renewal-flow__result i::after { animation: none; }
-  .renewal-flow__trail {
-    top: -28px;
-    left: 50%;
-    animation: none;
-    offset-path: none;
-    transform: translateX(-50%);
-  }
   .js [data-case-reveal] { opacity: 1; transform: none; }
 }
