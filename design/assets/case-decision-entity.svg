@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+  <g stroke="#f4f3ee" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M27 20C22 17 17 11 7 6M26 19C19 17 13 14 4 13M26 20C18 20 12 20 3 22M26 21C19 23 13 27 6 34M27 21C23 25 20 30 18 37" stroke-width="1.25"/>
+    <path d="M26 20C21 14 18 8 15 3M27 20C31 17 33 14 36 9M27 21C32 22 35 25 38 29" stroke-width=".8" opacity=".8"/>
+  </g>
+  <g fill="#f4f3ee">
+    <circle cx="27" cy="20" r="2.25"/>
+    <circle cx="7" cy="6" r="1.5"/>
+    <circle cx="4" cy="13" r="1.1"/>
+    <circle cx="3" cy="22" r="1.4"/>
+    <circle cx="6" cy="34" r="1.2"/>
+    <circle cx="18" cy="37" r="1.5"/>
+    <circle cx="15" cy="3" r="1"/>
+    <circle cx="36" cy="9" r="1.2"/>
+    <circle cx="38" cy="29" r="1.1"/>
+  </g>
+</svg>
