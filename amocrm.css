@@ -396,6 +396,14 @@ body.case-page {
   line-height: 1.65;
 }
 
+.case-impact h2 {
+  max-width: min(100%, var(--impact-heading-width, 16ch));
+}
+
+.case-impact__intro > p:last-child {
+  max-width: min(100%, 90ch);
+}
+
 .case-accordion {
   border-top: 1px solid var(--case-line);
 }
@@ -826,7 +834,7 @@ body.case-page {
 }
 
 .case-impact {
-  --impact-inset: clamp(32px, 5vw, 72px);
+  --impact-inset: 40px;
   margin-bottom: 0;
   padding: var(--impact-inset);
   border-radius: 28px;
@@ -1169,7 +1177,7 @@ body.case-page > .case-footer {
   .renewal-flow article { min-height: 220px; }
   .renewal-flow article h3 { margin-top: 36px; }
 
-  .case-impact { margin-inline: 0; padding: 28px; border-radius: 20px; }
+  .case-impact { margin-inline: 0; border-radius: 20px; }
   .case-impact__metrics { grid-template-columns: minmax(0, 1fr); }
   .case-impact__metrics div { min-height: 0; gap: 16px; padding: 22px 0; }
   .case-impact__metrics div + div { padding-left: 0; border-top: 1px solid var(--case-line); border-left: 0; }
