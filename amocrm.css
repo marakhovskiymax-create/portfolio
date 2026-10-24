@@ -131,10 +131,18 @@ body.case-page {
 
 .case-hero__copy {
   display: grid;
-  grid-template-columns: minmax(0, 1.5fr) minmax(240px, 0.75fr);
-  gap: 28px clamp(28px, 5vw, 72px);
-  align-items: end;
+  min-height: calc(100svh - 140px);
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: clamp(28px, 4vw, 56px);
   margin-bottom: clamp(52px, 7vw, 92px);
+}
+
+.case-hero__main {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(240px, 0.75fr);
+  gap: clamp(28px, 5vw, 72px);
+  align-content: center;
+  align-items: end;
 }
 
 .case-eyebrow {
@@ -163,12 +171,10 @@ body.case-page {
 }
 
 .case-meta {
-  grid-column: 1 / -1;
   display: grid;
   grid-template-columns: repeat(4, max-content);
   justify-content: space-between;
   column-gap: 24px;
-  margin-top: 20px;
   border-top: 1px solid var(--case-line);
 }
 
@@ -1033,9 +1039,13 @@ body.case-page > .case-footer {
   .case-nav__links a:first-child { padding-left: 0; }
 
   .case-hero__copy {
+    min-height: calc(100svh - 104px);
+    margin-bottom: clamp(28px, 6vw, 44px);
+  }
+
+  .case-hero__main {
     grid-template-columns: minmax(0, 1fr);
     gap: 22px;
-    margin-bottom: clamp(28px, 6vw, 44px);
   }
 
   .case-hero h1 { font-size: clamp(2.65rem, 12.8vw, 5.2rem); overflow-wrap: break-word; }
