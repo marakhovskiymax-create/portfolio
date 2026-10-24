@@ -63,58 +63,14 @@ let carouselIsVisible = false;
 let carouselIsHovered = false;
 let carouselHasFocus = false;
 let carouselManuallyPaused = false;
-let carouselCount = null;
 let carouselAnnouncement = null;
-let carouselToggle = null;
 
 if (carousel && carouselSlides.length > 1) {
-  const controls = document.createElement("div");
-  controls.className = "case-carousel__controls";
-
-  carouselCount = document.createElement("span");
-  carouselCount.className = "case-carousel__count";
-  controls.append(carouselCount);
-
-  const actions = document.createElement("div");
-  actions.className = "case-carousel__actions";
-  const makeButton = (className, label) => {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = `case-carousel__control ${className}`;
-    button.setAttribute("aria-label", label);
-    actions.append(button);
-    return button;
-  };
-
-  makeButton("case-carousel__control--prev", "Previous slide")
-    .addEventListener("click", () => moveCarousel(carouselIndex - 1));
-  carouselToggle = makeButton("case-carousel__control--toggle", "Pause carousel");
-  carouselToggle.addEventListener("click", () => {
-    carouselManuallyPaused = !carouselManuallyPaused;
-    if (!carouselManuallyPaused) carouselHasFocus = false;
-    syncCarouselControls();
-    scheduleCarouselAutoplay();
-  });
-  makeButton("case-carousel__control--next", "Next slide")
-    .addEventListener("click", () => moveCarousel(carouselIndex + 1));
-  controls.append(actions);
-
   carouselAnnouncement = document.createElement("span");
   carouselAnnouncement.className = "sr-only";
   carouselAnnouncement.setAttribute("aria-live", "polite");
   carouselAnnouncement.setAttribute("aria-atomic", "true");
-  controls.append(carouselAnnouncement);
-  carousel.append(controls);
-}
-
-function syncCarouselControls() {
-  if (carouselCount) {
-    carouselCount.textContent = `${String(carouselIndex + 1).padStart(2, "0")} / ${String(carouselSlides.length).padStart(2, "0")}`;
-  }
-  if (carouselToggle) {
-    carouselToggle.textContent = carouselManuallyPaused ? "Play" : "Pause";
-    carouselToggle.setAttribute("aria-label", carouselManuallyPaused ? "Play carousel" : "Pause carousel");
-  }
+  carousel.append(carouselAnnouncement);
 }
 
 function renderCarousel(nextIndex, announce = false) {
@@ -131,7 +87,6 @@ function renderCarousel(nextIndex, announce = false) {
     slide.setAttribute("aria-hidden", String(position !== 0));
   });
 
-  syncCarouselControls();
   if (announce && carouselAnnouncement) {
     const caption = carouselSlides[carouselIndex].querySelector("figcaption")?.textContent?.trim();
     carouselAnnouncement.textContent = `Slide ${carouselIndex + 1} of ${carouselSlides.length}${caption ? `: ${caption}` : ""}`;

@@ -220,68 +220,6 @@ body.case-page {
   overscroll-behavior-x: contain;
 }
 
-.case-carousel__controls {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  width: min(64%, 980px);
-  margin: 14px auto 0;
-}
-
-.case-carousel__count {
-  color: var(--case-text-secondary);
-  font-size: 0.75rem;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0.1em;
-  white-space: nowrap;
-}
-
-.case-carousel__actions { display: flex; gap: 8px; }
-
-.case-carousel__control {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 44px;
-  min-height: 44px;
-  padding: 0;
-  border: 1px solid var(--case-line);
-  border-radius: 999px;
-  color: var(--color-text);
-  background: var(--case-panel-raised);
-  cursor: pointer;
-  transition: background 180ms var(--ease-out), border-color 180ms var(--ease-out);
-}
-
-.case-carousel__control:hover,
-.case-carousel__control:focus-visible {
-  border-color: var(--case-text-secondary);
-  background: #292929;
-}
-
-.case-carousel__control:focus-visible { outline: 2px solid var(--color-text); outline-offset: 3px; }
-
-.case-carousel__control--toggle {
-  min-width: 64px;
-  padding-inline: 12px;
-  font: 700 0.75rem var(--font-body);
-}
-
-.case-carousel__control--prev::before,
-.case-carousel__control--next::before {
-  display: block;
-  width: 9px;
-  height: 9px;
-  border-top: 2px solid currentColor;
-  border-right: 2px solid currentColor;
-  content: "";
-}
-
-.case-carousel__control--prev::before { transform: translateX(2px) rotate(-135deg); }
-.case-carousel__control--next::before { transform: translateX(-2px) rotate(45deg); }
-
 .case-carousel__viewport::before,
 .case-carousel__viewport::after {
   position: absolute;
@@ -1132,7 +1070,6 @@ body.case-page > .case-footer {
   }
   .case-meta div { padding-top: 16px; }
   .case-carousel__viewport { height: clamp(190px, 58vw, 370px); }
-  .case-carousel__controls { width: 86%; margin-top: 8px; }
   .case-carousel__viewport::before,
   .case-carousel__viewport::after { width: clamp(44px, 13vw, 72px); }
   .case-carousel__slide { width: 86%; border-radius: 16px; }
