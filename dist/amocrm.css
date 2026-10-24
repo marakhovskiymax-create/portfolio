@@ -846,11 +846,12 @@ body.case-page {
 .case-impact__metrics div {
   display: flex;
   min-width: 0;
-  min-height: 220px;
+  min-height: 0;
   flex-direction: column;
-  justify-content: space-between;
-  gap: 28px;
-  padding: 24px 28px 0 0;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: clamp(16px, 2vw, 24px);
+  padding: 24px 28px 8px 0;
 }
 
 .case-impact__metrics div + div {
@@ -865,6 +866,7 @@ body.case-page {
 }
 
 .case-impact__metrics dd {
+  margin: 0;
   color: var(--color-text);
   font-family: var(--font-hero, "Inter Tight", sans-serif);
   font-size: clamp(3.2rem, 5.3vw, 7rem);
@@ -1169,7 +1171,7 @@ body.case-page > .case-footer {
 
   .case-impact { margin-inline: 0; padding: 28px; border-radius: 20px; }
   .case-impact__metrics { grid-template-columns: minmax(0, 1fr); }
-  .case-impact__metrics div { min-height: 160px; padding: 22px 0; }
+  .case-impact__metrics div { min-height: 0; gap: 16px; padding: 22px 0; }
   .case-impact__metrics div + div { padding-left: 0; border-top: 1px solid var(--case-line); border-left: 0; }
   .case-impact__metrics dd { font-size: clamp(4rem, 22vw, 6.4rem); }
 
