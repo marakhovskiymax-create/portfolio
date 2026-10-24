@@ -52,7 +52,8 @@ const carousel = document.querySelector("[data-case-carousel]");
 const carouselTrack = carousel?.querySelector("[data-carousel-track]");
 const carouselSlides = Array.from(carousel?.querySelectorAll("[data-carousel-slide]") ?? []);
 const carouselViewport = carousel?.querySelector(".case-carousel__viewport");
-const carouselAutoplayDelay = 4000;
+const carouselFirstSlideDelay = 15000;
+const carouselOtherSlideDelay = 5000;
 let carouselIndex = 0;
 let carouselPointerId = null;
 let carouselStartX = 0;
@@ -118,7 +119,7 @@ function scheduleCarouselAutoplay() {
   carouselAutoplayTimer = window.setTimeout(() => {
     renderCarousel(carouselIndex + 1);
     scheduleCarouselAutoplay();
-  }, carouselAutoplayDelay);
+  }, carouselIndex === 0 ? carouselFirstSlideDelay : carouselOtherSlideDelay);
 }
 
 function moveCarousel(nextIndex) {
