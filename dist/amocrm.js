@@ -3,6 +3,43 @@ const caseNavLinks = Array.from(document.querySelectorAll("[data-case-nav]"));
 const casePosition = document.querySelector("[data-case-position]");
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+const scrollGallery = document.querySelector(".case-scroll-gallery");
+const scrollGalleryStage = scrollGallery?.querySelector(".case-scroll-gallery__stage");
+const scrollGalleryCards = Array.from(scrollGallery?.querySelectorAll(".case-scroll-gallery__card") ?? []);
+
+if (scrollGallery && "IntersectionObserver" in window) {
+  const galleryNavObserver = new IntersectionObserver((entries) => {
+    if (entries[0]?.isIntersecting) setActiveCaseSection("renewal");
+  }, { rootMargin: "-24% 0px -56% 0px", threshold: 0 });
+  galleryNavObserver.observe(scrollGallery);
+}
+
+if (scrollGallery && scrollGalleryStage && scrollGalleryCards.length === 3 && !prefersReducedMotion) {
+  let galleryFrame = 0;
+  const clampUnit = (value) => Math.max(0, Math.min(1, value));
+  const smoothStep = (value) => value * value * (3 - 2 * value);
+
+  function renderScrollGallery() {
+    galleryFrame = 0;
+    const stageTop = Number.parseFloat(window.getComputedStyle(scrollGalleryStage).top) || 0;
+    const travel = Math.max(1, scrollGallery.offsetHeight - scrollGalleryStage.offsetHeight);
+    const progress = clampUnit((stageTop - scrollGallery.getBoundingClientRect().top) / travel);
+    const second = smoothStep(clampUnit((progress - 0.04) / 0.42));
+    const third = smoothStep(clampUnit((progress - 0.53) / 0.42));
+
+    scrollGalleryCards[1].style.transform = `translate3d(0, ${(1 - second) * 105}%, 0)`;
+    scrollGalleryCards[2].style.transform = `translate3d(0, ${(1 - third) * 105}%, 0)`;
+  }
+
+  function scheduleScrollGallery() {
+    if (!galleryFrame) galleryFrame = window.requestAnimationFrame(renderScrollGallery);
+  }
+
+  window.addEventListener("scroll", scheduleScrollGallery, { passive: true });
+  window.addEventListener("resize", scheduleScrollGallery, { passive: true });
+  renderScrollGallery();
+}
+
 function setActiveCaseSection(id) {
   const activeIndex = caseSections.findIndex((section) => section.id === id);
   if (activeIndex < 0) return;

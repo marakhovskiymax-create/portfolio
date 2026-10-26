@@ -359,6 +359,86 @@ body.case-page {
   margin-bottom: var(--case-gap);
 }
 
+/* Three editorial frames overlap as the page scrolls; scrolling back restores them. */
+.case-scroll-gallery {
+  position: relative;
+  height: 300svh;
+  margin-bottom: var(--case-gap);
+}
+
+.case-scroll-gallery__stage {
+  position: sticky;
+  top: 104px;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 22px;
+  height: min(78svh, 760px);
+}
+
+.case-scroll-gallery__heading {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  color: var(--color-text);
+  font-family: var(--font-hero, "Inter Tight", sans-serif);
+  font-size: clamp(2.4rem, 5vw, 5.2rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.08;
+}
+
+.case-scroll-gallery__deck {
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+  border-radius: 24px;
+}
+
+.case-scroll-gallery__card {
+  position: absolute;
+  z-index: var(--gallery-layer);
+  inset: 0;
+  width: calc(100% - var(--gallery-inset, 0px));
+  height: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+  border: 1px solid var(--case-line);
+  border-radius: 24px;
+  background: #171717;
+  box-shadow: 0 18px 70px rgba(0, 0, 0, 0.5);
+}
+
+.case-scroll-gallery__card:nth-child(n + 2) {
+  transform: translate3d(0, 105%, 0);
+  will-change: transform;
+}
+
+.case-scroll-gallery__card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--gallery-position, center);
+  transform: scale(var(--gallery-scale, 1));
+}
+
+.case-scroll-gallery__card figcaption {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  left: 20px;
+  width: fit-content;
+  max-width: calc(100% - 40px);
+  padding: 8px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  background: rgba(5, 5, 5, 0.82);
+  color: var(--color-text);
+  font-size: 0.8rem;
+  line-height: 1.2;
+  backdrop-filter: blur(12px);
+}
+
 .case-context {
   display: grid;
   grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
@@ -1055,6 +1135,13 @@ body.case-page > .case-footer {
 
 @media (max-width: 760px) {
   :root { --case-gap: clamp(72px, 16vw, 112px); }
+  .case-scroll-gallery { height: 270svh; }
+  .case-scroll-gallery__stage { top: 146px; gap: 18px; height: calc(100svh - 172px); }
+  .case-scroll-gallery__heading { font-size: clamp(2rem, 8vw, 3.4rem); }
+  .case-scroll-gallery__deck,
+  .case-scroll-gallery__card { border-radius: 18px; }
+  .case-scroll-gallery__card { width: 100%; }
+  .case-scroll-gallery__card figcaption { right: 12px; bottom: 12px; left: 12px; max-width: calc(100% - 24px); font-size: 0.72rem; }
   .case-main { gap: 0; padding-top: 104px; }
 
   .case-nav {
@@ -1242,6 +1329,11 @@ body.case-page > .case-footer {
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
+  .case-scroll-gallery { height: auto; }
+  .case-scroll-gallery__stage { position: static; height: auto; }
+  .case-scroll-gallery__deck { display: grid; gap: 20px; overflow: visible; }
+  .case-scroll-gallery__card,
+  .case-scroll-gallery__card:nth-child(n + 2) { position: relative; height: clamp(240px, 48svh, 480px); transform: none !important; }
   .case-carousel__track,
   .case-carousel__slide,
   .case-carousel__slide figcaption,

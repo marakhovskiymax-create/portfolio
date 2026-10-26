@@ -16,7 +16,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css?v=20261026-display-type" />
-    <link rel="stylesheet" href="amocrm.css?v=20261027-context-fade" />
+    <link rel="stylesheet" href="amocrm.css?v=20261027-scroll-gallery" />
     <script>document.documentElement.classList.replace("no-js", "js");</script>
   </head>
   <body class="case-page">
@@ -265,6 +265,25 @@
             </div>
           </section>
 
+          <section class="case-scroll-gallery" aria-labelledby="scroll-gallery-title">
+            <div class="case-scroll-gallery__stage">
+            <h2 class="case-scroll-gallery__heading" id="scroll-gallery-title">Selected product views</h2>
+            <div class="case-scroll-gallery__deck">
+            <figure class="case-scroll-gallery__card" style="--gallery-layer: 1; --gallery-inset: 40px;">
+              <img src="design/assets/amocrm/marketing-website.jpg" width="1450" height="816" alt="Kommo marketing website" loading="lazy" decoding="async" />
+              <figcaption>Kommo marketing website</figcaption>
+            </figure>
+            <figure class="case-scroll-gallery__card" style="--gallery-layer: 2; --gallery-inset: 20px;">
+              <img src="design/assets/amocrm/navigation-design.jpg" width="1450" height="816" alt="Product navigation" loading="lazy" decoding="async" />
+              <figcaption>Product navigation</figcaption>
+            </figure>
+            <figure class="case-scroll-gallery__card" style="--gallery-layer: 3; --gallery-inset: 0px;">
+              <img src="design/assets/amocrm/upgrade-experience.jpg" width="1450" height="816" alt="Trial-end upgrade experience" loading="lazy" decoding="async" />
+              <figcaption>Trial-end upgrade experience</figcaption>
+            </figure>
+            </div>
+            </div>
+          </section>
           <section class="case-impact case-anchor" id="impact" aria-labelledby="impact-title" data-case-section style="--impact-heading-width: 12ch;">
             <div class="case-impact__intro">
               <h2 id="impact-title">From designs to release</h2>
@@ -401,6 +420,6 @@
     <script src="vendor/gsap.min.js"></script>
     <script src="vendor/ScrollTrigger.min.js"></script>
     <script src="script.js?v=20261020-footer-parity"></script>
-    <script src="amocrm.js?v=20261027-context-stable"></script>
+    <script src="amocrm.js?v=20261027-scroll-gallery"></script>
   </body>
 </html>
