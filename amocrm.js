@@ -673,8 +673,8 @@ function initCaseTextMotion() {
         autoAlpha: 1,
         rotateX: 0,
         y: 0,
-        duration: 0.2,
-        stagger: 0.035,
+        duration: 0.22,
+        stagger: Math.min(0.018, 0.4 / Math.max(1, prepared.characters.length - 1)),
         ease: "power3.out",
         clearProps: "transform,opacity,visibility",
       });
@@ -682,16 +682,16 @@ function initCaseTextMotion() {
       window.gsap.to(prepared.supportingElements, {
         autoAlpha: 1,
         y: 0,
-        duration: 0.32,
-        delay: 0.12,
-        stagger: 0.08,
+        duration: 0.28,
+        delay: 0.04,
+        stagger: 0.05,
         ease: "power3.out",
         clearProps: "transform,opacity,visibility",
       });
 
       observer.unobserve(entry.target);
     });
-  }, { rootMargin: "0px 0px -10% 0px", threshold: 0.16 });
+  }, { rootMargin: "0px 0px 15% 0px", threshold: 0.01 });
 
   preparedSections.forEach(({ section }) => observer.observe(section));
 }
@@ -741,13 +741,13 @@ function initDecisionTextEffects() {
       const prepared = preparedBlocks.find((item) => item.block === entry.target);
       if (!prepared) return;
 
-      const stagger = Math.min(0.05, 2.4 / Math.max(1, prepared.characters.length));
+      const stagger = Math.min(0.012, 0.42 / Math.max(1, prepared.characters.length - 1));
 
       window.gsap.to(prepared.label, {
         autoAlpha: 1,
         y: 0,
         filter: "blur(0px)",
-        duration: 0.5,
+        duration: 0.24,
         ease: "power3.out",
         clearProps: "transform,opacity,visibility,filter",
       });
@@ -756,8 +756,8 @@ function initDecisionTextEffects() {
         autoAlpha: 1,
         rotateX: 0,
         y: 0,
-        duration: 0.2,
-        delay: 0.5,
+        duration: 0.22,
+        delay: 0.06,
         stagger,
         ease: "power3.out",
         clearProps: "transform,opacity,visibility",
@@ -765,7 +765,7 @@ function initDecisionTextEffects() {
 
       observer.unobserve(entry.target);
     });
-  }, { rootMargin: "0px 0px -8% 0px", threshold: 0.25 });
+  }, { rootMargin: "0px 0px 15% 0px", threshold: 0.01 });
 
   preparedBlocks.forEach(({ block }) => observer.observe(block));
 }
