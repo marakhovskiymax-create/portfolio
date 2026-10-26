@@ -666,7 +666,7 @@ body.has-spider-cursor .spider-cursor {
 }
 
 .case-visual[data-project-visual="eme-app"] {
-  --project-accent: #c8d88d;
+  --project-accent: #72c98b;
 }
 
 .case-visual[data-project-visual="lunch-balloon"] {
@@ -773,8 +773,8 @@ body.has-spider-cursor .spider-cursor {
 }
 
 .time-machine__card--eme-app {
-  --card-accent: #c8d88d;
-  background: linear-gradient(145deg, #292b1d, #161812 72%);
+  --card-accent: #72c98b;
+  background: linear-gradient(145deg, #1b2a21, #111713 72%);
 }
 
 .time-machine__card--lunch {
@@ -903,8 +903,8 @@ body.has-spider-cursor .spider-cursor {
 .time-machine__graphic--warehouse {
   background-image:
     linear-gradient(to top, var(--card-accent) 0 48%, transparent 49%) 16% 100% / 13% 72%,
-    linear-gradient(to top, rgba(200, 216, 141, 0.5) 0 72%, transparent 73%) 48% 100% / 13% 72%,
-    linear-gradient(to top, rgba(200, 216, 141, 0.75) 0 60%, transparent 61%) 80% 100% / 13% 72%,
+    linear-gradient(to top, color-mix(in srgb, var(--card-accent) 50%, transparent) 0 72%, transparent 73%) 48% 100% / 13% 72%,
+    linear-gradient(to top, color-mix(in srgb, var(--card-accent) 75%, transparent) 0 60%, transparent 61%) 80% 100% / 13% 72%,
     linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px);
   background-repeat: no-repeat, no-repeat, no-repeat, repeat;
   background-size: auto, auto, auto, 100% 18px;
