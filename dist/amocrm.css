@@ -89,11 +89,12 @@ body.case-page {
   gap: 8px;
   align-items: center;
   min-height: 48px;
+  padding-left: 0;
   border-bottom: 1px solid var(--case-line);
   color: var(--case-text-secondary);
   font-size: 1rem;
   font-weight: 900;
-  transition: color 180ms var(--ease-out), transform 180ms var(--ease-out);
+  transition: color 180ms var(--ease-out), padding-left 180ms var(--ease-out);
 }
 
 .case-nav__links a span {
@@ -109,7 +110,7 @@ body.case-page {
 }
 
 .case-nav__links a.is-active {
-  transform: translateX(6px);
+  padding-left: 6px;
 }
 
 .case-nav__links a.is-active span {
