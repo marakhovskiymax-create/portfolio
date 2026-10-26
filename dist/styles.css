@@ -546,8 +546,8 @@ body.has-spider-cursor .spider-cursor {
   font-family: var(--font-hero);
   font-size: var(--section-heading-size);
   font-weight: 700;
-  letter-spacing: -0.045em;
-  line-height: 0.98;
+  letter-spacing: -0.025em;
+  line-height: 1.078;
   text-wrap: balance;
 }
 
@@ -1145,8 +1145,8 @@ body.has-spider-cursor .spider-cursor {
   font-family: var(--font-hero, "Inter Tight", sans-serif);
   font-size: var(--section-heading-size);
   font-weight: 700;
-  letter-spacing: -0.045em;
-  line-height: 0.98;
+  letter-spacing: -0.025em;
+  line-height: 1.078;
   text-wrap: balance;
 }
 
@@ -1830,8 +1830,8 @@ body.has-spider-cursor .spider-cursor {
   font-family: var(--font-hero, "Inter Tight", sans-serif);
   font-size: var(--section-heading-size);
   font-weight: 700;
-  letter-spacing: -0.045em;
-  line-height: 0.98;
+  letter-spacing: -0.025em;
+  line-height: 1.078;
 }
 
 .site-motion-title {
@@ -1993,8 +1993,8 @@ body.has-spider-cursor .spider-cursor {
   font-family: var(--font-hero, "Inter Tight", sans-serif);
   font-size: var(--section-heading-size);
   font-weight: 700;
-  letter-spacing: -0.045em;
-  line-height: 0.98;
+  letter-spacing: -0.025em;
+  line-height: 1.078;
 }
 
 .contact__intro {
@@ -3136,8 +3136,8 @@ body:not(.case-page) > .footer {
   font-family: var(--font-hero);
   font-size: var(--section-heading-size);
   font-weight: 700;
-  letter-spacing: -0.045em;
-  line-height: 0.98;
+  letter-spacing: -0.025em;
+  line-height: 1.078;
 }
 
 .skill-drag-item {

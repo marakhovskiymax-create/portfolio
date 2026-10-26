@@ -160,8 +160,8 @@ body.case-page {
   font-family: var(--font-hero, "Inter Tight", sans-serif);
   font-size: clamp(3.4rem, 7.4vw, 8.4rem);
   font-weight: 800;
-  letter-spacing: -0.055em;
-  line-height: 0.94;
+  letter-spacing: -0.035em;
+  line-height: 1.034;
 }
 
 .case-hero__lede {
@@ -383,8 +383,8 @@ body.case-page {
   font-family: var(--font-hero, "Inter Tight", sans-serif);
   font-size: var(--section-heading-size);
   font-weight: 700;
-  letter-spacing: -0.045em;
-  line-height: 0.98;
+  letter-spacing: -0.025em;
+  line-height: 1.078;
 }
 
 .case-context__intro > p:last-child,
@@ -938,8 +938,8 @@ body.case-page {
   font-family: var(--font-hero, "Inter Tight", sans-serif);
   font-size: clamp(2.8rem, 6vw, 6rem);
   font-weight: 700;
-  letter-spacing: -0.045em;
-  line-height: 0.98;
+  letter-spacing: -0.025em;
+  line-height: 1.078;
 }
 
 .case-next__preview {
