@@ -274,7 +274,7 @@ body.case-page {
   top: 50%;
   left: 50%;
   width: min(64%, 980px);
-  aspect-ratio: 1450 / 816;
+  aspect-ratio: 2 / 1;
   overflow: hidden;
   border-radius: 24px;
   background: var(--case-panel);
@@ -324,8 +324,9 @@ body.case-page {
   display: block;
   width: 100%;
   height: 100%;
-  aspect-ratio: 1450 / 816;
+  aspect-ratio: 2 / 1;
   object-fit: cover;
+  object-position: center top;
 }
 
 .case-carousel__slide figcaption {
@@ -370,9 +371,9 @@ body.case-page {
   position: sticky;
   top: 104px;
   display: grid;
-  grid-template-rows: auto minmax(0, 1fr);
+  grid-template-rows: auto auto;
   gap: 22px;
-  height: min(78svh, 760px);
+  width: min(100%, calc((100svh - 240px) * 2));
 }
 
 .case-scroll-gallery__heading {
@@ -389,7 +390,7 @@ body.case-page {
 
 .case-scroll-gallery__deck {
   position: relative;
-  min-height: 0;
+  aspect-ratio: 2 / 1;
   overflow: hidden;
   border-radius: 24px;
 }
@@ -397,9 +398,11 @@ body.case-page {
 .case-scroll-gallery__card {
   position: absolute;
   z-index: var(--gallery-layer);
-  inset: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   width: calc(100% - var(--gallery-inset, 0px));
-  height: 100%;
+  aspect-ratio: 2 / 1;
   margin: 0 auto;
   overflow: hidden;
   border: 1px solid var(--case-line);
@@ -418,7 +421,7 @@ body.case-page {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: var(--gallery-position, center);
+  object-position: var(--gallery-position, center top);
   transform: scale(var(--gallery-scale, 1));
 }
 
@@ -567,7 +570,10 @@ body.case-page {
 .case-story__media img {
   display: block;
   width: 100%;
+  aspect-ratio: 2 / 1;
   height: auto;
+  object-fit: cover;
+  object-position: center top;
 }
 
 .case-wide-visual figcaption,
@@ -1042,7 +1048,7 @@ body.case-page {
 .case-next__preview {
   display: block;
   width: 100%;
-  aspect-ratio: 8 / 5;
+  aspect-ratio: 2 / 1;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 18px;
@@ -1136,7 +1142,7 @@ body.case-page > .case-footer {
 @media (max-width: 760px) {
   :root { --case-gap: clamp(72px, 16vw, 112px); }
   .case-scroll-gallery { height: 270svh; }
-  .case-scroll-gallery__stage { top: 146px; gap: 18px; height: calc(100svh - 172px); }
+  .case-scroll-gallery__stage { top: 146px; gap: 18px; width: 100%; }
   .case-scroll-gallery__heading { font-size: clamp(2rem, 8vw, 3.4rem); }
   .case-scroll-gallery__deck,
   .case-scroll-gallery__card { border-radius: 18px; }
@@ -1330,10 +1336,10 @@ body.case-page > .case-footer {
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .case-scroll-gallery { height: auto; }
-  .case-scroll-gallery__stage { position: static; height: auto; }
-  .case-scroll-gallery__deck { display: grid; gap: 20px; overflow: visible; }
+  .case-scroll-gallery__stage { position: static; width: 100%; }
+  .case-scroll-gallery__deck { display: grid; gap: 20px; aspect-ratio: auto; overflow: visible; }
   .case-scroll-gallery__card,
-  .case-scroll-gallery__card:nth-child(n + 2) { position: relative; height: clamp(240px, 48svh, 480px); transform: none !important; }
+  .case-scroll-gallery__card:nth-child(n + 2) { position: relative; height: auto; transform: none !important; }
   .case-carousel__track,
   .case-carousel__slide,
   .case-carousel__slide figcaption,
