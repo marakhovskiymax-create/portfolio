@@ -769,6 +769,11 @@ body.case-page {
   gap: 30px;
 }
 
+#renewal h2 {
+  max-width: 29ch;
+  text-wrap: balance;
+}
+
 .renewal-flow article {
   position: relative;
   min-height: 240px;
