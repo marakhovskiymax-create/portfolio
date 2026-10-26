@@ -272,6 +272,26 @@ accordionItems.forEach((item) => {
   });
 });
 
+// Reserve space for the tallest answer so opening any Context item leaves the image in place.
+function reserveContextAccordionSpace() {
+  const accordion = document.querySelector(".case-context .case-accordion");
+  if (!accordion) return;
+  const items = Array.from(accordion.querySelectorAll("[data-accordion-item]"));
+  const closedHeight = 1 + items.reduce((height, item) => {
+    const trigger = item.querySelector(".case-accordion__trigger");
+    return height + (trigger ? trigger.offsetHeight : 0) + 1;
+  }, 0);
+  const tallestAnswer = Math.max(0, ...items.map((item) => {
+    const answer = item.querySelector("[data-accordion-answer]");
+    return answer ? answer.scrollHeight : 0;
+  }));
+  accordion.style.setProperty("--case-accordion-reserved-height", `${Math.ceil(closedHeight + tallestAnswer)}px`);
+}
+
+reserveContextAccordionSpace();
+window.addEventListener("resize", reserveContextAccordionSpace, { passive: true });
+document.fonts?.ready.then(reserveContextAccordionSpace);
+
 window.addEventListener("pageshow", (event) => {
   if (event.persisted) accordionItems.forEach((item) => setAccordionItem(item, false, false));
 });

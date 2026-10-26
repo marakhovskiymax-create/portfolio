@@ -364,6 +364,7 @@ body.case-page {
   grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
   gap: clamp(48px, 8vw, 112px);
   align-items: start;
+  margin-bottom: 80px;
 }
 
 .case-context__intro,
@@ -407,6 +408,7 @@ body.case-page {
 
 .case-accordion {
   border-top: 1px solid var(--case-line);
+  min-height: var(--case-accordion-reserved-height, 0px);
 }
 
 .case-accordion__item {
@@ -498,6 +500,21 @@ body.case-page {
 .case-wide-visual figcaption {
   padding: 14px 18px 16px;
   color: #1a1a1a;
+}
+
+/* The Context image emerges from black, then recedes into it. */
+.case-wide-visual--context {
+  background: transparent;
+}
+
+.case-wide-visual--context img {
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 42%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 42%, transparent 100%);
+}
+
+.case-wide-visual--context figcaption {
+  padding-top: 0;
+  color: var(--case-text-secondary);
 }
 
 .case-heading {
