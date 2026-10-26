@@ -149,6 +149,12 @@ section[id] {
   scroll-margin-top: 88px;
 }
 
+#portfolio,
+#career,
+#faq {
+  scroll-margin-top: 24px;
+}
+
 .shell {
   width: var(--shell);
   margin-inline: auto;
