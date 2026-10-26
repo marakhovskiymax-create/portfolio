@@ -265,11 +265,15 @@ accordionItems.forEach((item) => {
   const trigger = item.querySelector(".case-accordion__trigger");
   if (!trigger) return;
 
-  setAccordionItem(item, item.classList.contains("is-open"), false);
+  setAccordionItem(item, false, false);
   trigger.addEventListener("click", () => {
     const willOpen = trigger.getAttribute("aria-expanded") !== "true";
     accordionItems.forEach((peer) => setAccordionItem(peer, peer === item && willOpen));
   });
+});
+
+window.addEventListener("pageshow", (event) => {
+  if (event.persisted) accordionItems.forEach((item) => setAccordionItem(item, false, false));
 });
 
 const workChips = Array.from(document.querySelectorAll(".work-chip"));
