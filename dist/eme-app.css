@@ -15,3 +15,9 @@ body.eme-app-page {
 .eme-app-page .case-story__media--inset {
   background: #dff4e7;
 }
+
+@media (min-width: 761px) {
+  .eme-app-page .case-meta {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
