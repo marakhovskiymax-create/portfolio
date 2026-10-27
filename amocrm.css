@@ -834,7 +834,7 @@ body.case-page {
   grid-template-columns: repeat(5, minmax(0, auto));
   gap: 18px;
   align-items: center;
-  min-height: 420px;
+  aspect-ratio: 2 / 1;
   padding: clamp(24px, 5vw, 64px);
   border-radius: 24px;
   background: #e8e8e8;
@@ -1283,7 +1283,7 @@ body.case-page > .case-footer {
 
   .integration-map {
     grid-template-columns: minmax(0, 1fr);
-    min-height: 0;
+    aspect-ratio: auto;
     padding: 24px;
   }
 
