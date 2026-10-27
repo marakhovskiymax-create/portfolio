@@ -601,8 +601,8 @@ body.case-page {
 }
 
 .case-wide-visual--context img {
-  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 42%, transparent 100%);
-  mask-image: linear-gradient(to bottom, #000 0%, #000 42%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 50%, transparent 66.667%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 50%, transparent 66.667%);
 }
 
 .case-wide-visual--context figcaption {
