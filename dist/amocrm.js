@@ -781,8 +781,8 @@ function initCaseTextMotion() {
           autoAlpha: 1,
           rotateX: 0,
           y: 0,
-          duration: 0.22,
-          stagger: Math.min(0.018, 0.4 / Math.max(1, prepared.characters.length - 1)),
+          duration: 0.2,
+          stagger: 0.035,
           ease: "power3.out",
           clearProps: "transform,opacity,visibility",
         });
