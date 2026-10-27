@@ -598,11 +598,12 @@ body.case-page {
 /* The Context image emerges from black, then recedes into it. */
 .case-wide-visual--context {
   background: transparent;
+  margin-bottom: 40px;
 }
 
 .case-wide-visual--context img {
-  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 50%, transparent 66.667%);
-  mask-image: linear-gradient(to bottom, #000 0%, #000 50%, transparent 66.667%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 50%, transparent min(91.667%, calc(66.667% + 90px)));
+  mask-image: linear-gradient(to bottom, #000 0%, #000 50%, transparent min(91.667%, calc(66.667% + 90px)));
 }
 
 .case-wide-visual--context figcaption {

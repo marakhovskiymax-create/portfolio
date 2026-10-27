@@ -838,13 +838,16 @@ function initDecisionTextEffects() {
     return { block, label, characters };
   }).filter(Boolean);
 
-  const observer = new IntersectionObserver((entries) => {
+  const revealDecisionText = (entries, observer) => {
     entries.forEach((entry) => {
       if (!entry.isIntersecting) return;
       const prepared = preparedBlocks.find((item) => item.block === entry.target);
       if (!prepared) return;
 
-      const stagger = Math.min(0.012, 0.42 / Math.max(1, prepared.characters.length - 1));
+      const isRole = prepared.block.classList.contains("case-role");
+      const stagger = isRole
+        ? Math.min(0.008, 1.05 / Math.max(1, prepared.characters.length - 1))
+        : Math.min(0.012, 0.42 / Math.max(1, prepared.characters.length - 1));
 
       window.gsap.to(prepared.label, {
         autoAlpha: 1,
@@ -859,8 +862,8 @@ function initDecisionTextEffects() {
         autoAlpha: 1,
         rotateX: 0,
         y: 0,
-        duration: 0.22,
-        delay: 0.06,
+        duration: isRole ? 0.36 : 0.22,
+        delay: isRole ? 0.1 : 0.06,
         stagger,
         ease: "power3.out",
         clearProps: "transform,opacity,visibility",
@@ -868,9 +871,18 @@ function initDecisionTextEffects() {
 
       observer.unobserve(entry.target);
     });
-  }, { rootMargin: "0px 0px 15% 0px", threshold: 0.01 });
+  };
 
-  preparedBlocks.forEach(({ block }) => observer.observe(block));
+  const observer = new IntersectionObserver(revealDecisionText, {
+    rootMargin: "0px 0px 15% 0px", threshold: 0.01,
+  });
+  const roleObserver = new IntersectionObserver(revealDecisionText, {
+    rootMargin: "0px 0px -15% 0px", threshold: 0.01,
+  });
+
+  preparedBlocks.forEach(({ block }) => {
+    (block.classList.contains("case-role") ? roleObserver : observer).observe(block);
+  });
 }
 
 function initNextProjectTextEffect() {
