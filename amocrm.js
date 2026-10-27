@@ -3,6 +3,48 @@ const caseNavLinks = Array.from(document.querySelectorAll("[data-case-nav]"));
 const casePosition = document.querySelector("[data-case-position]");
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+// Match the reference's scroll-scrubbed fade and subtle scale. Keeping this on
+// the media wrappers leaves carousel slides and the three-card gallery alone.
+const caseScrollMedia = Array.from(document.querySelectorAll(
+  ".case-carousel, .case-wide-visual, .case-story__media"
+));
+
+if (caseScrollMedia.length && !prefersReducedMotion) {
+  let mediaFrame = 0;
+  const mediaScales = new WeakMap();
+  const clampUnit = (value) => Math.max(0, Math.min(1, value));
+
+  function renderCaseScrollMedia() {
+    mediaFrame = 0;
+    const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+    const revealDistance = Math.max(1, viewportHeight * 0.64);
+
+    caseScrollMedia.forEach((media) => {
+      const previousScale = mediaScales.get(media) ?? 1;
+      // getBoundingClientRect includes the current scale. Recover layout top
+      // so the animation never feeds its own transform back into its progress.
+      const visualTop = media.getBoundingClientRect().top;
+      const layoutTop = visualTop - (1 - previousScale) * media.offsetHeight / 2;
+      const progress = clampUnit((viewportHeight - layoutTop) / revealDistance);
+      const scale = 0.9 + progress * 0.1;
+
+      media.style.setProperty("--case-scroll-opacity", progress.toFixed(4));
+      media.style.setProperty("--case-scroll-scale", scale.toFixed(4));
+      mediaScales.set(media, scale);
+      media.classList.add("case-scroll-media");
+    });
+  }
+
+  function scheduleCaseScrollMedia() {
+    if (!mediaFrame) mediaFrame = window.requestAnimationFrame(renderCaseScrollMedia);
+  }
+
+  window.addEventListener("scroll", scheduleCaseScrollMedia, { passive: true });
+  window.addEventListener("resize", scheduleCaseScrollMedia, { passive: true });
+  window.addEventListener("pageshow", scheduleCaseScrollMedia);
+  renderCaseScrollMedia();
+}
+
 const scrollGallery = document.querySelector(".case-scroll-gallery");
 const scrollGalleryStage = scrollGallery?.querySelector(".case-scroll-gallery__stage");
 const scrollGalleryCards = Array.from(scrollGallery?.querySelectorAll(".case-scroll-gallery__card") ?? []);

@@ -217,6 +217,13 @@ body.case-page {
   position: relative;
 }
 
+/* Scroll-linked media reveal. The three-card gallery retains its own motion. */
+.js .case-scroll-media {
+  opacity: var(--case-scroll-opacity, 1);
+  transform: scale(var(--case-scroll-scale, 1));
+  transform-origin: center center;
+}
+
 .case-carousel__viewport {
   position: relative;
   height: clamp(340px, 36vw, 610px);
@@ -1335,6 +1342,7 @@ body.case-page > .case-footer {
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
+  .js .case-scroll-media { opacity: 1 !important; transform: none !important; }
   .case-scroll-gallery { height: auto; }
   .case-scroll-gallery__stage { position: static; width: 100%; }
   .case-scroll-gallery__deck { display: grid; gap: 20px; aspect-ratio: auto; overflow: visible; }
