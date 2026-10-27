@@ -670,6 +670,7 @@ function initWorkAreasPhysics() {
 initWorkAreasPhysics();
 
 const metricScrambles = Array.from(document.querySelectorAll("[data-text-scramble]"));
+const caseTextRevealMargin = "0px 0px -30% 0px";
 
 function playMetricScramble(element, delay = 0) {
   const finalText = element.textContent ?? "";
@@ -705,7 +706,7 @@ function initMetricScrambleInView() {
       playMetricScramble(entry.target);
       observer.unobserve(entry.target);
     });
-  }, { rootMargin: "0px 0px -6% 0px", threshold: 0.6 });
+  }, { rootMargin: caseTextRevealMargin, threshold: 0.01 });
 
   metricScrambles.forEach((metric) => metricObserver.observe(metric));
 }
@@ -752,51 +753,55 @@ function initCaseTextMotion() {
     return Array.from(title.querySelectorAll(".case-motion-char"));
   }
 
-  const preparedSections = sectionMotion.map((config) => {
+  const preparedElements = new Map();
+
+  sectionMotion.forEach((config) => {
     const section = document.querySelector(config.selector);
     const title = section?.querySelector(config.title);
-    if (!section || !title) return null;
+    if (!section || !title) return;
 
     const characters = splitTitle(title);
-    const supportingElements = config.support.flatMap((selector) => Array.from(section.querySelectorAll(selector)));
+    const supportingElements = [...new Set(config.support.flatMap((selector) => Array.from(section.querySelectorAll(selector))))];
 
     window.gsap.set(characters, { autoAlpha: 0, rotateX: 90, y: 10 });
     window.gsap.set(supportingElements, { autoAlpha: 0, y: 10 });
 
-    return { section, characters, supportingElements };
-  }).filter(Boolean);
+    preparedElements.set(title, { characters });
+    supportingElements.forEach((element) => preparedElements.set(element, { element }));
+  });
 
-  const observer = new IntersectionObserver((entries) => {
+  const observer = new IntersectionObserver((entries, activeObserver) => {
     entries.forEach((entry) => {
       if (!entry.isIntersecting) return;
-      const prepared = preparedSections.find((item) => item.section === entry.target);
+      const prepared = preparedElements.get(entry.target);
       if (!prepared) return;
 
-      window.gsap.to(prepared.characters, {
-        autoAlpha: 1,
-        rotateX: 0,
-        y: 0,
-        duration: 0.22,
-        stagger: Math.min(0.018, 0.4 / Math.max(1, prepared.characters.length - 1)),
-        ease: "power3.out",
-        clearProps: "transform,opacity,visibility",
-      });
+      if (prepared.characters) {
+        window.gsap.to(prepared.characters, {
+          autoAlpha: 1,
+          rotateX: 0,
+          y: 0,
+          duration: 0.22,
+          stagger: Math.min(0.018, 0.4 / Math.max(1, prepared.characters.length - 1)),
+          ease: "power3.out",
+          clearProps: "transform,opacity,visibility",
+        });
+      } else {
+        window.gsap.to(prepared.element, {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.28,
+          delay: 0.04,
+          ease: "power3.out",
+          clearProps: "transform,opacity,visibility",
+        });
+      }
 
-      window.gsap.to(prepared.supportingElements, {
-        autoAlpha: 1,
-        y: 0,
-        duration: 0.28,
-        delay: 0.04,
-        stagger: 0.05,
-        ease: "power3.out",
-        clearProps: "transform,opacity,visibility",
-      });
-
-      observer.unobserve(entry.target);
+      activeObserver.unobserve(entry.target);
     });
-  }, { rootMargin: "0px 0px 15% 0px", threshold: 0.01 });
+  }, { rootMargin: caseTextRevealMargin, threshold: 0.01 });
 
-  preparedSections.forEach(({ section }) => observer.observe(section));
+  preparedElements.forEach((_, element) => observer.observe(element));
 }
 
 function initDecisionTextEffects() {
@@ -874,15 +879,10 @@ function initDecisionTextEffects() {
   };
 
   const observer = new IntersectionObserver(revealDecisionText, {
-    rootMargin: "0px 0px 15% 0px", threshold: 0.01,
-  });
-  const roleObserver = new IntersectionObserver(revealDecisionText, {
-    rootMargin: "0px 0px -15% 0px", threshold: 0.01,
+    rootMargin: caseTextRevealMargin, threshold: 0.01,
   });
 
-  preparedBlocks.forEach(({ block }) => {
-    (block.classList.contains("case-role") ? roleObserver : observer).observe(block);
-  });
+  preparedBlocks.forEach(({ block }) => observer.observe(block));
 }
 
 function initNextProjectTextEffect() {
@@ -949,9 +949,9 @@ function initNextProjectTextEffect() {
 
       observer.unobserve(entry.target);
     });
-  }, { rootMargin: "0px 0px -8% 0px", threshold: 0.35 });
+  }, { rootMargin: caseTextRevealMargin, threshold: 0.01 });
 
-  observer.observe(block);
+  observer.observe(label);
 }
 
 initCaseTextMotion();
@@ -970,6 +970,6 @@ if (prefersReducedMotion || !("IntersectionObserver" in window)) {
       entry.target.classList.add("is-visible");
       observer.unobserve(entry.target);
     });
-  }, { rootMargin: "0px 0px -12% 0px", threshold: 0.08 });
+  }, { rootMargin: caseTextRevealMargin, threshold: 0.01 });
   revealItems.forEach((item) => revealObserver.observe(item));
 }
