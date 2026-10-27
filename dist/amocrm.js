@@ -849,16 +849,13 @@ function initDecisionTextEffects() {
       const prepared = preparedBlocks.find((item) => item.block === entry.target);
       if (!prepared) return;
 
-      const isRole = prepared.block.classList.contains("case-role");
-      const stagger = isRole
-        ? Math.min(0.008, 1.05 / Math.max(1, prepared.characters.length - 1))
-        : Math.min(0.012, 0.42 / Math.max(1, prepared.characters.length - 1));
+      const stagger = Math.min(0.05, 2.4 / Math.max(1, prepared.characters.length));
 
       window.gsap.to(prepared.label, {
         autoAlpha: 1,
         y: 0,
         filter: "blur(0px)",
-        duration: 0.24,
+        duration: 0.5,
         ease: "power3.out",
         clearProps: "transform,opacity,visibility,filter",
       });
@@ -867,8 +864,8 @@ function initDecisionTextEffects() {
         autoAlpha: 1,
         rotateX: 0,
         y: 0,
-        duration: isRole ? 0.36 : 0.22,
-        delay: isRole ? 0.1 : 0.06,
+        duration: 0.2,
+        delay: 0.5,
         stagger,
         ease: "power3.out",
         clearProps: "transform,opacity,visibility",
