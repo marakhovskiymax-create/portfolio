@@ -787,12 +787,13 @@ function initCaseTextMotion() {
           clearProps: "transform,opacity,visibility",
         });
       } else {
+        const isWorkAreasCanvas = prepared.element.matches(".work-areas__canvas");
         window.gsap.to(prepared.element, {
           autoAlpha: 1,
           y: 0,
-          duration: 0.28,
+          duration: isWorkAreasCanvas ? 0.9 : 0.28,
           delay: 0.04,
-          ease: "power3.out",
+          ease: isWorkAreasCanvas ? "sine.inOut" : "power3.out",
           clearProps: "transform,opacity,visibility",
         });
       }
