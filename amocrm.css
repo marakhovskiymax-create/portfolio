@@ -1153,7 +1153,7 @@ body.case-page > .case-footer {
 }
 
 @media (max-width: 760px) {
-  :root { --case-gap: clamp(72px, 16vw, 112px); }
+  :root { --case-gap: 80px; }
   .case-scroll-gallery { height: 270svh; }
   .case-scroll-gallery__stage { top: 146px; gap: 18px; width: 100%; }
   .case-scroll-gallery__heading { font-size: clamp(2rem, 8vw, 3.4rem); }
@@ -1320,6 +1320,11 @@ body.case-page > .case-footer {
     padding-inline: 0;
   }
 
+}
+
+/* Keep the same section rhythm through the full phone range. */
+@media (min-width: 761px) and (max-width: 767px) {
+  :root { --case-gap: 80px; }
 }
 
 @media (max-width: 440px) {

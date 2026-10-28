@@ -3757,6 +3757,26 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
     transform: none;
   }
 
+  /* Eighty pixels between the content of neighboring mobile sections. */
+  body:not(.case-page) main > .section--portfolio {
+    padding-block: 80px 64px;
+  }
+
+  body:not(.case-page) main > .capability-tape {
+    padding-block: 16px;
+  }
+
+  body:not(.case-page) main > .career-story .career-stage {
+    padding-block: 64px 40px;
+  }
+
+  body:not(.case-page) main > .section--proof,
+  body:not(.case-page) main > .section--about,
+  body:not(.case-page) main > .section--faq,
+  body:not(.case-page) main > .contact {
+    padding-block: 40px;
+  }
+
   body:not(.case-page) .hero__main {
     align-self: end;
   }
