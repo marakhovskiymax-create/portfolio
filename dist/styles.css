@@ -3814,14 +3814,20 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
     width: 100vw;
     height: 120px;
     grid-template-columns: repeat(5, calc(100vw / 3));
-    overflow: hidden;
+    overflow: clip;
     transform: translateX(-50%);
   }
 
   body:not(.case-page) .career-tabs__rail {
-    left: -5vw;
-    width: 110vw;
+    left: -100vw;
+    width: calc(100vw * 11 / 3);
     translate: 0 -50%;
+    transform: translateX(var(--career-translate, 0px));
+    transition: transform 420ms var(--ease-out);
+  }
+
+  body:not(.case-page) .career-tabs__progress {
+    transition: transform 420ms var(--ease-out);
   }
 
   body:not(.case-page) .career-tab {
@@ -3833,7 +3839,7 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
 
   body:not(.case-page) .career-showcase {
     min-height: 0;
-    padding-top: 180px;
+    padding-top: 150px;
   }
 
   body:not(.case-page) .career-panel {
@@ -3942,7 +3948,9 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
 }
 
 @media (max-width: 767px) and (prefers-reduced-motion: reduce) {
-  body:not(.case-page) .career-tab {
+  body:not(.case-page) .career-tab,
+  body:not(.case-page) .career-tabs__rail,
+  body:not(.case-page) .career-tabs__progress {
     transition: none;
   }
 }

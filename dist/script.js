@@ -766,12 +766,13 @@ const careerPanelEnterTo = {
 
 function initCareerTimeline() {
   const timeline = document.querySelector("[data-career-timeline]");
+  const tabList = timeline?.querySelector(".career-tabs");
   const rail = timeline?.querySelector(".career-tabs__rail");
   const tabs = Array.from(timeline?.querySelectorAll("[data-career-tab]") ?? []);
   const panels = Array.from(timeline?.querySelectorAll("[data-career-panel]") ?? []);
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  if (!timeline || !rail || !tabs.length || tabs.length !== panels.length) return;
+  if (!timeline || !tabList || !rail || !tabs.length || tabs.length !== panels.length) return;
 
   let activeIndex = tabs.findIndex((tab) => tab.classList.contains("is-active"));
   let cleanupTimer = 0;
@@ -787,12 +788,16 @@ function initCareerTimeline() {
     // The first view shows three stages. Later selections stay centered,
     // including the final stage, while the next logo enters from the right.
     const offset = Math.max(0, index - 1);
-    timeline.style.setProperty("--career-translate", `${-offset * window.innerWidth / 3}px`);
+    timeline.style.setProperty("--career-translate", `${-offset * tabList.clientWidth / 3}px`);
   };
 
   const setProgress = (index) => {
     if (window.matchMedia("(max-width: 767px)").matches) {
-      timeline.style.setProperty("--career-progress", String(index / (tabs.length - 1)));
+      // The line travels with the logos, so its fill ends at the selected dot.
+      const columnWidth = tabList.clientWidth / 3;
+      const activeCenter = (index + 0.5) * columnWidth;
+      const progress = (tabList.clientWidth + activeCenter) / (tabList.clientWidth * 11 / 3);
+      timeline.style.setProperty("--career-progress", String(progress));
       return;
     }
     const railRect = rail.getBoundingClientRect();
