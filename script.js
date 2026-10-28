@@ -74,6 +74,8 @@ function syncTimeMachine(activeIndex, immediate = false) {
     const properties = {
       "--card-z": hasPassed ? "200px" : `${-depth * 60}px`,
       "--card-y": hasPassed ? "300px" : `${-depth * 42}px`,
+      "--card-y-tablet": hasPassed ? "300px" : `${-depth * 32}px`,
+      "--card-y-mobile": hasPassed ? "300px" : `${-depth * 28}px`,
       "--card-rotate": hasPassed ? "-20deg" : `${depth * 2}deg`,
       "--card-scale": hasPassed ? 1.3 : 1 - Math.min(depth, 4) * 0.025,
       "--card-opacity": hasPassed ? 0 : Math.max(0.28, 1 - depth * 0.15),

@@ -3515,7 +3515,7 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
     width: min(88%, 560px);
     transform:
       translate3d(-50%, -50%, var(--card-z, 0px))
-      translateY(var(--card-y, 0px))
+      translateY(var(--card-y-tablet, 0px))
       rotateX(var(--card-rotate, 0deg))
       scale(var(--card-scale, 1));
   }
@@ -3530,15 +3530,19 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
     grid-column: 1;
     grid-row: 2;
     display: flex;
-    width: 100%;
+    width: calc(100% + 48px);
     height: auto;
     justify-content: center;
     gap: 8px;
     overflow-x: auto;
-    margin: 0;
-    padding: 2px 2px 8px;
-    scrollbar-width: thin;
+    margin-inline: -24px;
+    padding: 2px 24px;
+    scrollbar-width: none;
     scroll-snap-type: x proximity;
+  }
+
+  body:not(.case-page) .time-machine__timeline::-webkit-scrollbar {
+    display: none;
   }
 
   body:not(.case-page) .time-machine__stop {
@@ -3551,6 +3555,7 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
   body:not(.case-page) .time-machine__stop-target {
     min-height: 44px;
     justify-content: center;
+    text-align: center;
     gap: 0;
     padding: 0 14px;
     border: 1px solid rgba(244, 243, 238, 0.22);
@@ -3579,7 +3584,7 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
 @media (max-width: 640px) {
   body:not(.case-page) .case-visual {
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: minmax(300px, auto) auto;
+    grid-template-rows: minmax(340px, auto) auto;
     gap: 12px;
     min-height: 0;
     padding: 16px 12px 14px;
@@ -3589,7 +3594,7 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
     grid-column: 1;
     grid-row: 1;
     width: 100%;
-    min-height: 300px;
+    min-height: 340px;
   }
 
   body:not(.case-page) .time-machine__card {
@@ -3599,6 +3604,11 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
     height: 224px;
     aspect-ratio: auto;
     border-radius: 16px;
+    transform:
+      translate3d(-50%, -50%, var(--card-z, 0px))
+      translateY(var(--card-y-mobile, 0px))
+      rotateX(var(--card-rotate, 0deg))
+      scale(var(--card-scale, 1));
   }
 
   body:not(.case-page) .time-machine__card-chrome {
@@ -3626,17 +3636,20 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
     grid-column: 1;
     grid-row: 2;
     display: flex;
-    width: 100%;
+    width: calc(100% + 24px);
     height: auto;
     align-items: center;
     gap: 8px;
     overflow-x: auto;
-    margin: 0;
-    padding: 2px 2px 8px;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(244, 243, 238, 0.35) transparent;
+    margin-inline: -12px;
+    padding: 2px 12px;
+    scrollbar-width: none;
     scroll-snap-type: x proximity;
     -webkit-overflow-scrolling: touch;
+  }
+
+  body:not(.case-page) .time-machine__timeline::-webkit-scrollbar {
+    display: none;
   }
 
   body:not(.case-page) .time-machine__stop {
@@ -3649,6 +3662,7 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
   body:not(.case-page) .time-machine__stop-target {
     min-height: 44px;
     justify-content: center;
+    text-align: center;
     gap: 0;
     padding: 0 14px;
     border: 1px solid rgba(244, 243, 238, 0.22);
