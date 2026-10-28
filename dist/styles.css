@@ -3765,6 +3765,14 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
 }
 
 @media (max-width: 767px) {
+  body:not(.case-page) .faq__heading {
+    text-align: center;
+  }
+
+  body:not(.case-page) .faq__intro {
+    margin-inline: auto;
+  }
+
   body:not(.case-page) .quote-marquee {
     mask-image: linear-gradient(to right, transparent 0, #000 5%, #000 95%, transparent 100%);
   }
