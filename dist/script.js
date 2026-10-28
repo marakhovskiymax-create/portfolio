@@ -778,7 +778,23 @@ function initCareerTimeline() {
   let activationFrame = 0;
   if (activeIndex < 0) activeIndex = 0;
 
+  const updateMobileTabs = (index) => {
+    if (!window.matchMedia("(max-width: 767px)").matches) {
+      timeline.style.removeProperty("--career-translate");
+      return;
+    }
+
+    // The first view shows three stages. Later selections stay centered,
+    // including the final stage, while the next logo enters from the right.
+    const offset = Math.max(0, index - 1);
+    timeline.style.setProperty("--career-translate", `${-offset * window.innerWidth / 3}px`);
+  };
+
   const setProgress = (index) => {
+    if (window.matchMedia("(max-width: 767px)").matches) {
+      timeline.style.setProperty("--career-progress", String(index / (tabs.length - 1)));
+      return;
+    }
     const railRect = rail.getBoundingClientRect();
     const tabRect = tabs[index].getBoundingClientRect();
     const activeCenter = tabRect.left + tabRect.width / 2;
@@ -862,6 +878,7 @@ function initCareerTimeline() {
       tab.tabIndex = isActive ? 0 : -1;
     });
 
+    updateMobileTabs(nextIndex);
     setProgress(nextIndex);
     activeIndex = nextIndex;
 
@@ -882,8 +899,12 @@ function initCareerTimeline() {
     });
   });
 
+  updateMobileTabs(activeIndex);
   setProgress(activeIndex);
-  window.addEventListener("resize", () => setProgress(activeIndex), { passive: true });
+  window.addEventListener("resize", () => {
+    updateMobileTabs(activeIndex);
+    setProgress(activeIndex);
+  }, { passive: true });
 }
 
 initCareerTimeline();
