@@ -3742,6 +3742,35 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
   .wordmark {
     transform: none;
   }
+
+  body:not(.case-page) .hero__main {
+    align-self: end;
+  }
+
+  body:not(.case-page) .hero__intro {
+    margin-bottom: 32px;
+  }
+
+  body:not(.case-page) .hero__bottom {
+    padding-top: 32px;
+  }
+
+  body:not(.case-page) .hero__strip {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  body:not(.case-page) .hero__edition,
+  body:not(.case-page) .hero__scroll,
+  body:not(.case-page) .hero__disciplines-extra {
+    display: none;
+  }
+
+  body:not(.case-page) .hero__disciplines {
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: start;
+    text-align: left;
+  }
 }
 
 @media (max-width: 360px) {
