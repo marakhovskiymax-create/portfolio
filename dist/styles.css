@@ -3581,6 +3581,17 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
   }
 }
 
+@media (min-width: 641px) and (max-width: 767px) {
+  body:not(.case-page) .time-machine__timeline {
+    --tab-card-inset: max(6%, calc((100% - 560px) / 2));
+    width: calc(100% - var(--tab-card-inset) + 24px);
+    justify-content: flex-start;
+    margin-left: var(--tab-card-inset);
+    margin-right: -24px;
+    padding: 2px 0;
+  }
+}
+
 @media (max-width: 640px) {
   body:not(.case-page) .case-visual {
     grid-template-columns: minmax(0, 1fr);
@@ -3636,15 +3647,16 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
     grid-column: 1;
     grid-row: 2;
     display: flex;
-    width: calc(100% + 24px);
+    width: calc(100% + 12px);
     height: auto;
     align-items: center;
     gap: 8px;
     overflow-x: auto;
-    margin-inline: -12px;
-    padding: 2px 12px;
+    margin-inline: 0 -12px;
+    padding: 2px 0 2px 4px;
     scrollbar-width: none;
     scroll-snap-type: x proximity;
+    scroll-padding-inline-start: 4px;
     -webkit-overflow-scrolling: touch;
   }
 
