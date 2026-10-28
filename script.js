@@ -58,6 +58,29 @@ function initLinkReveal() {
 
 initLinkReveal();
 
+function initMobileQuoteMarquee() {
+  const rows = document.querySelectorAll(".quote-marquee__row");
+  if (rows.length !== 2) return;
+
+  const firstGroups = rows[0].querySelectorAll(".quote-marquee__group");
+  const secondGroups = rows[1].querySelectorAll(".quote-marquee__group");
+  if (firstGroups.length !== 2 || secondGroups.length !== 2) return;
+
+  const secondRowCards = Array.from(secondGroups, (group) => Array.from(group.children));
+  const mobile = window.matchMedia("(max-width: 767px)");
+  const syncLayout = () => {
+    secondRowCards.forEach((cards, index) => {
+      const destination = mobile.matches ? firstGroups[index] : secondGroups[index];
+      destination.append(...cards);
+    });
+  };
+
+  syncLayout();
+  mobile.addEventListener("change", syncLayout);
+}
+
+initMobileQuoteMarquee();
+
 const visual = document.querySelector("[data-project-visual]");
 const visualCaption = visual?.querySelector("[data-visual-caption]");
 const stageCards = Array.from(visual?.querySelectorAll("[data-stage-card]") ?? []);

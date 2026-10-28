@@ -3769,13 +3769,17 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
     mask-image: linear-gradient(to right, transparent 0, #000 5%, #000 95%, transparent 100%);
   }
 
+  body:not(.case-page) .quote-marquee__row--reverse {
+    display: none;
+  }
+
   body:not(.case-page) .quote-marquee__row {
     overflow: hidden;
     scroll-snap-type: none;
   }
 
   body:not(.case-page) .quote-marquee__track {
-    animation: quote-marquee-left 48s linear infinite;
+    animation: quote-marquee-left 120s linear infinite;
     will-change: transform;
   }
 
@@ -3788,8 +3792,14 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
     font-size: 16px;
   }
 
+  body:not(.case-page) .quote-card {
+    width: clamp(450px, 100vw, 560px);
+    min-height: 320px;
+    padding: 24px;
+  }
+
   body:not(.case-page) .quote-card__name {
-    font-size: 17px;
+    font-size: 16px;
   }
 
   .wordmark {
