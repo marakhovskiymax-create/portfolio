@@ -3753,6 +3753,33 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
 }
 
 @media (max-width: 767px) {
+  body:not(.case-page) .quote-marquee {
+    mask-image: linear-gradient(to right, transparent 0, #000 5%, #000 95%, transparent 100%);
+  }
+
+  body:not(.case-page) .quote-marquee__row {
+    overflow: hidden;
+    scroll-snap-type: none;
+  }
+
+  body:not(.case-page) .quote-marquee__track {
+    animation: quote-marquee-left 48s linear infinite;
+    will-change: transform;
+  }
+
+  body:not(.case-page) .quote-marquee__row--reverse .quote-marquee__track {
+    animation-name: quote-marquee-right;
+    animation-duration: 56s;
+  }
+
+  body:not(.case-page) .quote-card blockquote {
+    font-size: 16px;
+  }
+
+  body:not(.case-page) .quote-card__name {
+    font-size: 17px;
+  }
+
   .wordmark {
     transform: none;
   }
