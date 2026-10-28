@@ -104,9 +104,14 @@ body.case-page {
 }
 
 .case-nav__links a.is-active,
-.case-nav__links a:hover,
 .case-nav__links a:focus-visible {
   color: var(--color-text);
+}
+
+@media (min-width: 768px) and (hover: hover) and (pointer: fine) {
+  .case-nav__links a:hover {
+    color: var(--color-text);
+  }
 }
 
 .case-nav__links a.is-active {
@@ -709,7 +714,7 @@ body.case-page .case-wide-visual--context {
   background: var(--case-work-chip);
 }
 
-@media (hover: hover) and (pointer: fine) {
+@media (min-width: 768px) and (hover: hover) and (pointer: fine) {
   .work-chip:hover {
     filter: brightness(1.16) saturate(1.08);
   }
@@ -1072,7 +1077,7 @@ body.case-page .case-wide-visual--context {
   transition: transform 500ms cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
-@media (hover: hover) and (pointer: fine) {
+@media (min-width: 768px) and (hover: hover) and (pointer: fine) {
   .case-next a:hover .case-next__preview img {
     transform: scale(1.045);
   }

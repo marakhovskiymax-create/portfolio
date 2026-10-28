@@ -222,6 +222,7 @@ carousel?.addEventListener("keydown", (event) => {
 });
 
 carousel?.addEventListener("mouseenter", () => {
+  if (!window.matchMedia("(min-width: 768px) and (hover: hover) and (pointer: fine)").matches) return;
   carouselIsHovered = true;
   stopCarouselAutoplay();
 });

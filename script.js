@@ -212,7 +212,7 @@ document.addEventListener("keydown", (event) => {
 
 function initSpiderCursor() {
   const canvas = document.querySelector("[data-spider-cursor]");
-  const canTrackPointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  const canTrackPointer = window.matchMedia("(min-width: 768px) and (hover: hover) and (pointer: fine)").matches;
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   if (!canvas || !canTrackPointer || reduceMotion) return;

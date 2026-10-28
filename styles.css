@@ -258,9 +258,11 @@ main {
   white-space: nowrap;
 }
 
-.masthead a:hover,
-.footer a:hover {
-  color: var(--color-text);
+@media (min-width: 768px) and (hover: hover) and (pointer: fine) {
+  .masthead a:hover,
+  .footer a:hover {
+    color: var(--color-text);
+  }
 }
 
 .wordmark {
@@ -298,10 +300,12 @@ main {
   color: rgba(244, 243, 238, 0.78) !important;
 }
 
-.masthead__email:hover {
-  border-color: rgba(244, 243, 238, 0.16);
-  background: rgba(244, 243, 238, 0.15);
-  color: var(--color-text) !important;
+@media (min-width: 768px) and (hover: hover) and (pointer: fine) {
+  .masthead__email:hover {
+    border-color: rgba(244, 243, 238, 0.16);
+    background: rgba(244, 243, 238, 0.15);
+    color: var(--color-text) !important;
+  }
 }
 
 .masthead__resume {
@@ -315,9 +319,11 @@ main {
   font-weight: 800;
 }
 
-.masthead__resume:hover {
-  background: #fff;
-  color: #050505 !important;
+@media (min-width: 768px) and (hover: hover) and (pointer: fine) {
+  .masthead__resume:hover {
+    background: #fff;
+    color: #050505 !important;
+  }
 }
 
 .menu-toggle,
@@ -372,7 +378,7 @@ body.has-spider-cursor .spider-cursor {
   opacity: 1;
 }
 
-@media (hover: hover) and (pointer: fine) {
+@media (min-width: 768px) and (hover: hover) and (pointer: fine) {
   body.has-spider-cursor,
   body.has-spider-cursor a,
   body.has-spider-cursor button,
@@ -492,9 +498,11 @@ body.has-spider-cursor .spider-cursor {
   color: var(--color-text);
 }
 
-.button--ghost:hover {
-  border-color: var(--color-muted);
-  background: var(--color-surface);
+@media (min-width: 768px) and (hover: hover) and (pointer: fine) {
+  .button--ghost:hover {
+    border-color: var(--color-muted);
+    background: var(--color-surface);
+  }
 }
 
 .button:active,
@@ -635,14 +643,22 @@ body.has-spider-cursor .spider-cursor {
   transition: transform var(--duration-press) var(--ease-out);
 }
 
-.project-row:hover,
 .project-row.is-active {
   color: var(--color-accent);
 }
 
-.project-row:hover .project-row__arrow,
 .project-row.is-active .project-row__arrow {
   transform: translate(4px, -4px);
+}
+
+@media (min-width: 768px) and (hover: hover) and (pointer: fine) {
+  .project-row:hover {
+    color: var(--color-accent);
+  }
+
+  .project-row:hover .project-row__arrow {
+    transform: translate(4px, -4px);
+  }
 }
 
 .case-visual {
@@ -1276,7 +1292,7 @@ body.has-spider-cursor .spider-cursor {
   transform: scale(1.035);
 }
 
-@media (hover: hover) and (pointer: fine) {
+@media (min-width: 768px) and (hover: hover) and (pointer: fine) {
   .career-tab:hover::after {
     background: var(--color-text);
     box-shadow: 0 0 0 4px rgba(244, 243, 238, 0.12);
@@ -1421,10 +1437,16 @@ body.has-spider-cursor .spider-cursor {
 
 .career-panel__case-link .tabler-icon { width: 20px; height: 20px; }
 
-.career-panel__case-link:hover,
 .career-panel__case-link:focus-visible {
   background: #fff;
   transform: translateY(-2px);
+}
+
+@media (min-width: 768px) and (hover: hover) and (pointer: fine) {
+  .career-panel__case-link:hover {
+    background: #fff;
+    transform: translateY(-2px);
+  }
 }
 
 @media (max-width: 900px) {
@@ -1547,8 +1569,14 @@ body.has-spider-cursor .spider-cursor {
   animation-duration: 56s;
 }
 
-.quote-marquee__row:is(:hover, :focus-within) .quote-marquee__track {
+.quote-marquee__row:focus-within .quote-marquee__track {
   animation-play-state: paused;
+}
+
+@media (min-width: 768px) and (hover: hover) and (pointer: fine) {
+  .quote-marquee__row:hover .quote-marquee__track {
+    animation-play-state: paused;
+  }
 }
 
 .quote-marquee__group {
@@ -1585,7 +1613,7 @@ body.has-spider-cursor .spider-cursor {
   transition: border-color var(--motion-moderate) ease;
 }
 
-@media (hover: hover) and (pointer: fine) {
+@media (min-width: 768px) and (hover: hover) and (pointer: fine) {
   .quote-card:hover {
     border-color: var(--color-muted);
   }
@@ -2289,7 +2317,7 @@ body.has-spider-cursor .spider-cursor {
   font-size: 0.75rem;
 }
 
-@media (hover: hover) and (pointer: fine) {
+@media (min-width: 768px) and (hover: hover) and (pointer: fine) {
   .button:hover {
     transform: translateY(-2px);
   }
@@ -2965,17 +2993,19 @@ body.has-spider-cursor .spider-cursor {
   height: 20px;
 }
 
-.footer__group a:hover {
-  color: var(--color-text);
-  transform: translateX(2px);
-}
+@media (min-width: 768px) and (hover: hover) and (pointer: fine) {
+  .footer__group a:hover {
+    color: var(--color-text);
+    transform: translateX(2px);
+  }
 
-.footer__group a:hover > .tabler-icon {
-  transform: translate(2px, -2px);
-}
+  .footer__group a:hover > .tabler-icon {
+    transform: translate(2px, -2px);
+  }
 
-.footer__group--social a:hover > .tabler-icon {
-  transform: none;
+  .footer__group--social a:hover > .tabler-icon {
+    transform: none;
+  }
 }
 
 @media (max-width: 1320px) {
@@ -3386,7 +3416,7 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
   transform: rotate(var(--cta-icon-hover-rotation));
 }
 
-@media (hover: hover) and (pointer: fine) {
+@media (min-width: 768px) and (hover: hover) and (pointer: fine) {
   .cta-reveal:hover .cta-reveal__track {
     transform: translateY(-50%);
   }
@@ -3414,7 +3444,7 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
   }
 }
 
-@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+@media (min-width: 768px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
   .about-badge:hover .cta-reveal__track {
     transform: translateY(-50%);
   }
@@ -3439,15 +3469,20 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
     transition-duration: 0ms;
   }
 
+  .cta-reveal:focus-visible .cta-reveal__track,
+  .cta-reveal:focus-visible .cta-reveal__icon,
+  .cta-reveal:active {
+    transform: none;
+  }
+}
+
+@media (min-width: 768px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: reduce) {
   .button.cta-reveal:hover,
   .career-panel__case-link.cta-reveal:hover,
   .faq-contact__link.cta-reveal:hover,
   .contact-form__submit.cta-reveal:hover,
   .cta-reveal:hover .cta-reveal__track,
-  .cta-reveal:hover .cta-reveal__icon,
-  .cta-reveal:focus-visible .cta-reveal__track,
-  .cta-reveal:focus-visible .cta-reveal__icon,
-  .cta-reveal:active {
+  .cta-reveal:hover .cta-reveal__icon {
     transform: none;
   }
 }
@@ -3700,6 +3735,12 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
   body:not(.case-page) .menu-toggle {
     min-width: 44px;
     min-height: 44px;
+  }
+}
+
+@media (max-width: 767px) {
+  .wordmark {
+    transform: none;
   }
 }
 
