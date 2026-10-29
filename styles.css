@@ -3600,7 +3600,12 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
 
 @media (min-width: 641px) and (max-width: 767px) {
   body:not(.case-page) .case-visual {
-    padding-bottom: 17px;
+    grid-template-rows: minmax(calc(113px + 37vw), auto) auto;
+    padding-bottom: 29px;
+  }
+
+  body:not(.case-page) .time-machine__stage {
+    min-height: calc(113px + 37vw);
   }
 
   body:not(.case-page) .time-machine__card {
@@ -3631,21 +3636,21 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
 @media (max-width: 640px) {
   body:not(.case-page) .case-visual {
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: minmax(340px, auto) auto;
+    grid-template-rows: minmax(302px, auto) auto;
     gap: 12px;
     min-height: 0;
-    padding: 16px 12px 17px;
+    padding: 16px 12px 29px;
   }
 
   body:not(.case-page) .time-machine__stage {
     grid-column: 1;
     grid-row: 1;
     width: 100%;
-    min-height: 340px;
+    min-height: 302px;
   }
 
   body:not(.case-page) .time-machine__card {
-    top: 65%;
+    top: calc(65% - 14px);
     left: 50%;
     width: calc(100% - 8px);
     height: 224px;
