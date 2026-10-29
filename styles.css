@@ -1700,6 +1700,10 @@ body.has-spider-cursor .spider-cursor {
   position: relative;
 }
 
+.about-mobile-tags {
+  display: none;
+}
+
 .about-note {
   position: absolute;
   z-index: 1;
@@ -4042,6 +4046,80 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
     justify-self: end;
     text-align: right;
     white-space: nowrap;
+  }
+}
+
+@media (max-width: 767px) {
+  body:not(.case-page) .about-map {
+    row-gap: 0;
+  }
+
+  body:not(.case-page) .about-badges {
+    display: none;
+  }
+
+  body:not(.case-page) .about-mobile-tags {
+    position: relative;
+    display: block;
+    width: 100%;
+    min-width: 0;
+  }
+
+  body:not(.case-page) .about-mobile-tags--first {
+    height: 195px;
+    margin-top: 20px;
+  }
+
+  body:not(.case-page) .about-mobile-tags--second {
+    height: 225px;
+    margin-top: 18px;
+  }
+
+  body:not(.case-page) .about-mobile-tag {
+    position: absolute;
+    display: inline-flex;
+    min-height: 43px;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 18px;
+    border-radius: 999px;
+    background: var(--color-primary);
+    color: var(--color-ink);
+    font-size: clamp(16px, 4.4vw, 19px);
+    font-weight: 600;
+    line-height: 1.15;
+    white-space: nowrap;
+    transform: rotate(var(--tag-rotation, 0deg));
+  }
+
+  body:not(.case-page) .about-mobile-tag--vibe {
+    top: 24px;
+    left: 4%;
+    --tag-rotation: -3deg;
+  }
+
+  body:not(.case-page) .about-mobile-tag--science {
+    top: 102px;
+    right: 3%;
+    --tag-rotation: 5deg;
+  }
+
+  body:not(.case-page) .about-mobile-tag--music {
+    top: 18px;
+    right: 6%;
+    --tag-rotation: 6deg;
+  }
+
+  body:not(.case-page) .about-mobile-tag--fashion {
+    top: 88px;
+    left: 5%;
+    --tag-rotation: -3deg;
+  }
+
+  body:not(.case-page) .about-mobile-tag--games {
+    top: 156px;
+    right: 7%;
+    --tag-rotation: 3deg;
   }
 }
 
