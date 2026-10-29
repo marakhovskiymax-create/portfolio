@@ -3900,7 +3900,11 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
   }
 
   body:not(.case-page) main > .capability-tape {
-    padding-block: 24px;
+    padding-block: 12px;
+  }
+
+  body:not(.case-page) .capability-tape__track {
+    font-size: 16px;
   }
 
   body:not(.case-page) main > .career-story .career-stage {
