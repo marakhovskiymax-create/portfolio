@@ -3037,6 +3037,19 @@ body.has-spider-cursor .spider-cursor {
   }
 }
 
+@media (max-width: 767px) {
+  body:not(.case-page) > .footer {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 16px;
+    row-gap: 36px;
+  }
+
+  body:not(.case-page) > .footer .footer__identity,
+  body:not(.case-page) > .footer .footer__group:last-child {
+    grid-column: 1 / -1;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .footer__group a,
   .footer__group a span {
