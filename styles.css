@@ -3754,6 +3754,7 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
   }
 
   body:not(.case-page) .quote-marquee__group {
+    align-items: flex-start;
     padding-left: 16px;
   }
 
@@ -3871,8 +3872,8 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
   }
 
   body:not(.case-page) .quote-card {
-    width: clamp(450px, 100vw, 560px);
-    min-height: 320px;
+    width: min(82vw, 310px);
+    min-height: 300px;
     padding: 24px;
   }
 
