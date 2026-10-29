@@ -3595,13 +3595,32 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
 }
 
 @media (min-width: 641px) and (max-width: 767px) {
+  body:not(.case-page) .case-visual {
+    padding-bottom: 17px;
+  }
+
+  body:not(.case-page) .time-machine__card {
+    top: auto;
+    bottom: 2px;
+    transform:
+      translate3d(-50%, 0, var(--card-z, 0px))
+      translateY(var(--card-y-tablet, 0px))
+      rotateX(var(--card-rotate, 0deg))
+      scale(var(--card-scale, 1));
+  }
+
   body:not(.case-page) .time-machine__timeline {
     --tab-card-inset: max(6%, calc((100% - 560px) / 2));
-    width: calc(100% - var(--tab-card-inset) + 24px);
-    justify-content: flex-start;
+    width: calc(100% - 2 * var(--tab-card-inset));
+    justify-content: space-between;
+    gap: 6px;
     margin-left: var(--tab-card-inset);
-    margin-right: -24px;
+    margin-right: var(--tab-card-inset);
     padding: 2px 0;
+  }
+
+  body:not(.case-page) .time-machine__stop-target {
+    padding-inline: 12px;
   }
 }
 
@@ -3611,7 +3630,7 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
     grid-template-rows: minmax(340px, auto) auto;
     gap: 12px;
     min-height: 0;
-    padding: 16px 12px 14px;
+    padding: 16px 12px 17px;
   }
 
   body:not(.case-page) .time-machine__stage {
@@ -3622,7 +3641,7 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
   }
 
   body:not(.case-page) .time-machine__card {
-    top: 57%;
+    top: 65%;
     left: 50%;
     width: calc(100% - 8px);
     height: 224px;
@@ -3660,16 +3679,15 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
     grid-column: 1;
     grid-row: 2;
     display: flex;
-    width: calc(100% + 12px);
+    width: calc(100% - 8px);
     height: auto;
     align-items: center;
     gap: 8px;
     overflow-x: auto;
-    margin-inline: 0 -12px;
-    padding: 2px 0 2px 4px;
+    margin-inline: 4px;
+    padding: 2px 0;
     scrollbar-width: none;
-    scroll-snap-type: x proximity;
-    scroll-padding-inline-start: 4px;
+    scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
   }
 
@@ -3678,18 +3696,19 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
   }
 
   body:not(.case-page) .time-machine__stop {
-    flex: 0 0 auto;
+    flex: 0 0 calc((100% - 16px) / 3);
     min-height: 44px;
     justify-self: auto;
     scroll-snap-align: start;
   }
 
   body:not(.case-page) .time-machine__stop-target {
+    width: 100%;
     min-height: 44px;
     justify-content: center;
     text-align: center;
     gap: 0;
-    padding: 0 14px;
+    padding: 0 4px;
     border: 1px solid rgba(244, 243, 238, 0.22);
     border-radius: 999px;
     background: rgba(244, 243, 238, 0.04);
@@ -3703,7 +3722,7 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
   body:not(.case-page) .time-machine__stop-label {
     color: var(--color-text);
     filter: none;
-    font-size: 0.875rem;
+    font-size: clamp(0.75rem, 3.6vw, 0.875rem);
     opacity: 1;
     transform: none;
   }
