@@ -3763,7 +3763,7 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
   }
 
   body:not(.case-page) .quote-marquee__group {
-    align-items: flex-start;
+    align-items: stretch;
     padding-left: 16px;
   }
 
