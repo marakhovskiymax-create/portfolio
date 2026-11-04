@@ -578,6 +578,16 @@ body.has-spider-cursor .spider-cursor {
   align-items: stretch;
 }
 
+.section--portfolio .section-heading {
+  margin-bottom: 24px;
+}
+
+@media (max-width: 767px) {
+  .section--portfolio .section-heading {
+    margin-bottom: 20px;
+  }
+}
+
 .project-list {
   position: relative;
   isolation: isolate;
