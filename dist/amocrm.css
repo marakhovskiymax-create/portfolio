@@ -1441,6 +1441,16 @@ body.case-page > .case-footer {
 }
 
 @media (max-width: 767px) {
+  .case-context h2,
+  .case-heading h2,
+  .case-story h2,
+  .case-impact h2 {
+    max-width: 100%;
+    width: 100%;
+    font-size: clamp(28px, 8.4vw, 48px);
+    text-wrap: balance;
+  }
+
   .case-hero__lede,
   .case-context__intro > p:last-child,
   .case-heading > p:last-child,
