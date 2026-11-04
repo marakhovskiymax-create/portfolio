@@ -1329,6 +1329,9 @@ body.case-page > .case-footer {
 }
 
 @media (max-width: 767px) {
+  .case-nav { display: none; }
+  .case-anchor { scroll-margin-top: 96px; }
+
   .case-carousel__slide { width: 100%; }
   .case-carousel__viewport::before,
   .case-carousel__viewport::after { display: none; }
