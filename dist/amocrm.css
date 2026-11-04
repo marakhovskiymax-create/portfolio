@@ -1322,9 +1322,16 @@ body.case-page > .case-footer {
 
 }
 
-/* Keep the same section rhythm through the full phone range. */
 @media (min-width: 761px) and (max-width: 767px) {
   :root { --case-gap: 80px; }
+  .case-carousel__viewport { height: clamp(190px, 58vw, 370px); }
+  .case-carousel__slide { border-radius: 16px; }
+}
+
+@media (max-width: 767px) {
+  .case-carousel__slide { width: 100%; }
+  .case-carousel__viewport::before,
+  .case-carousel__viewport::after { display: none; }
 }
 
 @media (max-width: 767px) {
