@@ -1332,6 +1332,12 @@ body.case-page > .case-footer {
   .case-nav { display: none; }
   .case-anchor { scroll-margin-top: 96px; }
 
+  .case-scroll-gallery__heading { font-size: 28px; }
+  .case-hero h1 {
+    font-size: clamp(calc(2.65rem - 8px), calc(12.8vw - 8px), calc(5.2rem - 8px));
+    overflow-wrap: break-word;
+  }
+
   .case-carousel__slide { width: 100%; }
   .case-carousel__viewport::before,
   .case-carousel__viewport::after { display: none; }
