@@ -624,8 +624,6 @@ body.case-page .case-wide-visual--context {
   position: relative;
 }
 
-.work-areas__mobile-hint { display: none; }
-
 .work-areas__drag-hint {
   position: absolute;
   right: clamp(24px, 5vw, 72px);
@@ -1230,14 +1228,6 @@ body.case-page > .case-footer {
   }
 
   .work-areas__drag-hint { display: none; }
-  .work-areas__mobile-hint {
-    display: block;
-    margin-top: 14px;
-    color: var(--color-muted);
-    font-size: 0.9rem;
-    line-height: 1.4;
-  }
-
   .work-chip {
     position: static;
     max-width: none;
@@ -1370,12 +1360,14 @@ body.case-page > .case-footer {
 }
 
 @media (max-width: 767px) {
+  .work-areas .case-heading { margin-bottom: 20px; }
+
   .work-areas__canvas {
     display: flex;
     flex-wrap: wrap;
     align-content: flex-end;
     gap: 8px;
-    min-height: clamp(520px, 125vw, 640px);
+    min-height: clamp(560px, calc(125vw + 40px), 680px);
     padding: 14px;
   }
 
@@ -1394,7 +1386,7 @@ body.case-page > .case-footer {
 
   .work-areas__canvas.is-physics-ready {
     display: block;
-    min-height: clamp(520px, 125vw, 640px);
+    min-height: clamp(560px, calc(125vw + 40px), 680px);
     padding: 0;
   }
 
