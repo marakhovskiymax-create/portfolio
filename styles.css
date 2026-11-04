@@ -4161,3 +4161,16 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
     font-size: 1.12rem;
   }
 }
+
+@media (max-width: 767px) {
+  :root {
+    --section-heading-size: 28px;
+  }
+
+  .hero__lede,
+  .section-heading p,
+  .faq__intro,
+  .contact__intro {
+    font-size: 14px;
+  }
+}

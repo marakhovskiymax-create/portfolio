@@ -1439,3 +1439,13 @@ body.case-page > .case-footer {
   .renewal-flow__result i::after { animation: none; }
   .js [data-case-reveal] { opacity: 1; transform: none; }
 }
+
+@media (max-width: 767px) {
+  .case-hero__lede,
+  .case-context__intro > p:last-child,
+  .case-heading > p:last-child,
+  .case-story__copy > p:last-child,
+  .case-impact__intro > p:last-child {
+    font-size: 14px;
+  }
+}
