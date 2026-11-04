@@ -388,7 +388,7 @@ function selectWorkChip(chip) {
 
 workChips.forEach((chip) => chip.addEventListener("click", () => {
   selectWorkChip(chip);
-  if (!window.matchMedia("(max-width: 760px)").matches) return;
+  if (!window.matchMedia("(max-width: 767px)").matches) return;
 
   const target = document.getElementById(chip.dataset.workTarget);
   if (!target) return;
@@ -402,7 +402,7 @@ function initWorkAreasPhysics() {
   const items = surface ? Array.from(surface.querySelectorAll(".work-chip")) : [];
   if (!surface || !items.length || !window.Matter || prefersReducedMotion) return;
 
-  const compactLayout = window.matchMedia("(max-width: 760px)");
+  const compactLayout = window.matchMedia("(max-width: 767px)");
   const { Body, Bodies, Composite, Engine, Sleeping } = window.Matter;
   const engine = Engine.create({ enableSleeping: true, positionIterations: 8, velocityIterations: 6 });
   const states = new Map();
@@ -427,6 +427,7 @@ function initWorkAreasPhysics() {
     const width = surface.clientWidth;
     const height = surface.clientHeight;
     const usableHeight = height;
+    const sideInset = compactLayout.matches ? 12 : 0;
     const oldStates = items.map((item) => {
       const body = states.get(item)?.body;
       return body
@@ -444,8 +445,8 @@ function initWorkAreasPhysics() {
     const wallDepth = 120;
     Composite.add(engine.world, [
       Bodies.rectangle(width / 2, usableHeight + wallDepth / 2, width + wallDepth * 2, wallDepth, { isStatic: true }),
-      Bodies.rectangle(-wallDepth / 2, usableHeight / 2, wallDepth, usableHeight + wallDepth * 2, { isStatic: true }),
-      Bodies.rectangle(width + wallDepth / 2, usableHeight / 2, wallDepth, usableHeight + wallDepth * 2, { isStatic: true }),
+      Bodies.rectangle(sideInset - wallDepth / 2, usableHeight / 2, wallDepth, usableHeight + wallDepth * 2, { isStatic: true }),
+      Bodies.rectangle(width - sideInset + wallDepth / 2, usableHeight / 2, wallDepth, usableHeight + wallDepth * 2, { isStatic: true }),
       Bodies.rectangle(width / 2, -wallDepth / 2, width + wallDepth * 2, wallDepth, { isStatic: true }),
     ]);
 
@@ -454,7 +455,7 @@ function initWorkAreasPhysics() {
       const old = oldStates[index];
       const style = getComputedStyle(item);
       const desktopSpawnX = [0.03, 0.25, 0.5, 0.76, 0.1, 0.36, 0.7, 0.02, 0.27, 0.54, 0.78, 0.08, 0.34, 0.61, 0.8];
-      const compact = width < 600;
+      const compact = compactLayout.matches;
       const compactSpawnX = [0.02, 0.5, 0.98];
       const xRatio = compact ? compactSpawnX[index % compactSpawnX.length] : desktopSpawnX[index] ?? index / items.length;
       const spawnRow = compact ? Math.floor(index / compactSpawnX.length) : index % 5;
@@ -462,8 +463,8 @@ function initWorkAreasPhysics() {
       const halfHeight = item.offsetHeight / 2;
       const body = Bodies.rectangle(
         preserve && old
-          ? Math.min(width - halfWidth, Math.max(halfWidth, old.x * width))
-          : halfWidth + Math.max(0, width - item.offsetWidth) * xRatio,
+          ? Math.min(width - sideInset - halfWidth, Math.max(sideInset + halfWidth, old.x * width))
+          : sideInset + halfWidth + Math.max(0, width - item.offsetWidth - sideInset * 2) * xRatio,
         preserve && old
           ? Math.min(usableHeight - halfHeight, Math.max(halfHeight, old.y * usableHeight))
           : 40 + halfHeight + spawnRow * (compact ? 76 : 74),
@@ -548,8 +549,8 @@ function initWorkAreasPhysics() {
     }, true);
 
     item.addEventListener("pointerdown", (event) => {
-      if (compactLayout.matches || !state.body || (event.pointerType === "mouse" && event.button !== 0)) return;
-      event.preventDefault();
+      if (!state.body || (event.pointerType === "mouse" && event.button !== 0)) return;
+      if (event.pointerType === "mouse") event.preventDefault();
       const surfaceRect = surface.getBoundingClientRect();
       state.pointerId = event.pointerId;
       state.pointerOffsetX = event.clientX - surfaceRect.left - state.body.position.x;
@@ -576,7 +577,8 @@ function initWorkAreasPhysics() {
       const halfWidth = item.offsetWidth / 2;
       const halfHeight = item.offsetHeight / 2;
       const maxY = surface.clientHeight - halfHeight;
-      const x = Math.min(surface.clientWidth - halfWidth, Math.max(halfWidth, event.clientX - surfaceRect.left - state.pointerOffsetX));
+      const sideInset = compactLayout.matches ? 12 : 0;
+      const x = Math.min(surface.clientWidth - sideInset - halfWidth, Math.max(sideInset + halfWidth, event.clientX - surfaceRect.left - state.pointerOffsetX));
       const y = Math.min(maxY, Math.max(halfHeight, event.clientY - surfaceRect.top - state.pointerOffsetY));
       const now = performance.now();
       const delta = Math.max(8, now - state.previousTime);
@@ -611,7 +613,7 @@ function initWorkAreasPhysics() {
     item.addEventListener("pointerup", release);
     item.addEventListener("pointercancel", release);
     item.addEventListener("keydown", (event) => {
-      if (compactLayout.matches || !state.body) return;
+      if (!state.body) return;
       const step = event.shiftKey ? 32 : 12;
       const movement = {
         ArrowLeft: [-step, 0],
@@ -624,8 +626,9 @@ function initWorkAreasPhysics() {
       const halfWidth = item.offsetWidth / 2;
       const halfHeight = item.offsetHeight / 2;
       const maxY = surface.clientHeight - halfHeight;
+      const sideInset = compactLayout.matches ? 12 : 0;
       Body.setPosition(state.body, {
-        x: Math.min(surface.clientWidth - halfWidth, Math.max(halfWidth, state.body.position.x + movement[0])),
+        x: Math.min(surface.clientWidth - sideInset - halfWidth, Math.max(sideInset + halfWidth, state.body.position.x + movement[0])),
         y: Math.min(maxY, Math.max(halfHeight, state.body.position.y + movement[1])),
       });
       Body.setVelocity(state.body, { x: movement[0] * 0.12, y: movement[1] * 0.12 });
@@ -638,13 +641,6 @@ function initWorkAreasPhysics() {
   });
 
   const syncPhysicsLayout = () => {
-    if (compactLayout.matches) {
-      stopScene();
-      surface.classList.remove("is-physics-ready");
-      items.forEach((item) => item.classList.remove("is-dragging"));
-      return;
-    }
-
     const wasReady = surface.classList.contains("is-physics-ready");
     surface.classList.add("is-physics-ready");
     window.cancelAnimationFrame(resizeFrame);
@@ -654,14 +650,13 @@ function initWorkAreasPhysics() {
   compactLayout.addEventListener("change", syncPhysicsLayout);
   syncPhysicsLayout();
   const resizeObserver = new ResizeObserver(() => {
-    if (compactLayout.matches) return;
     window.cancelAnimationFrame(resizeFrame);
     resizeFrame = window.requestAnimationFrame(() => buildWorld(true));
   });
   resizeObserver.observe(surface);
 
   const visibilityObserver = new IntersectionObserver(([entry]) => {
-    if (entry.isIntersecting && !compactLayout.matches) startScene();
+    if (entry.isIntersecting) startScene();
     else stopScene();
   }, { threshold: 0.08 });
   visibilityObserver.observe(surface);

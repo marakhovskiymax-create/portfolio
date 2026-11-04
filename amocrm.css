@@ -1356,6 +1356,47 @@ body.case-page > .case-footer {
   .work-areas__canvas.is-physics-ready { grid-template-columns: minmax(0, 1fr); }
 }
 
+@media (max-width: 767px) {
+  .work-areas__canvas {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-end;
+    gap: 8px;
+    min-height: clamp(520px, 125vw, 640px);
+    padding: 14px;
+  }
+
+  .work-chip {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: max-content;
+    max-width: 100%;
+    min-height: 48px;
+    padding: 10px clamp(16px, 5vw, 22px);
+    font-size: clamp(16px, 4.2vw, 20px);
+    white-space: nowrap;
+    cursor: grab;
+  }
+
+  .work-areas__canvas.is-physics-ready {
+    display: block;
+    min-height: clamp(520px, 125vw, 640px);
+    padding: 0;
+  }
+
+  .work-areas__canvas.is-physics-ready .work-chip {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: max-content;
+    max-width: calc(100% - 16px);
+    touch-action: none;
+    cursor: grab;
+    transform: translate3d(var(--work-x, 0), var(--work-y, 0), 0) rotate(var(--work-rotate, 0rad));
+  }
+}
+
 @media (max-width: 430px) {
   .case-page .masthead { grid-template-columns: 44px minmax(0, 1fr) 44px; }
   .case-page .wordmark { display: inline-flex; align-items: center; min-height: 44px; font-size: clamp(1.7rem, 8vw, 2.125rem); }
