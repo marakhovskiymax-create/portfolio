@@ -1332,6 +1332,13 @@ body.case-page > .case-footer {
   .case-nav { display: none; }
   .case-anchor { scroll-margin-top: 96px; }
 
+  .case-context {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 48px;
+    margin-bottom: 30px;
+  }
+  .case-context .case-accordion { min-height: 0; }
+
   .case-scroll-gallery__heading { font-size: 28px; }
   .case-hero h1 {
     font-size: clamp(calc(2.65rem - 8px), calc(12.8vw - 8px), calc(5.2rem - 8px));
