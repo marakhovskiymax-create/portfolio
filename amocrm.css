@@ -1327,6 +1327,17 @@ body.case-page > .case-footer {
   :root { --case-gap: 80px; }
 }
 
+@media (max-width: 767px) {
+  body.case-page .case-meta {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .case-meta div:nth-child(2) {
+    justify-items: end;
+    text-align: end;
+  }
+}
+
 @media (max-width: 440px) {
   .case-hero__lede { max-width: 32ch; }
   .case-meta { gap: 0 16px; }
