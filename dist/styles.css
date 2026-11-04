@@ -4013,19 +4013,6 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
     padding-top: 60px;
   }
 
-  body:not(.case-page) > .skills-playground {
-    padding-top: 55px;
-  }
-
-  body:not(.case-page) .skills-playground__surface {
-    /* The physics pile grows taller as the phone gets narrower. */
-    min-height: clamp(510px, calc(991px - 91.5vw), 700px);
-  }
-
-  body:not(.case-page) .skills-playground__hint {
-    transition: top 450ms var(--ease-out);
-  }
-
   body:not(.case-page) .hero__main {
     align-self: end;
   }
