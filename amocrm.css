@@ -1319,6 +1319,8 @@ body.case-page > .case-footer {
 }
 
 @media (max-width: 767px) {
+  .case-impact { --impact-inset: 16px; }
+
   .case-main { padding-top: 122px; }
 
   .case-hero__copy {
