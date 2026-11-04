@@ -1409,11 +1409,6 @@ body.case-page > .case-footer {
   .case-page .menu-toggle { min-width: 44px; min-height: 44px; justify-content: center; }
 }
 
-@media (max-width: 760px) {
-  .case-footer .footer__group ul { gap: 0; }
-  .case-footer .footer__group a { min-height: 44px; }
-}
-
 @media (min-width: 761px) and (max-width: 900px) {
   .renewal-flow { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .renewal-flow__result { grid-column: 1 / -1; }

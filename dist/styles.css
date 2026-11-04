@@ -3052,14 +3052,14 @@ body.has-spider-cursor .spider-cursor {
 }
 
 @media (max-width: 767px) {
-  body:not(.case-page) > .footer {
+  body > .footer {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     column-gap: 16px;
     row-gap: 36px;
   }
 
-  body:not(.case-page) > .footer .footer__identity,
-  body:not(.case-page) > .footer .footer__group:last-child {
+  body > .footer .footer__identity,
+  body > .footer .footer__group:last-child {
     grid-column: 1 / -1;
   }
 }
@@ -4009,7 +4009,7 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
     padding-block: 60px;
   }
 
-  body:not(.case-page) > .footer {
+  body > .footer {
     padding-top: 60px;
   }
 
