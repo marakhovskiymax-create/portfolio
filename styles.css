@@ -4176,10 +4176,20 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
     --section-heading-size: 28px;
   }
 
+  .skills-playground__surface {
+    min-height: clamp(468px, calc(835px - 63vw), 565px);
+  }
+
   .hero__lede,
   .section-heading p,
   .faq__intro,
   .contact__intro {
     font-size: 14px;
+  }
+}
+
+@media (max-width: 390px) {
+  .skills-playground__surface {
+    min-height: clamp(565px, calc(1122px - 143vw), 665px);
   }
 }
