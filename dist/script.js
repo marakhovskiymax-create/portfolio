@@ -1233,7 +1233,7 @@ function initContactForm() {
   const status = document.querySelector("[data-contact-status]");
   if (!form || !status) return;
 
-  const fields = [...form.querySelectorAll("input[name]:not([type='hidden']):not([name='_honey']), textarea[name]")];
+  const fields = [...form.querySelectorAll("input[name]:not([type='hidden']):not([name='_gotcha']), textarea[name]")];
   const submitButton = form.querySelector("[type='submit']");
   const buttonLabels = [...submitButton.querySelectorAll(".cta-reveal__line")];
   let attemptedSubmit = false;
@@ -1309,19 +1309,18 @@ function initContactForm() {
     }
 
     const formData = new FormData(form);
-    if (formData.get("_honey")) return;
-    formData.set("_subject", `Project inquiry from ${formData.get("name")}`);
+    if (formData.get("_gotcha")) return;
+    formData.set("subject", `Project inquiry from ${formData.get("name")}`);
     setStatus("");
     setSending(true);
 
     try {
-      const response = await fetch("https://formsubmit.co/ajax/marakhovskiymax@gmail.com", {
+      const response = await fetch(form.action, {
         method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify(Object.fromEntries(formData)),
+        headers: { Accept: "application/json" },
+        body: formData,
       });
-      const result = await response.json();
-      if (!response.ok || result.success === false || result.success === "false") {
+      if (!response.ok) {
         throw new Error("Contact form submission failed");
       }
       form.reset();
