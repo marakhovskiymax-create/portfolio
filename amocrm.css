@@ -1102,7 +1102,7 @@ body.case-page > .case-footer {
 }
 
 @media (max-width: 1199px) {
-  html { scroll-padding-top: 154px; }
+  html { scroll-padding-top: 96px; }
 
   .case-layout {
     grid-template-columns: minmax(0, 1fr);
@@ -1110,17 +1110,7 @@ body.case-page > .case-footer {
   }
 
   .case-nav {
-    top: 72px;
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
-    align-items: center;
-    width: 100vw;
-    margin: 0 0 72px calc(50% - 50vw);
-    padding: 12px max(5vw, 16px);
-    border-top: 1px solid var(--case-line);
-    border-bottom: 1px solid var(--case-line);
-    background: rgba(5, 5, 5, 0.86);
-    backdrop-filter: blur(16px);
+    display: none;
   }
 
   .case-nav__label { margin-right: 12px; }
@@ -1146,7 +1136,7 @@ body.case-page > .case-footer {
 
   .case-nav__links a span { display: none; }
   .case-nav__links a.is-active { padding-left: 14px; color: var(--color-text); }
-  .case-anchor { scroll-margin-top: 160px; }
+  .case-anchor { scroll-margin-top: 96px; }
   .case-hero { min-height: 0; }
 }
 

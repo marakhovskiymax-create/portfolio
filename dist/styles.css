@@ -2383,8 +2383,8 @@ body.has-spider-cursor .spider-cursor {
     display: inline-flex;
     grid-column: 3;
     justify-self: end;
-    min-width: 92px;
-    min-height: 42px;
+    min-width: 44px;
+    min-height: 44px;
     align-items: center;
     justify-content: flex-end;
     gap: 6px;
@@ -2395,6 +2395,15 @@ body.has-spider-cursor .spider-cursor {
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
+  }
+
+  .menu-toggle > span:first-child {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 
   .menu-toggle__line {
