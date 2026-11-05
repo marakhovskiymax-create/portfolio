@@ -1233,8 +1233,24 @@ function initContactForm() {
   const status = document.querySelector("[data-contact-status]");
   if (!form || !status) return;
 
-  const fields = [...form.querySelectorAll("input[name], textarea[name]")];
+  const fields = [...form.querySelectorAll("input[name]:not([type='hidden']):not([name='_honey']), textarea[name]")];
+  const submitButton = form.querySelector("[type='submit']");
+  const buttonLabels = [...submitButton.querySelectorAll(".cta-reveal__line")];
   let attemptedSubmit = false;
+  let sending = false;
+
+  function setStatus(message, state = "") {
+    status.textContent = message;
+    status.hidden = !message;
+    if (state) status.dataset.state = state;
+    else delete status.dataset.state;
+  }
+
+  function setSending(value) {
+    sending = value;
+    submitButton.disabled = value;
+    buttonLabels.forEach((label) => { label.textContent = value ? "Sending…" : "Send message"; });
+  }
 
   function errorFor(field) {
     const value = field.value.trim();
@@ -1245,7 +1261,11 @@ function initContactForm() {
         message: "Add a short message so I know what you'd like to discuss.",
       }[field.name];
     }
-    if (field.name === "email" && !field.validity.valid) {
+    if (field.name === "email" && (
+      !field.validity.valid ||
+      !/^[^\s@]+@(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)+[A-Za-z]{2,63}$/.test(value) ||
+      value.includes("..")
+    )) {
       return "This email address doesn't look right. Use a format like you@example.com.";
     }
     return "";
@@ -1270,34 +1290,55 @@ function initContactForm() {
     field.addEventListener("input", () => {
       if (!attemptedSubmit) return;
       validateField(field);
-      if (fields.every((item) => !errorFor(item))) {
-        status.textContent = "";
-        delete status.dataset.state;
-      }
     });
   });
 
-  form.addEventListener("submit", (event) => {
+  form.addEventListener("submit", async (event) => {
     event.preventDefault();
+    if (sending) return;
     attemptedSubmit = true;
-    const firstInvalid = fields.filter((field) => !validateField(field))[0];
+    fields.forEach((field) => { field.value = field.value.trim(); });
+    let firstInvalid;
+    fields.forEach((field) => {
+      if (!validateField(field) && !firstInvalid) firstInvalid = field;
+    });
     if (firstInvalid) {
-      status.textContent = "Please correct the fields marked above before continuing.";
-      status.dataset.state = "error";
+      setStatus("");
       firstInvalid.focus();
       return;
     }
 
     const formData = new FormData(form);
-    const name = String(formData.get("name") || "").trim();
-    const email = String(formData.get("email") || "").trim();
-    const message = String(formData.get("message") || "").trim();
-    const subject = encodeURIComponent(`Project inquiry from ${name}`);
-    const body = encodeURIComponent(`${message}\n\nFrom: ${name}\nEmail: ${email}`);
+    if (formData.get("_honey")) return;
+    formData.set("_subject", `Project inquiry from ${formData.get("name")}`);
+    setStatus("");
+    setSending(true);
 
-    delete status.dataset.state;
-    status.textContent = "Opening your email app. Please send the draft there to finish.";
-    window.location.href = `mailto:marakhovskiymax@gmail.com?subject=${subject}&body=${body}`;
+    try {
+      const response = await fetch("https://formsubmit.co/ajax/marakhovskiymax@gmail.com", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify(Object.fromEntries(formData)),
+      });
+      const result = await response.json();
+      if (!response.ok || result.success === false || result.success === "false") {
+        throw new Error("Contact form submission failed");
+      }
+      form.reset();
+      attemptedSubmit = false;
+      fields.forEach((field) => {
+        const fieldError = form.querySelector(`#${field.id}-error`);
+        fieldError.textContent = "";
+        fieldError.hidden = true;
+        field.removeAttribute("aria-invalid");
+        field.removeAttribute("aria-describedby");
+      });
+      setStatus("Message sent. Thank you — I'll reply by email.", "success");
+    } catch (error) {
+      setStatus("Your message couldn't be sent. Please try again or use the email link.", "error");
+    } finally {
+      setSending(false);
+    }
   });
 }
 
