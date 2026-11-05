@@ -3127,7 +3127,7 @@ body:not(.case-page) > .footer {
   position: relative;
   z-index: 2;
   width: 100%;
-  padding: 35px 0 0;
+  padding: 80px 0 0;
   color: #e8eeff;
   background-color: var(--color-bg);
   background-image: linear-gradient(
@@ -3163,7 +3163,7 @@ body:not(.case-page) > .footer {
 
 .skills-playground__hint {
   position: absolute;
-  top: 65px;
+  top: 0;
   left: 50%;
   z-index: 2;
   display: flex;
@@ -3329,7 +3329,7 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
   }
 
   .skills-playground__hint {
-    top: 65px;
+    top: 0;
   }
 
   .skills-playground__hint svg {

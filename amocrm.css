@@ -1092,7 +1092,7 @@ body.case-page > .case-footer {
 }
 
 .case-page .skills-playground__hint {
-  top: 65px;
+  top: 0;
 }
 
 .js [data-case-reveal].is-visible {

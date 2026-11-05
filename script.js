@@ -940,8 +940,6 @@ initCareerTimeline();
 function initSkillsPlayground() {
   const playground = document.querySelector("[data-skills-playground]");
   const surface = playground?.querySelector(".skills-playground__surface");
-  const hint = surface?.querySelector(".skills-playground__hint");
-  const hintHeading = hint?.querySelector("h2");
   const items = surface ? [...surface.querySelectorAll("[data-drag-item]")] : [];
   if (!playground || !surface || !items.length || !window.Matter) return;
 
@@ -954,7 +952,6 @@ function initSkillsPlayground() {
   let accumulatedTime = 0;
   let sceneActive = false;
   let topLayer = 20;
-  let initialHintAligned = false;
 
   engine.gravity.y = 1;
   engine.gravity.scale = reduceMotion ? 0 : 0.00145;
@@ -982,8 +979,6 @@ function initSkillsPlayground() {
   };
 
   const buildWorld = (preserve = false) => {
-    if (hint) hint.style.top = "";
-    initialHintAligned = false;
     const width = surface.clientWidth;
     const height = surface.clientHeight;
     const sizes = items.map((item) => ({ width: item.offsetWidth, height: item.offsetHeight }));
@@ -1055,15 +1050,6 @@ function initSkillsPlayground() {
     });
   };
 
-  const alignMobileHint = () => {
-    if (initialHintAligned || !hint || !hintHeading || surface.clientWidth > 767) return;
-    const firstItemTop = Math.min(...items.map((item) => item.getBoundingClientRect().top));
-    const headingBottom = hintHeading.getBoundingClientRect().bottom;
-    const currentTop = Number.parseFloat(getComputedStyle(hint).top) || 65;
-    hint.style.top = `${Math.max(24, currentTop + firstItemTop - headingBottom - 80).toFixed(1)}px`;
-    initialHintAligned = true;
-  };
-
   const tick = (time) => {
     if (!sceneActive) {
       frame = 0;
@@ -1086,7 +1072,6 @@ function initSkillsPlayground() {
     if (hasMovingBody) {
       frame = requestAnimationFrame(tick);
     } else {
-      alignMobileHint();
       frame = 0;
       previousTime = 0;
       accumulatedTime = 0;
