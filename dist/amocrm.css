@@ -1342,6 +1342,32 @@ body.case-page > .case-footer {
 
 @media (max-width: 767px) {
   .case-impact { --impact-inset: 16px; }
+  .case-impact__intro { margin-bottom: 32px; }
+
+  .case-scroll-gallery { height: auto; }
+  .case-scroll-gallery__stage { position: static; top: auto; width: 100%; }
+  .case-scroll-gallery__deck {
+    display: grid;
+    gap: 20px;
+    aspect-ratio: auto;
+    overflow: visible;
+    border-radius: 0;
+  }
+  .case-scroll-gallery__card,
+  .case-scroll-gallery__card:nth-child(n + 2) {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    left: auto;
+    width: 100%;
+    margin: 0;
+    transform: none;
+    will-change: auto;
+  }
+  .js .case-scroll-gallery__card.case-scroll-media {
+    opacity: var(--case-scroll-opacity, 1);
+    transform: scale(var(--case-scroll-scale, 1));
+  }
 
   .case-main { padding-top: 122px; }
 

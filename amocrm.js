@@ -3,10 +3,10 @@ const caseNavLinks = Array.from(document.querySelectorAll("[data-case-nav]"));
 const casePosition = document.querySelector("[data-case-position]");
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-// Match the reference's scroll-scrubbed fade and subtle scale. Keeping this on
-// the media wrappers leaves carousel slides and the three-card gallery alone.
+// Match the reference's scroll-scrubbed fade and subtle scale. On phones,
+// gallery cards use this reveal instead of the desktop scroll-flip sequence.
 const caseScrollMedia = Array.from(document.querySelectorAll(
-  ".case-carousel, .case-wide-visual, .case-story__media"
+  ".case-carousel, .case-wide-visual, .case-story__media, .case-scroll-gallery__card"
 ));
 
 if (caseScrollMedia.length && !prefersReducedMotion) {
@@ -20,6 +20,13 @@ if (caseScrollMedia.length && !prefersReducedMotion) {
     const revealDistance = Math.max(1, viewportHeight * 0.64);
 
     caseScrollMedia.forEach((media) => {
+      if (media.classList.contains("case-scroll-gallery__card") && window.innerWidth > 767) {
+        media.classList.remove("case-scroll-media");
+        media.style.removeProperty("--case-scroll-opacity");
+        media.style.removeProperty("--case-scroll-scale");
+        mediaScales.delete(media);
+        return;
+      }
       const previousScale = mediaScales.get(media) ?? 1;
       // getBoundingClientRect includes the current scale. Recover layout top
       // so the animation never feeds its own transform back into its progress.
@@ -63,6 +70,11 @@ if (scrollGallery && scrollGalleryStage && scrollGalleryCards.length === 3 && !p
 
   function renderScrollGallery() {
     galleryFrame = 0;
+    if (window.innerWidth <= 767) {
+      scrollGalleryCards[1].style.removeProperty("transform");
+      scrollGalleryCards[2].style.removeProperty("transform");
+      return;
+    }
     const stageTop = Number.parseFloat(window.getComputedStyle(scrollGalleryStage).top) || 0;
     const travel = Math.max(1, scrollGallery.offsetHeight - scrollGalleryStage.offsetHeight);
     const progress = clampUnit((stageTop - scrollGallery.getBoundingClientRect().top) / travel);
