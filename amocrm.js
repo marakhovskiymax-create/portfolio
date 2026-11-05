@@ -6,7 +6,7 @@ const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)
 // Match the reference's scroll-scrubbed fade and subtle scale. On phones,
 // gallery cards use this reveal instead of the desktop scroll-flip sequence.
 const caseScrollMedia = Array.from(document.querySelectorAll(
-  ".case-carousel, .case-wide-visual, .case-story__media, .case-scroll-gallery__card"
+  ".case-carousel, .case-wide-visual, .case-story__media, .integration-map, .case-scroll-gallery__card"
 ));
 
 if (caseScrollMedia.length && !prefersReducedMotion) {
