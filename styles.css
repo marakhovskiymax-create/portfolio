@@ -2204,17 +2204,6 @@ body.has-spider-cursor .spider-cursor {
   background: repeating-linear-gradient(90deg, rgba(244, 243, 238, 0.16) 0 3px, transparent 3px 8px);
 }
 
-.contact-form__honeypot {
-  position: absolute;
-  width: 1px !important;
-  height: 1px !important;
-  min-height: 0 !important;
-  padding: 0 !important;
-  opacity: 0;
-  pointer-events: none;
-  clip-path: inset(50%);
-}
-
 .contact-form__row {
   display: grid;
   grid-template-columns: minmax(0, 1fr);

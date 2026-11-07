@@ -1233,7 +1233,7 @@ function initContactForm() {
   const status = document.querySelector("[data-contact-status]");
   if (!form || !status) return;
 
-  const fields = [...form.querySelectorAll("input[name]:not([type='hidden']):not([name='_gotcha']), textarea[name]")];
+  const fields = [...form.querySelectorAll("input[name]:not([type='hidden']), textarea[name]")];
   const submitButton = form.querySelector("[type='submit']");
   const buttonLabels = [...submitButton.querySelectorAll(".cta-reveal__line")];
   let attemptedSubmit = false;
@@ -1309,7 +1309,6 @@ function initContactForm() {
     }
 
     const formData = new FormData(form);
-    if (formData.get("_gotcha")) return;
     formData.set("subject", `Project inquiry from ${formData.get("name")}`);
     setStatus("");
     setSending(true);
