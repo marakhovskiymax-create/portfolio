@@ -497,6 +497,11 @@ body.case-page {
   max-width: min(100%, var(--impact-heading-width, 16ch));
 }
 
+.case-impact--natural-heading h2 {
+  max-width: 100%;
+  text-wrap: wrap;
+}
+
 .case-impact__intro > p:last-child {
   max-width: min(100%, 90ch);
 }
