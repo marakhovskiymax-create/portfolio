@@ -214,11 +214,23 @@ window.requestAnimationFrame(() => visual?.classList.add("is-ready"));
 
 const menuToggle = document.querySelector(".menu-toggle");
 const mobileMenu = document.querySelector("#mobile-menu");
+const languageMenus = [...document.querySelectorAll("[data-language-menu]")];
+
+document.addEventListener("pointerdown", (event) => {
+  languageMenus.forEach((menu) => {
+    if (!menu.contains(event.target)) menu.open = false;
+  });
+});
+
+languageMenus.forEach((menu) => {
+  menu.querySelector('[aria-pressed="true"]')?.addEventListener("click", () => { menu.open = false; });
+});
 
 function closeMenu() {
   if (!menuToggle || !mobileMenu) return;
   menuToggle.setAttribute("aria-expanded", "false");
   mobileMenu.hidden = true;
+  languageMenus.forEach((menu) => { menu.open = false; });
 }
 
 menuToggle?.addEventListener("click", () => {
@@ -232,7 +244,10 @@ mobileMenu?.querySelectorAll("a").forEach((link) => {
 });
 
 document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape") closeMenu();
+  if (event.key === "Escape") {
+    languageMenus.forEach((menu) => { menu.open = false; });
+    closeMenu();
+  }
 });
 
 function initSpiderCursor() {
@@ -1231,13 +1246,43 @@ initSkillsPlayground();
 function initContactForm() {
   const form = document.querySelector("[data-contact-form]");
   const status = document.querySelector("[data-contact-status]");
-  if (!form || !status) return;
+  const successDialog = document.querySelector("[data-contact-success]");
+  if (!form || !status || !successDialog) return;
 
   const fields = [...form.querySelectorAll("input[name]:not([type='hidden']), textarea[name]")];
   const submitButton = form.querySelector("[type='submit']");
   const buttonLabels = [...submitButton.querySelectorAll(".cta-reveal__line")];
   let attemptedSubmit = false;
   let sending = false;
+  let closeTimer;
+
+  function openSuccessDialog() {
+    clearTimeout(closeTimer);
+    successDialog.showModal();
+    requestAnimationFrame(() => successDialog.classList.add("is-visible"));
+  }
+
+  function closeSuccessDialog() {
+    if (!successDialog.open) return;
+    successDialog.classList.remove("is-visible");
+    clearTimeout(closeTimer);
+    closeTimer = setTimeout(() => successDialog.close(), 240);
+  }
+
+  successDialog.querySelectorAll("[data-success-close]").forEach((button) => {
+    button.addEventListener("click", closeSuccessDialog);
+  });
+  successDialog.addEventListener("cancel", (event) => {
+    event.preventDefault();
+    closeSuccessDialog();
+  });
+  successDialog.addEventListener("click", (event) => {
+    const bounds = successDialog.getBoundingClientRect();
+    if (event.target === successDialog && (
+      event.clientX < bounds.left || event.clientX > bounds.right ||
+      event.clientY < bounds.top || event.clientY > bounds.bottom
+    )) closeSuccessDialog();
+  });
 
   function setStatus(message, state = "") {
     status.textContent = message;
@@ -1331,7 +1376,8 @@ function initContactForm() {
         field.removeAttribute("aria-invalid");
         field.removeAttribute("aria-describedby");
       });
-      setStatus("Message sent. Thank you — I'll reply by email.", "success");
+      setStatus("");
+      openSuccessDialog();
     } catch (error) {
       setStatus("Your message couldn't be sent. Please try again or use the email link.", "error");
     } finally {
