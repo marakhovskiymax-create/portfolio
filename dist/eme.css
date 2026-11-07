@@ -15,3 +15,17 @@ body.eme-page {
 .eme-page .case-story__media--inset {
   background: #dff4e7;
 }
+
+.eme-page .case-scroll-gallery__heading--section {
+  max-width: 16ch;
+  font-size: var(--section-heading-size);
+  line-height: 1.078;
+}
+
+@media (max-width: 767px) {
+  .eme-page .case-scroll-gallery__heading--section {
+    max-width: 100%;
+    font-size: clamp(28px, 8.4vw, 48px);
+    text-wrap: balance;
+  }
+}
