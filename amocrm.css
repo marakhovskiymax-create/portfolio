@@ -394,10 +394,10 @@ body.case-page {
   margin: 0;
   color: var(--color-text);
   font-family: var(--font-hero, "Inter Tight", sans-serif);
-  font-size: clamp(2.4rem, 5vw, 5.2rem);
+  font-size: var(--section-heading-size);
   font-weight: 700;
   letter-spacing: -0.025em;
-  line-height: 1.08;
+  line-height: 1.078;
 }
 
 .case-scroll-gallery__deck {
@@ -1149,7 +1149,6 @@ body.case-page > .case-footer {
   :root { --case-gap: 80px; }
   .case-scroll-gallery { height: 270svh; }
   .case-scroll-gallery__stage { top: 146px; gap: 18px; width: 100%; }
-  .case-scroll-gallery__heading { font-size: clamp(2rem, 8vw, 3.4rem); }
   .case-scroll-gallery__deck,
   .case-scroll-gallery__card { border-radius: 18px; }
   .case-scroll-gallery__card { width: 100%; }
@@ -1386,7 +1385,6 @@ body.case-page > .case-footer {
   }
   .case-context .case-accordion { min-height: 0; }
 
-  .case-scroll-gallery__heading { font-size: 28px; }
   .case-hero h1 {
     font-size: clamp(calc(2.65rem - 8px), calc(12.8vw - 8px), calc(5.2rem - 8px));
     overflow-wrap: break-word;
@@ -1494,7 +1492,8 @@ body.case-page > .case-footer {
   .case-context h2,
   .case-heading h2,
   .case-story h2,
-  .case-impact h2 {
+  .case-impact h2,
+  .case-scroll-gallery__heading {
     max-width: 100%;
     width: 100%;
     font-size: clamp(28px, 8.4vw, 48px);
