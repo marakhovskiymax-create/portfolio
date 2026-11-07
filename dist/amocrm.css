@@ -629,6 +629,11 @@ body.case-page .case-wide-visual--context {
   position: relative;
 }
 
+@media (min-width: 768px) {
+  .work-areas .case-heading { margin-bottom: 30px; }
+  .case-scroll-gallery__stage { gap: 30px; }
+}
+
 .work-areas__drag-hint {
   position: absolute;
   right: clamp(24px, 5vw, 72px);
