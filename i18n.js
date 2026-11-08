@@ -80,6 +80,11 @@
       const translation = messages[element.dataset.i18nKey];
       if (translation) element.textContent = translation;
     });
+    if (locale === "ru") {
+      document.querySelectorAll("[data-ru-src]").forEach((element) => {
+        element.setAttribute("src", element.dataset.ruSrc);
+      });
+    }
     document.querySelectorAll("[alt], [aria-label], [title], [placeholder]").forEach((element) => {
       ["alt", "aria-label", "title", "placeholder"].forEach((attribute) => {
         const value = element.getAttribute(attribute);
