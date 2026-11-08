@@ -1836,7 +1836,9 @@ if (window.TastemakerMotion && window.gsap && window.ScrollTrigger) {
       const lines = title.querySelectorAll(".career-title__line");
       const containers = lines.length ? Array.from(lines) : [title];
       containers.forEach((container) => {
-        const words = container.textContent.trim().split(/\s+/);
+        const content = container.textContent.trim();
+        const words = content.split(/\s+/);
+        const separators = window.siteI18n?.locale === "ru" ? content.match(/\s+/g) : null;
         const fragment = document.createDocumentFragment();
         words.forEach((word, index) => {
           const wordElement = document.createElement("span");
@@ -1848,7 +1850,7 @@ if (window.TastemakerMotion && window.gsap && window.ScrollTrigger) {
             wordElement.append(characterElement);
           });
           fragment.append(wordElement);
-          if (index < words.length - 1) fragment.append(" ");
+          if (index < words.length - 1) fragment.append(separators?.[index] || " ");
         });
         container.replaceChildren(fragment);
       });
