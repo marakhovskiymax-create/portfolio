@@ -305,11 +305,10 @@ main {
   cursor: pointer;
   list-style: none;
   white-space: nowrap;
-  transition: color var(--motion-moderate) var(--ease-out);
+  transition: color var(--duration-press) var(--ease-out);
 }
 
 .language-menu__trigger::-webkit-details-marker { display: none; }
-.language-menu__globe { width: 19px; height: 19px; }
 .language-menu__chevron {
   width: 14px;
   height: 14px;
@@ -333,6 +332,15 @@ main {
   transform-origin: top left;
   transition: opacity var(--motion-moderate) var(--ease-out), transform var(--motion-moderate) var(--ease-out);
   @starting-style { opacity: 0; transform: scale(0.95); }
+}
+
+.masthead .language-menu__options::before {
+  position: absolute;
+  right: 0;
+  bottom: 100%;
+  left: 0;
+  height: 12px;
+  content: "";
 }
 
 .language-menu__options button {

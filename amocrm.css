@@ -386,6 +386,7 @@ body.case-page {
   grid-template-rows: auto auto;
   gap: 22px;
   width: min(100%, calc((100svh - 240px) * 2));
+  margin-inline: auto;
 }
 
 .case-scroll-gallery__heading {
@@ -413,7 +414,7 @@ body.case-page {
   right: 0;
   bottom: 0;
   left: 0;
-  width: calc(100% - var(--gallery-inset, 0px));
+  width: 100%;
   aspect-ratio: 2 / 1;
   margin: 0 auto;
   overflow: hidden;

@@ -224,6 +224,26 @@ document.addEventListener("pointerdown", (event) => {
 
 languageMenus.forEach((menu) => {
   menu.querySelector('[aria-pressed="true"]')?.addEventListener("click", () => { menu.open = false; });
+
+  const canHover = window.matchMedia("(hover: hover) and (pointer: fine)");
+  const trigger = menu.querySelector(".language-menu__trigger");
+  let triggerPointerType = null;
+  trigger?.addEventListener("pointerdown", (event) => { triggerPointerType = event.pointerType; });
+  trigger?.addEventListener("click", (event) => {
+    if (canHover.matches && triggerPointerType === "mouse" && menu.open) event.preventDefault();
+    triggerPointerType = null;
+  });
+  menu.addEventListener("pointerenter", (event) => {
+    if (canHover.matches && event.pointerType === "mouse") menu.open = true;
+  });
+  menu.addEventListener("pointerleave", (event) => {
+    if (canHover.matches && event.pointerType === "mouse") menu.open = false;
+  });
+  menu.addEventListener("focusout", () => {
+    window.requestAnimationFrame(() => {
+      if (!menu.contains(document.activeElement) && !menu.matches(":hover")) menu.open = false;
+    });
+  });
 });
 
 function closeMenu() {
