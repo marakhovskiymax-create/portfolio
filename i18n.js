@@ -76,6 +76,10 @@
     const nodes = [];
     while (walker.nextNode()) nodes.push(walker.currentNode);
     nodes.forEach(translateNode);
+    document.querySelectorAll("[data-i18n-key]").forEach((element) => {
+      const translation = messages[element.dataset.i18nKey];
+      if (translation) element.textContent = translation;
+    });
     document.querySelectorAll("[alt], [aria-label], [title], [placeholder]").forEach((element) => {
       ["alt", "aria-label", "title", "placeholder"].forEach((attribute) => {
         const value = element.getAttribute(attribute);
