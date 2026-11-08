@@ -37,7 +37,7 @@
       if (mobileLabel) mobileLabel.textContent = locale === "ru" ? "Русский" : "English";
       trigger?.setAttribute("aria-label", locale === "ru" ? "Язык: русский" : "Language: English");
       menu.querySelectorAll(".language-menu__options button").forEach((button) => {
-        const language = button.textContent.trim() === "Русский" ? "ru" : "en";
+        const language = button.textContent.trim().startsWith("Русский") ? "ru" : "en";
         button.setAttribute("aria-pressed", String(language === locale));
         button.addEventListener("click", () => setLanguage(language));
       });
