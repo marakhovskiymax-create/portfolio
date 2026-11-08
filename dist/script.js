@@ -993,7 +993,7 @@ function initSkillsPlayground() {
   let topLayer = 20;
 
   engine.gravity.y = 1;
-  engine.gravity.scale = reduceMotion ? 0 : 0.00145;
+  engine.gravity.scale = reduceMotion ? 0 : 0.003;
 
   const renderState = (item, state) => {
     if (!state.body) return;
@@ -1210,6 +1210,7 @@ function initSkillsPlayground() {
 
     item.addEventListener("pointerup", release);
     item.addEventListener("pointercancel", release);
+    item.addEventListener("lostpointercapture", release);
     item.addEventListener("keydown", (event) => {
       if (!state.body) return;
       const step = event.shiftKey ? 32 : 12;
