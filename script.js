@@ -19,13 +19,17 @@ const projectContent = {
 // Give repeated navigation and contact links the same label roll and icon turn as the main CTAs.
 function initLinkReveal() {
   const links = document.querySelectorAll(
-    ".masthead__links a, .mobile-menu a, .hero__strip a, .contact-method, .footer__group a",
+    ".masthead__links a, .masthead .language-menu__trigger, .mobile-menu a, .hero__strip a, .contact-method, .footer__group a",
   );
 
   links.forEach((link) => {
     if (link.classList.contains("cta-reveal")) return;
 
-    const labelElement = link.matches(".contact-method") ? link.lastElementChild : null;
+    const labelElement = link.matches(".contact-method")
+      ? link.lastElementChild
+      : link.matches(".language-menu__trigger")
+        ? link.querySelector(".language-menu__label")
+        : null;
     const labelNode = labelElement || Array.from(link.childNodes).find(
       (node) => node.nodeType === Node.TEXT_NODE && node.textContent.trim(),
     );

@@ -309,6 +309,23 @@ main {
 }
 
 .language-menu__trigger::-webkit-details-marker { display: none; }
+.language-menu__globe {
+  width: 18px;
+  height: 18px;
+  flex: none;
+}
+
+.masthead .language-menu__trigger {
+  padding-inline: 10px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  transition: border-color var(--duration-press) var(--ease-out), color var(--duration-press) var(--ease-out);
+}
+
+.masthead .language-menu__trigger:focus-visible {
+  border-color: rgba(244, 243, 238, 0.36);
+}
+
 .language-menu__chevron {
   width: 14px;
   height: 14px;
@@ -363,6 +380,7 @@ main {
 
 @media (hover: hover) and (pointer: fine) {
   .language-menu__trigger:hover { color: var(--color-text); }
+  .masthead .language-menu__trigger:hover { border-color: rgba(244, 243, 238, 0.36); }
   .language-menu__options button:hover { background: rgba(244, 243, 238, 0.1); }
 }
 
