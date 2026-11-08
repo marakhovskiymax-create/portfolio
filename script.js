@@ -1,3 +1,5 @@
+const siteTranslate = (text) => window.siteI18n?.t(text) ?? text;
+
 const projectContent = {
   "amo-crm": {
     caption: "Interactive preview of the amoCRM deal management case study.",
@@ -163,7 +165,7 @@ function activateProject(index) {
   if (!project || !visual) return;
 
   visual.dataset.projectVisual = projectId;
-  visualCaption.textContent = project.caption;
+  visualCaption.textContent = siteTranslate(project.caption);
   syncTimeMachine(index);
 }
 
@@ -1335,24 +1337,24 @@ function initContactForm() {
   function setSending(value) {
     sending = value;
     submitButton.disabled = value;
-    buttonLabels.forEach((label) => { label.textContent = value ? "Sending…" : "Send message"; });
+    buttonLabels.forEach((label) => { label.textContent = siteTranslate(value ? "Sending…" : "Send message"); });
   }
 
   function errorFor(field) {
     const value = field.value.trim();
     if (!value) {
-      return {
+      return siteTranslate({
         name: "Enter your name so I can address you in my reply.",
         email: "Enter your email address so I can reply.",
         message: "Add a short message so I know what you'd like to discuss.",
-      }[field.name];
+      }[field.name]);
     }
     if (field.name === "email" && (
       !field.validity.valid ||
       !/^[^\s@]+@(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)+[A-Za-z]{2,63}$/.test(value) ||
       value.includes("..")
     )) {
-      return "This email address doesn't look right. Use a format like you@example.com.";
+      return siteTranslate("This email address doesn't look right. Use a format like you@example.com.");
     }
     return "";
   }
@@ -1395,7 +1397,7 @@ function initContactForm() {
     }
 
     const formData = new FormData(form);
-    formData.set("subject", `Project inquiry from ${formData.get("name")}`);
+    formData.set("subject", `${siteTranslate("Project inquiry from")} ${formData.get("name")}`);
     setStatus("");
     setSending(true);
 
@@ -1420,7 +1422,7 @@ function initContactForm() {
       setStatus("");
       openSuccessDialog();
     } catch (error) {
-      setStatus("Your message couldn't be sent. Please try again or use the email link.", "error");
+      setStatus(siteTranslate("Your message couldn't be sent. Please try again or use the email link."), "error");
     } finally {
       setSending(false);
     }

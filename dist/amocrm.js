@@ -181,7 +181,9 @@ function renderCarousel(nextIndex, announce = false) {
 
   if (announce && carouselAnnouncement) {
     const caption = carouselSlides[carouselIndex].querySelector("figcaption")?.textContent?.trim();
-    carouselAnnouncement.textContent = `Slide ${carouselIndex + 1} of ${carouselSlides.length}${caption ? `: ${caption}` : ""}`;
+    carouselAnnouncement.textContent = window.siteI18n?.locale === "ru"
+      ? `Слайд ${carouselIndex + 1} из ${carouselSlides.length}${caption ? `: ${caption}` : ""}`
+      : `Slide ${carouselIndex + 1} of ${carouselSlides.length}${caption ? `: ${caption}` : ""}`;
   }
 }
 
