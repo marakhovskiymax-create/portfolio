@@ -316,9 +316,9 @@ main {
 }
 
 .masthead .language-menu__trigger {
-  padding-inline: 10px;
+  padding-inline: 0;
   border: 1px solid transparent;
-  border-radius: 999px;
+  border-radius: 0;
   transition: border-color var(--duration-press) var(--ease-out), color var(--duration-press) var(--ease-out);
 }
 
@@ -492,7 +492,8 @@ body.has-spider-cursor .spider-cursor {
   body.has-spider-cursor,
   body.has-spider-cursor a,
   body.has-spider-cursor button,
-  body.has-spider-cursor [role="button"] {
+  body.has-spider-cursor [role="button"],
+  body.has-spider-cursor .masthead .language-menu__trigger {
     cursor: none;
   }
 }
