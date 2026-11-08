@@ -1273,6 +1273,7 @@ function initContactForm() {
   const successDialog = document.querySelector("[data-contact-success]");
   if (!form || !status || !successDialog) return;
 
+  const cursorCanvas = document.querySelector("[data-spider-cursor]");
   const fields = [...form.querySelectorAll("input[name]:not([type='hidden']), textarea[name]")];
   const submitButton = form.querySelector("[type='submit']");
   const buttonLabels = [...submitButton.querySelectorAll(".cta-reveal__line")];
@@ -1283,6 +1284,17 @@ function initContactForm() {
   function openSuccessDialog() {
     clearTimeout(closeTimer);
     successDialog.showModal();
+    let layeredCursor = false;
+    if (cursorCanvas && document.body.classList.contains("has-spider-cursor") && cursorCanvas.showPopover) {
+      try {
+        cursorCanvas.setAttribute("popover", "manual");
+        cursorCanvas.showPopover();
+        layeredCursor = cursorCanvas.matches(":popover-open");
+      } catch {
+        cursorCanvas.removeAttribute("popover");
+      }
+    }
+    successDialog.classList.toggle("contact-success--system-cursor", !layeredCursor);
     requestAnimationFrame(() => successDialog.classList.add("is-visible"));
   }
 
@@ -1295,6 +1307,10 @@ function initContactForm() {
 
   successDialog.querySelectorAll("[data-success-close]").forEach((button) => {
     button.addEventListener("click", closeSuccessDialog);
+  });
+  successDialog.addEventListener("close", () => {
+    if (cursorCanvas?.matches(":popover-open")) cursorCanvas.hidePopover();
+    cursorCanvas?.removeAttribute("popover");
   });
   successDialog.addEventListener("cancel", (event) => {
     event.preventDefault();

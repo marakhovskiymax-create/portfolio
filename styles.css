@@ -475,6 +475,15 @@ main {
   transition: opacity var(--motion-slow) var(--ease-out);
 }
 
+.spider-cursor:popover-open {
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
 body.has-spider-cursor .spider-cursor {
   opacity: 1;
 }
@@ -2462,11 +2471,19 @@ body.has-spider-cursor .spider-cursor {
   transform: scale(1);
 }
 
+.contact-success__header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 32px;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
 .contact-success__close {
   display: grid;
   width: 32px;
   height: 32px;
-  margin: -8px -8px 0 auto;
+  margin: 0;
   place-items: center;
   border: 0;
   border-radius: 50%;
@@ -2492,7 +2509,7 @@ body.has-spider-cursor .spider-cursor {
 .contact-success.is-visible .contact-success__content > :nth-child(3) { transition-delay: 150ms; }
 
 .contact-success h2 {
-  margin: 8px 0 10px;
+  margin: 0;
   font-family: var(--font-hero);
   font-size: 1.5rem;
   line-height: 1.16;
@@ -2508,9 +2525,25 @@ body.has-spider-cursor .spider-cursor {
 
 .contact-success__button {
   width: 100%;
+  transition:
+    transform var(--duration-press) var(--ease-out),
+    background-color var(--motion-moderate) var(--ease-out),
+    box-shadow var(--motion-moderate) var(--ease-out);
+}
+
+.contact-success__button:focus-visible {
+  box-shadow: 0 0 0 4px rgba(244, 243, 238, 0.16), 0 0 26px rgba(244, 243, 238, 0.24);
+}
+
+.contact-success--system-cursor button {
+  cursor: pointer;
 }
 
 @media (hover: hover) and (pointer: fine) {
+  .contact-success__button:hover {
+    box-shadow: 0 0 0 4px rgba(244, 243, 238, 0.16), 0 0 26px rgba(244, 243, 238, 0.24);
+  }
+
   .contact-success__close:hover {
     background: rgba(244, 243, 238, 0.08);
     color: var(--color-text);
