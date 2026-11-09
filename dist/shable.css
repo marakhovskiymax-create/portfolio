@@ -15,3 +15,7 @@ body.shable-page {
 .shable-page .case-story__media--inset {
   background: #ece2ff;
 }
+
+.shable-page[data-locale="ru"] .case-hero h1 {
+  max-width: 13ch;
+}

@@ -26,3 +26,15 @@ body.don-ballon-page {
 .don-ballon-page[data-locale="ru"] #website .case-story__media--inset figcaption {
   display: none;
 }
+
+@media (min-width: 761px) {
+  .don-ballon-page[data-locale="ru"] .case-impact__metrics dt {
+    min-height: 2.9em;
+  }
+}
+
+@media (min-width: 761px) and (max-width: 919px) {
+  .don-ballon-page[data-locale="ru"] .case-impact__metrics dt {
+    min-height: 5.8em;
+  }
+}

@@ -744,17 +744,23 @@ function initCaseTextMotion() {
 
     // Keep nonbreaking spaces inside a word so selected phrases stay together.
     text.split(/[\t\n\r\f ]+/).forEach((word, wordIndex, words) => {
-      const wordElement = document.createElement("span");
-      wordElement.className = "case-motion-word";
+      const parts = title.id === "case-title" && document.body.classList.contains("eme-page")
+        && document.body.dataset.locale === "ru" && word === "дизайн-система."
+        ? ["дизайн-", "система."] : [word];
 
-      Array.from(word).forEach((character) => {
-        const characterElement = document.createElement("span");
-        characterElement.className = "case-motion-char";
-        characterElement.textContent = character;
-        wordElement.append(characterElement);
+      parts.forEach((part) => {
+        const wordElement = document.createElement("span");
+        wordElement.className = "case-motion-word";
+
+        Array.from(part).forEach((character) => {
+          const characterElement = document.createElement("span");
+          characterElement.className = "case-motion-char";
+          characterElement.textContent = character;
+          wordElement.append(characterElement);
+        });
+
+        visual.append(wordElement);
       });
-
-      visual.append(wordElement);
       if (wordIndex < words.length - 1) visual.append(" ");
     });
 
