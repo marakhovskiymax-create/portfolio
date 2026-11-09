@@ -20,6 +20,10 @@ body.eme-app-page {
   max-width: 26ch;
 }
 
+.eme-app-page[data-locale="ru"] .work-areas .case-heading h2 {
+  max-width: 16ch;
+}
+
 @media (min-width: 761px) {
   .eme-app-page .case-meta {
     grid-template-columns: repeat(4, minmax(0, 1fr));
