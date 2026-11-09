@@ -22,6 +22,28 @@ body.eme-page {
   line-height: 1.078;
 }
 
+@media (min-width: 768px) {
+  .eme-page[data-locale="ru"] .work-areas .case-heading h2 {
+    max-width: none;
+    white-space: nowrap;
+  }
+}
+
+.eme-page[data-locale="ru"] #renewal .case-story__copy,
+.eme-page[data-locale="ru"] #renewal .case-story__copy > p {
+  max-width: 760px;
+}
+
+.eme-page[data-locale="ru"] .renewal-flow__result p {
+  min-height: 0;
+}
+
+.eme-page[data-locale="ru"] .renewal-flow__result i {
+  position: static;
+  display: block;
+  margin: 15px 0 0 auto;
+}
+
 @media (max-width: 767px) {
   .eme-page .case-scroll-gallery__heading--section {
     max-width: 100%;
