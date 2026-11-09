@@ -742,7 +742,8 @@ function initCaseTextMotion() {
     visual.setAttribute("aria-hidden", "true");
     title.setAttribute("aria-label", text);
 
-    text.split(/\s+/).forEach((word, wordIndex, words) => {
+    // Keep nonbreaking spaces inside a word so selected phrases stay together.
+    text.split(/[\t\n\r\f ]+/).forEach((word, wordIndex, words) => {
       const wordElement = document.createElement("span");
       wordElement.className = "case-motion-word";
 

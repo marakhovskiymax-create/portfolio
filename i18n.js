@@ -7,7 +7,7 @@
   let locale = requested === "ru" || requested === "en" ? requested : saved === "ru" ? "ru" : "en";
   const sourceScripts = page === "index"
     ? ["gsap-starter.js", "script.js?v=20261108-skills-gravity"]
-    : ["script.js?v=20261108-skills-gravity", "amocrm.js?v=20261108-meta-visible"];
+    : ["script.js?v=20261108-skills-gravity", "amocrm.js?v=20261109-nonbreaking-titles"];
   let messages = {};
 
   window.siteI18n = {
