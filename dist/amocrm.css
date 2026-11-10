@@ -640,19 +640,28 @@ body.case-page .case-wide-visual--context {
 
 .work-areas .case-heading {
   position: relative;
+  --work-hint-right: clamp(24px, 5vw, 72px);
+  --work-hint-width: 150px;
 }
 
 @media (min-width: 768px) {
   .work-areas .case-heading { margin-bottom: 30px; }
+  .work-areas .case-heading h2 {
+    max-width: calc(100% - var(--work-hint-right) - var(--work-hint-width) - 20px);
+    min-width: 0;
+    overflow-wrap: anywhere;
+    white-space: normal;
+  }
   .case-scroll-gallery__stage { gap: 30px; }
 }
 
 .work-areas__drag-hint {
   position: absolute;
-  right: clamp(24px, 5vw, 72px);
+  right: var(--work-hint-right);
   bottom: -24px;
   z-index: 2;
   display: grid;
+  width: var(--work-hint-width);
   justify-items: end;
   color: rgba(244, 243, 238, 0.78);
   pointer-events: none;
@@ -667,7 +676,7 @@ body.case-page .case-wide-visual--context {
 
 .work-areas__drag-hint svg {
   display: block;
-  width: 150px;
+  width: var(--work-hint-width);
   height: 78px;
   margin-top: -2px;
   overflow: visible;

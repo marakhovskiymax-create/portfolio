@@ -16,12 +16,14 @@ body.eme-app-page {
   background: #dff4e7;
 }
 
-.eme-app-page .work-areas .case-heading h2 {
-  max-width: 26ch;
-}
+@media (max-width: 767px) {
+  .eme-app-page .work-areas .case-heading h2 {
+    max-width: 26ch;
+  }
 
-.eme-app-page[data-locale="ru"] .work-areas .case-heading h2 {
-  max-width: 16ch;
+  .eme-app-page[data-locale="ru"] .work-areas .case-heading h2 {
+    max-width: 16ch;
+  }
 }
 
 @media (min-width: 761px) {

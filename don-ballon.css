@@ -16,13 +16,6 @@ body.don-ballon-page {
   background: #2a0c12;
 }
 
-@media (min-width: 768px) {
-  .don-ballon-page[data-locale="ru"] .work-areas .case-heading h2 {
-    max-width: none;
-    white-space: nowrap;
-  }
-}
-
 .don-ballon-page[data-locale="ru"] #website .case-story__media--inset figcaption {
   display: none;
 }
