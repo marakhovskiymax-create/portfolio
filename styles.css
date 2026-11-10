@@ -163,7 +163,7 @@ section[id] {
 
 @media (min-width: 1440px) {
   body:not(.case-page) {
-    --shell: calc(100% - clamp(144px, calc(32.5vw - 324px), 300px));
+    --shell: min(1620px, calc(100% - clamp(144px, calc(32.5vw - 324px), 300px)));
   }
 }
 
