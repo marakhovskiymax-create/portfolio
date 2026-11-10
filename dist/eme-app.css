@@ -28,7 +28,11 @@ body.eme-app-page {
 
 @media (min-width: 768px) {
   .eme-app-page .case-meta {
-    grid-template-columns: max-content max-content minmax(0, 1fr) max-content;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 2fr) max-content;
+  }
+
+  .eme-app-page .case-meta div:nth-child(-n + 2) dd {
+    max-width: 100%;
   }
 
   .eme-app-page .case-meta div:nth-child(3) {

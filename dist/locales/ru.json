@@ -192,7 +192,7 @@
       "EME.APP picking queue and warehouse task overview": "Очередь комплектования и обзор задач в EME.APP",
       "I separated order selection from task execution. Warehouse staff can review and select orders before starting work, while unfinished tasks remain accessible from the same screen. This keeps preparation and execution distinct without adding unnecessary navigation.": "Я разделил выбор заказов и выполнение задачи. Сотрудники могут просмотреть и выбрать заказы перед началом работы, а незавершённые задачи остаются доступными на том же экране. Так подготовка и выполнение не смешиваются, но лишних переходов не появляется.",
       "EME.APP warehouse task navigation": "Навигация по складским задачам в EME.APP",
-      "From packing to shipment readiness": "От упаковки до готовности к отгрузке",
+      "From packing to shipment readiness": "От упаковки до\u00a0готовности к отгрузке",
       "I designed the packing and dispatch interfaces around the steps warehouse staff perform: scanning items, checking contents, preparing labels, and moving goods to the next operation.": "Я спроектировал интерфейсы упаковки и отгрузки вокруг реальных действий сотрудников: сканирования товаров, проверки содержимого, подготовки этикеток и передачи грузов на следующий этап.",
       "Clear Packing Progress": "Понятный прогресс упаковки",
       "I kept item quantities, container details, and the current operation visible, so workers could see what had been processed and what still needed attention.": "Я оставил на виду количество товаров, данные о таре и текущую операцию, чтобы сотрудники понимали, что уже обработано, а что ещё требует внимания.",
