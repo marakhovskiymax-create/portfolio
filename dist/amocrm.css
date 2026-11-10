@@ -22,6 +22,12 @@ body.case-page {
   background: var(--color-bg);
 }
 
+@media (min-width: 1440px) {
+  body.case-page {
+    --shell: min(1620px, calc(100% - clamp(144px, calc(32.5vw - 324px), 300px)));
+  }
+}
+
 .case-page::before {
   position: fixed;
   z-index: -1;
