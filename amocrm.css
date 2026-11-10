@@ -500,7 +500,9 @@ body.case-page {
 }
 
 .case-context h2,
-.case-context__intro > p:last-child {
+.case-context__intro > p:last-child,
+.case-story__intro .case-story__copy h2,
+.case-story__intro .case-story__copy > p:last-child {
   max-width: 100%;
 }
 
