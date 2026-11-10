@@ -462,7 +462,7 @@ body.case-page {
 
 .case-context {
   display: grid;
-  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, min(45%, 500px));
   gap: clamp(48px, 8vw, 112px);
   align-items: start;
   margin-bottom: 80px;
@@ -497,6 +497,11 @@ body.case-page {
   color: var(--color-muted);
   font-size: 1rem;
   line-height: 1.65;
+}
+
+.case-context h2,
+.case-context__intro > p:last-child {
+  max-width: 100%;
 }
 
 .case-impact h2 {
