@@ -832,7 +832,7 @@ body.case-page .case-wide-visual--context {
 }
 
 .case-decision p {
-  max-width: 52ch;
+  min-width: 0;
   color: var(--color-text);
   font-size: clamp(1.2rem, 2vw, 1.7rem);
   line-height: 1.35;
