@@ -549,6 +549,10 @@ body.has-spider-cursor .spider-cursor {
   padding-right: 0.015em;
 }
 
+body[data-locale="ru"] .hero__title-row--second {
+  margin-top: calc(-0.08em + 12px);
+}
+
 .hero__title-word {
   min-width: 0;
 }
@@ -2952,6 +2956,10 @@ body.has-spider-cursor .spider-cursor {
   .hero__title-row--second {
     justify-content: flex-start;
     margin-top: -0.04em;
+  }
+
+  body[data-locale="ru"] .hero__title-row--second {
+    margin-top: calc(-0.04em + 12px);
   }
 
   .hero__bottom {
