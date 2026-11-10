@@ -26,8 +26,16 @@ body.eme-app-page {
   }
 }
 
-@media (min-width: 761px) {
+@media (min-width: 768px) {
   .eme-app-page .case-meta {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: max-content max-content minmax(0, 1fr) max-content;
+  }
+
+  .eme-app-page .case-meta div:nth-child(3) {
+    padding-right: 16px;
+  }
+
+  .eme-app-page .case-meta div:nth-child(3) dd {
+    width: 100%;
   }
 }
