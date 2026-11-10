@@ -161,6 +161,12 @@ section[id] {
   margin-inline: auto;
 }
 
+@media (min-width: 1440px) {
+  body:not(.case-page) {
+    --shell: calc(100% - clamp(144px, calc(32.5vw - 324px), 300px));
+  }
+}
+
 main {
   display: flex;
   flex-direction: column;
