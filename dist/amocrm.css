@@ -921,6 +921,26 @@ body.case-page .case-wide-visual--context {
   text-wrap: balance;
 }
 
+@media (min-width: 768px) {
+  #renewal .case-story__copy {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  #renewal .case-story__copy h2,
+  #renewal .case-story__copy > p:last-child {
+    max-width: 100%;
+    text-wrap: wrap;
+  }
+}
+
+@media (min-width: 901px) {
+  /* Span the first two columns of the three-card grid, including their gap. */
+  #renewal .case-story__copy {
+    width: calc(66.666667% - 6px);
+  }
+}
+
 .renewal-flow article {
   position: relative;
   min-height: 240px;
