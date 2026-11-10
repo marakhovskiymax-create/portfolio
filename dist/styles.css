@@ -859,6 +859,12 @@ body[data-locale="ru"] .hero__title-row--second {
   transform-style: preserve-3d;
 }
 
+@media (min-width: 1440px) {
+  body:not(.case-page) .time-machine__stage {
+    aspect-ratio: 1.65;
+  }
+}
+
 .time-machine__card {
   position: absolute;
   top: 56%;
