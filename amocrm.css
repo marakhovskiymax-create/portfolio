@@ -22,6 +22,14 @@ body.case-page {
   background: var(--color-bg);
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  html.js.case-motion-pending body.case-page {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
+
 @media (min-width: 1440px) {
   body.case-page {
     --shell: min(1620px, calc(100% - clamp(144px, calc(32.5vw - 324px), 300px)));
@@ -1148,6 +1156,11 @@ body.case-page > .case-footer {
 
 .case-page .skills-playground__hint {
   top: 0;
+}
+
+.js [data-case-reveal] {
+  opacity: 0;
+  transform: translateY(10px);
 }
 
 .js [data-case-reveal].is-visible {

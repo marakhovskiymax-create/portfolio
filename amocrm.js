@@ -721,7 +721,7 @@ function initCaseTextMotion() {
   if (prefersReducedMotion || !window.gsap || !("IntersectionObserver" in window)) return;
 
   const sectionMotion = [
-    { selector: "#overview", title: "h1", support: [".case-hero__lede"] },
+    { selector: "#overview", title: "h1", support: [".case-hero__lede", ".case-meta"] },
     { selector: "#context", title: "h2", support: [".case-context__intro > p:last-child", ".case-accordion"] },
     { selector: "#work-areas", title: "h2", support: [".work-areas__canvas"] },
     { selector: "#website", title: "h2", support: [".case-story__copy > p", ".case-story__notes"] },
@@ -984,3 +984,5 @@ if (prefersReducedMotion || !("IntersectionObserver" in window)) {
   }, { rootMargin: caseTextRevealMargin, threshold: 0.01 });
   revealItems.forEach((item) => revealObserver.observe(item));
 }
+
+document.documentElement.classList.remove("case-motion-pending");

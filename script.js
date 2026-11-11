@@ -1971,20 +1971,22 @@ if (window.TastemakerMotion && window.gsap && window.ScrollTrigger) {
         "-=0.12",
       );
 
-    const footer = scrollScene("[data-motion-section='footer']", "top 96%");
-    footer
-      .fromTo(
-        ".footer__identity",
-        { autoAlpha: 0, y: -8, filter: "blur(4px)" },
-        { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.8 },
-        0.1,
-      )
-      .fromTo(
-        ".footer__group",
-        { autoAlpha: 0, y: -8, filter: "blur(4px)" },
-        { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.8, stagger: 0.1 },
-        0.1,
-      );
+    if (!document.body.classList.contains("case-page")) {
+      const footer = scrollScene("[data-motion-section='footer']", "top 96%");
+      footer
+        .fromTo(
+          ".footer__identity",
+          { autoAlpha: 0, y: -8, filter: "blur(4px)" },
+          { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.8 },
+          0.1,
+        )
+        .fromTo(
+          ".footer__group",
+          { autoAlpha: 0, y: -8, filter: "blur(4px)" },
+          { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.8, stagger: 0.1 },
+          0.1,
+        );
+    }
   });
 
 }

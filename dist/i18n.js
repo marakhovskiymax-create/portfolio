@@ -6,8 +6,8 @@
   try { saved = localStorage.getItem("portfolio-language") || "en"; } catch { /* Storage can be disabled. */ }
   let locale = requested === "ru" || requested === "en" ? requested : saved === "ru" ? "ru" : "en";
   const sourceScripts = page === "index"
-    ? ["gsap-starter.js", "script.js?v=20261111-footer-awake"]
-    : ["script.js?v=20261111-footer-awake", "amocrm.js?v=20261111-work-chip-awake"];
+    ? ["gsap-starter.js", "script.js?v=20261111-case-first-reveal"]
+    : ["script.js?v=20261111-case-first-reveal", "amocrm.js?v=20261111-case-first-reveal"];
   let messages = {};
 
   window.siteI18n = {
@@ -144,6 +144,7 @@
       document.documentElement.classList.remove("locale-pending");
     }
     for (const source of sourceScripts) await loadScript(source);
+    document.documentElement.classList.remove("case-motion-pending");
   }
 
   start();
