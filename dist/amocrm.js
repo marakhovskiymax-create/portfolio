@@ -809,11 +809,12 @@ function initCaseTextMotion() {
           clearProps: "transform,opacity,visibility",
         });
         prepared.supportingElements?.forEach((element) => {
+          const isHeroMeta = element.matches(".case-meta");
           window.gsap.to(element, {
             autoAlpha: 1,
             y: 0,
-            duration: 0.28,
-            delay: 0.04,
+            duration: isHeroMeta ? 0.32 : 0.28,
+            delay: isHeroMeta ? 2.2 : 0.04,
             ease: "power3.out",
             clearProps: "transform,opacity,visibility",
           });
