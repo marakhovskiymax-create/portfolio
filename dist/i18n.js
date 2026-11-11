@@ -137,8 +137,12 @@
       document.documentElement.lang = "en";
     }
     try { localStorage.setItem("portfolio-language", locale); } catch { /* URL still preserves the choice. */ }
-    updateLanguageMenu();
-    keepLanguageInNavigation();
+    try {
+      updateLanguageMenu();
+      keepLanguageInNavigation();
+    } finally {
+      document.documentElement.classList.remove("locale-pending");
+    }
     for (const source of sourceScripts) await loadScript(source);
   }
 
