@@ -779,8 +779,17 @@ function initCaseTextMotion() {
     window.gsap.set(characters, { autoAlpha: 0, rotateX: 90, y: 10 });
     window.gsap.set(supportingElements, { autoAlpha: 0, y: 10 });
 
-    preparedElements.set(title, { characters });
-    supportingElements.forEach((element) => preparedElements.set(element, { element }));
+    if (config.selector === "#overview") {
+      // The metadata sits at the bottom of the hero, often below the fold.
+      // Reveal the whole hero copy together when any part of it enters view.
+      preparedElements.set(section.querySelector(".case-hero__copy") || title, {
+        characters,
+        supportingElements,
+      });
+    } else {
+      preparedElements.set(title, { characters });
+      supportingElements.forEach((element) => preparedElements.set(element, { element }));
+    }
   });
 
   const observer = new IntersectionObserver((entries, activeObserver) => {
@@ -798,6 +807,16 @@ function initCaseTextMotion() {
           stagger: 0.035,
           ease: "power3.out",
           clearProps: "transform,opacity,visibility",
+        });
+        prepared.supportingElements?.forEach((element) => {
+          window.gsap.to(element, {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.28,
+            delay: 0.04,
+            ease: "power3.out",
+            clearProps: "transform,opacity,visibility",
+          });
         });
       } else {
         const isWorkAreasCanvas = prepared.element.matches(".work-areas__canvas");
