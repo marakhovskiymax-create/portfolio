@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Сущность портфолио: девять нитей и звёздные частицы">
+<rect width="64" height="64" rx="13" fill="#050505"/>
+<path d="M32.3 29.0 Q31.6 19.8 31.3 11.0" fill="none" stroke="#F4F3EE" stroke-width="2.25" stroke-linecap="round"/>
+<path d="M34.9 29.2 Q41.3 22.4 46.2 13.9" fill="none" stroke="#F4F3EE" stroke-width="2.25" stroke-linecap="round"/>
+<path d="M35.0 31.8 Q43.1 28.6 51.6 27.8" fill="none" stroke="#F4F3EE" stroke-width="2.25" stroke-linecap="round"/>
+<path d="M35.2 34.4 Q43.5 37.6 51.4 42.3" fill="none" stroke="#F4F3EE" stroke-width="2.25" stroke-linecap="round"/>
+<path d="M32.7 34.9 Q35.6 45.4 41.0 54.3" fill="none" stroke="#F4F3EE" stroke-width="2.25" stroke-linecap="round"/>
+<path d="M30.2 35.6 Q29.0 43.8 25.5 52.0" fill="none" stroke="#F4F3EE" stroke-width="2.25" stroke-linecap="round"/>
+<path d="M29.3 33.2 Q21.2 39.8 12.5 44.2" fill="none" stroke="#F4F3EE" stroke-width="2.25" stroke-linecap="round"/>
+<path d="M28.2 30.9 Q20.8 29.0 12.2 29.2" fill="none" stroke="#F4F3EE" stroke-width="2.25" stroke-linecap="round"/>
+<path d="M30.3 29.5 Q23.1 22.8 17.3 15.7" fill="none" stroke="#F4F3EE" stroke-width="2.25" stroke-linecap="round"/>
+<circle cx="31.3" cy="11.0" r="1.65" fill="#F4F3EE"/>
+<circle cx="46.2" cy="13.9" r="2.1" fill="#9BB8FF"/>
+<circle cx="51.6" cy="27.8" r="1.65" fill="#F4F3EE"/>
+<circle cx="51.4" cy="42.3" r="1.65" fill="#F4F3EE"/>
+<circle cx="41.0" cy="54.3" r="2.1" fill="#F4F3EE"/>
+<circle cx="25.5" cy="52.0" r="1.65" fill="#F4F3EE"/>
+<circle cx="12.5" cy="44.2" r="1.65" fill="#9BB8FF"/>
+<circle cx="12.2" cy="29.2" r="2.1" fill="#F4F3EE"/>
+<circle cx="17.3" cy="15.7" r="1.65" fill="#F4F3EE"/>
+<circle cx="32" cy="32" r="4.5" fill="#050505" stroke="#F4F3EE" stroke-width="1.7"/><circle cx="32" cy="32" r="1.4" fill="#9BB8FF"/>
+</svg>
