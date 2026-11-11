@@ -984,9 +984,9 @@ function initSkillsPlayground() {
   const items = surface ? [...surface.querySelectorAll("[data-drag-item]")] : [];
   if (!playground || !surface || !items.length || !window.Matter) return;
 
-  const { Body, Bodies, Composite, Engine, Sleeping } = window.Matter;
+  const { Body, Bodies, Composite, Engine } = window.Matter;
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const engine = Engine.create({ enableSleeping: true, positionIterations: 6, velocityIterations: 4 });
+  const engine = Engine.create({ enableSleeping: false, positionIterations: 6, velocityIterations: 4 });
   const states = new Map();
   let frame = 0;
   let previousTime = 0;
@@ -1072,7 +1072,6 @@ function initSkillsPlayground() {
           frictionStatic: 0.72,
           frictionAir: 0.025,
           restitution: 0.16,
-          sleepThreshold: 30,
           isStatic: reduceMotion,
         },
       );
@@ -1104,19 +1103,11 @@ function initSkillsPlayground() {
       Engine.update(engine, fixedStep);
       accumulatedTime -= fixedStep;
     }
-    let hasMovingBody = false;
     items.forEach((item) => {
       const state = states.get(item);
       renderState(item, state);
-      if (state.pointerId !== null || !state.body.isSleeping) hasMovingBody = true;
     });
-    if (hasMovingBody) {
-      frame = requestAnimationFrame(tick);
-    } else {
-      frame = 0;
-      previousTime = 0;
-      accumulatedTime = 0;
-    }
+    frame = requestAnimationFrame(tick);
   };
 
   const startScene = () => {
@@ -1160,7 +1151,6 @@ function initSkillsPlayground() {
       state.previousTime = performance.now();
       state.throwX = 0;
       state.throwY = 0;
-      Sleeping.set(state.body, false);
       Body.setStatic(state.body, true);
       topLayer += 1;
       item.style.zIndex = String(topLayer);
@@ -1200,7 +1190,6 @@ function initSkillsPlayground() {
       if (item.hasPointerCapture(event.pointerId)) item.releasePointerCapture(event.pointerId);
       if (!reduceMotion) {
         Body.setStatic(state.body, false);
-        Sleeping.set(state.body, false);
         Body.setVelocity(state.body, {
           x: Math.max(-22, Math.min(22, state.throwX)),
           y: Math.max(-22, Math.min(22, state.throwY)),
@@ -1232,7 +1221,6 @@ function initSkillsPlayground() {
       });
       if (!reduceMotion) {
         Body.setStatic(state.body, false);
-        Sleeping.set(state.body, false);
         Body.setVelocity(state.body, { x: movement[0] * 0.12, y: movement[1] * 0.12 });
       }
       topLayer += 1;
