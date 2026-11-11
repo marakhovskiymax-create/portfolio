@@ -3516,7 +3516,8 @@ body:not(.case-page) > .footer {
 
 .skills-playground__surface {
   position: relative;
-  min-height: clamp(728px, 93.6vh, 988px);
+  height: 600px;
+  min-height: 600px;
   overflow: hidden;
   border: 0;
   border-radius: 0;
@@ -3700,7 +3701,6 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
   }
 
   .skills-playground__surface {
-    min-height: 1066px;
     border-radius: 0;
   }
 
@@ -4544,6 +4544,7 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
   }
 
   .skills-playground__surface {
+    height: auto;
     min-height: clamp(468px, calc(835px - 63vw), 565px);
   }
 

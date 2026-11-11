@@ -28,18 +28,30 @@ body.eme-app-page {
 
 @media (min-width: 768px) {
   .eme-app-page .case-meta {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 2fr) max-content;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
   .eme-app-page .case-meta div:nth-child(-n + 2) dd {
     max-width: 100%;
   }
 
-  .eme-app-page .case-meta div:nth-child(3) {
-    padding-right: 16px;
+  .eme-app-page .case-meta > .case-meta__details {
+    display: grid;
+    grid-column: 3 / -1;
+    grid-template-columns: minmax(0, 1fr) max-content;
+    column-gap: 40px;
+    justify-items: stretch;
+    padding-block-start: 0;
+    text-align: start;
   }
 
-  .eme-app-page .case-meta div:nth-child(3) dd {
+  .eme-app-page .case-meta__details > div:first-child dd {
     width: 100%;
+  }
+}
+
+@media (max-width: 767px) {
+  .eme-app-page .case-meta > .case-meta__details {
+    display: contents;
   }
 }
