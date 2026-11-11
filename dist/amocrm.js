@@ -417,8 +417,8 @@ function initWorkAreasPhysics() {
   if (!surface || !items.length || !window.Matter || prefersReducedMotion) return;
 
   const compactLayout = window.matchMedia("(max-width: 767px)");
-  const { Body, Bodies, Composite, Engine, Sleeping } = window.Matter;
-  const engine = Engine.create({ enableSleeping: true, positionIterations: 8, velocityIterations: 6 });
+  const { Body, Bodies, Composite, Engine } = window.Matter;
+  const engine = Engine.create({ enableSleeping: false, positionIterations: 8, velocityIterations: 6 });
   const states = new Map();
   let frame = 0;
   let previousTime = 0;
@@ -492,7 +492,6 @@ function initWorkAreasPhysics() {
           frictionStatic: 0.72,
           frictionAir: 0.012,
           restitution: 0.24,
-          sleepThreshold: 42,
         },
       );
       state.body = body;
@@ -576,7 +575,6 @@ function initWorkAreasPhysics() {
       state.throwY = 0;
       state.dragDistance = 0;
       state.suppressClick = false;
-      Sleeping.set(state.body, false);
       Body.setStatic(state.body, true);
       topLayer += 1;
       item.style.zIndex = String(topLayer);
@@ -615,7 +613,6 @@ function initWorkAreasPhysics() {
       item.classList.remove("is-dragging");
       if (item.hasPointerCapture(event.pointerId)) item.releasePointerCapture(event.pointerId);
       Body.setStatic(state.body, false);
-      Sleeping.set(state.body, false);
       Body.setVelocity(state.body, {
         x: Math.max(-22, Math.min(22, state.throwX)),
         y: Math.max(-22, Math.min(22, state.throwY)),
@@ -646,7 +643,6 @@ function initWorkAreasPhysics() {
         y: Math.min(maxY, Math.max(halfHeight, state.body.position.y + movement[1])),
       });
       Body.setVelocity(state.body, { x: movement[0] * 0.12, y: movement[1] * 0.12 });
-      Sleeping.set(state.body, false);
       topLayer += 1;
       item.style.zIndex = String(topLayer);
       renderState(item, state);
