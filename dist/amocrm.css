@@ -1105,7 +1105,7 @@ body.case-page .case-wide-visual--context {
   align-items: center;
   gap: clamp(32px, 5vw, 100px);
   min-height: 280px;
-  padding: clamp(32px, 4vw, 64px) 0;
+  padding: 40px;
   border-top: 1px solid var(--case-line);
   border-bottom: 1px solid var(--case-line);
 }
@@ -1347,7 +1347,7 @@ body.case-page > .case-footer {
   .case-impact__metrics div + div { padding-left: 0; border-top: 1px solid var(--case-line); border-left: 0; }
   .case-impact__metrics dd { font-size: clamp(4rem, 22vw, 6.4rem); }
 
-  .case-next a { grid-template-columns: minmax(0, 1fr); gap: 28px; min-height: 0; }
+  .case-next a { grid-template-columns: minmax(0, 1fr); gap: 28px; min-height: 0; padding: 20px; }
   .case-next__title { font-size: clamp(2.45rem, 10vw, 4.6rem); overflow-wrap: break-word; }
   .case-next__preview { max-width: 480px; }
 
