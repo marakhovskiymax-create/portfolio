@@ -811,7 +811,7 @@ body[data-locale="ru"] .hero__title-row--second {
 }
 
 .case-visual[data-project-visual="amo-crm"] {
-  --project-accent: #c662cc;
+  --project-accent: #ff6b8a;
 }
 
 .case-visual[data-project-visual="eme"] {
@@ -939,8 +939,8 @@ body[data-locale="ru"] .hero__title-row--second {
 }
 
 .time-machine__card--amo {
-  --card-accent: #c662cc;
-  background: #281435;
+  --card-accent: #ff6b8a;
+  background: #1b1015;
 }
 
 .time-machine__card-cover {

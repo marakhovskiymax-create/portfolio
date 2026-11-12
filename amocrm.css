@@ -316,6 +316,12 @@ body.case-page {
     filter 600ms var(--ease-out);
 }
 
+@media (min-width: 1024px) {
+  .case-carousel__slide {
+    width: min(calc(64% + 100px), 1080px);
+  }
+}
+
 .case-carousel__slide:not([data-carousel-position="0"]) {
   cursor: pointer;
 }
