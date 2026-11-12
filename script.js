@@ -319,6 +319,7 @@ function initSpiderCursor() {
   const dragItemSelector = ".skill-drag-item, .work-chip";
 
   function resolveInteractiveTarget(element) {
+    if (document.querySelector("[data-contact-success].is-closing")) return null;
     const interactive = element instanceof Element ? element.closest(interactiveSelector) : null;
     if (!interactive || interactive.matches(":disabled, [aria-disabled='true']")) return null;
     if (interactive.matches(dragItemSelector)) return null;
@@ -634,6 +635,14 @@ function initSpiderCursor() {
     pointerOverDragItem = false;
   }
 
+  function resetTarget() {
+    activeTarget = null;
+    pointerOverDragItem = false;
+    lastTargetRect = null;
+    targetProgress = 0;
+    context.clearRect(0, 0, width, height);
+  }
+
   function render(timestamp) {
     frame = window.requestAnimationFrame(render);
     if (document.hidden) return;
@@ -665,6 +674,7 @@ function initSpiderCursor() {
   document.documentElement.addEventListener("pointerleave", handlePointerLeave, { passive: true });
   document.addEventListener("focusin", handleFocusIn);
   document.addEventListener("focusout", handleFocusOut);
+  canvas.addEventListener("spider-cursor:reset", resetTarget);
   document.body.classList.add("has-spider-cursor");
   frame = window.requestAnimationFrame(render);
 
@@ -1294,6 +1304,9 @@ function initContactForm() {
     if (!successDialog.open) return;
     if (successDialog.contains(document.activeElement)) document.activeElement.blur();
     successDialog.classList.add("is-closing");
+    cursorCanvas?.dispatchEvent(new Event("spider-cursor:reset"));
+    if (cursorCanvas?.matches(":popover-open")) cursorCanvas.hidePopover();
+    cursorCanvas?.removeAttribute("popover");
     successDialog.classList.remove("is-visible");
     clearTimeout(closeTimer);
     closeTimer = setTimeout(() => successDialog.close(), 240);
@@ -1306,6 +1319,7 @@ function initContactForm() {
     successDialog.classList.remove("is-closing");
     requestAnimationFrame(() => {
       if (document.activeElement === submitButton) submitButton.blur();
+      cursorCanvas?.dispatchEvent(new Event("spider-cursor:reset"));
     });
     if (cursorCanvas?.matches(":popover-open")) cursorCanvas.hidePopover();
     cursorCanvas?.removeAttribute("popover");
