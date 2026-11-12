@@ -306,6 +306,30 @@ document.addEventListener("visibilitychange", () => {
   else scheduleCarouselAutoplay();
 });
 
+// Keep the next-project thumbnail tied to the destination case's first slide.
+const nextProjectLink = document.querySelector(".case-next a[href]");
+const nextProjectPreview = nextProjectLink?.querySelector(".case-next__preview img");
+
+if (nextProjectLink && nextProjectPreview) {
+  const targetUrl = new URL(nextProjectLink.getAttribute("href"), location.href);
+  if (targetUrl.origin === location.origin) {
+    fetch(targetUrl, { cache: "no-cache" })
+      .then((response) => response.ok ? response.text() : null)
+      .then((markup) => {
+        if (!markup) return;
+        const targetPage = new DOMParser().parseFromString(markup, "text/html");
+        const mainImage = targetPage.querySelector("[data-case-carousel] [data-carousel-slide] img");
+        const source = window.siteI18n?.locale === "ru"
+          ? mainImage?.getAttribute("data-ru-src") || mainImage?.getAttribute("src")
+          : mainImage?.getAttribute("src");
+        if (!source) return;
+        const coverUrl = new URL(source, targetUrl).href;
+        if (nextProjectPreview.src !== coverUrl) nextProjectPreview.src = coverUrl;
+      })
+      .catch(() => { /* Keep the matching thumbnail in the page markup. */ });
+  }
+}
+
 window.addEventListener("pagehide", stopCarouselAutoplay);
 
 const accordionItems = Array.from(document.querySelectorAll("[data-accordion-item]"));
