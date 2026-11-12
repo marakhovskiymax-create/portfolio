@@ -6,7 +6,7 @@
   try { saved = localStorage.getItem("portfolio-language") || "en"; } catch { /* Storage can be disabled. */ }
   let locale = requested === "ru" || requested === "en" ? requested : saved === "ru" ? "ru" : "en";
   const sourceScripts = page === "index"
-    ? ["gsap-starter.js", "script.js?v=20261112-dialog-cursor-reset"]
+    ? ["gsap-starter.js", "script.js?v=20261113-home-hero-first-paint"]
     : ["script.js?v=20261111-case-first-reveal", "amocrm.js?v=20261113-next-cover-sync"];
   let messages = {};
 
@@ -144,7 +144,7 @@
       document.documentElement.classList.remove("locale-pending");
     }
     for (const source of sourceScripts) await loadScript(source);
-    document.documentElement.classList.remove("case-motion-pending");
+    document.documentElement.classList.remove("case-motion-pending", "hero-motion-pending");
   }
 
   start();

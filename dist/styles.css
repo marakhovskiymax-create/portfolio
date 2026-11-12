@@ -889,18 +889,15 @@ body[data-locale="ru"] .hero__title-row--second {
     scale(var(--card-scale, 1));
   transform-origin: center;
   will-change: transform, opacity;
-  scale: 1;
   transition:
-    border-color var(--motion-slow) var(--ease-out),
-    scale 280ms var(--ease-out);
+    border-color var(--motion-slow) var(--ease-out);
 }
 
 .card-time-machine.is-ready:not(.has-gsap) .time-machine__card {
   transition:
     transform calc(var(--motion-slow) * 2) var(--curve-cinematic),
     opacity calc(var(--motion-slow) * 2) var(--ease-out),
-    border-color var(--motion-slow) var(--ease-out),
-    scale 280ms var(--ease-out);
+    border-color var(--motion-slow) var(--ease-out);
 }
 
 @media (min-width: 641px) and (max-width: 1100px) {
@@ -921,12 +918,6 @@ body[data-locale="ru"] .hero__title-row--second {
 
 .time-machine__card.is-current {
   border-color: color-mix(in srgb, var(--card-accent) 62%, transparent);
-}
-
-@media (min-width: 768px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-  .time-machine__card.is-current:hover {
-    scale: 1.025;
-  }
 }
 
 .time-machine__card[data-case-href].is-current {

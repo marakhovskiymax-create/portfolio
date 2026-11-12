@@ -749,7 +749,11 @@ function initHeroTextEffect() {
   });
 }
 
-initHeroTextEffect();
+try {
+  initHeroTextEffect();
+} finally {
+  document.documentElement.classList.remove("hero-motion-pending");
+}
 
 function initFAQAccordion() {
   const items = Array.from(document.querySelectorAll("[data-faq-item]"));
