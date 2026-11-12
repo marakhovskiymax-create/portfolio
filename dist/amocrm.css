@@ -1151,7 +1151,7 @@ body.case-page .case-wide-visual--context {
 
 @media (min-width: 768px) and (hover: hover) and (pointer: fine) {
   .case-next a:hover .case-next__preview {
-    transform: scale(1.02);
+    transform: scale(1.035);
   }
 }
 
