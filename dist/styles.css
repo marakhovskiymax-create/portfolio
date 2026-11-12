@@ -2491,7 +2491,7 @@ body[data-locale="ru"] .hero__title-row--second {
 .contact-success__header {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 32px;
-  align-items: center;
+  align-items: start;
   gap: 12px;
   margin-bottom: 10px;
 }
