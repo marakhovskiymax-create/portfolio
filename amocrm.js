@@ -143,7 +143,8 @@ const carousel = document.querySelector("[data-case-carousel]");
 const carouselTrack = carousel?.querySelector("[data-carousel-track]");
 const carouselSlides = Array.from(carousel?.querySelectorAll("[data-carousel-slide]") ?? []);
 const carouselViewport = carousel?.querySelector(".case-carousel__viewport");
-const carouselSlideDelay = 5000;
+const carouselSlideDelay = 3500;
+const carouselWrapTimers = new WeakMap();
 let carouselIndex = 0;
 let carouselPointerId = null;
 let carouselStartX = 0;
@@ -172,8 +173,22 @@ function renderCarousel(nextIndex, announce = false) {
     if (position > midpoint) position -= carouselSlides.length;
     if (position < -midpoint) position += carouselSlides.length;
 
+    const previousPosition = slide.hasAttribute("data-carousel-position")
+      ? Number(slide.dataset.carouselPosition)
+      : null;
+    const wrapsAround = (previousPosition === -1 && position === 1)
+      || (previousPosition === 1 && position === -1);
+    window.clearTimeout(carouselWrapTimers.get(slide));
+    slide.classList.toggle("is-wrapping", wrapsAround);
+
     slide.dataset.carouselPosition = String(position);
     slide.setAttribute("aria-hidden", String(position !== 0));
+
+    if (wrapsAround) {
+      carouselWrapTimers.set(slide, window.setTimeout(() => {
+        slide.classList.remove("is-wrapping");
+      }, 360));
+    }
   });
 
   if (announce && carouselAnnouncement) {
