@@ -1274,6 +1274,7 @@ function initContactForm() {
 
   function openSuccessDialog() {
     clearTimeout(closeTimer);
+    successDialog.classList.remove("is-closing");
     successDialog.showModal();
     let layeredCursor = false;
     if (cursorCanvas && document.body.classList.contains("has-spider-cursor") && cursorCanvas.showPopover) {
@@ -1291,6 +1292,8 @@ function initContactForm() {
 
   function closeSuccessDialog() {
     if (!successDialog.open) return;
+    if (successDialog.contains(document.activeElement)) document.activeElement.blur();
+    successDialog.classList.add("is-closing");
     successDialog.classList.remove("is-visible");
     clearTimeout(closeTimer);
     closeTimer = setTimeout(() => successDialog.close(), 240);
@@ -1300,6 +1303,10 @@ function initContactForm() {
     button.addEventListener("click", closeSuccessDialog);
   });
   successDialog.addEventListener("close", () => {
+    successDialog.classList.remove("is-closing");
+    requestAnimationFrame(() => {
+      if (document.activeElement === submitButton) submitButton.blur();
+    });
     if (cursorCanvas?.matches(":popover-open")) cursorCanvas.hidePopover();
     cursorCanvas?.removeAttribute("popover");
   });

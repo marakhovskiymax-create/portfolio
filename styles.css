@@ -2552,6 +2552,15 @@ body[data-locale="ru"] .hero__title-row--second {
   box-shadow: 0 0 0 4px rgba(244, 243, 238, 0.16), 0 0 26px rgba(244, 243, 238, 0.24);
 }
 
+.contact-success.is-closing {
+  pointer-events: none;
+}
+
+.contact-success.is-closing .contact-success__button {
+  box-shadow: none;
+  transition: none;
+}
+
 .contact-success--system-cursor button {
   cursor: pointer;
 }
