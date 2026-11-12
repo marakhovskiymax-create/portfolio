@@ -471,7 +471,7 @@ main {
 
 .spider-cursor {
   position: fixed;
-  z-index: 90;
+  z-index: 19;
   inset: 0;
   display: block;
   width: 100dvw;
