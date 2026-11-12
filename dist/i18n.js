@@ -144,7 +144,7 @@
       document.documentElement.classList.remove("locale-pending");
     }
     for (const source of sourceScripts) await loadScript(source);
-    document.documentElement.classList.remove("case-motion-pending", "hero-motion-pending");
+    document.documentElement.classList.remove("case-motion-pending", "hero-motion-pending", "page-motion-pending");
   }
 
   start();
