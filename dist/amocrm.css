@@ -375,6 +375,10 @@ body.case-page {
   transform: none;
 }
 
+.case-carousel--no-badges .case-carousel__slide figcaption {
+  display: none;
+}
+
 .case-carousel:focus-visible {
   outline: 1px solid var(--color-text);
   outline-offset: 8px;

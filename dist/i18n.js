@@ -7,7 +7,7 @@
   let locale = requested === "ru" || requested === "en" ? requested : saved === "ru" ? "ru" : "en";
   const sourceScripts = page === "index"
     ? ["gsap-starter.js", "script.js?v=20261112-dialog-cursor-reset"]
-    : ["script.js?v=20261111-case-first-reveal", "amocrm.js?v=20261111-hero-meta-home-motion"];
+    : ["script.js?v=20261111-case-first-reveal", "amocrm.js?v=20261112-carousel-five-seconds"];
   let messages = {};
 
   window.siteI18n = {

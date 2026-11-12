@@ -143,8 +143,7 @@ const carousel = document.querySelector("[data-case-carousel]");
 const carouselTrack = carousel?.querySelector("[data-carousel-track]");
 const carouselSlides = Array.from(carousel?.querySelectorAll("[data-carousel-slide]") ?? []);
 const carouselViewport = carousel?.querySelector(".case-carousel__viewport");
-const carouselFirstSlideDelay = 15000;
-const carouselOtherSlideDelay = 4000;
+const carouselSlideDelay = 5000;
 let carouselIndex = 0;
 let carouselPointerId = null;
 let carouselStartX = 0;
@@ -152,9 +151,7 @@ let carouselDeltaX = 0;
 let carouselDidDrag = false;
 let carouselAutoplayTimer = 0;
 let carouselIsVisible = false;
-let carouselIsHovered = false;
 let carouselHasFocus = false;
-let carouselManuallyPaused = false;
 let carouselAnnouncement = null;
 
 if (carousel && carouselSlides.length > 1) {
@@ -196,12 +193,10 @@ function canAutoplayCarousel() {
   return Boolean(
     carouselSlides.length > 1
     && carouselIsVisible
-    && !carouselIsHovered
     && !carouselHasFocus
     && carouselPointerId === null
     && !document.hidden
     && !prefersReducedMotion
-    && !carouselManuallyPaused
   );
 }
 
@@ -212,11 +207,10 @@ function scheduleCarouselAutoplay() {
   carouselAutoplayTimer = window.setTimeout(() => {
     renderCarousel(carouselIndex + 1);
     scheduleCarouselAutoplay();
-  }, carouselIndex === 0 ? carouselFirstSlideDelay : carouselOtherSlideDelay);
+  }, carouselSlideDelay);
 }
 
 function moveCarousel(nextIndex) {
-  carouselManuallyPaused = true;
   renderCarousel(nextIndex, true);
   scheduleCarouselAutoplay();
 }
@@ -233,17 +227,6 @@ carousel?.addEventListener("keydown", (event) => {
   if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
   event.preventDefault();
   moveCarousel(carouselIndex + (event.key === "ArrowRight" ? 1 : -1));
-});
-
-carousel?.addEventListener("mouseenter", () => {
-  if (!window.matchMedia("(min-width: 768px) and (hover: hover) and (pointer: fine)").matches) return;
-  carouselIsHovered = true;
-  stopCarouselAutoplay();
-});
-
-carousel?.addEventListener("mouseleave", () => {
-  carouselIsHovered = false;
-  scheduleCarouselAutoplay();
 });
 
 carousel?.addEventListener("focusin", () => {
