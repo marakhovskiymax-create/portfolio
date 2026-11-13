@@ -278,6 +278,7 @@ document.addEventListener("keydown", (event) => {
 
 function initSpiderCursor() {
   const canvas = document.querySelector("[data-spider-cursor]");
+  const masthead = document.querySelector(".site-header .masthead");
   const canTrackPointer = window.matchMedia("(min-width: 768px) and (hover: hover) and (pointer: fine)").matches;
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -311,6 +312,7 @@ function initSpiderCursor() {
   let activeTarget = null;
   let pointerOverDragItem = false;
   let lastTargetRect = null;
+  let lastTargetIsInHeader = false;
   let targetProgress = 0;
   let previousTimestamp = 0;
   let frame = 0;
@@ -639,6 +641,7 @@ function initSpiderCursor() {
     activeTarget = null;
     pointerOverDragItem = false;
     lastTargetRect = null;
+    lastTargetIsInHeader = false;
     targetProgress = 0;
     context.clearRect(0, 0, width, height);
   }
@@ -657,14 +660,29 @@ function initSpiderCursor() {
     previousTimestamp = timestamp;
     const currentRect = getTargetRect(activeTarget);
 
-    if (currentRect) lastTargetRect = currentRect;
+    if (currentRect) {
+      lastTargetRect = currentRect;
+      lastTargetIsInHeader = Boolean(activeTarget.closest(".site-header"));
+    }
     targetProgress = clamp(
       targetProgress + (currentRect ? delta / 0.24 : -delta / 0.28),
     );
     const targetStrength = smoothstep(targetProgress);
 
     if (lastTargetRect && targetStrength > 0.01) {
+      // Keep the cursor above navigation, but hide outlines of content behind it.
+      const headerBounds = !lastTargetIsInHeader && !canvas.matches(":popover-open")
+        ? masthead?.getBoundingClientRect()
+        : null;
+      if (headerBounds) {
+        context.save();
+        context.beginPath();
+        context.rect(0, 0, width, height);
+        context.rect(headerBounds.left - 8, headerBounds.top - 8, headerBounds.width + 16, headerBounds.height + 16);
+        context.clip("evenodd");
+      }
       drawTargetTexture(lastTargetRect, time, targetStrength);
+      if (headerBounds) context.restore();
     }
 
     swarms.forEach((swarm) => swarm.tick(time, delta, pointerOverDragItem ? 0 : 1 - targetStrength));
