@@ -1102,8 +1102,10 @@ body.case-page .case-wide-visual--context {
 }
 
 .case-contact {
+  width: 100%;
   max-width: none;
   margin-top: var(--case-gap);
+  margin-inline: 0;
   padding-inline: clamp(24px, 4vw, 64px);
 }
 
