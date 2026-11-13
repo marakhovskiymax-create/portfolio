@@ -1109,6 +1109,12 @@ body.case-page .case-wide-visual--context {
   padding-inline: clamp(24px, 4vw, 64px);
 }
 
+@media (min-width: 1200px) {
+  .case-contact {
+    margin-top: calc(var(--case-gap) - 90px);
+  }
+}
+
 .case-next {
   width: var(--shell);
   margin-top: var(--case-gap);
