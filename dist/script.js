@@ -901,6 +901,15 @@ function initCareerTimeline() {
   let activationFrame = 0;
   if (activeIndex < 0) activeIndex = 0;
 
+  // ScrollTrigger can start after the page becomes visible when a reload
+  // restores the scroll position here. Prime every entrance target now so
+  // the photo and copy cannot flash before the timeline begins.
+  if (!reduceMotion && window.TastemakerMotion && window.gsap && window.ScrollTrigger) {
+    window.gsap.set(rail, { autoAlpha: 0, scaleX: 0, transformOrigin: "left center" });
+    window.gsap.set(tabs, { autoAlpha: 0, y: 18, scale: 0.92 });
+    window.gsap.set(panels[activeIndex].children, careerPanelEnterFrom);
+  }
+
   const updateMobileTabs = (index) => {
     if (!window.matchMedia("(max-width: 767px)").matches) {
       timeline.style.removeProperty("--career-translate");

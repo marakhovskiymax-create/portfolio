@@ -6,7 +6,7 @@
   try { saved = localStorage.getItem("portfolio-language") || "en"; } catch { /* Storage can be disabled. */ }
   let locale = requested === "ru" || requested === "en" ? requested : saved === "ru" ? "ru" : "en";
   const sourceScripts = page === "index"
-    ? ["gsap-starter.js", "script.js?v=20261113-navigation-click-reset"]
+    ? ["gsap-starter.js", "script.js?v=20261113-career-reload-motion"]
     : ["script.js?v=20261113-navigation-click-reset", "amocrm.js?v=20261113-next-cover-sync"];
   let messages = {};
 
