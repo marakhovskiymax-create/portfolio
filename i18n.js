@@ -127,7 +127,7 @@
 
   async function start() {
     try {
-      const response = await fetch(`locales/${locale}.json`);
+      const response = await fetch(`locales/${locale}.json?v=20261113-tab-titles`);
       if (!response.ok) throw new Error(`Locale ${locale} could not be loaded`);
       translatePage(await response.json());
     } catch (error) {
@@ -135,6 +135,7 @@
       locale = "en";
       window.siteI18n.locale = "en";
       document.documentElement.lang = "en";
+      document.title = document.querySelector("title")?.dataset.titleEn || document.title;
     }
     try { localStorage.setItem("portfolio-language", locale); } catch { /* URL still preserves the choice. */ }
     try {

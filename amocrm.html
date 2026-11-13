@@ -8,7 +8,7 @@
       name="description"
       content="amoCRM / Kommo case study by product designer Maxim Marakhovskiy: website, in-product experiences, subscriptions, and design system work."
     />
-    <title>amoCRM / Kommo · Maxim Marakhovskiy</title>
+    <title data-title-en="amoCRM / Kommo - Maxim Marakhovskiy" data-title-ru="amoCRM / Kommo - Максим Мараховский">amoCRM / Kommo - Maxim Marakhovskiy</title>
         <link rel="icon" type="image/x-icon" href="favicon.ico?v=20261112-rounded-favicon">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=20261112-rounded-favicon">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png?v=20261112-rounded-favicon">
@@ -32,9 +32,10 @@
         const requested = new URLSearchParams(location.search).get("lang");
         let saved = "en";
         try { saved = localStorage.getItem("portfolio-language") || "en"; } catch {}
-        if (requested === "ru" || (requested !== "en" && saved === "ru")) {
-          document.documentElement.classList.add("locale-pending");
-        }
+        const isRussian = requested === "ru" || (requested !== "en" && saved === "ru");
+        const tabTitle = document.querySelector("title");
+        if (tabTitle) document.title = tabTitle.dataset[isRussian ? "titleRu" : "titleEn"] || tabTitle.textContent;
+        if (isRussian) document.documentElement.classList.add("locale-pending");
       })();
     </script>
   </head>
@@ -441,6 +442,6 @@
     <script src="vendor/matter.min.js"></script>
     <script src="vendor/gsap.min.js"></script>
     <script src="vendor/ScrollTrigger.min.js"></script>
-    <script src="i18n.js?v=20261113-header-mask-edge" onerror="document.documentElement.classList.remove('locale-pending', 'case-motion-pending')"></script>
+    <script src="i18n.js?v=20261113-tab-titles" onerror="document.documentElement.classList.remove('locale-pending', 'case-motion-pending')"></script>
   </body>
 </html>
