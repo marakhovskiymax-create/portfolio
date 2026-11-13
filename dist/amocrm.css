@@ -1101,6 +1101,12 @@ body.case-page .case-wide-visual--context {
   backface-visibility: hidden;
 }
 
+.case-contact {
+  max-width: none;
+  margin-top: var(--case-gap);
+  padding-inline: clamp(24px, 4vw, 64px);
+}
+
 .case-next {
   width: var(--shell);
   margin-top: var(--case-gap);
