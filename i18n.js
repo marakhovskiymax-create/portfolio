@@ -6,8 +6,8 @@
   try { saved = localStorage.getItem("portfolio-language") || "en"; } catch { /* Storage can be disabled. */ }
   let locale = requested === "ru" || requested === "en" ? requested : saved === "ru" ? "ru" : "en";
   const sourceScripts = page === "index"
-    ? ["gsap-starter.js", "script.js?v=20261113-header-cursor"]
-    : ["script.js?v=20261113-header-cursor", "amocrm.js?v=20261113-next-cover-sync"];
+    ? ["gsap-starter.js", "script.js?v=20261113-header-mask-edge"]
+    : ["script.js?v=20261113-header-mask-edge", "amocrm.js?v=20261113-next-cover-sync"];
   let messages = {};
 
   window.siteI18n = {

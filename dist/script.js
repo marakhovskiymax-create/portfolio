@@ -678,7 +678,18 @@ function initSpiderCursor() {
         context.save();
         context.beginPath();
         context.rect(0, 0, width, height);
-        context.rect(headerBounds.left - 8, headerBounds.top - 8, headerBounds.width + 16, headerBounds.height + 16);
+        const { left, top, right, bottom } = headerBounds;
+        const radius = min(headerBounds.width, headerBounds.height) / 2;
+        context.moveTo(left + radius, top);
+        context.lineTo(right - radius, top);
+        context.quadraticCurveTo(right, top, right, top + radius);
+        context.lineTo(right, bottom - radius);
+        context.quadraticCurveTo(right, bottom, right - radius, bottom);
+        context.lineTo(left + radius, bottom);
+        context.quadraticCurveTo(left, bottom, left, bottom - radius);
+        context.lineTo(left, top + radius);
+        context.quadraticCurveTo(left, top, left + radius, top);
+        context.closePath();
         context.clip("evenodd");
       }
       drawTargetTexture(lastTargetRect, time, targetStrength);
