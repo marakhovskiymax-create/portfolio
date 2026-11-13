@@ -64,6 +64,14 @@ function initLinkReveal() {
 
 initLinkReveal();
 
+document.addEventListener("click", (event) => {
+  if (event.defaultPrevented || event.detail === 0) return;
+  const link = event.target instanceof Element ? event.target.closest("a[href]") : null;
+  if (!link) return;
+  document.querySelector("[data-spider-cursor]")?.dispatchEvent(new Event("spider-cursor:reset"));
+  if (document.activeElement === link) link.blur();
+});
+
 function initMobileQuoteMarquee() {
   const rows = document.querySelectorAll(".quote-marquee__row");
   if (rows.length !== 2) return;
@@ -708,8 +716,15 @@ function initSpiderCursor() {
   frame = window.requestAnimationFrame(render);
 
   window.addEventListener("pagehide", () => {
+    resetTarget();
     window.cancelAnimationFrame(frame);
-  }, { once: true });
+    frame = 0;
+  });
+  window.addEventListener("pageshow", (event) => {
+    if (!event.persisted || frame) return;
+    previousTimestamp = 0;
+    frame = window.requestAnimationFrame(render);
+  });
 }
 
 initSpiderCursor();
