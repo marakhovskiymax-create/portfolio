@@ -3567,6 +3567,7 @@ body:not(.case-page) > .footer {
   gap: 8px;
   width: max-content;
   max-width: calc(100% - 40px);
+  color: #fff;
   transform: translateX(-50%);
   pointer-events: none;
 }

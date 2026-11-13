@@ -687,7 +687,7 @@ body.case-page .case-wide-visual--context {
   display: grid;
   width: var(--work-hint-width);
   justify-items: end;
-  color: rgba(244, 243, 238, 0.78);
+  color: #fff;
   pointer-events: none;
 }
 
