@@ -127,7 +127,7 @@
 
   async function start() {
     try {
-      const response = await fetch(`locales/${locale}.json?v=20261113-tab-titles`);
+      const response = await fetch(`locales/${locale}.json?v=20261113-hero-prepositions`);
       if (!response.ok) throw new Error(`Locale ${locale} could not be loaded`);
       translatePage(await response.json());
     } catch (error) {
