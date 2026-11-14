@@ -84,6 +84,9 @@
       document.querySelectorAll("[data-ru-src]").forEach((element) => {
         element.setAttribute("src", element.dataset.ruSrc);
       });
+      document.querySelectorAll("[data-ru-href]").forEach((element) => {
+        element.setAttribute("href", element.dataset.ruHref);
+      });
     }
     document.querySelectorAll("[alt], [aria-label], [title], [placeholder]").forEach((element) => {
       ["alt", "aria-label", "title", "placeholder"].forEach((attribute) => {
