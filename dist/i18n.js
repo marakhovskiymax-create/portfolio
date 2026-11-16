@@ -130,7 +130,7 @@
 
   async function start() {
     try {
-      const response = await fetch(`locales/${locale}.json?v=20261113-case-contact`);
+      const response = await fetch(`locales/${locale}.json?v=20261116-preposition-wrap`);
       if (!response.ok) throw new Error(`Locale ${locale} could not be loaded`);
       translatePage(await response.json());
     } catch (error) {
