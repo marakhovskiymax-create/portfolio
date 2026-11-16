@@ -4221,6 +4221,29 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
 }
 
 @media (max-width: 767px) {
+  body:not(.case-page) .time-machine__timeline {
+    min-width: 0;
+    max-width: 100%;
+    justify-content: flex-start;
+    overflow-y: hidden;
+    overscroll-behavior-inline: contain;
+  }
+
+  body:not(.case-page) .time-machine__timeline::after {
+    content: "";
+    flex: 0 0 50%;
+  }
+
+  body:not(.case-page) .time-machine__stop {
+    flex: 0 0 auto;
+    scroll-snap-align: center;
+  }
+
+  body:not(.case-page) .time-machine__stop-target {
+    width: auto;
+    padding-inline: 14px;
+  }
+
   body:not(.case-page) .contact__heading {
     align-items: flex-start;
     margin-inline: 0;

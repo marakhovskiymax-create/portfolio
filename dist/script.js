@@ -147,6 +147,14 @@ function syncTimeMachine(activeIndex, immediate = false) {
       stop.setAttribute("aria-pressed", String(isActive));
     }
   });
+
+  if (timeMachineTimeline && window.matchMedia("(max-width: 767px)").matches) {
+    const selectedStop = timeMachineStops[activeIndex];
+    if (selectedStop) {
+      const centeredLeft = selectedStop.offsetLeft + selectedStop.offsetWidth / 2 - timeMachineTimeline.clientWidth / 2;
+      timeMachineTimeline.scrollTo({ left: centeredLeft, behavior: immediate || reduceTimeMachineMotion ? "auto" : "smooth" });
+    }
+  }
 }
 
 function syncTimeMachineHover(hoveredIndex = null) {
