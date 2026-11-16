@@ -19,13 +19,3 @@ body.shable-page {
 .shable-page[data-locale="ru"] .case-hero h1 {
   max-width: 13ch;
 }
-
-@media (min-width: 1200px) {
-  .shable-page .case-story__intro {
-    align-items: stretch;
-  }
-
-  .shable-page .case-story__copy {
-    align-content: start;
-  }
-}
