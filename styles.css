@@ -556,7 +556,7 @@ body.has-spider-cursor .spider-cursor {
 }
 
 body[data-locale="ru"] .hero__title-row--second {
-  margin-top: calc(-0.08em + 12px);
+  margin-top: calc(-0.08em + 22px);
 }
 
 .hero__title-word {
@@ -2994,7 +2994,7 @@ body[data-locale="ru"] .hero__title-row--second {
   }
 
   body[data-locale="ru"] .hero__title-row--second {
-    margin-top: calc(-0.04em + 12px);
+    margin-top: calc(-0.04em + 22px);
   }
 
   .hero__bottom {
