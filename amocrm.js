@@ -412,6 +412,10 @@ window.addEventListener("pageshow", (event) => {
   if (event.persisted) accordionItems.forEach((item) => setAccordionItem(item, false, false));
 });
 
+if (window.siteI18n?.locale === "ru" && document.querySelector('.work-areas__canvas [data-work-key="homepage"]')) {
+  document.querySelectorAll('.work-areas__canvas [data-work-key="pricing"], .work-areas__canvas [data-work-key="videos"], .work-areas__canvas [data-work-key="waiting"], .work-areas__canvas [data-work-key="landings"]').forEach((chip) => chip.remove());
+}
+
 const workChips = Array.from(document.querySelectorAll(".work-chip"));
 
 function selectWorkChip(chip) {

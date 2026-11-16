@@ -7,7 +7,7 @@
   let locale = requested === "ru" || requested === "en" ? requested : saved === "ru" ? "ru" : "en";
   const sourceScripts = page === "index"
     ? ["gsap-starter.js", "script.js?v=20261116-mobile-project-tabs"]
-    : ["script.js?v=20261116-russian-wrap", "amocrm.js?v=20261116-russian-wrap"];
+    : ["script.js?v=20261116-russian-wrap", "amocrm.js?v=20261116-mobile-work-tabs"];
   let messages = {};
 
   // Bind short Russian function words to the next word before motion splits text.
