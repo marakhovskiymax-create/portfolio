@@ -1515,7 +1515,7 @@ body.case-page > .case-footer {
     flex-wrap: wrap;
     align-content: flex-end;
     gap: 8px;
-    min-height: clamp(560px, calc(125vw + 40px), 680px);
+    min-height: clamp(590px, calc(125vw + 70px), 710px);
     padding: 14px;
   }
 
@@ -1534,7 +1534,7 @@ body.case-page > .case-footer {
 
   .work-areas__canvas.is-physics-ready {
     display: block;
-    min-height: clamp(560px, calc(125vw + 40px), 680px);
+    min-height: clamp(590px, calc(125vw + 70px), 710px);
     padding: 0;
   }
 
