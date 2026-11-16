@@ -983,7 +983,6 @@ body.case-page .case-wide-visual--context {
 
 .renewal-flow article h3 {
   margin: 38px 0 12px;
-  min-height: 2em;
   color: var(--color-text);
   font-size: clamp(1.35rem, 2.2vw, 2rem);
   font-weight: 600;
