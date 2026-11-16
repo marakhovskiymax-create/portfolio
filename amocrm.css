@@ -54,6 +54,10 @@ body.case-page {
   background: transparent;
 }
 
+.case-header .masthead {
+  background: #141414;
+}
+
 .case-main {
   padding: 140px 0 0;
 }
@@ -716,6 +720,7 @@ body.case-page .case-wide-visual--context {
 
 .work-areas__canvas {
   position: relative;
+  isolation: isolate;
   min-height: 480px;
   overflow: hidden;
   border-radius: 24px;
