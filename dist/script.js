@@ -1729,7 +1729,7 @@ function initAboutBadgeMorph() {
   const labels = badges.map((badge) => badge.querySelector(".about-badge__label"));
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  if (!section || !badges.length || shapes.some((shape) => !shape) || labels.some((label) => !label) || !window.gsap || reduceMotion || window.matchMedia("(max-width: 767px)").matches) return;
+  if (!section || !badges.length || shapes.some((shape) => !shape) || labels.some((label) => !label) || !window.gsap || reduceMotion || window.matchMedia("(max-width: 1024px)").matches) return;
 
   window.gsap.set(badges, { autoAlpha: 1, backgroundColor: "rgba(244, 243, 238, 0)" });
   window.gsap.set(labels, { autoAlpha: 0 });
@@ -1805,7 +1805,7 @@ function initAboutBadgeMorph() {
 initAboutBadgeMorph();
 
 function initMobileAboutTags() {
-  if (!window.matchMedia("(max-width: 767px) and (prefers-reduced-motion: no-preference)").matches
+  if (!window.matchMedia("(max-width: 1024px) and (prefers-reduced-motion: no-preference)").matches
     || !window.gsap || !("IntersectionObserver" in window)) return;
 
   const groups = Array.from(document.querySelectorAll(".about-mobile-tags"));
@@ -1907,7 +1907,7 @@ function initAboutNoteTextEffects() {
     clearProps: "transform,opacity,visibility",
   });
 
-  if (window.matchMedia("(min-width: 1021px)").matches) {
+  if (window.matchMedia("(min-width: 1025px)").matches) {
     const map = document.querySelector(".about-map");
     if (!map) return;
 

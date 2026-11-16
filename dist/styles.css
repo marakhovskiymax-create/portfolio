@@ -4488,9 +4488,31 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
   }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 1024px) {
   body:not(.case-page) .about-map {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
     row-gap: 0;
+    max-width: 680px;
+  }
+
+  body:not(.case-page) .about-note,
+  body:not(.case-page) .about-note--fashion,
+  body:not(.case-page) .about-note--film,
+  body:not(.case-page) .about-note--games {
+    position: static;
+    grid-column: 1;
+    width: auto;
+    text-align: left;
+  }
+
+  body:not(.case-page) .about-note--film {
+    margin-left: 0;
+    padding-top: 0;
+  }
+
+  body:not(.case-page) .about-note p {
+    font-size: 0.95rem;
   }
 
   body:not(.case-page) .about-badges {
