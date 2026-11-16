@@ -11,7 +11,7 @@
   let messages = {};
 
   // Bind short Russian function words to the next word before motion splits text.
-  const russianShortWord = /(?<![\p{L}\p{N}])(?:из-за|из-под|вместо|вокруг|внутри|вдоль|между|перед|после|через|около|среди|кроме|против|сквозь|сверх|вне|ради|обо|для|при|под|над|без|про|из|от|до|по|на|за|об|во|со|ко|или|либо|в|к|с|у|о|и|а|но)[\t\n\r\f ]+(?=[«„“"'({]*[\p{L}\p{N}])/giu;
+  const russianShortWord = /(?<![\p{L}\p{N}])(?:из-за|из-под|вместо|вокруг|внутри|вдоль|между|перед|после|через|около|среди|кроме|против|сквозь|сверх|вне|ради|обо|для|при|под|над|без|про|из|от|до|по|на|за|об|во|со|ко|или|либо|в|к|с|у|о|и|а|не|но)[\t\n\r\f ]+(?=[«„“"'({]*[\p{L}\p{N}])/giu;
   function keepRussianShortWords(value) {
     return value.replace(russianShortWord, (match) => match.trimEnd() + "\u00a0");
   }
