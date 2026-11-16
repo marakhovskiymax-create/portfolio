@@ -1777,9 +1777,9 @@ function initAboutNoteTextEffects() {
     textNodes.forEach((textNode) => {
       const fragment = document.createDocumentFragment();
 
-      textNode.nodeValue.split(/(\s+)/).forEach((token) => {
+      textNode.nodeValue.split(/([\t\n\r\f ]+)/).forEach((token) => {
         if (!token) return;
-        if (/^\s+$/.test(token)) {
+        if (/^[\t\n\r\f ]+$/.test(token)) {
           fragment.append(token);
           return;
         }
@@ -1903,8 +1903,8 @@ if (window.TastemakerMotion && window.gsap && window.ScrollTrigger) {
       const containers = lines.length ? Array.from(lines) : [title];
       containers.forEach((container) => {
         const content = container.textContent.trim();
-        const words = content.split(/\s+/);
-        const separators = window.siteI18n?.locale === "ru" ? content.match(/\s+/g) : null;
+        const words = content.split(/[\t\n\r\f ]+/);
+        const separators = window.siteI18n?.locale === "ru" ? content.match(/[\t\n\r\f ]+/g) : null;
         const fragment = document.createDocumentFragment();
         words.forEach((word, index) => {
           const wordElement = document.createElement("span");

@@ -6,13 +6,22 @@
   try { saved = localStorage.getItem("portfolio-language") || "en"; } catch { /* Storage can be disabled. */ }
   let locale = requested === "ru" || requested === "en" ? requested : saved === "ru" ? "ru" : "en";
   const sourceScripts = page === "index"
-    ? ["gsap-starter.js", "script.js?v=20261113-career-reload-motion"]
-    : ["script.js?v=20261113-navigation-click-reset", "amocrm.js?v=20261113-next-cover-sync"];
+    ? ["gsap-starter.js", "script.js?v=20261116-russian-wrap"]
+    : ["script.js?v=20261116-russian-wrap", "amocrm.js?v=20261116-russian-wrap"];
   let messages = {};
+
+  // Bind short Russian function words to the next word before motion splits text.
+  const russianShortWord = /(?<![\p{L}\p{N}])(?:из-за|из-под|вместо|вокруг|внутри|вдоль|между|перед|после|через|около|среди|кроме|против|сквозь|сверх|вне|ради|обо|для|при|под|над|без|про|из|от|до|по|на|за|об|во|со|ко|или|либо|в|к|с|у|о|и|а|но)[\t\n\r\f ]+(?=[«„“"'({]*[\p{L}\p{N}])/giu;
+  function keepRussianShortWords(value) {
+    return value.replace(russianShortWord, (match) => match.trimEnd() + "\u00a0");
+  }
 
   window.siteI18n = {
     locale,
-    t(source) { return messages[source] || source; },
+    t(source) {
+      const translated = messages[source] || source;
+      return locale === "ru" ? keepRussianShortWords(translated) : translated;
+    },
   };
 
   function localeUrl(language) {
@@ -81,6 +90,12 @@
       if (translation) element.textContent = translation;
     });
     if (locale === "ru") {
+      const russianText = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+      while (russianText.nextNode()) {
+        const node = russianText.currentNode;
+        if (node.parentElement?.closest("script, style, noscript, svg, template, pre, code, kbd, samp, textarea, [contenteditable]")) continue;
+        node.nodeValue = keepRussianShortWords(node.nodeValue);
+      }
       document.querySelectorAll("[data-ru-src]").forEach((element) => {
         element.setAttribute("src", element.dataset.ruSrc);
       });

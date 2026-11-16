@@ -872,7 +872,7 @@ function initDecisionTextEffects() {
     const visual = document.createElement("span");
     visual.setAttribute("aria-hidden", "true");
 
-    text.split(/\s+/).forEach((word, wordIndex, words) => {
+    text.split(/[\t\n\r\f ]+/).forEach((word, wordIndex, words) => {
       const wordElement = document.createElement("span");
       wordElement.className = "case-motion-word";
 
@@ -951,7 +951,7 @@ function initNextProjectTextEffect() {
     const visual = document.createElement("span");
     visual.setAttribute("aria-hidden", "true");
 
-    text.split(/\s+/).forEach((word, wordIndex, words) => {
+    text.split(/[\t\n\r\f ]+/).forEach((word, wordIndex, words) => {
       const wordElement = document.createElement("span");
       wordElement.className = "case-motion-word";
 
