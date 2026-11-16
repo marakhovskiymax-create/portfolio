@@ -4102,12 +4102,12 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
     grid-column: 1;
     grid-row: 2;
     display: flex;
-    width: calc(100% - 8px);
+    width: 100%;
     height: auto;
     align-items: center;
     gap: 8px;
     overflow-x: auto;
-    margin-inline: 4px;
+    margin-inline: 0;
     padding: 2px 0;
     scrollbar-width: none;
     scroll-snap-type: x mandatory;
@@ -4227,6 +4227,7 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
     justify-content: flex-start;
     overflow-y: hidden;
     overscroll-behavior-inline: contain;
+    scroll-snap-type: none;
   }
 
   body:not(.case-page) .time-machine__timeline::after {
@@ -4236,12 +4237,17 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
 
   body:not(.case-page) .time-machine__stop {
     flex: 0 0 auto;
-    scroll-snap-align: center;
+    scroll-snap-align: none;
   }
 
   body:not(.case-page) .time-machine__stop-target {
     width: auto;
-    padding-inline: 14px;
+    padding-inline: 10px;
+  }
+
+  body:not(.case-page) .time-machine__stop.is-edge-clipped {
+    visibility: hidden !important;
+    pointer-events: none;
   }
 
   body:not(.case-page) .contact__heading {

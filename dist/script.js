@@ -101,7 +101,51 @@ const stageCards = Array.from(visual?.querySelectorAll("[data-stage-card]") ?? [
 const timeMachineStops = Array.from(visual?.querySelectorAll("[data-stage-index]") ?? []);
 const timeMachineTimeline = visual?.querySelector(".time-machine__timeline");
 const reduceTimeMachineMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const mobileProjectTabs = window.matchMedia("(max-width: 767px)");
+let projectTabVisibilityFrame = 0;
+let projectTabScrollTimer = 0;
 visual?.classList.toggle("has-gsap", Boolean(window.gsap) && !reduceTimeMachineMotion);
+
+function updateProjectTabVisibility() {
+  projectTabVisibilityFrame = 0;
+  if (!timeMachineTimeline) return;
+  const viewport = timeMachineTimeline.getBoundingClientRect();
+  timeMachineStops.forEach((stop) => {
+    const bounds = stop.getBoundingClientRect();
+    stop.classList.toggle("is-edge-clipped", mobileProjectTabs.matches &&
+      (bounds.left < viewport.left - 1 || bounds.right > viewport.right + 1));
+  });
+}
+
+function queueProjectTabVisibility() {
+  if (!projectTabVisibilityFrame) projectTabVisibilityFrame = window.requestAnimationFrame(updateProjectTabVisibility);
+}
+
+function scrollToProjectTab(index, immediate = false) {
+  if (!timeMachineTimeline || !mobileProjectTabs.matches) return;
+  const stop = timeMachineStops[index];
+  if (!stop) return;
+
+  const viewportWidth = timeMachineTimeline.clientWidth;
+  let left = stop.offsetLeft + stop.offsetWidth / 2 - viewportWidth / 2;
+  const previous = timeMachineStops[index - 1];
+  const next = timeMachineStops[index + 1];
+  const first = previous || stop;
+  const last = next || stop;
+  const groupWidth = last.offsetLeft + last.offsetWidth - first.offsetLeft;
+
+  if (groupWidth <= viewportWidth) {
+    const inset = Math.min(8, (viewportWidth - groupWidth) / 2);
+    left = Math.min(first.offsetLeft - inset,
+      Math.max(last.offsetLeft + last.offsetWidth + inset - viewportWidth, left));
+  }
+
+  left = Math.max(0, Math.min(timeMachineTimeline.scrollWidth - viewportWidth, left));
+  if (Math.abs(timeMachineTimeline.scrollLeft - left) > 1) {
+    timeMachineTimeline.scrollTo({ left, behavior: immediate || reduceTimeMachineMotion ? "auto" : "smooth" });
+  }
+  queueProjectTabVisibility();
+}
 
 function syncTimeMachine(activeIndex, immediate = false) {
   stageCards.forEach((card, index) => {
@@ -148,13 +192,7 @@ function syncTimeMachine(activeIndex, immediate = false) {
     }
   });
 
-  if (timeMachineTimeline && window.matchMedia("(max-width: 767px)").matches) {
-    const selectedStop = timeMachineStops[activeIndex];
-    if (selectedStop) {
-      const centeredLeft = selectedStop.offsetLeft + selectedStop.offsetWidth / 2 - timeMachineTimeline.clientWidth / 2;
-      timeMachineTimeline.scrollTo({ left: centeredLeft, behavior: immediate || reduceTimeMachineMotion ? "auto" : "smooth" });
-    }
-  }
+  scrollToProjectTab(activeIndex, immediate);
 }
 
 function syncTimeMachineHover(hoveredIndex = null) {
@@ -219,6 +257,10 @@ timeMachineStops.forEach((stop) => {
       : event.key === 'End'
         ? timeMachineStops.length - 1
         : (current + (event.key === 'ArrowDown' ? 1 : -1) + timeMachineStops.length) % timeMachineStops.length;
+    if (mobileProjectTabs.matches) {
+      scrollToProjectTab(Math.round(Number(timeMachineStops[next].dataset.stageIndex)), true);
+      updateProjectTabVisibility();
+    }
     timeMachineStops[next].focus();
   });
 });
@@ -229,6 +271,32 @@ timeMachineTimeline?.addEventListener("focusout", () => {
     if (!timeMachineTimeline.contains(document.activeElement)) syncTimeMachineHover();
   });
 });
+timeMachineTimeline?.addEventListener("scroll", () => {
+  queueProjectTabVisibility();
+  window.clearTimeout(projectTabScrollTimer);
+  projectTabScrollTimer = window.setTimeout(() => {
+    if (!mobileProjectTabs.matches) return;
+    const center = timeMachineTimeline.scrollLeft + timeMachineTimeline.clientWidth / 2;
+    const nearest = timeMachineStops.reduce((result, stop, index) =>
+      Math.abs(stop.offsetLeft + stop.offsetWidth / 2 - center) <
+        Math.abs(timeMachineStops[result].offsetLeft + timeMachineStops[result].offsetWidth / 2 - center)
+        ? index : result, 0);
+    scrollToProjectTab(nearest);
+  }, 160);
+}, { passive: true });
+window.addEventListener("resize", () => {
+  const current = timeMachineStops.findIndex((stop) => stop.classList.contains("is-active"));
+  scrollToProjectTab(Math.max(0, current), true);
+  queueProjectTabVisibility();
+}, { passive: true });
+document.fonts?.ready.then(queueProjectTabVisibility);
+if (timeMachineTimeline) {
+  const tabStyleObserver = new MutationObserver(queueProjectTabVisibility);
+  timeMachineStops.forEach((stop) => tabStyleObserver.observe(stop, {
+    attributes: true,
+    attributeFilter: ["style"],
+  }));
+}
 
 syncTimeMachine(0, true);
 syncTimeMachineHover();
