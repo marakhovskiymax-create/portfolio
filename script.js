@@ -2196,23 +2196,38 @@ if (window.TastemakerMotion && window.gsap && window.ScrollTrigger) {
         "-=0.58",
       );
 
-    revealTitle(".career-stage__heading", careerTitle, null, "top 76%");
     revealTitle(".skills-playground__hint", skillsTitle, null, "top 82%");
-    scrollScene(".career-timeline", "top 82%")
-      .fromTo(".career-tabs__rail",
-        { autoAlpha: 0, scaleX: 0, transformOrigin: "left center" },
-        { autoAlpha: 1, scaleX: 1, duration: 0.68, clearProps: "transform,opacity,visibility" },
-      )
-      .fromTo(".career-tab",
-        { autoAlpha: 0, y: 18, scale: 0.92 },
-        { autoAlpha: 1, y: 0, scale: 1, duration: 0.34, stagger: 0.075, clearProps: "transform,opacity,visibility" },
-        "-=0.46",
-      )
-      .fromTo(".career-panel.is-active > *",
-        careerPanelEnterFrom,
-        careerPanelEnterTo,
-        "-=0.12",
-      );
+    const startCareerScenes = () => {
+      revealTitle(".career-stage__heading", careerTitle, null, "top 76%");
+      scrollScene(".career-timeline", "top 82%")
+        .fromTo(".career-tabs__rail",
+          { autoAlpha: 0, scaleX: 0, transformOrigin: "left center" },
+          { autoAlpha: 1, scaleX: 1, duration: 0.68, clearProps: "transform,opacity,visibility" },
+        )
+        .fromTo(".career-tab",
+          { autoAlpha: 0, y: 18, scale: 0.92 },
+          { autoAlpha: 1, y: 0, scale: 1, duration: 0.34, stagger: 0.075, clearProps: "transform,opacity,visibility" },
+          "-=0.46",
+        )
+        .fromTo(".career-panel.is-active > *",
+          careerPanelEnterFrom,
+          careerPanelEnterTo,
+          "-=0.12",
+        );
+    };
+
+    // A restored scroll position can trigger these scenes while the page is
+    // still hidden for localization. Register them once it becomes visible.
+    if (document.documentElement.classList.contains("page-motion-pending")) {
+      const readyObserver = new MutationObserver(() => {
+        if (document.documentElement.classList.contains("page-motion-pending")) return;
+        readyObserver.disconnect();
+        startCareerScenes();
+      });
+      readyObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    } else {
+      startCareerScenes();
+    }
 
     if (!document.body.classList.contains("case-page")) {
       const footer = scrollScene("[data-motion-section='footer']", "top 96%");
