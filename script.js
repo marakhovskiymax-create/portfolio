@@ -2222,7 +2222,9 @@ if (window.TastemakerMotion && window.gsap && window.ScrollTrigger) {
       const readyObserver = new MutationObserver(() => {
         if (document.documentElement.classList.contains("page-motion-pending")) return;
         readyObserver.disconnect();
-        startCareerScenes();
+        // Let the primed, hidden state paint before ScrollTrigger can start
+        // counting time, even if the main thread was busy during page setup.
+        requestAnimationFrame(() => requestAnimationFrame(startCareerScenes));
       });
       readyObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
     } else {
