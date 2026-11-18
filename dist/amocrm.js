@@ -893,8 +893,11 @@ function initDecisionTextEffects() {
     });
 
     paragraph.textContent = "";
-    paragraph.setAttribute("aria-label", text);
+    const accessible = document.createElement("span");
+    accessible.className = "sr-only";
+    accessible.textContent = text;
     paragraph.classList.add("case-decision__text-effect");
+    paragraph.append(accessible);
     paragraph.append(visual);
 
     const characters = Array.from(paragraph.querySelectorAll(".case-motion-char"));
@@ -972,8 +975,11 @@ function initNextProjectTextEffect() {
     });
 
     element.textContent = "";
-    element.setAttribute("aria-label", text);
+    const accessible = document.createElement("span");
+    accessible.className = "sr-only";
+    accessible.textContent = text;
     element.classList.add("case-next__text-effect");
+    element.append(accessible);
     element.append(visual);
     return Array.from(element.querySelectorAll(".case-motion-char"));
   });

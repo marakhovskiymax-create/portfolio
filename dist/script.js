@@ -1966,8 +1966,11 @@ function initAboutNoteTextEffects() {
     visual.setAttribute("aria-hidden", "true");
 
     while (paragraph.firstChild) visual.append(paragraph.firstChild);
+    const accessible = document.createElement("span");
+    accessible.className = "sr-only";
+    accessible.textContent = accessibleText;
+    paragraph.append(accessible);
     paragraph.append(visual);
-    paragraph.setAttribute("aria-label", accessibleText);
     paragraph.classList.add("about-note__text-effect");
     wrapTextNodes(visual);
 
