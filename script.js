@@ -1026,10 +1026,16 @@ function initCareerTimeline() {
       timeline.style.setProperty("--career-progress", String(progress));
       return;
     }
-    const railRect = rail.getBoundingClientRect();
+    // GSAP scales the rail to zero before its entrance animation. Its visual
+    // bounding box is then zero-width, so measure the layout width instead.
+    const railWidth = rail.offsetWidth;
+    const listRect = tabList.getBoundingClientRect();
     const tabRect = tabs[index].getBoundingClientRect();
+    const railLeft = listRect.left + (listRect.width - railWidth) / 2;
     const activeCenter = tabRect.left + tabRect.width / 2;
-    const progress = Math.min(1, Math.max(0, (activeCenter - railRect.left) / railRect.width));
+    const progress = railWidth
+      ? Math.min(1, Math.max(0, (activeCenter - railLeft) / railWidth))
+      : 0;
     timeline.style.setProperty("--career-progress", String(progress));
   };
 
