@@ -1,5 +1,10 @@
 # Third-party notices
 
+## Fonts
+
+Inter Tight, Nunito Sans, and Playfair Display are self-hosted under the
+SIL Open Font License 1.1. Their license texts are in `fonts/licenses/`.
+
 ## Tabler Icons
 
 Interface icons are sourced from [Tabler Icons](https://github.com/tabler/tabler-icons),

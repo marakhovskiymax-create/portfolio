@@ -14,13 +14,31 @@
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png?v=20261112-rounded-favicon">
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=20261112-rounded-favicon">
     <link rel="manifest" href="site.webmanifest?v=20261112-rounded-favicon">
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@700;800;900&family=Nunito+Sans:opsz,wght@6..12,400;6..12,500;6..12,600;6..12,700;6..12,800;6..12,900&family=Playfair+Display:ital,wght@1,500;1,600&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="styles.css?v=20261113-white-hints" />
+
+    <script>
+    (() => {
+      const requested = new URLSearchParams(location.search).get("lang");
+      let saved = "en";
+      try { saved = localStorage.getItem("portfolio-language") || "en"; } catch {}
+      const russian = requested === "ru" || (requested !== "en" && saved === "ru");
+      const fonts = [
+        "playfair-display-italic-latin.woff2",
+        russian ? "inter-tight-normal-cyrillic.woff2" : "inter-tight-normal-latin.woff2",
+        russian ? "nunito-sans-normal-cyrillic.woff2" : "nunito-sans-normal-latin.woff2",
+      ];
+      if (russian) fonts.push("nunito-sans-normal-latin.woff2");
+      fonts.forEach((file) => {
+        const link = document.createElement("link");
+        link.rel = "preload";
+        link.as = "font";
+        link.type = "font/woff2";
+        link.crossOrigin = "anonymous";
+        link.href = `fonts/${file}`;
+        document.head.append(link);
+      });
+    })();
+  </script>
+  <link rel="stylesheet" href="styles.css?v=20261118-performance" />
     <link rel="stylesheet" href="amocrm.css?v=20261116-case-header-layer" />
     <link rel="stylesheet" href="eme.css?v=20261111-progress-gap" />
     <style>
@@ -116,15 +134,15 @@
           <div class="case-carousel__viewport">
             <div class="case-carousel__track" data-carousel-track>
               <figure class="case-carousel__slide" data-carousel-slide data-carousel-position="0">
-                <img src="design/assets/eme-web/carousel/14.webp" data-ru-src="design/assets/eme-web/carousel/14-ru.webp" width="1920" height="960" alt="EME.WEB cover showing the B2B design system and connected digital products" fetchpriority="high" />
+                <img src="design/assets/eme-web/carousel/14.webp" data-preview-src="design/assets/eme-web/carousel/14-960.webp" data-ru-preview-src="design/assets/eme-web/carousel/14-ru-960.webp" data-ru-src="design/assets/eme-web/carousel/14-ru.webp" width="1920" height="960" alt="EME.WEB cover showing the B2B design system and connected digital products" fetchpriority="high" />
                 <figcaption>Design System</figcaption>
               </figure>
               <figure class="case-carousel__slide" data-carousel-slide>
-                <img src="design/assets/eme-web/screens/9.png" width="1920" height="960" alt="EME.WMS ASN form and line-item table" />
+                <img src="design/assets/eme-web/screens/9.webp" width="1920" height="960" alt="EME.WMS ASN form and line-item table" loading="lazy" fetchpriority="low" decoding="async" />
                 <figcaption>ASN management</figcaption>
               </figure>
               <figure class="case-carousel__slide" data-carousel-slide>
-                <img src="design/assets/eme-web/screens/10.png" width="1920" height="960" alt="EME transportation form and mobile support ticket list" />
+                <img src="design/assets/eme-web/screens/10.webp" width="1920" height="960" alt="EME transportation form and mobile support ticket list" loading="lazy" fetchpriority="low" decoding="async" />
                 <figcaption>Transport and support</figcaption>
               </figure>
             </div>
@@ -191,7 +209,7 @@
           </section>
 
           <figure class="case-wide-visual case-wide-visual--context">
-            <img src="design/assets/eme-web/screens/1.png" width="1920" height="960" alt="EME.WMS orders table with filters and shipment statuses" loading="lazy" decoding="async" />
+            <img src="design/assets/eme-web/screens/1.webp" width="1920" height="960" alt="EME.WMS orders table with filters and shipment statuses" loading="lazy" decoding="async" />
           </figure>
 
           <div class="case-decision case-role">
@@ -240,14 +258,14 @@
               </div>
             </div>
             <figure class="case-story__media case-story__media--wide">
-              <img src="design/assets/eme-web/screens/2.png" width="1920" height="960" alt="EME.WMS product table and responsive card layout" loading="lazy" decoding="async" />
+              <img src="design/assets/eme-web/screens/2.webp" width="1920" height="960" alt="EME.WMS product table and responsive card layout" loading="lazy" decoding="async" />
             </figure>
             <div class="case-decision">
               <span>Design decision</span>
               <p>I kept key order details visible in one table, including statuses, shipping dates, and customer information. Filters and customizable columns let users adjust the view to their tasks instead of working with the same data every time.</p>
             </div>
             <figure class="case-story__media case-story__media--inset">
-              <img src="design/assets/eme-web/screens/3.png" width="1920" height="960" alt="EME mobile support ticket interface displayed on a phone" loading="lazy" decoding="async" />
+              <img src="design/assets/eme-web/screens/3.webp" width="1920" height="960" alt="EME mobile support ticket interface displayed on a phone" loading="lazy" decoding="async" />
             </figure>
           </section>
 
@@ -262,7 +280,7 @@
               </div>
             </div>
             <figure class="case-story__media case-story__media--wide">
-              <img src="design/assets/eme-web/screens/4.png" width="1920" height="960" alt="EME new transportation dialog with available and assigned orders" loading="lazy" decoding="async" />
+              <img src="design/assets/eme-web/screens/4.webp" width="1920" height="960" alt="EME new transportation dialog with available and assigned orders" loading="lazy" decoding="async" />
             </figure>
           </section>
 
@@ -277,7 +295,7 @@
               </div>
             </div>
             <figure class="case-story__media case-story__media--wide">
-              <img src="design/assets/eme-web/screens/5.png" width="1920" height="960" alt="EME.WMS warehouse time-slot calendar" loading="lazy" decoding="async" />
+              <img src="design/assets/eme-web/screens/5.webp" width="1920" height="960" alt="EME.WMS warehouse time-slot calendar" loading="lazy" decoding="async" />
             </figure>
           </section>
 
@@ -298,13 +316,13 @@
             <h2 class="case-scroll-gallery__heading case-scroll-gallery__heading--section" id="scroll-gallery-title">Logistics in focus</h2>
             <div class="case-scroll-gallery__deck">
             <figure class="case-scroll-gallery__card" style="--gallery-layer: 1;">
-              <img src="design/assets/eme-web/screens/6.png" width="1920" height="960" alt="EME company details and user account screens" loading="lazy" decoding="async" />
+              <img src="design/assets/eme-web/screens/6.webp" width="1920" height="960" alt="EME company details and user account screens" loading="lazy" decoding="async" />
             </figure>
             <figure class="case-scroll-gallery__card" style="--gallery-layer: 2;">
-              <img src="design/assets/eme-web/screens/7.png" width="1920" height="960" alt="EME knowledge base, support tickets, and inventory form" loading="lazy" decoding="async" />
+              <img src="design/assets/eme-web/screens/7.webp" width="1920" height="960" alt="EME knowledge base, support tickets, and inventory form" loading="lazy" decoding="async" />
             </figure>
             <figure class="case-scroll-gallery__card" style="--gallery-layer: 3;">
-              <img src="design/assets/eme-web/screens/8.png" width="1920" height="960" alt="EME driver details, order assignment, and goods report screens" loading="lazy" decoding="async" />
+              <img src="design/assets/eme-web/screens/8.webp" width="1920" height="960" alt="EME driver details, order assignment, and goods report screens" loading="lazy" decoding="async" />
             </figure>
             </div>
             </div>
@@ -451,9 +469,8 @@
       </div>
     </section>
 
-    <script src="vendor/matter.min.js"></script>
     <script src="vendor/gsap.min.js"></script>
     <script src="vendor/ScrollTrigger.min.js"></script>
-    <script src="i18n.js?v=20261116-mobile-work-tabs" onerror="document.documentElement.classList.remove('locale-pending', 'case-motion-pending')"></script>
+    <script src="i18n.js?v=20261118-performance" onerror="document.documentElement.classList.remove('locale-pending', 'case-motion-pending')"></script>
   </body>
 </html>

@@ -1,3 +1,11 @@
+// The locale is ready before this script loads. Schedule the existing Hero
+// sequence before setting up interactions further down the page.
+try {
+  initHeroTextEffect();
+} finally {
+  document.documentElement.classList.remove("hero-motion-pending");
+}
+
 const siteTranslate = (text) => window.siteI18n?.t(text) ?? text;
 
 const projectContent = {
@@ -110,10 +118,13 @@ function updateProjectTabVisibility() {
   projectTabVisibilityFrame = 0;
   if (!timeMachineTimeline) return;
   const viewport = timeMachineTimeline.getBoundingClientRect();
-  timeMachineStops.forEach((stop) => {
+  const clipped = timeMachineStops.map((stop) => {
     const bounds = stop.getBoundingClientRect();
-    stop.classList.toggle("is-edge-clipped", mobileProjectTabs.matches &&
-      (bounds.left < viewport.left - 1 || bounds.right > viewport.right + 1));
+    return mobileProjectTabs.matches &&
+      (bounds.left < viewport.left - 1 || bounds.right > viewport.right + 1);
+  });
+  timeMachineStops.forEach((stop, index) => {
+    stop.classList.toggle("is-edge-clipped", clipped[index]);
   });
 }
 
@@ -148,6 +159,9 @@ function scrollToProjectTab(index, immediate = false) {
 }
 
 function syncTimeMachine(activeIndex, immediate = false) {
+  // Tab measurements are independent of card transforms. Read them before
+  // writing the new card positions to avoid an extra layout flush.
+  scrollToProjectTab(activeIndex, immediate);
   stageCards.forEach((card, index) => {
     const offset = index - activeIndex;
     const hasPassed = offset < 0;
@@ -192,7 +206,6 @@ function syncTimeMachine(activeIndex, immediate = false) {
     }
   });
 
-  scrollToProjectTab(activeIndex, immediate);
 }
 
 function syncTimeMachineHover(hoveredIndex = null) {
@@ -881,12 +894,6 @@ function initHeroTextEffect() {
   });
 }
 
-try {
-  initHeroTextEffect();
-} finally {
-  document.documentElement.classList.remove("hero-motion-pending");
-}
-
 function initFAQAccordion() {
   const items = Array.from(document.querySelectorAll("[data-faq-item]"));
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -1411,7 +1418,68 @@ function initSkillsPlayground() {
   window.addEventListener("pagehide", stopScene, { once: true });
 }
 
-initSkillsPlayground();
+const deferredScriptLoads = new Map();
+
+function loadDeferredScript(source) {
+  if (!deferredScriptLoads.has(source)) {
+    deferredScriptLoads.set(source, new Promise((resolve, reject) => {
+      const script = document.createElement("script");
+      script.src = source;
+      script.async = true;
+      script.onload = resolve;
+      script.onerror = () => reject(new Error(`Could not load ${source}`));
+      document.head.append(script);
+    }));
+  }
+  return deferredScriptLoads.get(source);
+}
+
+function initFeatureWhenNear(selector, sources, init, hash) {
+  const section = document.querySelector(selector);
+  if (!section) return;
+  let started = false;
+  let observer;
+  const start = () => {
+    if (started) return;
+    started = true;
+    observer?.disconnect();
+    Promise.all(sources.map(loadDeferredScript)).then(init).catch(console.warn);
+  };
+
+  if ("IntersectionObserver" in window) {
+    observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) start();
+    }, { rootMargin: "2200px 0px" });
+    observer.observe(section);
+  } else {
+    start();
+  }
+
+  if (location.hash === hash) start();
+  window.addEventListener("hashchange", () => { if (location.hash === hash) start(); });
+  document.querySelectorAll(`a[href="${hash}"]`).forEach((link) => {
+    link.addEventListener("pointerenter", start, { once: true });
+    link.addEventListener("focus", start, { once: true });
+    link.addEventListener("click", start, { once: true });
+  });
+
+  // Download below-fold code at low priority after the Hero has had time to
+  // appear, so a quick later jump can use the browser cache.
+  window.setTimeout(() => {
+    if (started) return;
+    const prefetch = () => sources.forEach((source) => {
+      const link = document.createElement("link");
+      link.rel = "prefetch";
+      link.as = "script";
+      link.href = source;
+      document.head.append(link);
+    });
+    if ("requestIdleCallback" in window) window.requestIdleCallback(prefetch, { timeout: 4000 });
+    else prefetch();
+  }, 3500);
+}
+
+initFeatureWhenNear("[data-skills-playground]", ["vendor/matter.min.js"], initSkillsPlayground, "#skills-playground");
 
 function initContactForm() {
   const form = document.querySelector("[data-contact-form]");
@@ -1732,7 +1800,7 @@ function initContactGlobe() {
 }
 
 initContactForm();
-initContactGlobe();
+initFeatureWhenNear(".contact-globe", ["vendor/d3.min.js", "vendor/topojson-client.min.js"], initContactGlobe, "#contact");
 
 function initAboutBadgeMorph() {
   const section = document.querySelector("[data-motion-section='about']");

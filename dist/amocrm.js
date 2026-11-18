@@ -320,8 +320,9 @@ if (nextProjectLink && nextProjectPreview) {
         const targetPage = new DOMParser().parseFromString(markup, "text/html");
         const mainImage = targetPage.querySelector("[data-case-carousel] [data-carousel-slide] img");
         const source = window.siteI18n?.locale === "ru"
-          ? mainImage?.getAttribute("data-ru-src") || mainImage?.getAttribute("src")
-          : mainImage?.getAttribute("src");
+          ? mainImage?.getAttribute("data-ru-preview-src") || mainImage?.getAttribute("data-preview-src")
+            || mainImage?.getAttribute("data-ru-src") || mainImage?.getAttribute("src")
+          : mainImage?.getAttribute("data-preview-src") || mainImage?.getAttribute("src");
         if (!source) return;
         const coverUrl = new URL(source, targetUrl).href;
         if (nextProjectPreview.src !== coverUrl) nextProjectPreview.src = coverUrl;

@@ -7,7 +7,7 @@
   let locale = requested === "ru" || requested === "en" ? requested : saved === "ru" ? "ru" : "en";
   const sourceScripts = page === "index"
     ? ["gsap-starter.js", "script.js?v=20261118-performance"]
-    : ["script.js?v=20261116-russian-wrap", "amocrm.js?v=20261116-mobile-work-tabs"];
+    : ["script.js?v=20261118-performance", "amocrm.js?v=20261118-performance"];
   let messages = {};
 
   // Bind short Russian function words to the next word before motion splits text.
@@ -133,14 +133,17 @@
     });
   }
 
-  function loadScript(source) {
-    return new Promise((resolve) => {
+  function loadScriptsInOrder(sources) {
+    return Promise.all(sources.map((source) => new Promise((resolve) => {
       const script = document.createElement("script");
+      // Dynamic classic scripts normally run as soon as each download ends.
+      // Keep execution order while fetching the independent files in parallel.
+      script.async = false;
       script.src = source;
       script.onload = resolve;
       script.onerror = resolve;
       document.body.append(script);
-    });
+    })));
   }
 
   async function start() {
@@ -162,7 +165,7 @@
     } finally {
       document.documentElement.classList.remove("locale-pending");
     }
-    for (const source of sourceScripts) await loadScript(source);
+    await loadScriptsInOrder(sourceScripts);
     document.documentElement.classList.remove("case-motion-pending", "hero-motion-pending", "page-motion-pending");
   }
 

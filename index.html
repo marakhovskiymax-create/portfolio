@@ -14,13 +14,31 @@
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png?v=20261112-rounded-favicon">
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=20261112-rounded-favicon">
     <link rel="manifest" href="site.webmanifest?v=20261112-rounded-favicon">
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@700;800;900&family=Nunito+Sans:ital,opsz,wght@0,6..12,400;0,6..12,500;0,6..12,600;0,6..12,700;0,6..12,800;1,6..12,500&family=Playfair+Display:ital,wght@0,600;1,500;1,600&display=swap"
-      rel="stylesheet"
-    />
-  <link rel="stylesheet" href="styles.css?v=20261116-tablet-about-layout" />
+
+  <script>
+    (() => {
+      const requested = new URLSearchParams(location.search).get("lang");
+      let saved = "en";
+      try { saved = localStorage.getItem("portfolio-language") || "en"; } catch {}
+      const russian = requested === "ru" || (requested !== "en" && saved === "ru");
+      const fonts = [
+        "playfair-display-italic-latin.woff2",
+        russian ? "inter-tight-normal-cyrillic.woff2" : "inter-tight-normal-latin.woff2",
+        russian ? "nunito-sans-normal-cyrillic.woff2" : "nunito-sans-normal-latin.woff2",
+      ];
+      if (russian) fonts.push("nunito-sans-normal-latin.woff2");
+      fonts.forEach((file) => {
+        const link = document.createElement("link");
+        link.rel = "preload";
+        link.as = "font";
+        link.type = "font/woff2";
+        link.crossOrigin = "anonymous";
+        link.href = `fonts/${file}`;
+        document.head.append(link);
+      });
+    })();
+  </script>
+  <link rel="stylesheet" href="styles.css?v=20261118-performance" />
     <style>
       html.locale-pending { background: #050505; }
       html.locale-pending body { opacity: 0; visibility: hidden; pointer-events: none; }
@@ -886,9 +904,6 @@
       </div>
     </section>
 
-    <script src="vendor/matter.min.js"></script>
-    <script src="vendor/d3.min.js"></script>
-    <script src="vendor/topojson-client.min.js"></script>
     <script src="vendor/gsap.min.js"></script>
     <script src="vendor/ScrollTrigger.min.js"></script>
     <script src="i18n.js?v=20261118-performance" onerror="document.documentElement.classList.remove('locale-pending', 'hero-motion-pending', 'page-motion-pending')"></script>

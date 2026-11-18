@@ -1,5 +1,10 @@
 # Third-party notices
 
+## Fonts
+
+Inter Tight, Nunito Sans, and Playfair Display are self-hosted under the
+SIL Open Font License 1.1. Their license texts are in `fonts/licenses/`.
+
 ## Amicro Time Machine Stack and Shapes Heart Morph
 
 The portfolio card-stack interaction is adapted from `card-time-machine`, and
