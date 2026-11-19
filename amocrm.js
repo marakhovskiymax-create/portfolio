@@ -3,11 +3,26 @@ const caseNavLinks = Array.from(document.querySelectorAll("[data-case-nav]"));
 const casePosition = document.querySelector("[data-case-position]");
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+// Keep the same scroll range on an untransformed wrapper. The browser can
+// update these images independently of JavaScript when revisiting the section.
+const nativeStoryMedia = new Set();
+if (!prefersReducedMotion
+  && window.CSS?.supports("animation-timeline", "view()")
+  && window.CSS.supports("animation-range", "entry 0px entry 64vh")) {
+  document.querySelectorAll("#website .case-story__media").forEach((media) => {
+    const wrapper = document.createElement("div");
+    wrapper.className = "case-story__scroll-reveal";
+    media.before(wrapper);
+    wrapper.append(media);
+    nativeStoryMedia.add(media);
+  });
+}
+
 // Match the reference's scroll-scrubbed fade and subtle scale. On phones,
 // gallery cards use this reveal instead of the desktop scroll-flip sequence.
 const caseScrollMedia = Array.from(document.querySelectorAll(
   ".case-carousel, .case-wide-visual, .case-story__media, .integration-map, .case-scroll-gallery__card"
-));
+)).filter((media) => !nativeStoryMedia.has(media));
 
 if (caseScrollMedia.length && !prefersReducedMotion) {
   let mediaFrame = 0;
@@ -19,13 +34,9 @@ if (caseScrollMedia.length && !prefersReducedMotion) {
     const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
     const revealDistance = Math.max(1, viewportHeight * 0.64);
 
-    caseScrollMedia.forEach((media) => {
+    const updates = caseScrollMedia.map((media) => {
       if (media.classList.contains("case-scroll-gallery__card") && window.innerWidth > 767) {
-        media.classList.remove("case-scroll-media");
-        media.style.removeProperty("--case-scroll-opacity");
-        media.style.removeProperty("--case-scroll-scale");
-        mediaScales.delete(media);
-        return;
+        return { media, reset: true };
       }
       const previousScale = mediaScales.get(media) ?? 1;
       // getBoundingClientRect includes the current scale. Recover layout top
@@ -34,7 +45,17 @@ if (caseScrollMedia.length && !prefersReducedMotion) {
       const layoutTop = visualTop - (1 - previousScale) * media.offsetHeight / 2;
       const progress = clampUnit((viewportHeight - layoutTop) / revealDistance);
       const scale = 0.9 + progress * 0.1;
+      return { media, progress, scale };
+    });
 
+    updates.forEach(({ media, reset, progress, scale }) => {
+      if (reset) {
+        media.classList.remove("case-scroll-media");
+        media.style.removeProperty("--case-scroll-opacity");
+        media.style.removeProperty("--case-scroll-scale");
+        mediaScales.delete(media);
+        return;
+      }
       media.style.setProperty("--case-scroll-opacity", progress.toFixed(4));
       media.style.setProperty("--case-scroll-scale", scale.toFixed(4));
       mediaScales.set(media, scale);
@@ -444,7 +465,7 @@ function initWorkAreasPhysics() {
   if (!surface || !items.length || !window.Matter || prefersReducedMotion) return;
 
   const compactLayout = window.matchMedia("(max-width: 767px)");
-  const { Body, Bodies, Composite, Engine } = window.Matter;
+  const { Body, Bodies, Collision, Composite, Engine } = window.Matter;
   const engine = Engine.create({ enableSleeping: false, positionIterations: 8, velocityIterations: 6 });
   const states = new Map();
   let frame = 0;
@@ -459,8 +480,9 @@ function initWorkAreasPhysics() {
 
   const renderState = (item, state) => {
     if (!state.body) return;
-    item.style.setProperty("--work-x", `${state.body.position.x - item.offsetWidth / 2}px`);
-    item.style.setProperty("--work-y", `${state.body.position.y - item.offsetHeight / 2}px`);
+    const { width, height } = state.body.plugin.workChipSize;
+    item.style.setProperty("--work-x", `${state.body.position.x - width / 2}px`);
+    item.style.setProperty("--work-y", `${state.body.position.y - height / 2}px`);
     item.style.setProperty("--work-rotate", `${state.body.angle}rad`);
   };
 
@@ -469,6 +491,7 @@ function initWorkAreasPhysics() {
     const height = surface.clientHeight;
     const usableHeight = height;
     const sideInset = compactLayout.matches ? 12 : 0;
+    const verticalInset = compactLayout.matches ? 12 : 0;
     const oldStates = items.map((item) => {
       const body = states.get(item)?.body;
       return body
@@ -485,10 +508,10 @@ function initWorkAreasPhysics() {
     Composite.clear(engine.world, false);
     const wallDepth = 120;
     Composite.add(engine.world, [
-      Bodies.rectangle(width / 2, usableHeight + wallDepth / 2, width + wallDepth * 2, wallDepth, { isStatic: true }),
+      Bodies.rectangle(width / 2, usableHeight - verticalInset + wallDepth / 2, width + wallDepth * 2, wallDepth, { isStatic: true }),
       Bodies.rectangle(sideInset - wallDepth / 2, usableHeight / 2, wallDepth, usableHeight + wallDepth * 2, { isStatic: true }),
       Bodies.rectangle(width - sideInset + wallDepth / 2, usableHeight / 2, wallDepth, usableHeight + wallDepth * 2, { isStatic: true }),
-      Bodies.rectangle(width / 2, -wallDepth / 2, width + wallDepth * 2, wallDepth, { isStatic: true }),
+      Bodies.rectangle(width / 2, verticalInset - wallDepth / 2, width + wallDepth * 2, wallDepth, { isStatic: true }),
     ]);
 
     items.forEach((item, index) => {
@@ -521,6 +544,7 @@ function initWorkAreasPhysics() {
           restitution: 0.24,
         },
       );
+      body.plugin.workChipSize = { width: item.offsetWidth, height: item.offsetHeight };
       state.body = body;
       if (preserve && old) {
         Body.setVelocity(body, old.velocity);
@@ -530,6 +554,7 @@ function initWorkAreasPhysics() {
         Body.setAngularVelocity(body, (index % 2 ? -1 : 1) * 0.006);
       }
       Composite.add(engine.world, body);
+      Body.setPosition(body, clampBodyToSurface(body, body.position.x, body.position.y));
       renderState(item, state);
     });
   };
@@ -544,7 +569,45 @@ function initWorkAreasPhysics() {
     previousTime = time;
     accumulatedTime += delta;
     while (accumulatedTime >= fixedStep) {
+      items.forEach((item) => {
+        const state = states.get(item);
+        if (state.pointerId === null || !state.body || !state.dragTarget) return;
+        const body = state.body;
+        state.dragStartX = body.position.x;
+        state.dragStartY = body.position.y;
+        const target = clampBodyToSurface(body, state.dragTarget.x, state.dragTarget.y);
+        const dx = (target.x - body.position.x) * 0.32;
+        const dy = (target.y - body.position.y) * 0.32;
+        const speed = Math.hypot(dx, dy);
+        const scale = speed > 9 ? 9 / speed : 1;
+        moveWithContact(body, body.position.x + dx * scale, body.position.y + dy * scale);
+        Body.setVelocity(body, { x: 0, y: 0 });
+      });
       Engine.update(engine, fixedStep);
+      items.forEach((item) => {
+        const state = states.get(item);
+        const body = state?.body;
+        if (!body) return;
+        if (state.pointerId !== null && state.dragTarget) {
+          const movedX = body.position.x - state.dragStartX;
+          const movedY = body.position.y - state.dragStartY;
+          if (Math.hypot(movedX, movedY) > 0.1) {
+            state.throwX = movedX;
+            state.throwY = movedY;
+            state.lastMotionTime = time;
+          }
+        }
+        // The mobile walls keep moving chips inside. Repositioning them here
+        // compresses the pile against the floor and makes it jitter/overlap.
+        if (body.isStatic || compactLayout.matches) return;
+        const target = clampBodyToSurface(body, body.position.x, body.position.y);
+        if (Math.abs(target.x - body.position.x) < 0.01 && Math.abs(target.y - body.position.y) < 0.01) return;
+        const velocity = { ...body.velocity };
+        if (target.x !== body.position.x) velocity.x = 0;
+        if (target.y !== body.position.y) velocity.y = 0;
+        Body.setPosition(body, target);
+        Body.setVelocity(body, velocity);
+      });
       accumulatedTime -= fixedStep;
     }
     items.forEach((item) => renderState(item, states.get(item)));
@@ -565,15 +628,64 @@ function initWorkAreasPhysics() {
     frame = 0;
   };
 
+  const clampBodyToSurface = (body, x, y) => {
+    const sideInset = compactLayout.matches ? 12 : 0;
+    const verticalInset = compactLayout.matches ? 12 : 0;
+    const { width, height } = body.plugin.workChipSize;
+    // CSS draws a true capsule; Matter's chamfered rectangle is slightly smaller
+    // at diagonal angles, so its bounds alone can still clip the visible chip.
+    const radius = height / 2;
+    const straightHalfLength = Math.max(0, (width - height) / 2);
+    const halfX = radius + Math.abs(Math.cos(body.angle)) * straightHalfLength;
+    const halfY = radius + Math.abs(Math.sin(body.angle)) * straightHalfLength;
+    const minX = sideInset + halfX;
+    const maxX = surface.clientWidth - sideInset - halfX;
+    const minY = verticalInset + halfY;
+    const maxY = surface.clientHeight - verticalInset - halfY;
+    return {
+      x: minX <= maxX ? Math.min(maxX, Math.max(minX, x)) : surface.clientWidth / 2,
+      y: minY <= maxY ? Math.min(maxY, Math.max(minY, y)) : surface.clientHeight / 2,
+    };
+  };
+
+  // Let the dragged chip press gently against its neighbours so they can move,
+  // while limiting penetration before Matter resolves each contact.
+  const moveWithContact = (body, targetX, targetY) => {
+    const startX = body.position.x;
+    const startY = body.position.y;
+    const distance = Math.hypot(targetX - startX, targetY - startY);
+    if (distance < 0.01) return;
+    const others = items.map((item) => states.get(item).body).filter((other) => other && other !== body);
+    const initialDepths = others.map((other) => Collision.collides(body, other)?.depth || 0);
+    const steps = Math.ceil(distance / 2);
+    let x = startX;
+    let y = startY;
+    for (let step = 1; step <= steps; step += 1) {
+      const nextX = startX + ((targetX - startX) * step) / steps;
+      const nextY = startY + ((targetY - startY) * step) / steps;
+      Body.setPosition(body, { x: nextX, y: nextY });
+      if (others.some((other, index) => (Collision.collides(body, other)?.depth || 0) > Math.max(8, initialDepths[index]) + 0.01)) {
+        Body.setPosition(body, { x, y });
+        return;
+      }
+      x = nextX;
+      y = nextY;
+    }
+  };
+
   items.forEach((item) => {
     const state = {
       body: null,
       pointerId: null,
+      dragTarget: null,
       pointerOffsetX: 0,
       pointerOffsetY: 0,
       previousX: 0,
       previousY: 0,
       previousTime: 0,
+      lastMotionTime: 0,
+      dragStartX: 0,
+      dragStartY: 0,
       throwX: 0,
       throwY: 0,
       dragDistance: 0,
@@ -598,10 +710,13 @@ function initWorkAreasPhysics() {
       state.previousX = event.clientX;
       state.previousY = event.clientY;
       state.previousTime = performance.now();
+      state.lastMotionTime = 0;
       state.throwX = 0;
       state.throwY = 0;
       state.dragDistance = 0;
       state.suppressClick = false;
+      state.dragTarget = { ...state.body.position };
+      Body.setVelocity(state.body, { x: 0, y: 0 });
       Body.setStatic(state.body, true);
       topLayer += 1;
       item.style.zIndex = String(topLayer);
@@ -613,43 +728,57 @@ function initWorkAreasPhysics() {
     item.addEventListener("pointermove", (event) => {
       if (!state.body || state.pointerId !== event.pointerId) return;
       const surfaceRect = surface.getBoundingClientRect();
-      const halfWidth = item.offsetWidth / 2;
-      const halfHeight = item.offsetHeight / 2;
-      const maxY = surface.clientHeight - halfHeight;
-      const sideInset = compactLayout.matches ? 12 : 0;
-      const x = Math.min(surface.clientWidth - sideInset - halfWidth, Math.max(sideInset + halfWidth, event.clientX - surfaceRect.left - state.pointerOffsetX));
-      const y = Math.min(maxY, Math.max(halfHeight, event.clientY - surfaceRect.top - state.pointerOffsetY));
-      const now = performance.now();
-      const delta = Math.max(8, now - state.previousTime);
+      const target = clampBodyToSurface(
+        state.body,
+        event.clientX - surfaceRect.left - state.pointerOffsetX,
+        event.clientY - surfaceRect.top - state.pointerOffsetY,
+      );
       const moveX = event.clientX - state.previousX;
       const moveY = event.clientY - state.previousY;
       state.dragDistance += Math.hypot(moveX, moveY);
-      state.throwX = (moveX / delta) * (1000 / 60);
-      state.throwY = (moveY / delta) * (1000 / 60);
+      state.dragTarget = target;
+      const startX = state.body.position.x;
+      const startY = state.body.position.y;
+      moveWithContact(state.body, target.x, target.y);
+      const now = performance.now();
+      const elapsed = Math.max(8, now - state.previousTime);
+      const movedX = state.body.position.x - startX;
+      const movedY = state.body.position.y - startY;
+      if (Math.hypot(movedX, movedY) > 0.1) {
+        state.throwX = Math.max(-9, Math.min(9, movedX * (1000 / 60) / elapsed));
+        state.throwY = Math.max(-9, Math.min(9, movedY * (1000 / 60) / elapsed));
+        state.lastMotionTime = now;
+      }
       state.previousX = event.clientX;
       state.previousY = event.clientY;
       state.previousTime = now;
-      Body.setPosition(state.body, { x, y });
       renderState(item, state);
+      startScene();
     });
 
     const release = (event) => {
       if (!state.body || state.pointerId !== event.pointerId) return;
       state.pointerId = null;
+      state.dragTarget = null;
       state.suppressClick = state.dragDistance > 6;
       item.classList.remove("is-dragging");
       if (item.hasPointerCapture(event.pointerId)) item.releasePointerCapture(event.pointerId);
+      Body.setPosition(state.body, clampBodyToSurface(state.body, state.body.position.x, state.body.position.y));
       Body.setStatic(state.body, false);
+      const hasRecentMotion = performance.now() - state.lastMotionTime < 100;
       Body.setVelocity(state.body, {
-        x: Math.max(-22, Math.min(22, state.throwX)),
-        y: Math.max(-22, Math.min(22, state.throwY)),
+        x: hasRecentMotion ? Math.max(-9, Math.min(9, state.throwX)) : 0,
+        y: hasRecentMotion ? Math.max(-9, Math.min(9, state.throwY)) : 0,
       });
-      Body.setAngularVelocity(state.body, Math.max(-0.12, Math.min(0.12, state.throwX * 0.006)));
       startScene();
     };
 
     item.addEventListener("pointerup", release);
     item.addEventListener("pointercancel", release);
+    item.addEventListener("lostpointercapture", release);
+    window.addEventListener("blur", () => {
+      if (state.pointerId !== null) release({ pointerId: state.pointerId });
+    });
     item.addEventListener("keydown", (event) => {
       if (!state.body) return;
       const step = event.shiftKey ? 32 : 12;
@@ -661,15 +790,11 @@ function initWorkAreasPhysics() {
       }[event.key];
       if (!movement) return;
       event.preventDefault();
-      const halfWidth = item.offsetWidth / 2;
-      const halfHeight = item.offsetHeight / 2;
-      const maxY = surface.clientHeight - halfHeight;
-      const sideInset = compactLayout.matches ? 12 : 0;
-      Body.setPosition(state.body, {
-        x: Math.min(surface.clientWidth - sideInset - halfWidth, Math.max(sideInset + halfWidth, state.body.position.x + movement[0])),
-        y: Math.min(maxY, Math.max(halfHeight, state.body.position.y + movement[1])),
+      const target = clampBodyToSurface(state.body, state.body.position.x + movement[0], state.body.position.y + movement[1]);
+      Body.setVelocity(state.body, {
+        x: (target.x - state.body.position.x) * 0.2,
+        y: (target.y - state.body.position.y) * 0.2,
       });
-      Body.setVelocity(state.body, { x: movement[0] * 0.12, y: movement[1] * 0.12 });
       topLayer += 1;
       item.style.zIndex = String(topLayer);
       renderState(item, state);
@@ -700,10 +825,27 @@ function initWorkAreasPhysics() {
   window.addEventListener("pagehide", stopScene, { once: true });
 }
 
-initWorkAreasPhysics();
+initFeatureWhenNear("[data-work-areas]", ["vendor/matter.min.js"], initWorkAreasPhysics, "#work-areas");
 
 const metricScrambles = Array.from(document.querySelectorAll("[data-text-scramble]"));
 const caseTextRevealMargin = "0px 0px -30% 0px";
+
+function caseRevealCleanup(elements, properties = "transform,opacity,visibility") {
+  const targets = Array.from(elements);
+  if (!targets[0]?.closest("#website, .case-role")) return { clearProps: properties };
+  const styleProperties = properties.split(",");
+  // GSAP's transform clearProps reparses computed geometry after each letter.
+  // Remove the completed styles together without synchronous layout reads.
+  return {
+    onComplete() {
+      targets.forEach((element) => {
+        styleProperties.forEach((property) => element.style.removeProperty(property));
+        const cache = window.gsap.core.getCache(element);
+        cache.uncache = 1;
+      });
+    },
+  };
+}
 
 function playMetricScramble(element, delay = 0) {
   const finalText = element.textContent ?? "";
@@ -794,6 +936,48 @@ function initCaseTextMotion() {
   }
 
   const preparedElements = new Map();
+  const titleMotion = (characters) => ({
+    autoAlpha: 1,
+    rotateX: 0,
+    y: 0,
+    duration: 0.2,
+    stagger: 0.035,
+    ease: "power3.out",
+    ...caseRevealCleanup(characters),
+  });
+
+  function prepareStoryHeading(characters) {
+    if (!Element.prototype.animate || !window.CSS?.supports("animation-timing-function", "linear(0, 1)")) return null;
+    // Sample the existing GSAP curve so compositor playback keeps the same
+    // rotation, fade, duration and letter offsets without per-frame JS writes.
+    const ease = window.gsap.parseEase("power3.out");
+    const easing = `linear(${Array.from({ length: 201 }, (_, index) => ease(index / 200).toFixed(8)).join(",")})`;
+    const animations = characters.map((character, index) => {
+      character.style.willChange = "transform, opacity";
+      const animation = character.animate([
+        { opacity: 0, transform: "translateY(10px) rotateX(90deg)" },
+        { opacity: 1, transform: "translateY(0px) rotateX(0deg)" },
+      ], { duration: 200, delay: index * 35, easing, fill: "both" });
+      animation.pause();
+      animation.currentTime = 0;
+      return animation;
+    });
+    Promise.all(animations.map((animation) => animation.finished)).then(() => {
+      caseRevealCleanup(characters).onComplete();
+      characters.forEach((character) => character.style.removeProperty("will-change"));
+      animations.forEach((animation) => animation.cancel());
+    }).catch(() => { /* Navigation can cancel unfinished browser animations. */ });
+    return {
+      play() {
+        const startTime = document.timeline.currentTime;
+        characters.forEach((character) => { character.style.visibility = "visible"; });
+        animations.forEach((animation) => {
+          animation.play();
+          animation.startTime = startTime;
+        });
+      },
+    };
+  }
 
   sectionMotion.forEach((config) => {
     const section = document.querySelector(config.selector);
@@ -814,8 +998,19 @@ function initCaseTextMotion() {
         supportingElements,
       });
     } else {
-      preparedElements.set(title, { characters });
-      supportingElements.forEach((element) => preparedElements.set(element, { element }));
+      const warm = config.selector === "#website";
+      const animation = warm ? prepareStoryHeading(characters) || window.gsap.to(characters, {
+        ...titleMotion(characters), paused: true, immediateRender: true, lazy: false,
+      }) : null;
+      preparedElements.set(title, { characters, animation });
+      supportingElements.forEach((element) => {
+        const animation = warm ? window.gsap.timeline({ paused: true }).to(element, {
+          autoAlpha: 1, y: 0, duration: 0.28, delay: 0.04, ease: "power3.out",
+          ...caseRevealCleanup([element]),
+          immediateRender: true, lazy: false,
+        }) : null;
+        preparedElements.set(element, { element, animation });
+      });
     }
   });
 
@@ -826,15 +1021,8 @@ function initCaseTextMotion() {
       if (!prepared) return;
 
       if (prepared.characters) {
-        window.gsap.to(prepared.characters, {
-          autoAlpha: 1,
-          rotateX: 0,
-          y: 0,
-          duration: 0.2,
-          stagger: 0.035,
-          ease: "power3.out",
-          clearProps: "transform,opacity,visibility",
-        });
+        if (prepared.animation) prepared.animation.play();
+        else window.gsap.to(prepared.characters, titleMotion(prepared.characters));
         prepared.supportingElements?.forEach((element) => {
           const isHeroMeta = element.matches(".case-meta");
           window.gsap.to(element, {
@@ -848,13 +1036,14 @@ function initCaseTextMotion() {
         });
       } else {
         const isWorkAreasCanvas = prepared.element.matches(".work-areas__canvas");
-        window.gsap.to(prepared.element, {
+        if (prepared.animation) prepared.animation.play();
+        else window.gsap.to(prepared.element, {
           autoAlpha: 1,
           y: 0,
           duration: isWorkAreasCanvas ? 0.9 : 0.28,
           delay: 0.04,
           ease: isWorkAreasCanvas ? "sine.inOut" : "power3.out",
-          clearProps: "transform,opacity,visibility",
+          ...caseRevealCleanup([prepared.element]),
         });
       }
 
@@ -921,7 +1110,7 @@ function initDecisionTextEffects() {
         filter: "blur(0px)",
         duration: 0.5,
         ease: "power3.out",
-        clearProps: "transform,opacity,visibility,filter",
+        ...caseRevealCleanup([prepared.label], "transform,opacity,visibility,filter"),
       });
 
       window.gsap.to(prepared.characters, {
@@ -932,7 +1121,7 @@ function initDecisionTextEffects() {
         delay: 0.5,
         stagger,
         ease: "power3.out",
-        clearProps: "transform,opacity,visibility",
+        ...caseRevealCleanup(prepared.characters),
       });
 
       observer.unobserve(entry.target);
