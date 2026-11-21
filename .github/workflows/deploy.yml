@@ -1,0 +1,196 @@
+
+name: Deploy portfolio to Yandex Object Storage
+
+on:
+  push:
+    branches: [portfolio-current]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-max-marakhovskiy-portfolio
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: github.repository == 'marakhovskiymax-create/portfolio' && github.ref == 'refs/heads/portfolio-current'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      YC_BUCKET: max-marakhovskiy-portfolio
+      S3_ENDPOINT: https://storage.yandexcloud.net
+      AWS_DEFAULT_REGION: ru-central1
+
+    steps:
+      - name: Check out the triggering commit
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Validate the static site and prepare upload metadata
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          import re
+          from html.parser import HTMLParser
+          from pathlib import Path
+          from urllib.parse import unquote, urlsplit
+
+          root = Path("dist")
+          required = (
+              "index.html", "styles.css", "fonts.css", "script.js", "i18n.js",
+              "amocrm.js", "amocrm.css", "gsap-starter.js", "site.webmanifest",
+              "amocrm.html", "eme-web.html", "eme-app.html", "don-ballon.html", "shable.html",
+              "locales/en.json", "locales/ru.json", "vendor/gsap.min.js",
+              "vendor/ScrollTrigger.min.js", "vendor/matter.min.js", "vendor/d3.min.js",
+              "vendor/topojson-client.min.js", "vendor/countries-110m.json",
+              "CV.pdf", "Резюме.pdf", "amoCRM-showreel-15s.mp4", "amoCRM-showreel-poster.jpg",
+          )
+          for name in required:
+              path = root / name
+              if not path.is_file() or path.stat().st_size == 0:
+                  raise SystemExit(f"Required file is missing or empty: {path}")
+          for name in ("design", "fonts", "vendor", "locales"):
+              if not (root / name).is_dir():
+                  raise SystemExit(f"Required directory is missing: dist/{name}")
+          for name in ("locales/en.json", "locales/ru.json", "site.webmanifest"):
+              json.loads((root / name).read_text(encoding="utf-8"))
+
+          def check_reference(source, value):
+              url = urlsplit(value)
+              if url.scheme or url.netloc or not url.path:
+                  return
+              name = unquote(url.path)
+              target = root / name.lstrip("/") if name.startswith("/") else source.parent / name
+              if name.endswith("/"):
+                  target /= "index.html"
+              if not target.resolve().is_relative_to(root.resolve()) or not target.is_file():
+                  raise SystemExit(f"Missing local resource in {source}: {value}")
+
+          class References(HTMLParser):
+              def __init__(self, source):
+                  super().__init__()
+                  self.source = source
+
+              def handle_starttag(self, tag, attrs):
+                  for name, value in attrs:
+                      if value and (name in ("href", "src", "poster") or
+                                    name.startswith("data-") and name.endswith(("-src", "-href"))):
+                          check_reference(self.source, value)
+
+          for source in root.glob("*.html"):
+              References(source).feed(source.read_text(encoding="utf-8"))
+          for source in root.rglob("*.css"):
+              for value in re.findall(r"url\(\s*['\"]?([^'\"\)]+)", source.read_text(encoding="utf-8")):
+                  check_reference(source, value.strip())
+
+          content_types = {
+              ".html": "text/html; charset=utf-8",
+              ".css": "text/css; charset=utf-8",
+              ".js": "application/javascript; charset=utf-8",
+              ".json": "application/json; charset=utf-8",
+              ".webmanifest": "application/manifest+json; charset=utf-8",
+              ".svg": "image/svg+xml",
+              ".webp": "image/webp",
+              ".png": "image/png",
+              ".jpg": "image/jpeg",
+              ".jpeg": "image/jpeg",
+              ".ico": "image/x-icon",
+              ".mp4": "video/mp4",
+              ".pdf": "application/pdf",
+              ".woff": "font/woff",
+              ".woff2": "font/woff2",
+              ".ttf": "font/ttf",
+              ".otf": "font/otf",
+              ".eot": "application/vnd.ms-fontobject",
+              ".txt": "text/plain; charset=utf-8",
+              ".md": "text/markdown; charset=utf-8",
+          }
+          files = []
+          for path in sorted(root.rglob("*")):
+              if path.is_symlink():
+                  raise SystemExit(f"Symlinks are not allowed in dist: {path}")
+              if not path.is_file():
+                  continue
+              content_type = content_types.get(path.suffix.lower())
+              if content_type is None:
+                  raise SystemExit(f"Add an explicit Content-Type for: {path}")
+              if path.stat().st_size == 0:
+                  raise SystemExit(f"Empty file in dist: {path}")
+              files.append({
+                  "source": str(path),
+                  "key": path.relative_to(root).as_posix(),
+                  "content_type": content_type,
+              })
+          manifest = Path(os.environ["RUNNER_TEMP"]) / "portfolio-upload.json"
+          manifest.write_text(json.dumps(files, ensure_ascii=False), encoding="utf-8")
+          print(f"Validated {len(files)} files. No files have been uploaded.")
+          PY
+
+      - name: Install the S3 client
+        run: python -m pip install --disable-pip-version-check boto3==1.44.9
+
+      - name: Upload assets, then HTML pages (no deletions)
+        shell: bash
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.YC_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.YC_SECRET_ACCESS_KEY }}
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from concurrent.futures import ThreadPoolExecutor
+          from pathlib import Path
+
+          import boto3
+          from boto3.s3.transfer import TransferConfig
+          from botocore.config import Config
+
+          if not os.environ.get("AWS_ACCESS_KEY_ID") or not os.environ.get("AWS_SECRET_ACCESS_KEY"):
+              raise SystemExit("Set YC_ACCESS_KEY_ID and YC_SECRET_ACCESS_KEY in GitHub Actions Secrets.")
+          files = json.loads((Path(os.environ["RUNNER_TEMP"]) / "portfolio-upload.json").read_text(encoding="utf-8"))
+          client = boto3.client(
+              "s3",
+              endpoint_url=os.environ["S3_ENDPOINT"],
+              region_name=os.environ["AWS_DEFAULT_REGION"],
+              config=Config(
+                  signature_version="s3v4",
+                  s3={"addressing_style": "path"},
+                  retries={"mode": "standard", "max_attempts": 5},
+                  request_checksum_calculation="when_required",
+                  response_checksum_validation="when_required",
+              ),
+          )
+          transfer = TransferConfig(use_threads=False)
+
+          def upload(item):
+              try:
+                  client.upload_file(
+                      item["source"], os.environ["YC_BUCKET"], item["key"],
+                      ExtraArgs={
+                          "ContentType": item["content_type"],
+                          "CacheControl": "no-cache, max-age=0, must-revalidate",
+                      },
+                      Config=transfer,
+                  )
+              except Exception as error:
+                  raise RuntimeError(f"Upload failed: {item['key']} ({type(error).__name__})") from None
+
+          # Always upload files again so existing objects also get correct MIME/cache metadata.
+          # No delete/list/ACL operations: objects absent from dist are left untouched.
+          for is_html in (False, True):
+              batch = [item for item in files if item["key"].lower().endswith(".html") == is_html]
+              with ThreadPoolExecutor(max_workers=4) as pool:
+                  list(pool.map(upload, batch))
+              print(f"Uploaded {len(batch)} {'HTML pages' if is_html else 'assets'}.")
+          print("Publication completed. No objects were deleted.")
+          PY
