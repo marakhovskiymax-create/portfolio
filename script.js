@@ -225,24 +225,12 @@ function syncTimeMachineHover(hoveredIndex = null) {
   });
 }
 
-function loadFullCardImage(card) {
-  const image = card?.querySelector(".time-machine__card-cover[data-full-src]");
-  if (!image) return;
-  const source = window.siteI18n?.locale === "ru" && image.dataset.ruFullSrc
-    ? image.dataset.ruFullSrc
-    : image.dataset.fullSrc;
-  if (image.getAttribute("src") === source) return;
-  image.fetchPriority = "high";
-  image.src = source;
-}
-
 function activateProject(index) {
   const card = stageCards[index];
   const projectId = card?.dataset.stageCard;
   const project = projectContent[projectId];
   if (!project || !visual) return;
 
-  loadFullCardImage(card);
   visual.dataset.projectVisual = projectId;
   visualCaption.textContent = siteTranslate(project.caption);
   syncTimeMachine(index);
@@ -1649,6 +1637,8 @@ function initContactForm() {
       });
       setStatus("");
       openSuccessDialog();
+      // No form values leave this success notification. Analytics applies consent separately.
+      form.dispatchEvent(new Event("portfolio:contact-form-success", { bubbles: true }));
     } catch (error) {
       setStatus(siteTranslate("Your message couldn't be sent. Please try again or use the email link."), "error");
     } finally {
