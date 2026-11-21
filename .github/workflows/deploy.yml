@@ -183,7 +183,7 @@ jobs:
                       Config=transfer,
                   )
               except Exception as error:
-                  raise RuntimeError(f"Upload failed: {item['key']} ({type(error).__name__})") from None
+                  raise RuntimeError(f"Upload failed: {item['key']}: {error}") from error
 
           # Always upload files again so existing objects also get correct MIME/cache metadata.
           # No delete/list/ACL operations: objects absent from dist are left untouched.
