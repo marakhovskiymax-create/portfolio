@@ -17,8 +17,6 @@
   let stopCaseEngagement;
   let coveredPage = false;
   let expiryTimer;
-  let panel;
-  let settings;
 
   function readConsent() {
     try {
@@ -36,10 +34,6 @@
 
   function metrikaGranted() {
     return granted() && Array.isArray(consent.providers) && consent.providers.includes(metrikaProvider);
-  }
-
-  function needsMetrikaConsent() {
-    return granted() && !metrikaGranted();
   }
 
   function locale() {
@@ -237,15 +231,6 @@
     if (started || metrikaStarted) location.reload();
   }
 
-  function setChoice(choice) {
-    consent = { choice, time: Date.now(), providers: ["google-analytics", metrikaProvider] };
-    try { localStorage.setItem(consentKey, JSON.stringify(consent)); } catch { /* Remember in this document only. */ }
-    showPanel(false);
-    scheduleExpiry();
-    if (choice === "granted") startAnalytics();
-    else stopAnalytics();
-  }
-
   function scheduleExpiry() {
     clearTimeout(expiryTimer);
     if (!consent) return;
@@ -253,73 +238,15 @@
       if (!consent) return;
       if (Date.now() - consent.time >= maxAge) {
         consent = null;
-        showPanel(true);
         stopAnalytics();
       } else scheduleExpiry();
     }, Math.min(Math.max(1, maxAge - (Date.now() - consent.time)), 86400000));
   }
 
-  const messages = {
-    ru: {
-      title: "Аналитические cookie",
-      text: "Google Analytics и Яндекс Метрика помогают понять, какие страницы интересны посетителям. Сервисы включаются только с вашего согласия. Выбор можно изменить в любое время.",
-      accept: "Принять", reject: "Отклонить", settings: "Настройки cookie",
-      granted: "Сейчас аналитика разрешена.", denied: "Сейчас аналитика отключена.",
-      upgrade: "Ранее вы разрешили Google Analytics. Для подключения Яндекс Метрики нужно ваше согласие.",
-    },
-    en: {
-      title: "Analytics cookies",
-      text: "Google Analytics and Yandex Metrica help me understand which pages visitors find useful. These services start only with your consent. You can change your choice at any time.",
-      accept: "Accept", reject: "Decline", settings: "Cookie settings",
-      granted: "Analytics is currently allowed.", denied: "Analytics is currently off.",
-      upgrade: "You previously allowed Google Analytics. Adding Yandex Metrica requires your consent.",
-    },
-  };
-
-  function updateText() {
-    const text = messages[locale()];
-    panel.lang = locale();
-    panel.querySelector("h2").textContent = text.title;
-    panel.querySelector("p").textContent = text.text;
-    const status = panel.querySelector("[data-consent-status]");
-    status.textContent = needsMetrikaConsent() ? text.upgrade : consent ? text[consent.choice] : "";
-    status.hidden = !consent;
-    panel.querySelector('[data-consent-choice="granted"]').textContent = text.accept;
-    panel.querySelector('[data-consent-choice="denied"]').textContent = text.reject;
-    settings.textContent = text.settings;
-    settings.lang = locale();
-  }
-
-  function showPanel(open, focus = false) {
-    panel.hidden = !open;
-    settings.setAttribute("aria-expanded", String(open));
-    updateText();
-    if (focus && open) panel.querySelector("h2").focus();
-    else if (!open && panel.contains(document.activeElement)) settings.focus({ preventScroll: true });
-  }
-
+  // Keep previously recorded choices without rendering cookie UI or
+  // granting consent to new visitors. Counter and goal logic is unchanged.
   function mount() {
-    panel = document.createElement("section");
-    panel.className = "analytics-consent";
-    panel.id = "analytics-consent";
-    panel.setAttribute("role", "region");
-    panel.setAttribute("aria-labelledby", "analytics-consent-title");
-    panel.innerHTML = '<h2 id="analytics-consent-title" tabindex="-1"></h2><p></p><p class="analytics-consent__status" data-consent-status></p><div class="analytics-consent__actions"><button type="button" data-consent-choice="granted"></button><button type="button" data-consent-choice="denied"></button></div>';
-    settings = document.createElement("button");
-    settings.type = "button";
-    settings.className = "analytics-settings";
-    settings.setAttribute("aria-controls", panel.id);
-    settings.addEventListener("click", () => showPanel(panel.hidden, true));
-    panel.querySelectorAll("[data-consent-choice]").forEach((button) => {
-      button.addEventListener("click", () => setChoice(button.dataset.consentChoice));
-    });
-    panel.addEventListener("keydown", (event) => {
-      if (event.key === "Escape") { event.preventDefault(); showPanel(false); }
-    });
-    document.body.append(panel, settings);
-    showPanel(!consent || needsMetrikaConsent());
     scheduleExpiry();
-    new MutationObserver(updateText).observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] });
     const languageTransition = consumeLanguageTransition();
     if (granted()) startAnalytics(languageTransition);
     else stopAnalytics();
@@ -356,17 +283,14 @@
   window.addEventListener("storage", (event) => {
     if (event.key !== consentKey) return;
     consent = readConsent();
-    if (!panel) return;
-    showPanel(!consent || needsMetrikaConsent());
     scheduleExpiry();
     if (granted()) startAnalytics();
     else stopAnalytics();
   });
   document.addEventListener("visibilitychange", () => {
-    if (panel && !document.hidden && consent && Date.now() - consent.time >= maxAge) {
+    if (!document.hidden && consent && Date.now() - consent.time >= maxAge) {
       clearTimeout(expiryTimer);
       consent = null;
-      showPanel(true);
       stopAnalytics();
     }
   });
