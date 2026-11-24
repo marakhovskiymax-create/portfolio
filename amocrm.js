@@ -173,7 +173,6 @@ let carouselDeltaX = 0;
 let carouselDidDrag = false;
 let carouselAutoplayTimer = 0;
 let carouselIsVisible = false;
-let carouselHasFocus = false;
 let carouselAnnouncement = null;
 
 if (carousel && carouselSlides.length > 1) {
@@ -229,7 +228,6 @@ function canAutoplayCarousel() {
   return Boolean(
     carouselSlides.length > 1
     && carouselIsVisible
-    && !carouselHasFocus
     && carouselPointerId === null
     && !document.hidden
     && !prefersReducedMotion
@@ -265,47 +263,47 @@ carousel?.addEventListener("keydown", (event) => {
   moveCarousel(carouselIndex + (event.key === "ArrowRight" ? 1 : -1));
 });
 
-carousel?.addEventListener("focusin", () => {
-  carouselHasFocus = true;
-  stopCarouselAutoplay();
-});
-
-carousel?.addEventListener("focusout", (event) => {
-  if (carousel?.contains(event.relatedTarget)) return;
-  carouselHasFocus = false;
-  scheduleCarouselAutoplay();
-});
-
 carouselViewport?.addEventListener("pointerdown", (event) => {
-  if (event.pointerType === "mouse" && event.button !== 0) return;
+  if (!event.isPrimary || carouselPointerId !== null
+    || (event.pointerType === "mouse" && event.button !== 0)) return;
   stopCarouselAutoplay();
   carouselPointerId = event.pointerId;
   carouselStartX = event.clientX;
   carouselDeltaX = 0;
   carouselDidDrag = false;
-  carouselViewport.setPointerCapture(event.pointerId);
+  carousel?.focus({ preventScroll: true });
 });
 
-carouselViewport?.addEventListener("pointermove", (event) => {
+window.addEventListener("pointermove", (event) => {
   if (event.pointerId !== carouselPointerId) return;
   carouselDeltaX = event.clientX - carouselStartX;
-  if (Math.abs(carouselDeltaX) > 8) carouselDidDrag = true;
+  if (Math.abs(carouselDeltaX) > 8 && !carouselDidDrag) {
+    carouselDidDrag = true;
+    // Capture only a drag: capturing a simple press retargets the subsequent
+    // click to the viewport and prevents the neighbouring slide from receiving it.
+    carouselViewport.setPointerCapture(event.pointerId);
+  }
 });
 
-carouselViewport?.addEventListener("pointerup", (event) => {
-  if (event.pointerId !== carouselPointerId) return;
-  carouselViewport.releasePointerCapture(event.pointerId);
-  if (Math.abs(carouselDeltaX) > 42) moveCarousel(carouselIndex + (carouselDeltaX < 0 ? 1 : -1));
+function finishCarouselPointer(event, cancelled = false) {
+  if (carouselPointerId === null || event.pointerId !== carouselPointerId) return;
+  const pointerId = carouselPointerId;
   carouselPointerId = null;
+  if (carouselViewport.hasPointerCapture(pointerId)) carouselViewport.releasePointerCapture(pointerId);
+  if (!cancelled) {
+    carouselDeltaX = event.clientX - carouselStartX;
+    if (Math.abs(carouselDeltaX) > 8) carouselDidDrag = true;
+    if (Math.abs(carouselDeltaX) > 42) moveCarousel(carouselIndex + (carouselDeltaX < 0 ? 1 : -1));
+  }
   scheduleCarouselAutoplay();
   window.setTimeout(() => { carouselDidDrag = false; }, 0);
-});
+}
 
-carouselViewport?.addEventListener("pointercancel", () => {
-  carouselPointerId = null;
-  carouselDidDrag = false;
-  scheduleCarouselAutoplay();
-});
+window.addEventListener("pointerup", (event) => finishCarouselPointer(event));
+window.addEventListener("pointercancel", (event) => finishCarouselPointer(event, true));
+carouselViewport?.addEventListener("lostpointercapture", (event) => finishCarouselPointer(event, true));
+window.addEventListener("blur", () => finishCarouselPointer({ pointerId: carouselPointerId }, true));
+carouselViewport?.addEventListener("dragstart", (event) => event.preventDefault());
 
 renderCarousel(0);
 

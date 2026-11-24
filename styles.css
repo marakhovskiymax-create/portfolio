@@ -1549,6 +1549,10 @@ body[data-locale="ru"] .hero__title-row--second {
 .career-tab:nth-of-type(4) { grid-column: 4; }
 .career-tab:nth-of-type(5) { grid-column: 5; }
 
+.career-tab:focus-visible {
+  outline: none;
+}
+
 .career-tab::after {
   position: absolute;
   z-index: 2;
