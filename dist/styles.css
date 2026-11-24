@@ -270,6 +270,7 @@ html {
 
 body {
   min-width: 320px;
+  isolation: isolate;
   margin: 0;
   overflow-x: clip;
   background: var(--color-bg);
@@ -633,9 +634,9 @@ main {
   mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 86%, transparent);
 }
 
+.starfield-background,
 .spider-cursor {
   position: fixed;
-  z-index: 90;
   inset: 0;
   display: block;
   width: 100dvw;
@@ -643,6 +644,14 @@ main {
   opacity: 0;
   pointer-events: none;
   transition: opacity var(--motion-slow) var(--ease-out);
+}
+
+.starfield-background {
+  z-index: -1;
+}
+
+.spider-cursor {
+  z-index: 90;
 }
 
 .spider-cursor:popover-open {
@@ -654,6 +663,7 @@ main {
   background: transparent;
 }
 
+body.has-spider-cursor .starfield-background,
 body.has-spider-cursor .spider-cursor {
   opacity: 1;
 }

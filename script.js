@@ -384,6 +384,15 @@ function initSpiderCursor() {
   const context = canvas.getContext("2d");
   if (!context) return;
 
+  // Free stars belong behind page content; only the interactive cursor is an overlay.
+  const backgroundCanvas = document.createElement("canvas");
+  const backgroundContext = backgroundCanvas.getContext("2d");
+  if (!backgroundContext) return;
+  backgroundCanvas.className = "starfield-background";
+  backgroundCanvas.setAttribute("data-starfield-background", "");
+  backgroundCanvas.setAttribute("aria-hidden", "true");
+  document.body.prepend(backgroundCanvas);
+
   const { sin, cos, PI, hypot, min, max, sqrt } = Math;
   const many = (count, factory) => Array.from({ length: count }, (_, index) => factory(index));
   const random = (range = 1, offset = 0) => Math.random() * range + offset;
@@ -439,13 +448,16 @@ function initSpiderCursor() {
     canvas.width = Math.round(width * pixelRatio);
     canvas.height = Math.round(height * pixelRatio);
     context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+    backgroundCanvas.width = canvas.width;
+    backgroundCanvas.height = canvas.height;
+    backgroundContext.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
     targetRadiusCache = new WeakMap();
   }
 
-  function drawCircle(x, y, radius) {
-    context.beginPath();
-    context.ellipse(x, y, radius, radius, 0, 0, PI * 2);
-    context.fill();
+  function drawCircle(x, y, radius, paintContext = context) {
+    paintContext.beginPath();
+    paintContext.ellipse(x, y, radius, radius, 0, 0, PI * 2);
+    paintContext.fill();
   }
 
   function drawThread(startX, startY, endX, endY) {
@@ -670,10 +682,11 @@ function initSpiderCursor() {
         particle.y + cos(time * particle.driftRate * 0.82 + particle.phase) * particle.driftY * freeStarAmount,
         height,
       );
-      context.save();
-      context.globalAlpha = connected ? 1 : lerp(0.58, 0.92, twinkle);
-      drawCircle(visualX, visualY, particle.radius * (connected ? 1 : lerp(0.82, 1.16, twinkle)));
-      context.restore();
+      const particleContext = connected || particle.length > 0 ? context : backgroundContext;
+      particleContext.save();
+      particleContext.globalAlpha = connected ? 1 : lerp(0.58, 0.92, twinkle);
+      drawCircle(visualX, visualY, particle.radius * (connected ? 1 : lerp(0.82, 1.16, twinkle)), particleContext);
+      particleContext.restore();
     }
 
     return {
@@ -749,6 +762,8 @@ function initSpiderCursor() {
 
     syncCanvas();
     context.clearRect(0, 0, width, height);
+    backgroundContext.clearRect(0, 0, width, height);
+    backgroundContext.fillStyle = "#ffffff";
     context.fillStyle = "#ffffff";
     context.strokeStyle = "rgba(255, 255, 255, 0.86)";
     context.lineWidth = 0.72;
