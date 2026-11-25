@@ -225,6 +225,20 @@ function syncTimeMachineHover(hoveredIndex = null) {
   });
 }
 
+let timeMachinePointerStop = null;
+function syncTimeMachinePointerHover(element) {
+  const stop = element instanceof Element ? element.closest(".time-machine__stop") : null;
+  const next = timeMachineStops.includes(stop) && !window.matchMedia("(max-width: 900px)").matches ? stop : null;
+  const focusedStop = timeMachineStops.includes(document.activeElement) ? document.activeElement : null;
+  const highlighted = next || focusedStop;
+  const stateMatches = highlighted ? highlighted.classList.contains("is-hovered") : !visual?.classList.contains("is-scrubbing");
+  if (next === timeMachinePointerStop && stateMatches) return;
+  const pointerChanged = next !== timeMachinePointerStop;
+  timeMachinePointerStop = next;
+  syncTimeMachineHover(highlighted ? Number(highlighted.dataset.stageIndex) : null);
+  if (pointerChanged && next && !next.classList.contains("is-active")) activateProject(Math.round(Number(next.dataset.stageIndex)));
+}
+
 function activateProject(index) {
   const card = stageCards[index];
   const projectId = card?.dataset.stageCard;
@@ -253,8 +267,7 @@ timeMachineStops.forEach((stop) => {
   });
   stop.addEventListener("pointerenter", (event) => {
     if (event.pointerType === "touch" || window.matchMedia("(max-width: 900px)").matches) return;
-    syncTimeMachineHover(stopIndex);
-    activate();
+    syncTimeMachinePointerHover(stop);
   });
   stop.addEventListener("focus", () => {
     if (window.matchMedia("(max-width: 900px)").matches) return;
@@ -278,7 +291,7 @@ timeMachineStops.forEach((stop) => {
   });
 });
 
-timeMachineTimeline?.addEventListener("pointerleave", () => syncTimeMachineHover());
+timeMachineTimeline?.addEventListener("pointerleave", () => syncTimeMachinePointerHover(null));
 timeMachineTimeline?.addEventListener("focusout", () => {
   window.requestAnimationFrame(() => {
     if (!timeMachineTimeline.contains(document.activeElement)) syncTimeMachineHover();
@@ -425,13 +438,12 @@ function initSpiderCursor() {
   let pointerX = window.innerWidth / 2;
   let pointerY = window.innerHeight / 2;
   let activeTarget = null;
+  let keyboardTarget = null;
   let pointerOverDragItem = false;
   let pointerInside = false;
   let pointerOverHoverTarget = false;
-  let pointerHitTestDirty = false;
   let auraProgress = 0;
-  let lastTargetRect = null;
-  let lastTargetIsInHeader = false;
+  let outlinedTarget = null;
   let targetProgress = 0;
   let previousTimestamp = 0;
   let frame = 0;
@@ -545,6 +557,7 @@ function initSpiderCursor() {
   function getTargetRect(target) {
     if (!target?.isConnected) return null;
     const bounds = target.getBoundingClientRect();
+    if (bounds.width <= 0 || bounds.height <= 0 || bounds.bottom < 0 || bounds.top > height || bounds.right < 0 || bounds.left > width) return null;
     const padding = 3;
     const badgeTransform = target.matches(".about-badge") ? window.getComputedStyle(target).transform : null;
     const badgeMatrix = badgeTransform && badgeTransform !== "none" && window.DOMMatrixReadOnly
@@ -617,7 +630,7 @@ function initSpiderCursor() {
       for (let index = 0; index <= sampleCount; index += 1) {
         const progress = index / sampleCount;
         const edge = perimeterPoint(rect, progress);
-        const offset = noise(edge.x / 7 + time * 8, edge.y / 7, 101 + layer * 13) * (0.45 + layer * 0.7);
+        const offset = noise((edge.x - rect.centerX) / 7 + time * 8, (edge.y - rect.centerY) / 7, 101 + layer * 13) * (0.45 + layer * 0.7);
         const x = edge.x + offset;
         const y = edge.y + offset;
         if (index === 0) context.moveTo(x, y);
@@ -642,6 +655,8 @@ function initSpiderCursor() {
     const radius = 17;
     const quarterLength = PI * radius / 2;
     const rect = {
+      centerX: pointerX,
+      centerY: pointerY,
       perimeter: PI * radius * 2,
       segments: many(4, (index) => ({
         type: "arc",
@@ -735,7 +750,7 @@ function initSpiderCursor() {
     pointerX = event.clientX;
     pointerY = event.clientY;
     pointerInside = true;
-    pointerHitTestDirty = false;
+    keyboardTarget = null;
     updatePointerTarget(event.target);
     swarms.forEach((swarm) => swarm.follow(pointerX, pointerY));
   }
@@ -745,27 +760,30 @@ function initSpiderCursor() {
     pointerOverHoverTarget = false;
     auraProgress = 0;
     activeTarget = null;
+    keyboardTarget = null;
     pointerOverDragItem = false;
+    if (typeof syncTimeMachinePointerHover === "function") syncTimeMachinePointerHover(null);
     swarms.forEach((swarm) => swarm.follow(-100, -100));
   }
 
   function handleFocusIn(event) {
     pointerOverDragItem = event.target instanceof Element && event.target.matches(dragItemSelector);
-    activeTarget = resolveInteractiveTarget(event.target);
+    keyboardTarget = resolveInteractiveTarget(event.target);
+    activeTarget = keyboardTarget;
   }
 
   function handleFocusOut() {
+    keyboardTarget = null;
     activeTarget = null;
     pointerOverDragItem = false;
   }
 
   function resetTarget() {
     activeTarget = null;
+    keyboardTarget = null;
     pointerOverDragItem = false;
-    lastTargetRect = null;
-    lastTargetIsInHeader = false;
+    outlinedTarget = null;
     targetProgress = 0;
-    pointerHitTestDirty = true;
     context.clearRect(0, 0, width, height);
   }
 
@@ -783,30 +801,35 @@ function initSpiderCursor() {
     const time = timestamp / 1000;
     const delta = previousTimestamp ? min(0.05, (timestamp - previousTimestamp) / 1000) : 0;
     previousTimestamp = timestamp;
-    if (pointerHitTestDirty && pointerInside) {
-      pointerHitTestDirty = false;
-      updatePointerTarget(document.elementFromPoint(pointerX, pointerY));
+    // Scroll, CSS transitions and GSAP transforms can move content beneath a
+    // stationary pointer. Read the hit and geometry together before hover writes.
+    let hoveredElement = null;
+    if (pointerInside) {
+      hoveredElement = document.elementFromPoint(pointerX, pointerY);
+      updatePointerTarget(hoveredElement);
     }
+    if (keyboardTarget?.isConnected) activeTarget = keyboardTarget;
+    if (activeTarget && activeTarget !== outlinedTarget) {
+      outlinedTarget = activeTarget;
+    }
+    const currentRect = getTargetRect(outlinedTarget);
+    const targetIsInHeader = Boolean(outlinedTarget?.closest(".site-header"));
+    const headerBounds = currentRect && !targetIsInHeader && !canvas.matches(":popover-open")
+      ? masthead?.getBoundingClientRect()
+      : null;
+    if (typeof syncTimeMachinePointerHover === "function" && pointerInside) syncTimeMachinePointerHover(hoveredElement);
     auraProgress = clamp(auraProgress + (pointerInside && !pointerOverHoverTarget ? delta / 0.18 : -delta / 0.14));
     if (pointerInside && !pointerOverHoverTarget && auraProgress > 0.01) {
       drawPointerAura(time, smoothstep(auraProgress));
     }
-    const currentRect = getTargetRect(activeTarget);
-
-    if (currentRect) {
-      lastTargetRect = currentRect;
-      lastTargetIsInHeader = Boolean(activeTarget.closest(".site-header"));
-    }
     targetProgress = clamp(
-      targetProgress + (currentRect ? delta / 0.24 : -delta / 0.28),
+      targetProgress + (currentRect && activeTarget ? delta / 0.24 : -delta / 0.28),
     );
+    if (!currentRect) targetProgress = 0;
     const targetStrength = smoothstep(targetProgress);
 
-    if (lastTargetRect && targetStrength > 0.01) {
+    if (currentRect && targetStrength > 0.01) {
       // Keep the cursor above navigation, but hide outlines of content behind it.
-      const headerBounds = !lastTargetIsInHeader && !canvas.matches(":popover-open")
-        ? masthead?.getBoundingClientRect()
-        : null;
       if (headerBounds) {
         context.save();
         context.beginPath();
@@ -825,9 +848,10 @@ function initSpiderCursor() {
         context.closePath();
         context.clip("evenodd");
       }
-      drawTargetTexture(lastTargetRect, time, targetStrength);
+      drawTargetTexture(currentRect, time, targetStrength);
       if (headerBounds) context.restore();
     }
+    if (targetProgress === 0 && !activeTarget) outlinedTarget = null;
 
     swarms.forEach((swarm) => swarm.tick(time, pointerOverDragItem ? 0 : 1 - targetStrength));
   }
@@ -836,11 +860,6 @@ function initSpiderCursor() {
   window.addEventListener("pointerdown", (event) => {
     if (event.pointerType === "touch") handlePointerLeave();
   }, { passive: true });
-  const invalidatePointerTarget = () => { pointerHitTestDirty = true; };
-  window.addEventListener("scroll", invalidatePointerTarget, { passive: true });
-  window.addEventListener("resize", invalidatePointerTarget, { passive: true });
-  window.addEventListener("pointerup", invalidatePointerTarget, { passive: true });
-  window.addEventListener("pointercancel", invalidatePointerTarget, { passive: true });
   window.addEventListener("blur", handlePointerLeave);
   document.documentElement.addEventListener("pointerleave", handlePointerLeave, { passive: true });
   document.addEventListener("focusin", handleFocusIn);

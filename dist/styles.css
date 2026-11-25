@@ -1392,6 +1392,15 @@ body[data-locale="ru"] .hero__title-row--second {
   transform: scale(1);
 }
 
+@media (hover: hover) and (pointer: fine) {
+  .time-machine__stop:hover .time-machine__stop-label {
+    color: var(--project-accent);
+    opacity: 1;
+    filter: blur(0);
+    transform: scale(1);
+  }
+}
+
 .time-machine__stop:focus-visible {
   outline: 1px solid rgba(var(--ui-fg-rgb, 244, 243, 238), 0.72);
   outline-offset: 4px;
