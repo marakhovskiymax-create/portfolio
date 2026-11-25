@@ -81,7 +81,7 @@ for page in PAGES:
     sources = ["vendor/gsap.min.js", "vendor/ScrollTrigger.min.js"]
     if page == "index":
         sources.append("gsap-starter.js")
-    sources.append("script.js?v=20261126-visible-sections")
+    sources.append("script.js?v=20261126-mobile-tabs-layout")
     if page != "index":
         sources.append("amocrm.js?v=20261126-gallery-results")
     failed = 'window.siteCriticalScriptFailed=true;window.siteEntry?.release();'

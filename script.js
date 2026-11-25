@@ -139,17 +139,20 @@ function scrollToProjectTab(index, immediate = false) {
   if (!stop) return;
 
   const viewportWidth = timeMachineTimeline.clientWidth;
+  const initialStops = timeMachineStops.slice(0, 3);
+  const gap = parseFloat(window.getComputedStyle(timeMachineTimeline).columnGap) || 0;
+  const initialWidth = initialStops.reduce((width, item) => width + item.offsetWidth, 0) +
+    Math.max(0, initialStops.length - 1) * gap;
+  timeMachineTimeline.style.setProperty("--project-tabs-inset", `${Math.max(0, (viewportWidth - initialWidth) / 2)}px`);
+
   let left = stop.offsetLeft + stop.offsetWidth / 2 - viewportWidth / 2;
-  const previous = timeMachineStops[index - 1];
-  const next = timeMachineStops[index + 1];
-  const first = previous || stop;
-  const last = next || stop;
+  const firstIndex = Math.max(0, Math.min(index - 1, timeMachineStops.length - 3));
+  const first = timeMachineStops[firstIndex];
+  const last = timeMachineStops[Math.min(firstIndex + 2, timeMachineStops.length - 1)];
   const groupWidth = last.offsetLeft + last.offsetWidth - first.offsetLeft;
 
   if (groupWidth <= viewportWidth) {
-    const inset = Math.min(8, (viewportWidth - groupWidth) / 2);
-    left = Math.min(first.offsetLeft - inset,
-      Math.max(last.offsetLeft + last.offsetWidth + inset - viewportWidth, left));
+    left = first.offsetLeft + (groupWidth - viewportWidth) / 2;
   }
 
   left = Math.max(0, Math.min(timeMachineTimeline.scrollWidth - viewportWidth, left));
@@ -316,7 +319,11 @@ window.addEventListener("resize", () => {
   scrollToProjectTab(Math.max(0, current), true);
   queueProjectTabVisibility();
 }, { passive: true });
-document.fonts?.ready.then(queueProjectTabVisibility);
+document.fonts?.ready.then(() => {
+  const current = timeMachineStops.findIndex((stop) => stop.classList.contains("is-active"));
+  scrollToProjectTab(Math.max(0, current), true);
+  queueProjectTabVisibility();
+});
 if (timeMachineTimeline) {
   const tabStyleObserver = new MutationObserver(queueProjectTabVisibility);
   timeMachineStops.forEach((stop) => tabStyleObserver.observe(stop, {
