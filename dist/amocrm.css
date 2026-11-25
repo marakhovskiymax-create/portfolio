@@ -855,7 +855,7 @@ body.case-page .case-wide-visual--context {
 .case-decision {
   display: grid;
   grid-template-columns: 160px minmax(0, 1fr);
-  align-items: first baseline;
+  align-items: start;
   gap: 32px;
   width: min(82%, 920px);
   padding: 28px 0;
@@ -875,6 +875,16 @@ body.case-page .case-wide-visual--context {
   color: var(--color-text);
   font-size: clamp(1.2rem, 2vw, 1.7rem);
   line-height: 1.35;
+}
+
+/* Align visible letter tops, not the different leading of the small label and
+   large paragraph. Older engines retain the grid's top alignment. */
+@supports (text-box-trim: trim-start) and (text-box-edge: cap alphabetic) {
+  .case-decision > span,
+  .case-decision > p {
+    text-box-edge: cap alphabetic;
+    text-box-trim: trim-start;
+  }
 }
 
 .case-role {

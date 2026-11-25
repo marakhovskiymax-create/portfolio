@@ -4900,7 +4900,7 @@ justify-self: stretch;
 .case-decision {
 display: grid;
 grid-template-columns: 160px minmax(0, 1fr);
-align-items: first baseline;
+align-items: start;
 gap: 32px;
 width: min(82%, 920px);
 padding: 28px 0;
@@ -4918,6 +4918,13 @@ min-width: 0;
 color: var(--color-text);
 font-size: clamp(1.2rem, 2vw, 1.7rem);
 line-height: 1.35;
+}
+@supports (text-box-trim: trim-start) and (text-box-edge: cap alphabetic) {
+.case-decision > span,
+.case-decision > p {
+text-box-edge: cap alphabetic;
+text-box-trim: trim-start;
+}
 }
 .case-role {
 width: 100%;
