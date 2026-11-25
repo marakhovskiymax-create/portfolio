@@ -5744,8 +5744,13 @@ html[data-theme="light"] .case-visual[data-project-visual="eme"],
 html[data-theme="light"] .case-visual[data-project-visual="eme-app"] { --project-accent: #176b43; }
 html[data-theme="light"] .case-visual[data-project-visual="don-ballon"] { --project-accent: #b5233b; }
 html[data-theme="light"] .case-visual[data-project-visual="shable"] { --project-accent: #6436a8; }
-html[data-theme="light"] .career-tab[data-career-tab="4"] .career-tab__logo,
-html[data-theme="light"] .quote-card__logo { background: #20231f; box-shadow: 0 0 0 5px #20231f; border-radius: 4px; }
+html[data-theme="light"] .career-tab__logo,
+html[data-theme="light"] .quote-card__logo { background: transparent; box-shadow: none; }
+html[data-theme="light"] .career-tab.is-active .career-tab__logo img { filter: brightness(1.12); }
+html[data-theme="light"] .career-tab__logo .career-logo--amocrm,
+html[data-theme="light"] .career-tab.is-active .career-tab__logo .career-logo--amocrm,
+html[data-theme="light"] .quote-card__logo--amocrm,
+html[data-theme="light"] .quote-card__logo[src$="make-difference.svg"] { filter: invert(1) hue-rotate(180deg); }
 html[data-theme="light"] .contact__details { background: radial-gradient(circle at 50% 106%, rgba(49,80,164,0.08), transparent 48%), #eeefea; }
 html[data-theme="light"] .contact-form { background: #ffffff; border-color: var(--color-border-soft); }
 html[data-theme="light"] .faq-contact { background: #ffffff; border-color: var(--color-border); }
