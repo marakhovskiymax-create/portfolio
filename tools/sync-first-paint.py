@@ -36,7 +36,7 @@ for page in PAGES:
             "meta": catalog.get("meta", {}).get(page, {}),
         }
     catalog_json = json.dumps(bundle, ensure_ascii=False, separators=(",", ":")).replace("<", "\\u003c").replace("\u2028", "\\u2028").replace("\u2029", "\\u2029")
-    sheets = ["styles.css"] + ([] if page == "index" else ["amocrm.css"]) + ([BRAND[page]] if page in BRAND else []) + ["loaders.css", "theme.css"]
+    sheets = ["styles.css"] + ([] if page == "index" else ["amocrm.css"]) + ([BRAND[page]] if page in BRAND else []) + ["loaders.css", "theme.css", "entry.css"]
     block = START + "\n" + "\n".join(f'<style data-inline-source="{name}">\n{css_text(name)}\n</style>' for name in sheets)
     block += f'\n<script id="page-catalog" type="application/json">{catalog_json}</script>\n'
     block += f'<script data-inline-source="i18n.js">\n{script_text("i18n.js")}\n</script>\n'
@@ -71,10 +71,25 @@ for page in PAGES:
             at = html.index('        <div class="case-carousel')
             html = html[:at] + '        <script data-entry-reveal>window.siteEntry?.reveal(document.querySelector(".case-hero__copy"));</script>\n' + html[at:]
         html = html.replace("  </body>", '    <script data-entry-complete>window.siteI18n?.start();</script>\n  </body>', 1)
+    # Prime/restore before the deferred GSAP reference scripts execute. Request
+    # motion dependencies first so analytics/theme helpers cannot delay entrances.
+    html = html.replace('window.siteI18n?.apply(document.querySelector(".site-header"));</script>', 'window.siteI18n?.apply(document.querySelector(".site-header"));window.siteEntry?.resume();</script>')
+    html = html.replace('window.siteI18n?.start();</script>', 'window.siteI18n?.start();window.siteEntry?.complete();</script>')
+    pattern = r'\s*<script defer(?: [^>]*)? src="(?:vendor/(?:gsap|ScrollTrigger)\.min\.js|gsap-starter\.js|script\.js[^\"]*|amocrm\.js[^\"]*)"[^>]*></script>'
+    html = re.sub(pattern, "", html)
+    sources = ["vendor/gsap.min.js", "vendor/ScrollTrigger.min.js"]
+    if page == "index":
+        sources.append("gsap-starter.js")
+    sources.append("script.js?v=20261125-reference-motion")
+    if page != "index":
+        sources.append("amocrm.js?v=20261125-reference-motion")
+    failed = 'window.siteCriticalScriptFailed=true;window.siteEntry?.release();'
+    tags = "\n".join(f'<script defer src="{name}" onerror="{failed}"></script>' for name in sources)
+    html = html.replace(START, tags + "\n" + START, 1)
     assert "locale-pending" not in re.sub(r'<style[^>]*>[\s\S]*?</style>|<script[^>]*>[\s\S]*?</script>', "", html)
     path.write_text(html)
     shutil.copy2(path, ROOT / "dist" / path.name)
 
-for name in ("i18n.js", "entry.js", "script.js", "amocrm.js", "styles.css", "amocrm.css", "loaders.css", "theme.css", "eme.css", "eme-app.css", "don-ballon.css", "shable.css"):
+for name in ("i18n.js", "entry.js", "entry.css", "script.js", "amocrm.js", "styles.css", "amocrm.css", "loaders.css", "theme.css", "eme.css", "eme-app.css", "don-ballon.css", "shable.css"):
     shutil.copy2(ROOT / name, ROOT / "dist" / name)
 print(f"Updated {len(PAGES)} static pages and source/dist scripts. No network requests or publishing performed.")

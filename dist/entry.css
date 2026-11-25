@@ -1,0 +1,8 @@
+/* Match the reference's initial entrance state so content never paints fully,
+   then disappears a second time when GSAP initializes after a reload. */
+@media (prefers-reduced-motion: no-preference) {
+  html.js.page-motion-pending body { visibility: hidden; }
+  html.js.page-motion-pending .site-header { visibility: visible; }
+  html.hero-motion-pending [data-hero-text-effect],
+  html.hero-motion-pending [data-hero-reveal] { visibility: hidden; }
+}

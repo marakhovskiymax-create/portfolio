@@ -1,130 +1,82 @@
-/* First-screen motion runs from HTML, independently of GSAP, images or fonts.
- * The original curve, letter intervals and reveal order are retained; first-screen
- * waiting gaps are compressed to 200ms so no control sits empty for seconds. */
+/* Coordinate the reference GSAP entrance with reload scroll restoration.
+ * Styling/localization stay inline; no loader or artificial readiness timer. */
 (() => {
   "use strict";
-  const handled = new WeakSet();
-  const frames = (blur = false) => Array.from({ length: 201 }, (_, index) => {
-    const offset = index / 200;
-    const remaining = (1 - offset) ** 4;
-    const frame = {
-      offset,
-      opacity: 1 - remaining,
-      transform: blur
-        ? `translateY(${8 * remaining}px)`
-        : `translateY(${10 * remaining}px) rotateX(${90 * remaining}deg)`,
-    };
-    if (blur) frame.filter = `blur(${8 * remaining}px)`;
-    return frame;
-  });
-  let characterFrames;
-  let blurFrames;
-  let supportFrames;
+  const root = document.documentElement;
+  const key = `portfolio-scroll:${location.pathname}:${window.siteI18n?.locale || root.lang}`;
+  const previousRestoration = history.scrollRestoration;
+  const previousBehavior = root.style.scrollBehavior || "";
+  const previousHeight = root.style.minHeight || "";
+  let saved;
+  let interacted = false;
+  let completed = false;
+  let released = false;
 
-  function reveal(root) {
-    if (!root || handled.has(root)) return;
-    window.siteI18n?.apply(root);
-    handled.add(root);
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !Element.prototype.animate) return;
+  try {
+    const navigation = performance.getEntriesByType("navigation")[0];
+    const value = JSON.parse(sessionStorage.getItem(key) || "null");
+    if (navigation?.type === "reload" && value && Number.isFinite(value.y) && value.y >= 0 && Number.isFinite(value.height)) saved = value;
+  } catch { /* Native browser restoration remains available if storage is blocked. */ }
 
-    characterFrames ||= frames();
-    blurFrames ||= frames(true);
-    supportFrames ||= Array.from({ length: 201 }, (_, index) => {
-      const offset = index / 200;
-      const remaining = (1 - offset) ** 4;
-      return { offset, opacity: 1 - remaining, transform: `translateY(${10 * remaining}px)` };
-    });
-    const animations = [];
-    const animate = (element, keyframes, duration, delay) => {
-      const animation = element.animate(keyframes, { duration, delay, easing: "linear", fill: "backwards" });
-      animation.pause();
-      animation.currentTime = 0;
-      animation.onfinish = () => animation.cancel();
-      animations.push(animation);
-    };
-    const play = () => {
-      const startTime = document.timeline.currentTime + Math.max(0, 500 - performance.now());
-      animations.forEach((animation) => {
-        animation.play();
-        animation.startTime = startTime;
-      });
-    };
+  if (saved) {
+    history.scrollRestoration = "manual";
+    root.style.scrollBehavior = "auto";
+    root.style.minHeight = `${Math.max(0, saved.height)}px`;
+  }
+  root.classList.add("page-motion-pending", "hero-motion-pending");
 
+  function resume() {
+    if (!saved || interacted) return;
+    const behavior = root.style.scrollBehavior || "";
+    root.style.scrollBehavior = "auto";
+    window.scrollTo(saved.x || 0, saved.y);
+    root.style.scrollBehavior = behavior;
+  }
+
+  function save() {
     try {
-      if (root.matches(".hero")) {
-        const words = Array.from(root.querySelectorAll("[data-hero-text-effect]"));
-        const support = Array.from(root.querySelectorAll("[data-hero-reveal]"));
-        const offsets = [...words, ...support].map((element) => Number(element.dataset.heroDelay || 0));
-        const first = Math.min(...offsets);
-        const span = Math.max(0.001, Math.max(...offsets) - first);
-        const entryOffset = (element) => (Number(element.dataset.heroDelay || 0) - first) / span * 200;
-        words.forEach((word) => {
-          const text = word.textContent;
-          word.textContent = "";
-          word.setAttribute("aria-hidden", "true");
-          const characters = Array.from(text, (letter) => {
-            const span = document.createElement("span");
-            span.className = "hero-char";
-            span.textContent = letter === " " ? "\u00a0" : letter;
-            return span;
-          });
-          word.append(...characters);
-          characters.forEach((span, index) => {
-            animate(span, characterFrames, 200, entryOffset(word) + index * 50);
-          });
-        });
-        support.forEach((element) => {
-          const blur = element.dataset.heroPreset === "blur";
-          animate(element, blur ? blurFrames : supportFrames, blur ? 500 : 320, entryOffset(element));
-        });
-        play();
-      } else {
-        const title = root.querySelector("h1");
-        if (!title) return;
-        const text = title.textContent.trim();
-        const visual = document.createElement("span");
-        visual.setAttribute("aria-hidden", "true");
-        title.setAttribute("aria-label", text);
-        let index = 0;
-        text.split(/[\t\n\r\f ]+/).forEach((word, wordIndex, words) => {
-          const parts = document.body.classList.contains("eme-page") && window.siteI18n?.locale === "ru" && word === "дизайн-система."
-            ? ["дизайн-", "система."] : [word];
-          parts.forEach((part) => {
-            const wrapper = document.createElement("span");
-            wrapper.className = "case-motion-word";
-            Array.from(part).forEach((letter) => {
-              const span = document.createElement("span");
-              span.className = "case-motion-char";
-              span.textContent = letter;
-              wrapper.append(span);
-              animate(span, characterFrames, 200, index++ * 35);
-            });
-            visual.append(wrapper);
-          });
-          if (wordIndex < words.length - 1) visual.append(" ");
-        });
-        title.textContent = "";
-        title.classList.add("case-motion-title");
-        title.append(visual);
-        root.querySelectorAll(".case-hero__lede, .case-meta").forEach((element) => {
-          const meta = element.matches(".case-meta");
-          animate(element, supportFrames, meta ? 320 : 280, meta ? 200 : 40);
-        });
-        if ("IntersectionObserver" in window) {
-          const observer = new IntersectionObserver(([entry]) => {
-            if (!entry.isIntersecting) return;
-            observer.disconnect();
-            play();
-          }, { rootMargin: "0px 0px -30% 0px", threshold: 0.01 });
-          observer.observe(root);
-        } else play();
-      }
-    } catch (error) {
-      // An unavailable animation API must leave real text visible, never a blank screen.
-      animations.forEach((animation) => animation.cancel());
-      console.error("First-screen motion:", error);
+      sessionStorage.setItem(key, JSON.stringify({ x: window.scrollX, y: window.scrollY, height: root.scrollHeight }));
+    } catch { /* No persistent storage is required to use the site. */ }
+    if (saved) history.scrollRestoration = previousRestoration;
+  }
+
+  function release() {
+    if (released) return;
+    released = true;
+    root.classList.remove("page-motion-pending", "hero-motion-pending", "case-motion-pending");
+    if (saved) {
+      // Keep anchor/ScrollTrigger restoration instant through the initial load.
+      // Restore the author's smooth-navigation preference after loading settles.
+      const restoreBehavior = () => { resume(); root.style.scrollBehavior = previousBehavior; };
+      if (document.readyState === "complete") restoreBehavior();
+      else window.addEventListener("load", restoreBehavior, { once: true });
     }
   }
 
-  window.siteEntry = { reveal, has: (root) => Boolean(root && handled.has(root)) };
+  function complete() {
+    if (completed) return;
+    completed = true;
+    if (saved) root.style.minHeight = previousHeight;
+    resume();
+  }
+
+  ["wheel", "touchstart", "pointerdown", "keydown"].forEach((type) => {
+    window.addEventListener(type, () => { interacted = true; }, { once: true, passive: true });
+  });
+  window.addEventListener("pagehide", save);
+  window.addEventListener("beforeunload", save);
+  window.addEventListener("pageshow", (event) => {
+    if (!event.persisted && saved) resume();
+  });
+  window.addEventListener("error", (event) => {
+    if (/\/(?:script|amocrm|gsap-starter)\.js(?:\?|$)/.test(event.filename || "")) release();
+  });
+
+  window.siteEntry = {
+    reveal: (element) => window.siteI18n?.apply(element),
+    resume,
+    complete,
+    release,
+  };
+  if (window.siteCriticalScriptFailed) release();
 })();

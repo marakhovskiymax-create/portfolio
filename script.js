@@ -930,7 +930,6 @@ function initSpiderCursor() {
 initSpiderCursor();
 
 function initHeroTextEffect() {
-  if (window.siteEntry?.has(document.querySelector(".hero"))) return;
   const textEffects = Array.from(document.querySelectorAll("[data-hero-text-effect]"));
   const supportingElements = Array.from(document.querySelectorAll("[data-hero-reveal]"));
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -2347,3 +2346,6 @@ if (window.TastemakerMotion && window.gsap && window.ScrollTrigger) {
   });
 
 }
+
+// The complete reference motion is primed before the first visible frame.
+if (!document.body.classList.contains("case-page")) window.siteEntry?.release();
