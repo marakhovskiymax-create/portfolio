@@ -149,7 +149,7 @@ html[data-theme="light"] .quote-card { border-color: var(--color-border-soft); }
 @media (min-width: 768px) and (hover: hover) and (pointer: fine) {
   html[data-theme="light"] .quote-card:hover { border-color: #b5b5b1; }
 }
-html[data-theme="light"] .time-machine__card { background: var(--color-surface); box-shadow: 0 22px 56px rgba(23,25,22,0.16); }
+html[data-theme="light"] .time-machine__card { background: var(--color-surface); box-shadow: 0 8px 22px rgba(23,25,22,0.08); }
 html[data-theme="light"] .time-machine__card-copy strong { color: var(--color-text); }
 html[data-theme="light"] .case-visual[data-project-visual="amo-crm"] { --project-accent: #aa2145; }
 html[data-theme="light"] .case-visual[data-project-visual="eme"],
@@ -181,6 +181,8 @@ html[data-theme="light"] .contact-form textarea[aria-invalid="true"] { border-co
 html[data-theme="light"] .contact-success { border-color: var(--color-border); box-shadow: 0 24px 80px rgba(23,25,22,0.18); }
 html[data-theme="light"] .skills-playground,
 html[data-theme="light"] .skills-playground__hint { color: var(--color-text); }
+html[data-theme="light"] .skill-drag-item { box-shadow: 0 5px 14px rgba(1,8,28,0.1); }
+html[data-theme="light"] .skill-drag-item.is-dragging { box-shadow: 0 8px 20px rgba(0,8,32,0.18); }
 
 /* Every case shares these semantic tokens; brand-colored chips retain white text. */
 html[data-theme="light"] body.case-page {
