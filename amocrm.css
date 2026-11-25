@@ -140,14 +140,15 @@ body.case-page {
   scroll-margin-top: 124px;
 }
 
+/* Cap the first-screen composition; the carousel and following sections stay in flow. */
 .case-hero {
-  min-height: calc(100svh - 140px);
+  min-height: calc(min(100svh, 900px) - 140px);
   padding-bottom: var(--case-gap);
 }
 
 .case-hero__copy {
   display: grid;
-  min-height: calc(100svh - 140px);
+  min-height: calc(min(100svh, 900px) - 140px);
   grid-template-rows: minmax(0, 1fr) auto;
   gap: clamp(28px, 4vw, 56px);
   margin-bottom: clamp(52px, 7vw, 92px);
@@ -173,7 +174,7 @@ body.case-page {
   max-width: 12ch;
   color: var(--color-text);
   font-family: var(--font-hero, "Inter Tight", sans-serif);
-  font-size: clamp(3.4rem, 7.4vw, 8.4rem);
+  font-size: clamp(3.4rem, min(7.4vw, 118.4px), 8.4rem);
   font-weight: 800;
   letter-spacing: -0.035em;
   line-height: 1.034;
@@ -255,7 +256,7 @@ body.case-page {
     transparent calc(100% - 1px) 100%
   );
   position: relative;
-  height: clamp(340px, 36vw, 610px);
+  height: clamp(340px, min(36vw, 576px), 610px);
   overflow: hidden;
   isolation: isolate;
   background: transparent;

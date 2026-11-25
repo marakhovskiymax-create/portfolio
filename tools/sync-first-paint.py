@@ -81,9 +81,9 @@ for page in PAGES:
     sources = ["vendor/gsap.min.js", "vendor/ScrollTrigger.min.js"]
     if page == "index":
         sources.append("gsap-starter.js")
-    sources.append("script.js?v=20261125-visible-stars")
+    sources.append("script.js?v=20261126-visible-sections")
     if page != "index":
-        sources.append("amocrm.js?v=20261125-reference-motion")
+        sources.append("amocrm.js?v=20261126-visible-sections")
     failed = 'window.siteCriticalScriptFailed=true;window.siteEntry?.release();'
     tags = "\n".join(f'<script defer src="{name}" onerror="{failed}"></script>' for name in sources)
     html = html.replace(START, tags + "\n" + START, 1)

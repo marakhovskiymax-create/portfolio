@@ -826,7 +826,8 @@ function initWorkAreasPhysics() {
 initFeatureWhenNear("[data-work-areas]", ["vendor/matter.min.js"], initWorkAreasPhysics, "#work-areas");
 
 const metricScrambles = Array.from(document.querySelectorAll("[data-text-scramble]"));
-const caseTextRevealMargin = "0px 0px -30% 0px";
+// Each visible block reveals independently, including on initial load/resize.
+const caseTextRevealMargin = "0px";
 
 function caseRevealCleanup(elements, properties = "transform,opacity,visibility") {
   const targets = Array.from(elements);
@@ -879,7 +880,7 @@ function initMetricScrambleInView() {
       playMetricScramble(entry.target);
       observer.unobserve(entry.target);
     });
-  }, { rootMargin: caseTextRevealMargin, threshold: 0.01 });
+  }, { rootMargin: caseTextRevealMargin, threshold: 0 });
 
   metricScrambles.forEach((metric) => metricObserver.observe(metric));
 }
@@ -1049,7 +1050,7 @@ function initCaseTextMotion() {
 
       activeObserver.unobserve(entry.target);
     });
-  }, { rootMargin: caseTextRevealMargin, threshold: 0.01 });
+  }, { rootMargin: caseTextRevealMargin, threshold: 0 });
 
   preparedElements.forEach((_, element) => observer.observe(element));
 }
@@ -1129,7 +1130,7 @@ function initDecisionTextEffects() {
   };
 
   const observer = new IntersectionObserver(revealDecisionText, {
-    rootMargin: caseTextRevealMargin, threshold: 0.01,
+    rootMargin: caseTextRevealMargin, threshold: 0,
   });
 
   preparedBlocks.forEach(({ block }) => observer.observe(block));
@@ -1202,7 +1203,7 @@ function initNextProjectTextEffect() {
 
       observer.unobserve(entry.target);
     });
-  }, { rootMargin: caseTextRevealMargin, threshold: 0.01 });
+  }, { rootMargin: caseTextRevealMargin, threshold: 0 });
 
   observer.observe(label);
 }
@@ -1227,7 +1228,7 @@ if (prefersReducedMotion || !("IntersectionObserver" in window)) {
       entry.target.classList.add("is-visible");
       observer.unobserve(entry.target);
     });
-  }, { rootMargin: caseTextRevealMargin, threshold: 0.01 });
+  }, { rootMargin: caseTextRevealMargin, threshold: 0 });
   revealItems.forEach((item) => revealObserver.observe(item));
 }
 

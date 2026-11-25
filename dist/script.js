@@ -2188,11 +2188,12 @@ if (window.TastemakerMotion && window.gsap && window.ScrollTrigger) {
       return characters;
     };
 
-    const scrollScene = (trigger, start = "top 78%") => window.gsap.timeline({
+    // Begin as soon as a section enters the viewport, even without a scroll.
+    const scrollScene = (trigger) => window.gsap.timeline({
       defaults: { ease: "power3.out" },
       scrollTrigger: {
         trigger,
-        start,
+        start: "top bottom",
         once: true,
       },
     });
@@ -2210,7 +2211,7 @@ if (window.TastemakerMotion && window.gsap && window.ScrollTrigger) {
     const portfolioTitle = prepareCaseLikeHeading("#portfolio-title");
     const aboutTitle = prepareCaseLikeHeading("#about-title");
     if (portfolioTitle.length) {
-      const portfolio = scrollScene("[data-motion-section='portfolio']", "top 72%");
+      const portfolio = scrollScene("[data-motion-section='portfolio']");
       animateTitle(portfolio, portfolioTitle)
         .fromTo(
           ".case-visual",
@@ -2226,20 +2227,20 @@ if (window.TastemakerMotion && window.gsap && window.ScrollTrigger) {
         );
     }
 
-    scrollScene("[data-motion-section='capabilities']", "top 88%").fromTo(
+    scrollScene("[data-motion-section='capabilities']").fromTo(
       "[data-motion-section='capabilities']",
       { autoAlpha: 0, clipPath: "inset(0 100% 0 0)" },
       { autoAlpha: 1, clipPath: "inset(0 0% 0 0)", duration: 0.48 },
     );
 
-    scrollScene("[data-motion-section='proof']", "top 78%").fromTo(
+    scrollScene("[data-motion-section='proof']").fromTo(
       ".quote-marquee__row",
       { autoAlpha: 0, y: 28 },
       { autoAlpha: 1, y: 0, duration: 0.48, stagger: 0.1 },
     );
 
     if (aboutTitle.length) {
-      const about = scrollScene("[data-motion-section='about']", "top 74%");
+      const about = scrollScene("[data-motion-section='about']");
       animateTitle(about, aboutTitle);
     }
 
@@ -2247,9 +2248,9 @@ if (window.TastemakerMotion && window.gsap && window.ScrollTrigger) {
     const contactTitle = prepareCaseLikeHeading("#contact-title");
     const careerTitle = prepareCaseLikeHeading("#career-title");
     const skillsTitle = prepareCaseLikeHeading("#skills-playground-title");
-    const revealTitle = (trigger, characters, support, start = "top 76%") => {
+    const revealTitle = (trigger, characters, support) => {
       if (!characters.length || !document.querySelector(trigger)) return null;
-      const scene = scrollScene(trigger, start);
+      const scene = scrollScene(trigger);
       animateTitle(scene, characters);
       if (support) scene.fromTo(support,
         { autoAlpha: 0, y: 10 },
@@ -2259,20 +2260,20 @@ if (window.TastemakerMotion && window.gsap && window.ScrollTrigger) {
       return scene;
     };
 
-    revealTitle(".faq__heading", faqTitle, ".faq__intro", "top 76%");
-    scrollScene(".faq__list", "top 82%")
+    revealTitle(".faq__heading", faqTitle, ".faq__intro");
+    scrollScene(".faq__list")
       .fromTo(".faq-item",
         { autoAlpha: 0, y: 18, filter: "blur(4px)" },
         { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.42, stagger: 0.075, clearProps: "transform,opacity,visibility,filter" },
       );
-    scrollScene(".faq-contact", "top 88%")
+    scrollScene(".faq-contact")
       .fromTo(".faq-contact",
         { autoAlpha: 0, y: 24 },
         { autoAlpha: 1, y: 0, duration: 0.52, clearProps: "transform,opacity,visibility" },
       );
 
-    revealTitle(".contact__heading", contactTitle, ".contact__intro", "top 76%");
-    scrollScene(".contact__grid", "top 82%")
+    revealTitle(".contact__heading", contactTitle, ".contact__intro");
+    scrollScene(".contact__grid")
       .fromTo(".contact__details, .contact-form",
         { autoAlpha: 0, y: 34, scale: 0.985 },
         { autoAlpha: 1, y: 0, scale: 1, duration: 0.56, stagger: 0.14, clearProps: "transform,opacity,visibility" },
@@ -2293,10 +2294,10 @@ if (window.TastemakerMotion && window.gsap && window.ScrollTrigger) {
         "-=0.58",
       );
 
-    revealTitle(".skills-playground__hint", skillsTitle, null, "top 82%");
+    revealTitle(".skills-playground__hint", skillsTitle, null);
     const startCareerScenes = () => {
-      revealTitle(".career-stage__heading", careerTitle, null, "top 76%");
-      scrollScene(".career-timeline", "top 82%")
+      revealTitle(".career-stage__heading", careerTitle, null);
+      scrollScene(".career-timeline")
         .fromTo(".career-tabs__rail",
           { autoAlpha: 0, scaleX: 0, transformOrigin: "left center" },
           { autoAlpha: 1, scaleX: 1, duration: 0.68, clearProps: "transform,opacity,visibility" },
@@ -2329,7 +2330,7 @@ if (window.TastemakerMotion && window.gsap && window.ScrollTrigger) {
     }
 
     if (!document.body.classList.contains("case-page")) {
-      const footer = scrollScene("[data-motion-section='footer']", "top 96%");
+      const footer = scrollScene("[data-motion-section='footer']");
       footer
         .fromTo(
           ".footer__identity",

@@ -603,10 +603,11 @@ main {
   display: none;
 }
 
+/* Keep Hero sizing at the 1600 × 900 composition on larger desktop viewports. */
 .hero {
   position: relative;
   isolation: isolate;
-  min-height: max(720px, 100svh);
+  min-height: max(720px, min(100svh, 900px));
   overflow: clip;
 }
 
@@ -668,7 +669,7 @@ body.has-spider-cursor .spider-cursor {
 .hero__content {
   position: relative;
   display: grid;
-  min-height: max(720px, 100svh);
+  min-height: max(720px, min(100svh, 900px));
   grid-template-rows: 1fr auto auto;
   padding-block: 128px 0;
 }
@@ -679,9 +680,9 @@ body.has-spider-cursor .spider-cursor {
 }
 
 .hero__intro {
-  margin-bottom: clamp(40px, 6vh, 76px);
+  margin-bottom: clamp(40px, min(6vh, 54px), 76px);
   color: var(--color-muted);
-  font-size: clamp(1rem, 1.55vw, 1.6rem);
+  font-size: clamp(1rem, min(1.55vw, 24.8px), 1.6rem);
   font-weight: 600;
   letter-spacing: -0.025em;
 }
@@ -690,7 +691,7 @@ body.has-spider-cursor .spider-cursor {
   min-width: 0;
   color: var(--color-text);
   font-family: var(--font-hero);
-  font-size: clamp(6.25rem, 11.25vw, 14.0625rem);
+  font-size: clamp(6.25rem, min(11.25vw, 180px), 14.0625rem);
   font-style: normal;
   font-weight: 900;
   letter-spacing: -0.01em;
