@@ -5632,8 +5632,6 @@ color: var(--color-text);
 html[data-theme="light"] body,
 html[data-theme="light"].locale-pending { background: var(--color-bg); color: var(--color-text); }
 html[data-theme="light"] body.case-page { color-scheme: light; }
-.tabler-icon--sun { --tabler-icon: url("design/assets/icons/tabler-ui/sun.svg"); }
-.tabler-icon--moon-stars { --tabler-icon: url("design/assets/icons/tabler-ui/moon-stars.svg"); }
 .theme-switcher {
 position: relative;
 display: inline-flex;
@@ -5677,17 +5675,15 @@ background: transparent;
 cursor: pointer;
 transition: color 160ms ease;
 }
-.theme-switcher__option .tabler-icon {
-display: inline-block;
+.theme-switcher__icon {
+display: block;
 width: 20px;
 height: 20px;
-background-color: currentColor;
--webkit-mask: var(--tabler-icon) center / contain no-repeat;
-mask: var(--tabler-icon) center / contain no-repeat;
+flex: none;
 transition: transform 240ms cubic-bezier(0.23, 1, 0.32, 1);
 }
 .theme-switcher__option:hover { color: var(--color-text, #f4f3ee); }
-.theme-switcher__option:hover .tabler-icon { transform: rotate(-12deg); }
+.theme-switcher__option:hover .theme-switcher__icon { transform: rotate(-12deg); }
 html[data-theme="light"] [data-theme-option="light"],
 html[data-theme="dark"] [data-theme-option="dark"] { color: var(--color-text, #f4f3ee); }
 .theme-switcher__option:focus { outline: none; }
@@ -5711,8 +5707,8 @@ z-index: 2;
 @keyframes theme-reveal-hold { from { opacity: 1; } to { opacity: 1; } }
 @media (min-width: 1121px) and (max-width: 1180px) { .masthead__links--meta { gap: 22px; } }
 @media (prefers-reduced-motion: reduce) {
-.theme-switcher__indicator, .theme-switcher__option, .theme-switcher__option .tabler-icon { transition: none; }
-.theme-switcher__option:hover .tabler-icon { transform: none; }
+.theme-switcher__indicator, .theme-switcher__option, .theme-switcher__icon { transition: none; }
+.theme-switcher__option:hover .theme-switcher__icon { transform: none; }
 }
 html[data-theme="light"] .masthead,
 html[data-theme="light"] .case-header .masthead { background: rgba(255,255,255,0.95); box-shadow: none; }
@@ -6282,8 +6278,8 @@ html[data-theme="light"] .header-entry__surface { background: rgba(255,255,255,0
         <div class="masthead__links masthead__links--meta">
           <div class="theme-switcher" role="radiogroup" aria-label="Color theme" data-theme-switcher>
             <span class="theme-switcher__indicator" aria-hidden="true"></span>
-            <button class="theme-switcher__option" type="button" role="radio" aria-checked="false" aria-label="Switch to light theme" data-theme-option="light" tabindex="-1"><span class="tabler-icon tabler-icon--sun" aria-hidden="true"></span></button>
-            <button class="theme-switcher__option" type="button" role="radio" aria-checked="true" aria-label="Switch to dark theme" data-theme-option="dark" tabindex="0"><span class="tabler-icon tabler-icon--moon-stars" aria-hidden="true"></span></button>
+            <button class="theme-switcher__option" type="button" role="radio" aria-checked="false" aria-label="Switch to light theme" data-theme-option="light" tabindex="-1"><svg class="theme-switcher__icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M8 12a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" /><path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7" /></svg></button>
+            <button class="theme-switcher__option" type="button" role="radio" aria-checked="true" aria-label="Switch to dark theme" data-theme-option="dark" tabindex="0"><svg class="theme-switcher__icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454l0 .008" /><path d="M17 4a2 2 0 0 0 2 2a2 2 0 0 0 -2 2a2 2 0 0 0 -2 -2a2 2 0 0 0 2 -2" /><path d="M19 11h2m-1 -1v2" /></svg></button>
           </div>
           <span class="masthead__actions">
             <a class="masthead__email" href="mailto:marakhovskiymax@gmail.com">marakhovskiymax@gmail.com</a>
@@ -6313,8 +6309,8 @@ html[data-theme="light"] .header-entry__surface { background: rgba(255,255,255,0
         </details>
         <div class="theme-switcher" role="radiogroup" aria-label="Color theme" data-theme-switcher>
           <span class="theme-switcher__indicator" aria-hidden="true"></span>
-          <button class="theme-switcher__option" type="button" role="radio" aria-checked="false" aria-label="Switch to light theme" data-theme-option="light" tabindex="-1"><span class="tabler-icon tabler-icon--sun" aria-hidden="true"></span></button>
-          <button class="theme-switcher__option" type="button" role="radio" aria-checked="true" aria-label="Switch to dark theme" data-theme-option="dark" tabindex="0"><span class="tabler-icon tabler-icon--moon-stars" aria-hidden="true"></span></button>
+          <button class="theme-switcher__option" type="button" role="radio" aria-checked="false" aria-label="Switch to light theme" data-theme-option="light" tabindex="-1"><svg class="theme-switcher__icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M8 12a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" /><path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7" /></svg></button>
+          <button class="theme-switcher__option" type="button" role="radio" aria-checked="true" aria-label="Switch to dark theme" data-theme-option="dark" tabindex="0"><svg class="theme-switcher__icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454l0 .008" /><path d="M17 4a2 2 0 0 0 2 2a2 2 0 0 0 -2 2a2 2 0 0 0 -2 -2a2 2 0 0 0 2 -2" /><path d="M19 11h2m-1 -1v2" /></svg></button>
         </div>
         <a href="mailto:marakhovskiymax@gmail.com">marakhovskiymax@gmail.com</a>
         <a href="/CV.pdf?v=20261114-cv-revision" data-ru-href="/Резюме.pdf" target="_blank" rel="noopener noreferrer" type="application/pdf">Résumé</a>
@@ -6602,8 +6598,8 @@ html[data-theme="light"] .header-entry__surface { background: rgba(255,255,255,0
             <li>
               <div class="theme-switcher" role="radiogroup" aria-label="Color theme" data-theme-switcher>
                 <span class="theme-switcher__indicator" aria-hidden="true"></span>
-                <button class="theme-switcher__option" type="button" role="radio" aria-checked="false" aria-label="Switch to light theme" data-theme-option="light" tabindex="-1"><span class="tabler-icon tabler-icon--sun" aria-hidden="true"></span></button>
-                <button class="theme-switcher__option" type="button" role="radio" aria-checked="true" aria-label="Switch to dark theme" data-theme-option="dark" tabindex="0"><span class="tabler-icon tabler-icon--moon-stars" aria-hidden="true"></span></button>
+                <button class="theme-switcher__option" type="button" role="radio" aria-checked="false" aria-label="Switch to light theme" data-theme-option="light" tabindex="-1"><svg class="theme-switcher__icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M8 12a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" /><path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7" /></svg></button>
+                <button class="theme-switcher__option" type="button" role="radio" aria-checked="true" aria-label="Switch to dark theme" data-theme-option="dark" tabindex="0"><svg class="theme-switcher__icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454l0 .008" /><path d="M17 4a2 2 0 0 0 2 2a2 2 0 0 0 -2 2a2 2 0 0 0 -2 -2a2 2 0 0 0 2 -2" /><path d="M19 11h2m-1 -1v2" /></svg></button>
               </div>
             </li>
           </ul>

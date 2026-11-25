@@ -45,8 +45,6 @@ html[data-theme="light"] body,
 html[data-theme="light"].locale-pending { background: var(--color-bg); color: var(--color-text); }
 html[data-theme="light"] body.case-page { color-scheme: light; }
 
-.tabler-icon--sun { --tabler-icon: url("design/assets/icons/tabler-ui/sun.svg"); }
-.tabler-icon--moon-stars { --tabler-icon: url("design/assets/icons/tabler-ui/moon-stars.svg"); }
 .theme-switcher {
   position: relative;
   display: inline-flex;
@@ -90,17 +88,15 @@ html[data-theme="light"] .theme-switcher__indicator { transform: translateX(0); 
   cursor: pointer;
   transition: color 160ms ease;
 }
-.theme-switcher__option .tabler-icon {
-  display: inline-block;
+.theme-switcher__icon {
+  display: block;
   width: 20px;
   height: 20px;
-  background-color: currentColor;
-  -webkit-mask: var(--tabler-icon) center / contain no-repeat;
-  mask: var(--tabler-icon) center / contain no-repeat;
+  flex: none;
   transition: transform 240ms cubic-bezier(0.23, 1, 0.32, 1);
 }
 .theme-switcher__option:hover { color: var(--color-text, #f4f3ee); }
-.theme-switcher__option:hover .tabler-icon { transform: rotate(-12deg); }
+.theme-switcher__option:hover .theme-switcher__icon { transform: rotate(-12deg); }
 html[data-theme="light"] [data-theme-option="light"],
 html[data-theme="dark"] [data-theme-option="dark"] { color: var(--color-text, #f4f3ee); }
 .theme-switcher__option:focus { outline: none; }
@@ -126,8 +122,8 @@ header:has(> .theme-switcher--utility) { flex-wrap: wrap; }
 @keyframes theme-reveal-hold { from { opacity: 1; } to { opacity: 1; } }
 @media (min-width: 1121px) and (max-width: 1180px) { .masthead__links--meta { gap: 22px; } }
 @media (prefers-reduced-motion: reduce) {
-  .theme-switcher__indicator, .theme-switcher__option, .theme-switcher__option .tabler-icon { transition: none; }
-  .theme-switcher__option:hover .tabler-icon { transform: none; }
+  .theme-switcher__indicator, .theme-switcher__option, .theme-switcher__icon { transition: none; }
+  .theme-switcher__option:hover .theme-switcher__icon { transform: none; }
 }
 
 /* Light surfaces, controls, navigation and readable supporting text. */
