@@ -376,7 +376,7 @@ document.addEventListener("keydown", (event) => {
 function initSpiderCursor() {
   const canvas = document.querySelector("[data-spider-cursor]");
   const masthead = document.querySelector(".site-header .masthead");
-  const canTrackPointer = window.matchMedia("(min-width: 768px) and (hover: hover) and (pointer: fine)").matches;
+  const canTrackPointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   if (!canvas || !canTrackPointer || reduceMotion) return;
@@ -385,7 +385,7 @@ function initSpiderCursor() {
   if (!context) return;
 
   // All stars belong behind page content, including stars connected to the cursor.
-  // Only the cursor threads and target outline are overlays.
+  // Only the pointer aura and target outline are overlays; the cursor is native.
   const backgroundCanvas = document.createElement("canvas");
   const backgroundContext = backgroundCanvas.getContext("2d");
   if (!backgroundContext) return;
@@ -418,14 +418,26 @@ function initSpiderCursor() {
   let pointerY = window.innerHeight / 2;
   let activeTarget = null;
   let pointerOverDragItem = false;
+  let pointerInside = false;
+  let pointerOverHoverTarget = false;
+  let pointerHitTestDirty = false;
+  let auraProgress = 0;
   let lastTargetRect = null;
   let lastTargetIsInHeader = false;
   let targetProgress = 0;
   let previousTimestamp = 0;
   let frame = 0;
   let targetRadiusCache = new WeakMap();
-  const interactiveSelector = "a, button, [role='button'], input:not([type='hidden']), select, textarea, [data-cursor-target]";
+  const interactiveSelector = "a, button, [role='button'], input:not([type='hidden']), select, textarea, summary, [data-cursor-target]";
   const dragItemSelector = ".skill-drag-item, .work-chip";
+  const hoverSelector = `${interactiveSelector}, ${dragItemSelector}, .quote-card, .quote-marquee__row, .case-carousel__viewport, .about-badge, .language-menu, [data-contact-globe]`;
+
+  function updatePointerTarget(element) {
+    const hovered = element instanceof Element ? element.closest(hoverSelector) : null;
+    pointerOverHoverTarget = Boolean(hovered && !hovered.matches(":disabled, [aria-disabled='true']"));
+    pointerOverDragItem = element instanceof Element && Boolean(element.closest(dragItemSelector));
+    activeTarget = resolveInteractiveTarget(element);
+  }
 
   function resolveInteractiveTarget(element) {
     if (document.querySelector("[data-contact-success].is-closing")) return null;
@@ -459,19 +471,6 @@ function initSpiderCursor() {
     paintContext.beginPath();
     paintContext.ellipse(x, y, radius, radius, 0, 0, PI * 2);
     paintContext.fill();
-  }
-
-  function drawThread(startX, startY, endX, endY) {
-    context.beginPath();
-    context.moveTo(startX, startY);
-    for (let index = 0; index < 100; index += 1) {
-      const progress = (index + 1) / 100;
-      const x = lerp(startX, endX, progress);
-      const y = lerp(startY, endY, progress);
-      const offset = noise(x / 5 + startX, y / 5 + startY) * 2;
-      context.lineTo(x + offset, y + offset);
-    }
-    context.stroke();
   }
 
   function quarterEllipseLength(radiusX, radiusY) {
@@ -631,6 +630,29 @@ function initSpiderCursor() {
     context.restore();
   }
 
+  function drawPointerAura(time, strength) {
+    const radius = 17;
+    const quarterLength = PI * radius / 2;
+    const rect = {
+      perimeter: PI * radius * 2,
+      segments: many(4, (index) => ({
+        type: "arc",
+        centerX: pointerX,
+        centerY: pointerY,
+        radiusX: radius,
+        radiusY: radius,
+        startAngle: (index - 1) * PI / 2,
+        endAngle: index * PI / 2,
+        length: quarterLength,
+      })),
+    };
+    context.save();
+    context.shadowColor = "rgba(255, 255, 255, 0.3)";
+    context.shadowBlur = 5;
+    drawTargetTexture(rect, time, strength * 0.55);
+    context.restore();
+  }
+
   function spawnSwarm() {
     const particles = many(333, () => ({
       originX: random(window.innerWidth),
@@ -644,35 +666,13 @@ function initSpiderCursor() {
       driftX: random(5, 2),
       driftY: random(7, 3),
       twinkleRate: random(0.55, 0.35),
-      length: 0,
       radius: 0,
-    }));
-    const directions = many(9, (index) => ({
-      x: cos((index / 9) * PI * 2),
-      y: sin((index / 9) * PI * 2),
     }));
     let centerX = pointerX;
     let centerY = pointerY;
     const creatureScale = 0.5;
 
-    function paintParticle(particle, creatureAmount, reach, time, connected) {
-      if (creatureAmount > 0.01 && particle.length) {
-        context.save();
-        context.globalAlpha = creatureAmount;
-        directions.forEach((direction) => {
-          const anchorX = centerX + direction.x * reach;
-          const anchorY = centerY + direction.y * reach;
-          const pull = particle.length * particle.length;
-          drawThread(
-            lerp(anchorX, particle.x, pull),
-            lerp(anchorY, particle.y, pull),
-            anchorX,
-            anchorY,
-          );
-        });
-        context.restore();
-      }
-
+    function paintParticle(particle, time, connected) {
       const freeStarAmount = connected ? 0 : 1;
       const twinkle = (sin(time * particle.twinkleRate + particle.phase) + 1) / 2;
       const visualX = wrap(
@@ -695,9 +695,8 @@ function initSpiderCursor() {
         centerX = x;
         centerY = y;
       },
-      tick(time, delta, creatureAmount = 1) {
+      tick(time, creatureAmount = 1) {
         const skyScroll = window.scrollY;
-        const reach = (width / 125) * creatureScale;
 
         let connected = 0;
         particles.forEach((particle) => {
@@ -711,10 +710,7 @@ function initSpiderCursor() {
             radius *= 1.5;
           }
           particle.radius = radius;
-          particle.length = clamp(
-            particle.length + (nearCursor ? delta / 0.22 : -delta / 0.18),
-          );
-          paintParticle(particle, creatureAmount, reach, time, nearCursor);
+          paintParticle(particle, time, nearCursor);
         });
       },
     };
@@ -724,15 +720,22 @@ function initSpiderCursor() {
   const swarms = many(1, spawnSwarm);
 
   function handlePointerMove(event) {
+    if (event.pointerType === "touch") {
+      handlePointerLeave();
+      return;
+    }
     pointerX = event.clientX;
     pointerY = event.clientY;
-
-    pointerOverDragItem = event.target instanceof Element && Boolean(event.target.closest(dragItemSelector));
-    activeTarget = resolveInteractiveTarget(event.target);
+    pointerInside = true;
+    pointerHitTestDirty = false;
+    updatePointerTarget(event.target);
     swarms.forEach((swarm) => swarm.follow(pointerX, pointerY));
   }
 
   function handlePointerLeave() {
+    pointerInside = false;
+    pointerOverHoverTarget = false;
+    auraProgress = 0;
     activeTarget = null;
     pointerOverDragItem = false;
     swarms.forEach((swarm) => swarm.follow(-100, -100));
@@ -754,6 +757,7 @@ function initSpiderCursor() {
     lastTargetRect = null;
     lastTargetIsInHeader = false;
     targetProgress = 0;
+    pointerHitTestDirty = true;
     context.clearRect(0, 0, width, height);
   }
 
@@ -771,6 +775,14 @@ function initSpiderCursor() {
     const time = timestamp / 1000;
     const delta = previousTimestamp ? min(0.05, (timestamp - previousTimestamp) / 1000) : 0;
     previousTimestamp = timestamp;
+    if (pointerHitTestDirty && pointerInside) {
+      pointerHitTestDirty = false;
+      updatePointerTarget(document.elementFromPoint(pointerX, pointerY));
+    }
+    auraProgress = clamp(auraProgress + (pointerInside && !pointerOverHoverTarget ? delta / 0.18 : -delta / 0.14));
+    if (pointerInside && !pointerOverHoverTarget && auraProgress > 0.01) {
+      drawPointerAura(time, smoothstep(auraProgress));
+    }
     const currentRect = getTargetRect(activeTarget);
 
     if (currentRect) {
@@ -809,10 +821,19 @@ function initSpiderCursor() {
       if (headerBounds) context.restore();
     }
 
-    swarms.forEach((swarm) => swarm.tick(time, delta, pointerOverDragItem ? 0 : 1 - targetStrength));
+    swarms.forEach((swarm) => swarm.tick(time, pointerOverDragItem ? 0 : 1 - targetStrength));
   }
 
   window.addEventListener("pointermove", handlePointerMove, { passive: true });
+  window.addEventListener("pointerdown", (event) => {
+    if (event.pointerType === "touch") handlePointerLeave();
+  }, { passive: true });
+  const invalidatePointerTarget = () => { pointerHitTestDirty = true; };
+  window.addEventListener("scroll", invalidatePointerTarget, { passive: true });
+  window.addEventListener("resize", invalidatePointerTarget, { passive: true });
+  window.addEventListener("pointerup", invalidatePointerTarget, { passive: true });
+  window.addEventListener("pointercancel", invalidatePointerTarget, { passive: true });
+  window.addEventListener("blur", handlePointerLeave);
   document.documentElement.addEventListener("pointerleave", handlePointerLeave, { passive: true });
   document.addEventListener("focusin", handleFocusIn);
   document.addEventListener("focusout", handleFocusOut);
@@ -821,6 +842,7 @@ function initSpiderCursor() {
   frame = window.requestAnimationFrame(render);
 
   window.addEventListener("pagehide", () => {
+    handlePointerLeave();
     resetTarget();
     window.cancelAnimationFrame(frame);
     frame = 0;
