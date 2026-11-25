@@ -168,7 +168,9 @@
     } finally {
       document.documentElement.classList.remove("locale-pending");
     }
+    await window.siteLoading?.prepare(sourceScripts);
     await loadScriptsInOrder(sourceScripts);
+    window.siteLoading?.finish();
     document.documentElement.classList.remove("case-motion-pending", "hero-motion-pending", "page-motion-pending");
   }
 

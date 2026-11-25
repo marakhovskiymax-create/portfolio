@@ -1,3 +1,6 @@
+// Reveal the prepared page in the same task that starts the original Hero sequence.
+if (!document.body.classList.contains("case-page")) window.siteLoading?.finish();
+
 // The locale is ready before this script loads. Schedule the existing Hero
 // sequence before setting up interactions further down the page.
 try {
@@ -1589,6 +1592,7 @@ function initContactForm() {
   }
 
   function setSending(value) {
+    window.siteLoading?.setButtonBusy(submitButton, value, siteTranslate("Sending…"));
     sending = value;
     submitButton.disabled = value;
     buttonLabels.forEach((label) => { label.textContent = siteTranslate(value ? "Sending…" : "Send message"); });
