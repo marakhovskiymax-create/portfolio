@@ -3561,7 +3561,7 @@ body[data-locale="ru"] .hero__title-row--second {
   gap: 6px;
   font-size: 1rem;
   white-space: normal;
-  transition: color var(--motion-moderate), transform var(--motion-moderate);
+  transition: color var(--motion-moderate);
 }
 
 .footer__group a > .tabler-icon {
@@ -3578,7 +3578,6 @@ body[data-locale="ru"] .hero__title-row--second {
 @media (min-width: 768px) and (hover: hover) and (pointer: fine) {
   .footer__group a:hover {
     color: var(--color-text);
-    transform: translateX(2px);
   }
 
   .footer__group a:hover > .tabler-icon {
