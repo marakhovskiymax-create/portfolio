@@ -101,14 +101,14 @@ body.case-page {
   min-height: 48px;
   padding-left: 0;
   border-bottom: 1px solid var(--case-line);
-  color: var(--case-text-secondary);
+  color: var(--case-nav-muted, var(--case-text-secondary));
   font-size: 1rem;
   font-weight: 900;
   transition: color 180ms var(--ease-out), padding-left 180ms var(--ease-out);
 }
 
 .case-nav__links a span {
-  color: var(--ui-text-55, rgba(244, 243, 238, 0.55));
+  color: var(--case-nav-muted, var(--ui-text-55, rgba(244, 243, 238, 0.55)));
   font-weight: 900;
   font-variant-numeric: tabular-nums;
 }

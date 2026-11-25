@@ -1994,7 +1994,7 @@ min-height: 76px;
 align-items: center;
 justify-content: space-between;
 gap: 6px;
-padding: 20px 0;
+padding: 20px;
 border: 0;
 background: transparent;
 color: var(--color-text);
@@ -4253,13 +4253,13 @@ align-items: center;
 min-height: 48px;
 padding-left: 0;
 border-bottom: 1px solid var(--case-line);
-color: var(--case-text-secondary);
+color: var(--case-nav-muted, var(--case-text-secondary));
 font-size: 1rem;
 font-weight: 900;
 transition: color 180ms var(--ease-out), padding-left 180ms var(--ease-out);
 }
 .case-nav__links a span {
-color: var(--ui-text-55, rgba(244, 243, 238, 0.55));
+color: var(--case-nav-muted, var(--ui-text-55, rgba(244, 243, 238, 0.55)));
 font-weight: 900;
 font-variant-numeric: tabular-nums;
 }
@@ -5796,6 +5796,7 @@ html[data-theme="light"] body.case-page {
 --case-panel-raised: #eeefea;
 --case-line: #a3a99f;
 --case-text-secondary: #555b52;
+--case-nav-muted: #6e7369;
 --case-accent: #aa2145;
 --case-bright-accent: #ff6b8a;
 --case-work-grid: rgba(170,33,69,0.1);
