@@ -19,6 +19,7 @@ html[data-theme="light"] {
   --color-text: #171916;
   --color-muted: #555b52;
   --color-border: #7c8378;
+  --color-border-soft: #d7d7d4;
   --color-ink: #ffffff;
   --ui-fg-rgb: 23, 25, 22;
   --ui-white-rgb: 23, 25, 22;
@@ -117,9 +118,9 @@ header:has(> .theme-switcher--utility) { flex-wrap: wrap; }
 
 /* Light surfaces, controls, navigation and readable supporting text. */
 html[data-theme="light"] .masthead,
-html[data-theme="light"] .case-header .masthead { background: rgba(255,255,255,0.95); box-shadow: 0 12px 34px rgba(23,25,22,0.1); }
+html[data-theme="light"] .case-header .masthead { background: rgba(255,255,255,0.95); box-shadow: none; }
 html[data-theme="light"] .language-menu__options,
-html[data-theme="light"] .mobile-menu { background: #ffffff; box-shadow: 0 16px 36px rgba(23,25,22,0.12); border-color: var(--color-border); }
+html[data-theme="light"] .mobile-menu { background: #ffffff; box-shadow: 0 16px 36px rgba(23,25,22,0.12); border-color: var(--color-border-soft); }
 html[data-theme="light"] .menu-toggle,
 html[data-theme="light"] .mobile-menu a { color: var(--color-text); }
 html[data-theme="light"] .masthead__resume { color: var(--color-ink) !important; }
@@ -129,7 +130,11 @@ html[data-theme="light"] .career-panel__case-link:focus-visible { background: #3
 html[data-theme="light"] .hero::after {
   background: radial-gradient(circle at 50% 42%, transparent 0 18%, rgba(247,247,244,0.3) 45%, var(--color-bg) 79%), linear-gradient(to bottom, transparent 70%, var(--color-bg) 100%);
 }
-html[data-theme="light"] .case-visual { background: var(--color-surface); border-color: var(--color-border); }
+html[data-theme="light"] .case-visual { background: var(--color-surface); border-color: var(--color-border-soft); }
+html[data-theme="light"] .quote-card { border-color: var(--color-border-soft); }
+@media (min-width: 768px) and (hover: hover) and (pointer: fine) {
+  html[data-theme="light"] .quote-card:hover { border-color: #b5b5b1; }
+}
 html[data-theme="light"] .time-machine__card { background: var(--color-surface); box-shadow: 0 22px 56px rgba(23,25,22,0.16); }
 html[data-theme="light"] .time-machine__card-copy strong { color: var(--color-text); }
 html[data-theme="light"] .case-visual[data-project-visual="amo-crm"] { --project-accent: #aa2145; }
@@ -140,10 +145,10 @@ html[data-theme="light"] .case-visual[data-project-visual="shable"] { --project-
 html[data-theme="light"] .career-tab[data-career-tab="4"] .career-tab__logo,
 html[data-theme="light"] .quote-card__logo { background: #20231f; box-shadow: 0 0 0 5px #20231f; border-radius: 4px; }
 html[data-theme="light"] .contact__details { background: radial-gradient(circle at 50% 106%, rgba(49,80,164,0.08), transparent 48%), #eeefea; }
-html[data-theme="light"] .contact-form { background: #ffffff; border-color: var(--color-border); }
+html[data-theme="light"] .contact-form { background: #ffffff; border-color: var(--color-border-soft); }
 html[data-theme="light"] .faq-contact { background: #ffffff; border-color: var(--color-border); }
 html[data-theme="light"] .contact-form input,
-html[data-theme="light"] .contact-form textarea { background: #f7f7f4; border-color: var(--color-border); }
+html[data-theme="light"] .contact-form textarea { background: #f7f7f4; border-color: #8b8b8b; }
 html[data-theme="light"] .contact-form input::placeholder,
 html[data-theme="light"] .contact-form textarea::placeholder { color: #636a5f; opacity: 1; }
 html[data-theme="light"] .contact-form input:focus,
