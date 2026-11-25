@@ -110,9 +110,53 @@ html[data-theme="dark"] [data-theme-option="dark"] { color: var(--color-text, #f
 .theme-switcher--utility { margin-inline-start: auto; }
 header:has(> .theme-switcher--utility) { flex-wrap: wrap; }
 .theme-status { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 36px;
+  padding: 6px 10px;
+  margin-inline-start: -10px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--color-text);
+  font: inherit;
+  cursor: pointer;
+}
+.theme-toggle__icons { position: relative; flex: none; width: 20px; height: 20px; }
+.theme-toggle__icons .tabler-icon {
+  position: absolute;
+  inset: 0;
+  width: 20px;
+  height: 20px;
+  background: currentColor;
+  -webkit-mask: var(--tabler-icon) center / contain no-repeat;
+  mask: var(--tabler-icon) center / contain no-repeat;
+  transition: opacity 240ms ease, transform 500ms cubic-bezier(0.34, 1.35, 0.64, 1);
+}
+.theme-toggle__icons .tabler-icon--sun { opacity: 0; transform: rotate(-90deg) scale(0.5); }
+.theme-toggle__icons .tabler-icon--moon-stars { opacity: 1; transform: rotate(-12deg) scale(1); }
+html[data-theme="light"] .theme-toggle__icons .tabler-icon--sun { opacity: 1; transform: rotate(0) scale(1); }
+html[data-theme="light"] .theme-toggle__icons .tabler-icon--moon-stars { opacity: 0; transform: rotate(90deg) scale(0.5); }
+.theme-toggle:focus-visible { outline: 1px solid currentColor; outline-offset: 3px; }
+/* Organic native view transition, adapted from 000h by Cojeev (MIT).
+   These rules apply only during an explicit theme change, never on page load. */
+:root[data-theme-reveal]::view-transition { pointer-events: none; }
+:root[data-theme-reveal]::view-transition-group(root) { animation: none; }
+:root[data-theme-reveal]::view-transition-image-pair(root) { isolation: isolate; }
+:root[data-theme-reveal]::view-transition-old(root),
+:root[data-theme-reveal]::view-transition-new(root) { mix-blend-mode: normal; opacity: 1; }
+:root[data-theme-reveal]::view-transition-old(root) { animation: none; z-index: 1; }
+:root[data-theme-reveal]::view-transition-new(root) {
+  animation: theme-reveal-hold 8s linear;
+  clip-path: var(--theme-reveal-clip);
+  z-index: 2;
+}
+@keyframes theme-reveal-hold { from { opacity: 1; } to { opacity: 1; } }
 @media (min-width: 1121px) and (max-width: 1180px) { .masthead__links--meta { gap: 22px; } }
 @media (prefers-reduced-motion: reduce) {
-  .theme-switcher__indicator, .theme-switcher__option, .theme-switcher__option .tabler-icon { transition: none; }
+  .theme-switcher__indicator, .theme-switcher__option, .theme-switcher__option .tabler-icon, .theme-toggle__icons .tabler-icon { transition: none; }
   .theme-switcher__option:hover .tabler-icon { transform: none; }
 }
 

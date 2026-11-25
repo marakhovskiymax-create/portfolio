@@ -81,7 +81,7 @@ for page in PAGES:
     sources = ["vendor/gsap.min.js", "vendor/ScrollTrigger.min.js"]
     if page == "index":
         sources.append("gsap-starter.js")
-    sources.append("script.js?v=20261125-header-entrance")
+    sources.append("script.js?v=20261125-visible-stars")
     if page != "index":
         sources.append("amocrm.js?v=20261125-reference-motion")
     failed = 'window.siteCriticalScriptFailed=true;window.siteEntry?.release();'
@@ -91,6 +91,6 @@ for page in PAGES:
     path.write_text(html)
     shutil.copy2(path, ROOT / "dist" / path.name)
 
-for name in ("i18n.js", "entry.js", "entry.css", "header-entry.js", "header-entry.css", "script.js", "amocrm.js", "styles.css", "amocrm.css", "loaders.css", "theme.css", "eme.css", "eme-app.css", "don-ballon.css", "shable.css"):
+for name in ("i18n.js", "entry.js", "entry.css", "header-entry.js", "header-entry.css", "script.js", "amocrm.js", "styles.css", "amocrm.css", "loaders.css", "theme.js", "theme.css", "eme.css", "eme-app.css", "don-ballon.css", "shable.css"):
     shutil.copy2(ROOT / name, ROOT / "dist" / name)
 print(f"Updated {len(PAGES)} static pages and source/dist scripts. No network requests or publishing performed.")

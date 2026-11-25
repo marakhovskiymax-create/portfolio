@@ -406,8 +406,8 @@ function initSpiderCursor() {
   let pointerPalette;
   function syncPointerPalette() {
     pointerPalette = document.documentElement.dataset.theme === "light"
-      ? { sky: "#394135", skyAlpha: 0.55, ink: "#242b23", stroke: "rgba(36, 43, 35, 0.86)", glow: "rgba(36, 43, 35, 0.3)" }
-      : { sky: "#ffffff", skyAlpha: 1, ink: "#ffffff", stroke: "rgba(255, 255, 255, 0.86)", glow: "rgba(255, 255, 255, 0.3)" };
+      ? { sky: "#394135", skyAlpha: 0.8, skyMinRadius: 0.65, ink: "#242b23", stroke: "rgba(36, 43, 35, 0.86)", glow: "rgba(36, 43, 35, 0.3)" }
+      : { sky: "#ffffff", skyAlpha: 1, skyMinRadius: 0, ink: "#ffffff", stroke: "rgba(255, 255, 255, 0.86)", glow: "rgba(255, 255, 255, 0.3)" };
   }
   syncPointerPalette();
   window.addEventListener("portfolio:themechange", syncPointerPalette);
@@ -741,7 +741,7 @@ function initSpiderCursor() {
       const particleContext = backgroundContext;
       particleContext.save();
       particleContext.globalAlpha = (connected ? 1 : lerp(0.58, 0.92, twinkle)) * pointerPalette.skyAlpha;
-      drawCircle(visualX, visualY, particle.radius * (connected ? 1 : lerp(0.82, 1.16, twinkle)), particleContext);
+      drawCircle(visualX, visualY, max(particle.radius, pointerPalette.skyMinRadius) * (connected ? 1 : lerp(0.82, 1.16, twinkle)), particleContext);
       particleContext.restore();
     }
 
