@@ -76,6 +76,10 @@ if (caseScrollMedia.length && !prefersReducedMotion) {
 const scrollGallery = document.querySelector(".case-scroll-gallery");
 const scrollGalleryStage = scrollGallery?.querySelector(".case-scroll-gallery__stage");
 const scrollGalleryCards = Array.from(scrollGallery?.querySelectorAll(".case-scroll-gallery__card") ?? []);
+const gallerySequence = scrollGallery?.closest(".case-gallery-sequence");
+const gallerySequenceStage = gallerySequence?.querySelector(".case-gallery-sequence__stage");
+const galleryResults = gallerySequence?.querySelector("#impact");
+const galleryResultsLayout = window.matchMedia("(min-width: 768px) and (min-height: 1081px) and (prefers-reduced-motion: no-preference)");
 
 if (scrollGallery && "IntersectionObserver" in window) {
   const galleryNavObserver = new IntersectionObserver((entries) => {
@@ -96,9 +100,12 @@ if (scrollGallery && scrollGalleryStage && scrollGalleryCards.length === 3 && !p
       scrollGalleryCards[2].style.removeProperty("transform");
       return;
     }
-    const stageTop = Number.parseFloat(window.getComputedStyle(scrollGalleryStage).top) || 0;
-    const travel = Math.max(1, scrollGallery.offsetHeight - scrollGalleryStage.offsetHeight);
-    const progress = clampUnit((stageTop - scrollGallery.getBoundingClientRect().top) / travel);
+    const sharedStage = gallerySequenceStage && galleryResultsLayout.matches;
+    const track = sharedStage ? gallerySequence : scrollGallery;
+    const stage = sharedStage ? gallerySequenceStage : scrollGalleryStage;
+    const stageTop = Number.parseFloat(window.getComputedStyle(stage).top) || 0;
+    const travel = Math.max(1, track.offsetHeight - stage.offsetHeight);
+    const progress = clampUnit((stageTop - track.getBoundingClientRect().top) / travel);
     const second = smoothStep(clampUnit((progress - 0.04) / 0.42));
     const third = smoothStep(clampUnit((progress - 0.53) / 0.42));
 
@@ -112,8 +119,29 @@ if (scrollGallery && scrollGalleryStage && scrollGalleryCards.length === 3 && !p
 
   window.addEventListener("scroll", scheduleScrollGallery, { passive: true });
   window.addEventListener("resize", scheduleScrollGallery, { passive: true });
+  window.addEventListener("pageshow", scheduleScrollGallery);
+  galleryResultsLayout.addEventListener("change", scheduleScrollGallery);
   renderScrollGallery();
 }
+
+function galleryResultsAnchorTop() {
+  if (!galleryResultsLayout.matches || !gallerySequenceStage || !galleryResults) return null;
+  const stage = gallerySequenceStage.getBoundingClientRect();
+  const offset = galleryResults.getBoundingClientRect().top - stage.top;
+  const stageEnd = gallerySequence.getBoundingClientRect().top + window.scrollY
+    + Math.max(0, gallerySequence.offsetHeight - gallerySequenceStage.offsetHeight);
+  const margin = Number.parseFloat(window.getComputedStyle(galleryResults).scrollMarginTop) || 0;
+  const padding = Number.parseFloat(window.getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
+  return Math.max(0, stageEnd + offset - margin - padding);
+}
+
+function alignGalleryResultsHash() {
+  if (window.location.hash !== "#impact") return;
+  const top = galleryResultsAnchorTop();
+  if (top !== null) window.scrollTo({ top, behavior: "instant" });
+}
+
+window.addEventListener("hashchange", alignGalleryResultsHash);
 
 function setActiveCaseSection(id) {
   const activeIndex = caseSections.findIndex((section) => section.id === id);
@@ -157,7 +185,15 @@ if ("IntersectionObserver" in window && caseSections.length) {
 }
 
 caseNavLinks.forEach((link) => {
-  link.addEventListener("click", () => setActiveCaseSection(link.hash.slice(1)));
+  link.addEventListener("click", (event) => {
+    setActiveCaseSection(link.hash.slice(1));
+    if (link.hash !== "#impact" || event.defaultPrevented || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+    const top = galleryResultsAnchorTop();
+    if (top === null) return;
+    event.preventDefault();
+    if (window.location.hash !== link.hash) window.history.pushState(null, "", link.hash);
+    window.scrollTo({ top, behavior: "smooth" });
+  });
 });
 
 const carousel = document.querySelector("[data-case-carousel]");
@@ -1233,5 +1269,8 @@ if (prefersReducedMotion || !("IntersectionObserver" in window)) {
 }
 
 document.documentElement.classList.remove("case-motion-pending");
+
+// Honor direct Results links without overriding reload/Back scroll restoration.
+if (performance.getEntriesByType?.("navigation")[0]?.type === "navigate") alignGalleryResultsHash();
 
 window.siteEntry?.release();

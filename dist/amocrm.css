@@ -381,6 +381,11 @@ body.case-page {
 }
 
 /* Three editorial frames overlap as the page scrolls; scrolling back restores them. */
+.case-gallery-sequence,
+.case-gallery-sequence__stage {
+  display: contents;
+}
+
 .case-scroll-gallery {
   position: relative;
   height: 300svh;
@@ -445,6 +450,32 @@ body.case-page {
   object-fit: cover;
   object-position: var(--gallery-position, center top);
   transform: scale(var(--gallery-scale, 1));
+}
+
+/* A tall viewport can show Results while the three-frame gallery is pinned.
+   Share the sticky stage instead of leaving Results below the scroll spacer. */
+@media (min-width: 768px) and (min-height: 1081px) and (prefers-reduced-motion: no-preference) {
+  .case-gallery-sequence {
+    position: relative;
+    display: block;
+    height: 300svh;
+  }
+
+  .case-gallery-sequence__stage {
+    position: sticky;
+    top: 104px;
+    display: flow-root;
+  }
+
+  .case-gallery-sequence .case-scroll-gallery {
+    height: auto;
+    margin-bottom: 64px;
+  }
+
+  .case-gallery-sequence .case-scroll-gallery__stage {
+    position: static;
+    top: auto;
+  }
 }
 
 .case-scroll-gallery__card figcaption {
