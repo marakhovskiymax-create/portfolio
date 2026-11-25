@@ -1,6 +1,3 @@
-// The first-screen assets are ready; start the existing case animations now.
-window.siteLoading?.finish();
-
 const caseSections = Array.from(document.querySelectorAll("[data-case-section]"));
 const caseNavLinks = Array.from(document.querySelectorAll("[data-case-nav]"));
 const casePosition = document.querySelector("[data-case-position]");

@@ -9,6 +9,18 @@
       content="Портфолио Максима Мараховского, продуктового дизайнера: кейсы, подход к работе и профессиональные интересы."
     />
     <title data-title-en="Maxim Marakhovskiy - Product Designer" data-title-ru="Максим Мараховский - Продуктовый дизайнер">Максим Мараховский - Продуктовый дизайнер</title>
+    <script data-theme-bootstrap>
+      (() => {
+        let theme = "dark";
+        try { if (localStorage.getItem("portfolio-theme") === "light") theme = "light"; } catch {}
+        const root = document.documentElement;
+        root.dataset.theme = theme;
+        root.style.colorScheme = theme;
+        root.style.backgroundColor = theme === "light" ? "#f7f7f4" : "#050505";
+        document.querySelector('meta[name="theme-color"]')?.setAttribute("content", theme === "light" ? "#f7f7f4" : "#050505");
+      })();
+    </script>
+
 
         <link rel="icon" type="image/x-icon" href="favicon.ico?v=20261112-rounded-favicon">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=20261112-rounded-favicon">
@@ -44,8 +56,6 @@
       html.locale-pending { background: #050505; }
       html.locale-pending body { opacity: 0; visibility: hidden; pointer-events: none; }
       @media (prefers-reduced-motion: no-preference) {
-        html.js.page-motion-pending body { visibility: hidden; }
-        html.js.page-motion-pending:not(.locale-pending) .site-header { visibility: visible; }
         html.hero-motion-pending [data-hero-text-effect],
         html.hero-motion-pending [data-hero-reveal] { visibility: hidden; }
       }
@@ -64,8 +74,10 @@
         if (isRussian) document.documentElement.classList.add("locale-pending");
       })();
     </script>
-    <link rel="stylesheet" href="loaders.css?v=20261125">
-    <script src="loaders.js?v=20261125"></script>
+    <link rel="stylesheet" href="loaders.css?v=20261125-no-page-loader">
+    <link rel="stylesheet" href="theme.css?v=20261125">
+    <script defer src="theme.js?v=20261125"></script>
+    <script defer src="loaders.js?v=20261125-no-page-loader"></script>
     <script defer src="analytics.js?v=20261121-ga4"></script>
   </head>
   <body>
@@ -94,6 +106,11 @@
         <a class="wordmark" href="#top" aria-label="marakhovskiy — Back to home">marakhovskiy</a>
 
         <div class="masthead__links masthead__links--meta">
+          <div class="theme-switcher" role="radiogroup" aria-label="Color theme" data-theme-switcher>
+            <span class="theme-switcher__indicator" aria-hidden="true"></span>
+            <button class="theme-switcher__option" type="button" role="radio" aria-checked="false" aria-label="Switch to light theme" data-theme-option="light" tabindex="-1"><span class="tabler-icon tabler-icon--sun" aria-hidden="true"></span></button>
+            <button class="theme-switcher__option" type="button" role="radio" aria-checked="true" aria-label="Switch to dark theme" data-theme-option="dark" tabindex="0"><span class="tabler-icon tabler-icon--moon-stars" aria-hidden="true"></span></button>
+          </div>
           <span class="masthead__actions">
             <a class="masthead__email" href="mailto:marakhovskiymax@gmail.com">marakhovskiymax@gmail.com</a>
             <a class="masthead__resume" href="/CV.pdf?v=20261114-cv-revision" data-ru-href="/Резюме.pdf" target="_blank" rel="noopener noreferrer" type="application/pdf">Résumé</a>
@@ -120,6 +137,11 @@
             <button type="button" aria-pressed="false">Русский (RU)</button>
           </div>
         </details>
+        <div class="theme-switcher" role="radiogroup" aria-label="Color theme" data-theme-switcher>
+          <span class="theme-switcher__indicator" aria-hidden="true"></span>
+          <button class="theme-switcher__option" type="button" role="radio" aria-checked="false" aria-label="Switch to light theme" data-theme-option="light" tabindex="-1"><span class="tabler-icon tabler-icon--sun" aria-hidden="true"></span></button>
+          <button class="theme-switcher__option" type="button" role="radio" aria-checked="true" aria-label="Switch to dark theme" data-theme-option="dark" tabindex="0"><span class="tabler-icon tabler-icon--moon-stars" aria-hidden="true"></span></button>
+        </div>
         <a href="mailto:marakhovskiymax@gmail.com">marakhovskiymax@gmail.com</a>
         <a href="/CV.pdf?v=20261114-cv-revision" data-ru-href="/Резюме.pdf" target="_blank" rel="noopener noreferrer" type="application/pdf">Résumé</a>
       </div>

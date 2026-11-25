@@ -5,6 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#050505">
   <title>Варианты фавикона · Максим Мараховский</title>
+    <script data-theme-bootstrap>
+      (() => {
+        let theme = "dark";
+        try { if (localStorage.getItem("portfolio-theme") === "light") theme = "light"; } catch {}
+        const root = document.documentElement;
+        root.dataset.theme = theme;
+        root.style.colorScheme = theme;
+        root.style.backgroundColor = theme === "light" ? "#f7f7f4" : "#050505";
+        document.querySelector('meta[name="theme-color"]')?.setAttribute("content", theme === "light" ? "#f7f7f4" : "#050505");
+      })();
+    </script>
+
 
       <link rel="icon" type="image/x-icon" href="favicon.ico?v=20261112-rounded-favicon">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=20261112-rounded-favicon">
@@ -24,12 +36,19 @@
     .note{margin-top:34px;font-size:14px;color:#8f8d89}@media(max-width:720px){.options{grid-template-columns:1fr}.mark{min-height:250px}.mark img{width:180px;height:180px}.card p{min-height:0}}
   </style>
   <link rel="stylesheet" href="fonts.css?v=20261118-performance">
-    <link rel="stylesheet" href="loaders.css?v=20261125">
-    <script src="loaders.js?v=20261125"></script>
+    <link rel="stylesheet" href="loaders.css?v=20261125-no-page-loader">
+    <link rel="stylesheet" href="theme.css?v=20261125">
+    <script defer src="theme.js?v=20261125"></script>
+    <script defer src="loaders.js?v=20261125-no-page-loader"></script>
     <script defer src="analytics.js?v=20261121-ga4"></script>
 </head>
 <body><main>
-  <header><strong>marakhovskiy</strong><a href="index.html?lang=ru">← На главную</a></header>
+  <header><strong>marakhovskiy</strong><a href="index.html?lang=ru">← На главную</a>  <div class="theme-switcher theme-switcher--utility" role="radiogroup" aria-label="Color theme" data-theme-switcher>
+    <span class="theme-switcher__indicator" aria-hidden="true"></span>
+    <button class="theme-switcher__option" type="button" role="radio" aria-checked="false" aria-label="Switch to light theme" data-theme-option="light" tabindex="-1"><span class="tabler-icon tabler-icon--sun" aria-hidden="true"></span></button>
+    <button class="theme-switcher__option" type="button" role="radio" aria-checked="true" aria-label="Switch to dark theme" data-theme-option="dark" tabindex="0"><span class="tabler-icon tabler-icon--moon-stars" aria-hidden="true"></span></button>
+  </div>
+</header>
   <h1>Сущность<br>в миниатюре.</h1>
   <p class="intro">Оба варианта передают сущность с интерактивного курсора: девять неровных пучков нитей, электрические разряды и светящиеся частицы. Ниже показан реальный размер фавикона для вкладки браузера.</p>
   <div class="options">

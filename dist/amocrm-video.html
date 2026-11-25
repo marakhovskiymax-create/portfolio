@@ -5,6 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="15-секундное видео о дизайн-проекте amoCRM / Kommo.">
   <title>amoCRM / Kommo — видео проекта</title>
+    <script data-theme-bootstrap>
+      (() => {
+        let theme = "dark";
+        try { if (localStorage.getItem("portfolio-theme") === "light") theme = "light"; } catch {}
+        const root = document.documentElement;
+        root.dataset.theme = theme;
+        root.style.colorScheme = theme;
+        root.style.backgroundColor = theme === "light" ? "#f7f7f4" : "#050505";
+        document.querySelector('meta[name="theme-color"]')?.setAttribute("content", theme === "light" ? "#f7f7f4" : "#050505");
+      })();
+    </script>
+
 
       <link rel="icon" type="image/x-icon" href="favicon.ico?v=20261112-rounded-favicon">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=20261112-rounded-favicon">
@@ -34,12 +46,19 @@
     footer { padding: 24px 0 30px; border-top: 1px solid #242126; color: #77737b; font-size: 12px; }
     @media (max-width: 600px) { header, main, footer { width: calc(100% - 32px); } main { padding-block: 22px 48px; } .actions { align-items: flex-start; flex-direction: column; } .player { border-radius: 12px; } }
   </style>
-    <link rel="stylesheet" href="loaders.css?v=20261125">
-    <script src="loaders.js?v=20261125"></script>
+    <link rel="stylesheet" href="loaders.css?v=20261125-no-page-loader">
+    <link rel="stylesheet" href="theme.css?v=20261125">
+    <script defer src="theme.js?v=20261125"></script>
+    <script defer src="loaders.js?v=20261125-no-page-loader"></script>
     <script defer src="analytics.js?v=20261121-ga4"></script>
 </head>
 <body>
-  <header><a class="brand" href="amocrm.html?lang=ru">amoCRM / Kommo</a><a class="back" href="amocrm.html?lang=ru">← К кейсу</a></header>
+  <header><a class="brand" href="amocrm.html?lang=ru">amoCRM / Kommo</a><a class="back" href="amocrm.html?lang=ru">← К кейсу</a>  <div class="theme-switcher theme-switcher--utility" role="radiogroup" aria-label="Color theme" data-theme-switcher>
+    <span class="theme-switcher__indicator" aria-hidden="true"></span>
+    <button class="theme-switcher__option" type="button" role="radio" aria-checked="false" aria-label="Switch to light theme" data-theme-option="light" tabindex="-1"><span class="tabler-icon tabler-icon--sun" aria-hidden="true"></span></button>
+    <button class="theme-switcher__option" type="button" role="radio" aria-checked="true" aria-label="Switch to dark theme" data-theme-option="dark" tabindex="0"><span class="tabler-icon tabler-icon--moon-stars" aria-hidden="true"></span></button>
+  </div>
+</header>
   <main>
     <p class="eyebrow">Видеопрезентация проекта · 15 секунд</p>
     <h1>От сайта до продукта.</h1>

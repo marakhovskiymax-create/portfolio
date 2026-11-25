@@ -1,6 +1,3 @@
-// Reveal the prepared page in the same task that starts the original Hero sequence.
-if (!document.body.classList.contains("case-page")) window.siteLoading?.finish();
-
 // The locale is ready before this script loads. Schedule the existing Hero
 // sequence before setting up interactions further down the page.
 try {
@@ -392,6 +389,14 @@ function initSpiderCursor() {
   const backgroundCanvas = document.createElement("canvas");
   const backgroundContext = backgroundCanvas.getContext("2d");
   if (!backgroundContext) return;
+  let pointerPalette;
+  function syncPointerPalette() {
+    pointerPalette = document.documentElement.dataset.theme === "light"
+      ? { sky: "#626a5d", skyAlpha: 0.15, ink: "#242b23", stroke: "rgba(36, 43, 35, 0.86)", glow: "rgba(36, 43, 35, 0.3)" }
+      : { sky: "#ffffff", skyAlpha: 1, ink: "#ffffff", stroke: "rgba(255, 255, 255, 0.86)", glow: "rgba(255, 255, 255, 0.3)" };
+  }
+  syncPointerPalette();
+  window.addEventListener("portfolio:themechange", syncPointerPalette);
   backgroundCanvas.className = "starfield-background";
   backgroundCanvas.setAttribute("data-starfield-background", "");
   backgroundCanvas.setAttribute("aria-hidden", "true");
@@ -650,7 +655,7 @@ function initSpiderCursor() {
       })),
     };
     context.save();
-    context.shadowColor = "rgba(255, 255, 255, 0.3)";
+    context.shadowColor = pointerPalette.glow;
     context.shadowBlur = 5;
     drawTargetTexture(rect, time, strength * 0.55);
     context.restore();
@@ -688,7 +693,7 @@ function initSpiderCursor() {
       );
       const particleContext = backgroundContext;
       particleContext.save();
-      particleContext.globalAlpha = connected ? 1 : lerp(0.58, 0.92, twinkle);
+      particleContext.globalAlpha = (connected ? 1 : lerp(0.58, 0.92, twinkle)) * pointerPalette.skyAlpha;
       drawCircle(visualX, visualY, particle.radius * (connected ? 1 : lerp(0.82, 1.16, twinkle)), particleContext);
       particleContext.restore();
     }
@@ -771,9 +776,9 @@ function initSpiderCursor() {
     syncCanvas();
     context.clearRect(0, 0, width, height);
     backgroundContext.clearRect(0, 0, width, height);
-    backgroundContext.fillStyle = "#ffffff";
-    context.fillStyle = "#ffffff";
-    context.strokeStyle = "rgba(255, 255, 255, 0.86)";
+    backgroundContext.fillStyle = pointerPalette.sky;
+    context.fillStyle = pointerPalette.ink;
+    context.strokeStyle = pointerPalette.stroke;
     context.lineWidth = 0.72;
     const time = timestamp / 1000;
     const delta = previousTimestamp ? min(0.05, (timestamp - previousTimestamp) / 1000) : 0;
@@ -1849,7 +1854,7 @@ function initAboutBadgeMorph() {
 
   if (!section || !badges.length || shapes.some((shape) => !shape) || labels.some((label) => !label) || !window.gsap || reduceMotion || window.matchMedia("(max-width: 1024px)").matches) return;
 
-  window.gsap.set(badges, { autoAlpha: 1, backgroundColor: "rgba(244, 243, 238, 0)" });
+  window.gsap.set(badges, { autoAlpha: 1, "--badge-fill": 0 });
   window.gsap.set(labels, { autoAlpha: 0 });
   window.gsap.set(shapes, { autoAlpha: 0, scale: 0, transformOrigin: "50% 50%" });
 
@@ -1890,11 +1895,11 @@ function initAboutBadgeMorph() {
         badge,
         {
           scale: 0.2,
-          backgroundColor: "rgba(244, 243, 238, 0)",
+          "--badge-fill": 0,
         },
         {
           scale: 1,
-          backgroundColor: "rgb(244, 243, 238)",
+          "--badge-fill": 1,
           duration: 0.38,
           ease: tabSpring,
         },
