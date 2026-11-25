@@ -71,6 +71,7 @@ function initLinkReveal() {
 }
 
 initLinkReveal();
+window.siteHeaderEntrance?.start();
 
 document.addEventListener("click", (event) => {
   if (event.defaultPrevented || event.detail === 0) return;

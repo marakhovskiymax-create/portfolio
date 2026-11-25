@@ -36,11 +36,12 @@ for page in PAGES:
             "meta": catalog.get("meta", {}).get(page, {}),
         }
     catalog_json = json.dumps(bundle, ensure_ascii=False, separators=(",", ":")).replace("<", "\\u003c").replace("\u2028", "\\u2028").replace("\u2029", "\\u2029")
-    sheets = ["styles.css"] + ([] if page == "index" else ["amocrm.css"]) + ([BRAND[page]] if page in BRAND else []) + ["loaders.css", "theme.css", "entry.css"]
+    sheets = ["styles.css"] + ([] if page == "index" else ["amocrm.css"]) + ([BRAND[page]] if page in BRAND else []) + ["loaders.css", "theme.css", "entry.css", "header-entry.css"]
     block = START + "\n" + "\n".join(f'<style data-inline-source="{name}">\n{css_text(name)}\n</style>' for name in sheets)
     block += f'\n<script id="page-catalog" type="application/json">{catalog_json}</script>\n'
     block += f'<script data-inline-source="i18n.js">\n{script_text("i18n.js")}\n</script>\n'
-    block += f'<script data-inline-source="entry.js">\n{script_text("entry.js")}\n</script>\n' + END
+    block += f'<script data-inline-source="entry.js">\n{script_text("entry.js")}\n</script>\n'
+    block += f'<script data-inline-source="header-entry.js">\n{script_text("header-entry.js")}\n</script>\n' + END
     if START in html:
         html = re.sub(re.escape(START) + r"[\s\S]*?" + re.escape(END), lambda _: block, html, count=1)
     else:
@@ -80,7 +81,7 @@ for page in PAGES:
     sources = ["vendor/gsap.min.js", "vendor/ScrollTrigger.min.js"]
     if page == "index":
         sources.append("gsap-starter.js")
-    sources.append("script.js?v=20261125-reference-motion")
+    sources.append("script.js?v=20261125-header-entrance")
     if page != "index":
         sources.append("amocrm.js?v=20261125-reference-motion")
     failed = 'window.siteCriticalScriptFailed=true;window.siteEntry?.release();'
@@ -90,6 +91,6 @@ for page in PAGES:
     path.write_text(html)
     shutil.copy2(path, ROOT / "dist" / path.name)
 
-for name in ("i18n.js", "entry.js", "entry.css", "script.js", "amocrm.js", "styles.css", "amocrm.css", "loaders.css", "theme.css", "eme.css", "eme-app.css", "don-ballon.css", "shable.css"):
+for name in ("i18n.js", "entry.js", "entry.css", "header-entry.js", "header-entry.css", "script.js", "amocrm.js", "styles.css", "amocrm.css", "loaders.css", "theme.css", "eme.css", "eme-app.css", "don-ballon.css", "shable.css"):
     shutil.copy2(ROOT / name, ROOT / "dist" / name)
 print(f"Updated {len(PAGES)} static pages and source/dist scripts. No network requests or publishing performed.")

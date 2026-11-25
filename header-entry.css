@@ -1,0 +1,22 @@
+/* Keep the header in its final layout; animate only its visible surface/content. */
+html.js.header-motion-pending .site-header { opacity: 0; visibility: hidden; }
+.header-intro .masthead {
+  isolation: isolate;
+  background: transparent !important;
+  border-color: transparent;
+  box-shadow: none !important;
+  backdrop-filter: none;
+}
+.header-entry__surface {
+  position: absolute;
+  z-index: -1;
+  inset: -1px;
+  border: 1px solid rgba(var(--ui-fg-rgb, 244, 243, 238), 0.14);
+  border-radius: inherit;
+  background: rgba(20,20,20,0.92);
+  box-shadow: 0 12px 34px rgba(0,0,0,0.26), inset 0 1px rgba(255,255,255,0.04);
+  backdrop-filter: blur(18px) saturate(120%);
+  pointer-events: none;
+}
+.case-page .header-entry__surface { background: #141414; }
+html[data-theme="light"] .header-entry__surface { background: rgba(255,255,255,0.95); box-shadow: none; }
