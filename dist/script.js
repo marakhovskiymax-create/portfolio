@@ -392,7 +392,7 @@ function initSpiderCursor() {
   let pointerPalette;
   function syncPointerPalette() {
     pointerPalette = document.documentElement.dataset.theme === "light"
-      ? { sky: "#626a5d", skyAlpha: 0.15, ink: "#242b23", stroke: "rgba(36, 43, 35, 0.86)", glow: "rgba(36, 43, 35, 0.3)" }
+      ? { sky: "#394135", skyAlpha: 0.55, ink: "#242b23", stroke: "rgba(36, 43, 35, 0.86)", glow: "rgba(36, 43, 35, 0.3)" }
       : { sky: "#ffffff", skyAlpha: 1, ink: "#ffffff", stroke: "rgba(255, 255, 255, 0.86)", glow: "rgba(255, 255, 255, 0.3)" };
   }
   syncPointerPalette();
@@ -2084,19 +2084,6 @@ if (window.TastemakerMotion && window.gsap && window.ScrollTrigger) {
     distance: 18,
     ease: "power3.out",
     staggerStep: 0.06,
-  });
-
-  window.gsap.matchMedia().add("(prefers-reduced-motion: no-preference)", () => {
-    window.gsap.to(".hero__stars", {
-      yPercent: 8,
-      ease: "none",
-      scrollTrigger: {
-        trigger: ".hero",
-        start: "top top",
-        end: "bottom top",
-        scrub: true,
-      },
-    });
   });
 
   const sectionMotion = window.gsap.matchMedia();

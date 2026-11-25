@@ -620,20 +620,6 @@ main {
     linear-gradient(to bottom, transparent 70%, var(--color-bg) 100%);
 }
 
-.hero__stars {
-  position: absolute;
-  z-index: -3;
-  inset: 0;
-  opacity: 0.72;
-  background-image:
-    radial-gradient(circle, rgba(var(--ui-white-rgb, 255, 255, 255), 0.82) 0 1px, transparent 1.5px),
-    radial-gradient(circle, rgba(155, 184, 255, 0.68) 0 1px, transparent 1.4px),
-    radial-gradient(circle, rgba(var(--ui-white-rgb, 255, 255, 255), 0.42) 0 1.25px, transparent 1.6px);
-  background-position: 7px 11px, 38px 29px, 91px 67px;
-  background-size: 83px 79px, 137px 149px, 211px 197px;
-  mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 86%, transparent);
-}
-
 .starfield-background,
 .spider-cursor {
   position: fixed;
