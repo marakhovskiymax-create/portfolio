@@ -2491,16 +2491,17 @@ inset-block-start: 16px;
 width: min(calc(100% - 24px), 620px);
 }
 .masthead {
-grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+grid-template-columns: minmax(0, 1fr) auto;
+column-gap: 12px;
 width: 100%;
 min-height: 56px;
 padding: 6px 14px;
 }
 .masthead__links { display: none; }
-.wordmark { grid-column: 2; margin-inline-start: 0; }
+.wordmark { grid-column: 1; justify-self: start; margin-inline-start: 0; }
 .menu-toggle {
 display: inline-flex;
-grid-column: 3;
+grid-column: 2;
 justify-self: end;
 min-width: 44px;
 min-height: 44px;
@@ -2551,7 +2552,7 @@ color: #d0d0ce;
 font-size: 1rem;
 font-weight: 800;
 }
-.mobile-menu a:last-child { border-bottom: 0; }
+.mobile-menu a:last-of-type { border-bottom: 0; }
 .mobile-menu .language-menu { border-bottom: 1px solid var(--color-border); }
 .mobile-menu .language-menu__trigger {
 display: flex;
@@ -2571,7 +2572,8 @@ inset-block-start: 16px;
 width: min(calc(100% - 24px), 620px);
 }
 .masthead {
-grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+grid-template-columns: minmax(0, 1fr) auto;
+column-gap: 12px;
 width: 100%;
 min-height: 56px;
 padding: 6px 14px;
@@ -2580,12 +2582,13 @@ padding: 6px 14px;
 display: none;
 }
 .wordmark {
-grid-column: 2;
+grid-column: 1;
+justify-self: start;
 margin-inline-start: 0;
 }
 .menu-toggle {
 display: inline-flex;
-grid-column: 3;
+grid-column: 2;
 justify-self: end;
 min-width: 44px;
 min-height: 44px;
@@ -2641,7 +2644,7 @@ color: #d0d0ce;
 font-size: 1rem;
 font-weight: 800;
 }
-.mobile-menu a:last-child {
+.mobile-menu a:last-of-type {
 border-bottom: 0;
 }
 .mobile-menu .language-menu {
@@ -4809,8 +4812,12 @@ html[data-theme="light"] .header-entry__surface { background: rgba(255,255,255,0
           const bounds = bar.getBoundingClientRect();
           const wordmark = logo.getBoundingClientRect();
           if (!bounds.width || !wordmark.width) { finish(); return; }
-          const shift = bounds.left + bounds.width / 2 - (wordmark.left + wordmark.width / 2);
+          const compact = window.matchMedia("(max-width: 1120px)").matches;
+          const shift = compact ? 0 : bounds.left + bounds.width / 2 - (wordmark.left + wordmark.width / 2);
           const inset = Math.max(0, (bounds.width - wordmark.width - 32) / 2);
+          const closedClip = compact
+            ? `inset(0px ${Math.max(0, bounds.width - wordmark.width - 32)}px 0px 0px round 999px)`
+            : `inset(0px ${inset}px round 999px)`;
           const primary = bar.querySelector(".masthead__links--primary");
           const meta = bar.querySelector(".masthead__links--meta");
           const menu = bar.querySelector(".menu-toggle");
@@ -4827,7 +4834,7 @@ html[data-theme="light"] .header-entry__surface { background: rgba(255,255,255,0
           gsap.set(logo, { autoAlpha: 0, x: shift });
           const controls = [primary, meta, menu].filter(Boolean);
           gsap.set(controls, { autoAlpha: 0, y: 6 });
-          gsap.set(surface, { autoAlpha: 0, clipPath: `inset(0px ${inset}px round 999px)` });
+          gsap.set(surface, { autoAlpha: 0, clipPath: closedClip });
           timeline = gsap.timeline({ paused: true, defaults: { ease: "power3.out" }, onComplete: finish });
           timeline.to(logo, { autoAlpha: 1, duration: 0.24 }, 0)
             .to(logo, { x: 0, duration: 0.56 }, 0.22)
@@ -4915,13 +4922,13 @@ html[data-theme="light"] .header-entry__surface { background: rgba(255,255,255,0
             <button type="button" aria-pressed="false">Русский (RU)</button>
           </div>
         </details>
+        <a href="mailto:marakhovskiymax@gmail.com">marakhovskiymax@gmail.com</a>
+        <a href="/CV.pdf?v=20261114-cv-revision" data-ru-href="/Резюме.pdf" target="_blank" rel="noopener noreferrer" type="application/pdf">Résumé</a>
         <div class="theme-switcher" role="radiogroup" aria-label="Color theme" data-theme-switcher>
           <span class="theme-switcher__indicator" aria-hidden="true"></span>
           <button class="theme-switcher__option" type="button" role="radio" aria-checked="false" aria-label="Switch to light theme" data-theme-option="light" tabindex="-1"><svg class="theme-switcher__icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M8 12a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" /><path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7" /></svg></button>
           <button class="theme-switcher__option" type="button" role="radio" aria-checked="true" aria-label="Switch to dark theme" data-theme-option="dark" tabindex="0"><svg class="theme-switcher__icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454l0 .008" /><path d="M17 4a2 2 0 0 0 2 2a2 2 0 0 0 -2 2a2 2 0 0 0 -2 -2a2 2 0 0 0 2 -2" /><path d="M19 11h2m-1 -1v2" /></svg></button>
         </div>
-        <a href="mailto:marakhovskiymax@gmail.com">marakhovskiymax@gmail.com</a>
-        <a href="/CV.pdf?v=20261114-cv-revision" data-ru-href="/Резюме.pdf" target="_blank" rel="noopener noreferrer" type="application/pdf">Résumé</a>
       </div>
     </header>
     <script data-entry-header>window.siteI18n?.apply(document.querySelector(".site-header"));window.siteEntry?.resume();</script>

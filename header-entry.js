@@ -78,8 +78,12 @@
           const bounds = bar.getBoundingClientRect();
           const wordmark = logo.getBoundingClientRect();
           if (!bounds.width || !wordmark.width) { finish(); return; }
-          const shift = bounds.left + bounds.width / 2 - (wordmark.left + wordmark.width / 2);
+          const compact = window.matchMedia("(max-width: 1120px)").matches;
+          const shift = compact ? 0 : bounds.left + bounds.width / 2 - (wordmark.left + wordmark.width / 2);
           const inset = Math.max(0, (bounds.width - wordmark.width - 32) / 2);
+          const closedClip = compact
+            ? `inset(0px ${Math.max(0, bounds.width - wordmark.width - 32)}px 0px 0px round 999px)`
+            : `inset(0px ${inset}px round 999px)`;
           const primary = bar.querySelector(".masthead__links--primary");
           const meta = bar.querySelector(".masthead__links--meta");
           const menu = bar.querySelector(".menu-toggle");
@@ -96,7 +100,7 @@
           gsap.set(logo, { autoAlpha: 0, x: shift });
           const controls = [primary, meta, menu].filter(Boolean);
           gsap.set(controls, { autoAlpha: 0, y: 6 });
-          gsap.set(surface, { autoAlpha: 0, clipPath: `inset(0px ${inset}px round 999px)` });
+          gsap.set(surface, { autoAlpha: 0, clipPath: closedClip });
           timeline = gsap.timeline({ paused: true, defaults: { ease: "power3.out" }, onComplete: finish });
           timeline.to(logo, { autoAlpha: 1, duration: 0.24 }, 0)
             .to(logo, { x: 0, duration: 0.56 }, 0.22)
