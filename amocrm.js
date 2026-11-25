@@ -994,6 +994,7 @@ function initCaseTextMotion() {
       preparedElements.set(section.querySelector(".case-hero__copy") || title, {
         characters,
         supportingElements,
+        hero: true,
       });
     } else {
       const warm = config.selector === "#website";
@@ -1019,15 +1020,16 @@ function initCaseTextMotion() {
       if (!prepared) return;
 
       if (prepared.characters) {
+        const startDelay = prepared.hero ? Math.max(0, (500 - performance.now()) / 1000) : 0;
         if (prepared.animation) prepared.animation.play();
-        else window.gsap.to(prepared.characters, titleMotion(prepared.characters));
+        else window.gsap.to(prepared.characters, { ...titleMotion(prepared.characters), delay: startDelay });
         prepared.supportingElements?.forEach((element) => {
           const isHeroMeta = element.matches(".case-meta");
           window.gsap.to(element, {
             autoAlpha: 1,
             y: 0,
             duration: isHeroMeta ? 0.32 : 0.28,
-            delay: isHeroMeta ? 2.2 : 0.04,
+            delay: startDelay + (isHeroMeta ? 2.2 : 0.04),
             ease: "power3.out",
             clearProps: "transform,opacity,visibility",
           });
@@ -1205,7 +1207,11 @@ function initNextProjectTextEffect() {
   observer.observe(label);
 }
 
-initCaseTextMotion();
+try {
+  initCaseTextMotion();
+} finally {
+  document.documentElement.classList.remove("case-hero-pending");
+}
 initMetricScrambleInView();
 initDecisionTextEffects();
 initNextProjectTextEffect();

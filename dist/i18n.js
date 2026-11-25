@@ -6,8 +6,8 @@
   try { saved = localStorage.getItem("portfolio-language") || "en"; } catch { /* Storage can be disabled. */ }
   let locale = requested === "ru" || requested === "en" ? requested : saved === "ru" ? "ru" : "en";
   const sourceScripts = page === "index"
-    ? ["gsap-starter.js", "script.js?v=20261118-performance"]
-    : ["script.js?v=20261118-performance", "amocrm.js?v=20261118-performance"];
+    ? ["gsap-starter.js", "script.js?v=20261125-hero-start"]
+    : ["script.js?v=20261125-hero-start", "amocrm.js?v=20261125-hero-start"];
   let messages = {};
 
   // Bind short Russian function words to the next word before motion splits text.
@@ -151,9 +151,15 @@
 
   async function start() {
     try {
-      const response = await fetch(`locales/${locale}.json?v=20261116-preposition-wrap`);
-      if (!response.ok) throw new Error(`Locale ${locale} could not be loaded`);
-      translatePage(await response.json());
+      if (window.siteLocaleRequest?.locale === locale) {
+        const result = await window.siteLocaleRequest.ready;
+        if (result.error) throw result.error;
+        translatePage(result.catalog);
+      } else {
+        const response = await fetch(`locales/${locale}.json?v=20261116-preposition-wrap`);
+        if (!response.ok) throw new Error(`Locale ${locale} could not be loaded`);
+        translatePage(await response.json());
+      }
     } catch (error) {
       console.error("Portfolio localization:", error);
       locale = "en";
@@ -169,7 +175,7 @@
       document.documentElement.classList.remove("locale-pending");
     }
     await loadScriptsInOrder(sourceScripts);
-    document.documentElement.classList.remove("case-motion-pending", "hero-motion-pending", "page-motion-pending");
+    document.documentElement.classList.remove("case-motion-pending", "case-hero-pending", "hero-motion-pending", "page-motion-pending");
   }
 
   start();

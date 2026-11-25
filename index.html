@@ -34,6 +34,25 @@
       let saved = "en";
       try { saved = localStorage.getItem("portfolio-language") || "en"; } catch {}
       const russian = requested === "ru" || (requested !== "en" && saved === "ru");
+      // Start only the resources needed for first-screen motion while HTML parses.
+      // Their download does not hide the page or wait for fonts/images.
+      const locale = russian ? "ru" : "en";
+      window.siteLocaleRequest = {
+        locale,
+        ready: fetch(`locales/${locale}.json?v=20261116-preposition-wrap`)
+          .then((response) => {
+            if (!response.ok) throw new Error(`Locale ${locale} could not be loaded`);
+            return response.json();
+          })
+          .then((catalog) => ({ catalog }), (error) => ({ error })),
+      };
+      ["gsap-starter.js", "script.js?v=20261125-hero-start"].forEach((source) => {
+        const link = document.createElement("link");
+        link.rel = "preload";
+        link.as = "script";
+        link.href = source;
+        document.head.append(link);
+      });
       const fonts = [
         "playfair-display-italic-latin.woff2",
         russian ? "inter-tight-normal-cyrillic.woff2" : "inter-tight-normal-latin.woff2",
@@ -79,6 +98,9 @@
     <script defer src="theme.js?v=20261125"></script>
     <script defer src="loaders.js?v=20261125-no-page-loader"></script>
     <script defer src="analytics.js?v=20261121-ga4"></script>
+    <script defer src="vendor/gsap.min.js"></script>
+    <script defer src="vendor/ScrollTrigger.min.js"></script>
+    <script defer src="i18n.js?v=20261125-hero-start" onerror="document.documentElement.classList.remove('locale-pending', 'hero-motion-pending', 'page-motion-pending')"></script>
   </head>
   <body>
     <a class="skip-link" href="#main">К содержанию</a>
@@ -931,8 +953,5 @@
       </div>
     </section>
 
-    <script src="vendor/gsap.min.js"></script>
-    <script src="vendor/ScrollTrigger.min.js"></script>
-    <script src="i18n.js?v=20261118-performance" onerror="document.documentElement.classList.remove('locale-pending', 'hero-motion-pending', 'page-motion-pending')"></script>
   </body>
 </html>

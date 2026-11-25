@@ -888,9 +888,16 @@ function initHeroTextEffect() {
 
   if (!window.gsap || reduceMotion) return;
 
+  // Target the first reveal at 500ms from navigation, rather than adding a new
+  // wait after scripts finish loading. Keep every interval within the sequence.
+  const sequence = [...textEffects, ...supportingElements];
+  const firstDelay = Math.min(...sequence.map((element) => Number.parseFloat(element.dataset.heroDelay || "0")));
+  const startDelay = Math.max(0, (500 - performance.now()) / 1000);
+  const revealDelay = (element) => startDelay + Number.parseFloat(element.dataset.heroDelay || "0") - firstDelay;
+
   textEffects.forEach((element) => {
     const characters = element.querySelectorAll(".hero-char");
-    const delay = Number.parseFloat(element.dataset.heroDelay || "0");
+    const delay = revealDelay(element);
 
     window.gsap.fromTo(
       characters,
@@ -909,7 +916,7 @@ function initHeroTextEffect() {
   });
 
   supportingElements.forEach((element) => {
-    const delay = Number.parseFloat(element.dataset.heroDelay || "0");
+    const delay = revealDelay(element);
     const useBlur = element.dataset.heroPreset === "blur";
 
     window.gsap.fromTo(
