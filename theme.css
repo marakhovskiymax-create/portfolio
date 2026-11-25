@@ -50,9 +50,10 @@ html[data-theme="light"] body.case-page { color-scheme: light; }
   position: relative;
   display: inline-flex;
   flex: none;
-  width: 52px;
+  width: 60px;
   height: 28px;
   align-items: center;
+  gap: 8px;
   padding: 1px;
   border: 1px solid var(--theme-track-border);
   border-radius: 999px;
@@ -69,7 +70,7 @@ html[data-theme="light"] body.case-page { color-scheme: light; }
   border: 1px solid var(--theme-track-border);
   border-radius: 50%;
   background: var(--theme-selected);
-  transform: translateX(24px);
+  transform: translateX(32px);
   transition: transform 600ms cubic-bezier(0.34, 1.35, 0.64, 1), background-color 160ms ease, border-color 160ms ease;
   pointer-events: none;
 }
@@ -101,7 +102,7 @@ html[data-theme="light"] .theme-switcher__indicator { transform: translateX(0); 
 .theme-switcher__option:hover .tabler-icon { transform: rotate(-12deg); }
 html[data-theme="light"] [data-theme-option="light"],
 html[data-theme="dark"] [data-theme-option="dark"] { color: var(--color-text, #f4f3ee); }
-.theme-switcher:focus-within { outline: 2px solid var(--color-accent, #9bb8ff); outline-offset: 3px; }
+.theme-switcher__option:focus { outline: none; }
 .theme-switcher__option:focus-visible { outline: none; }
 .masthead__links--meta { gap: 32px; }
 .mobile-menu > .theme-switcher { margin: 12px; }
