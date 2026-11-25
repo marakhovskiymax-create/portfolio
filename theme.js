@@ -8,7 +8,6 @@
   const root = document.documentElement;
   const key = "portfolio-theme";
   const switches = Array.from(document.querySelectorAll("[data-theme-switcher]"));
-  const toggles = Array.from(document.querySelectorAll("[data-theme-toggle]"));
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   let activeReveal;
   let previousZone = -1;
@@ -28,8 +27,8 @@
 
   function labels() {
     return locale() === "ru"
-      ? { group: "Цветовая тема", light: "Включить светлую тему", dark: "Включить тёмную тему", lightLabel: "Светлая тема", darkLabel: "Тёмная тема", onLight: "Светлая тема включена", onDark: "Тёмная тема включена" }
-      : { group: "Color theme", light: "Switch to light theme", dark: "Switch to dark theme", lightLabel: "Light theme", darkLabel: "Dark theme", onLight: "Light theme enabled", onDark: "Dark theme enabled" };
+      ? { group: "Цветовая тема", light: "Включить светлую тему", dark: "Включить тёмную тему", onLight: "Светлая тема включена", onDark: "Тёмная тема включена" }
+      : { group: "Color theme", light: "Switch to light theme", dark: "Switch to dark theme", onLight: "Light theme enabled", onDark: "Dark theme enabled" };
   }
 
   function sync() {
@@ -44,14 +43,6 @@
         button.title = text[button.dataset.themeOption];
         button.tabIndex = selected ? 0 : -1;
       });
-    });
-    toggles.forEach((button) => {
-      const dark = root.dataset.theme === "dark";
-      button.lang = locale();
-      button.setAttribute("aria-checked", String(dark));
-      button.setAttribute("aria-label", dark ? text.light : text.dark);
-      button.title = dark ? text.light : text.dark;
-      button.querySelector("[data-theme-toggle-label]").textContent = dark ? text.darkLabel : text.lightLabel;
     });
   }
 
@@ -217,10 +208,6 @@
       });
     });
   });
-  toggles.forEach((button) => button.addEventListener("click", () => {
-    const current = activeReveal?.value || root.dataset.theme;
-    chooseTheme(current === "dark" ? "light" : "dark", button);
-  }));
   new MutationObserver(sync).observe(root, { attributes: true, attributeFilter: ["lang"] });
   window.addEventListener("storage", (event) => {
     if (event.key === key || event.key === null) setTheme(valid(event.newValue) ? event.newValue : "dark", false);

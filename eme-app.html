@@ -5734,36 +5734,6 @@ html[data-theme="dark"] [data-theme-option="dark"] { color: var(--color-text, #f
 .theme-switcher--utility { margin-inline-start: auto; }
 header:has(> .theme-switcher--utility) { flex-wrap: wrap; }
 .theme-status { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-.theme-toggle {
-display: inline-flex;
-align-items: center;
-gap: 10px;
-min-height: 36px;
-padding: 6px 10px;
-margin-inline-start: -10px;
-border: 0;
-border-radius: 999px;
-background: transparent;
-color: var(--color-text);
-font: inherit;
-cursor: pointer;
-}
-.theme-toggle__icons { position: relative; flex: none; width: 20px; height: 20px; }
-.theme-toggle__icons .tabler-icon {
-position: absolute;
-inset: 0;
-width: 20px;
-height: 20px;
-background: currentColor;
--webkit-mask: var(--tabler-icon) center / contain no-repeat;
-mask: var(--tabler-icon) center / contain no-repeat;
-transition: opacity 240ms ease, transform 500ms cubic-bezier(0.34, 1.35, 0.64, 1);
-}
-.theme-toggle__icons .tabler-icon--sun { opacity: 0; transform: rotate(-90deg) scale(0.5); }
-.theme-toggle__icons .tabler-icon--moon-stars { opacity: 1; transform: rotate(-12deg) scale(1); }
-html[data-theme="light"] .theme-toggle__icons .tabler-icon--sun { opacity: 1; transform: rotate(0) scale(1); }
-html[data-theme="light"] .theme-toggle__icons .tabler-icon--moon-stars { opacity: 0; transform: rotate(90deg) scale(0.5); }
-.theme-toggle:focus-visible { outline: 1px solid currentColor; outline-offset: 3px; }
 :root[data-theme-reveal]::view-transition { pointer-events: none; }
 :root[data-theme-reveal]::view-transition-group(root) { animation: none; }
 :root[data-theme-reveal]::view-transition-image-pair(root) { isolation: isolate; }
@@ -5778,7 +5748,7 @@ z-index: 2;
 @keyframes theme-reveal-hold { from { opacity: 1; } to { opacity: 1; } }
 @media (min-width: 1121px) and (max-width: 1180px) { .masthead__links--meta { gap: 22px; } }
 @media (prefers-reduced-motion: reduce) {
-.theme-switcher__indicator, .theme-switcher__option, .theme-switcher__option .tabler-icon, .theme-toggle__icons .tabler-icon { transition: none; }
+.theme-switcher__indicator, .theme-switcher__option, .theme-switcher__option .tabler-icon { transition: none; }
 .theme-switcher__option:hover .tabler-icon { transform: none; }
 }
 html[data-theme="light"] .masthead,
@@ -6307,7 +6277,7 @@ html[data-theme="light"] .header-entry__surface { background: rgba(255,255,255,0
 
 </script>
 <!-- FIRST-PAINT:END -->
-    <script defer src="theme.js?v=20261125-organic-theme"></script>
+    <script defer src="theme.js?v=20261125-footer-bar"></script>
     <script defer src="loaders.js?v=20261125-no-page-loader"></script>
     <script defer src="analytics.js?v=20261121-ga4"></script>
   </head>
@@ -6655,13 +6625,11 @@ html[data-theme="light"] .header-entry__surface { background: rgba(255,255,255,0
             <li><a href="index.html#contact">Discuss a project <span class="tabler-icon tabler-icon--arrow-up-right" aria-hidden="true"></span></a></li>
             <li><a href="#overview">Back to top <span class="tabler-icon tabler-icon--arrow-up" aria-hidden="true"></span></a></li>
             <li>
-              <button class="theme-toggle" type="button" role="switch" aria-checked="true" aria-label="Switch to light theme" data-theme-toggle>
-                <span class="theme-toggle__icons" aria-hidden="true">
-                  <span class="tabler-icon tabler-icon--sun"></span>
-                  <span class="tabler-icon tabler-icon--moon-stars"></span>
-                </span>
-                <span data-theme-toggle-label data-early-localized>Dark theme</span>
-              </button>
+              <div class="theme-switcher" role="radiogroup" aria-label="Color theme" data-theme-switcher>
+                <span class="theme-switcher__indicator" aria-hidden="true"></span>
+                <button class="theme-switcher__option" type="button" role="radio" aria-checked="false" aria-label="Switch to light theme" data-theme-option="light" tabindex="-1"><span class="tabler-icon tabler-icon--sun" aria-hidden="true"></span></button>
+                <button class="theme-switcher__option" type="button" role="radio" aria-checked="true" aria-label="Switch to dark theme" data-theme-option="dark" tabindex="0"><span class="tabler-icon tabler-icon--moon-stars" aria-hidden="true"></span></button>
+              </div>
             </li>
           </ul>
         </div>
