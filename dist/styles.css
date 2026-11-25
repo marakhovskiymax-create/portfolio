@@ -4150,12 +4150,12 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
     padding: 0 14px;
     border: 1px solid rgba(var(--ui-fg-rgb, 244, 243, 238), 0.22);
     border-radius: 999px;
-    background: rgba(var(--ui-fg-rgb, 244, 243, 238), 0.04);
+    background: transparent;
   }
 
   body:not(.case-page) .time-machine__stop.is-active .time-machine__stop-target {
     border-color: var(--project-accent);
-    background: color-mix(in srgb, var(--project-accent) 14%, #09090b);
+    background: transparent;
   }
 
   body:not(.case-page) .time-machine__stop-label {
@@ -4301,12 +4301,12 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
     padding: 0 4px;
     border: 1px solid rgba(var(--ui-fg-rgb, 244, 243, 238), 0.22);
     border-radius: 999px;
-    background: rgba(var(--ui-fg-rgb, 244, 243, 238), 0.04);
+    background: transparent;
   }
 
   body:not(.case-page) .time-machine__stop.is-active .time-machine__stop-target {
     border-color: var(--project-accent);
-    background: color-mix(in srgb, var(--project-accent) 14%, #09090b);
+    background: transparent;
   }
 
   body:not(.case-page) .time-machine__stop-label {
