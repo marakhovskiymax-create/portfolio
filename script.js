@@ -384,7 +384,8 @@ function initSpiderCursor() {
   const context = canvas.getContext("2d");
   if (!context) return;
 
-  // Free stars belong behind page content; only the interactive cursor is an overlay.
+  // All stars belong behind page content, including stars connected to the cursor.
+  // Only the cursor threads and target outline are overlays.
   const backgroundCanvas = document.createElement("canvas");
   const backgroundContext = backgroundCanvas.getContext("2d");
   if (!backgroundContext) return;
@@ -682,7 +683,7 @@ function initSpiderCursor() {
         particle.y + cos(time * particle.driftRate * 0.82 + particle.phase) * particle.driftY * freeStarAmount,
         height,
       );
-      const particleContext = connected || particle.length > 0 ? context : backgroundContext;
+      const particleContext = backgroundContext;
       particleContext.save();
       particleContext.globalAlpha = connected ? 1 : lerp(0.58, 0.92, twinkle);
       drawCircle(visualX, visualY, particle.radius * (connected ? 1 : lerp(0.82, 1.16, twinkle)), particleContext);
