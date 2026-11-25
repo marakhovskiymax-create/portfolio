@@ -256,7 +256,9 @@ body.case-page {
   top: 0;
   bottom: 0;
   width: clamp(96px, 14vw, 240px);
-  opacity: clamp(0, calc((var(--case-scroll-opacity, 1) - 0.5) * 2), 1);
+  /* The carousel's reveal already fades this layer with the slides. Keep its
+     edge gradient intact even while the block is only entering the viewport. */
+  opacity: 1;
   pointer-events: none;
   content: "";
 }
