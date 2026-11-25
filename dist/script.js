@@ -414,6 +414,15 @@ function initSpiderCursor() {
   backgroundCanvas.setAttribute("data-starfield-background", "");
   backgroundCanvas.setAttribute("aria-hidden", "true");
   document.body.prepend(backgroundCanvas);
+  // Document-positioned outlines scroll in the same compositor layer as their
+  // objects. A fixed canvas can lag async scrolling by an entire frame.
+  const objectCanvas = document.createElement("canvas");
+  const objectContext = objectCanvas.getContext("2d");
+  objectCanvas.className = "object-aura";
+  objectCanvas.setAttribute("aria-hidden", "true");
+  document.body.prepend(objectCanvas);
+  let objectScrollTop = -1;
+  let objectPainted = false;
 
   const { sin, cos, PI, hypot, min, max, sqrt } = Math;
   const many = (count, factory) => Array.from({ length: count }, (_, index) => factory(index));
@@ -448,6 +457,7 @@ function initSpiderCursor() {
   let previousTimestamp = 0;
   let frame = 0;
   let targetRadiusCache = new WeakMap();
+  let targetViewportCache = new WeakMap();
   const interactiveSelector = "a, button, [role='button'], input:not([type='hidden']), select, textarea, summary, [data-cursor-target]";
   const dragItemSelector = ".skill-drag-item, .work-chip";
   const hoverSelector = `${interactiveSelector}, ${dragItemSelector}, .quote-card, .quote-marquee__row, .case-carousel__viewport, .about-badge, .language-menu, [data-contact-globe]`;
@@ -484,7 +494,28 @@ function initSpiderCursor() {
     backgroundCanvas.width = canvas.width;
     backgroundCanvas.height = canvas.height;
     backgroundContext.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+    objectCanvas.width = canvas.width;
+    objectCanvas.height = canvas.height;
+    objectContext?.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
     targetRadiusCache = new WeakMap();
+    targetViewportCache = new WeakMap();
+  }
+
+  function isViewportBound(target) {
+    if (!target) return false;
+    const cached = targetViewportCache.get(target);
+    if (cached !== undefined) return cached;
+    let node = target;
+    while (node instanceof Element && node !== document.body) {
+      const position = window.getComputedStyle(node).position;
+      if (position === "fixed" || position === "sticky") {
+        targetViewportCache.set(target, true);
+        return true;
+      }
+      node = node.parentElement;
+    }
+    targetViewportCache.set(target, false);
+    return false;
   }
 
   function drawCircle(x, y, radius, paintContext = context) {
@@ -620,35 +651,35 @@ function initSpiderCursor() {
     return rect;
   }
 
-  function drawTargetTexture(rect, time, strength) {
+  function drawTargetTexture(rect, time, strength, paintContext = context) {
     const sampleCount = min(320, max(140, Math.ceil(rect.perimeter / 5)));
-    context.save();
-    context.lineWidth = 0.78;
+    paintContext.save();
+    paintContext.lineWidth = 0.78;
 
     for (let layer = 0; layer < 4; layer += 1) {
-      context.beginPath();
+      paintContext.beginPath();
       for (let index = 0; index <= sampleCount; index += 1) {
         const progress = index / sampleCount;
         const edge = perimeterPoint(rect, progress);
         const offset = noise((edge.x - rect.centerX) / 7 + time * 8, (edge.y - rect.centerY) / 7, 101 + layer * 13) * (0.45 + layer * 0.7);
         const x = edge.x + offset;
         const y = edge.y + offset;
-        if (index === 0) context.moveTo(x, y);
-        else context.lineTo(x, y);
+        if (index === 0) paintContext.moveTo(x, y);
+        else paintContext.lineTo(x, y);
       }
-      context.globalAlpha = strength * [0.92, 0.56, 0.34, 0.22][layer];
-      context.stroke();
+      paintContext.globalAlpha = strength * [0.92, 0.56, 0.34, 0.22][layer];
+      paintContext.stroke();
     }
 
-    context.globalAlpha = strength * 0.96;
+    paintContext.globalAlpha = strength * 0.96;
     many(18, (index) => {
       const progress = index / 18 + sin(time * 0.8 + index) * 0.006;
       const edge = perimeterPoint(rect, progress);
       const radius = 0.8 + (sin(time * 2 + index * 1.7) + 1) * 0.45;
-      drawCircle(edge.x, edge.y, radius);
+      drawCircle(edge.x, edge.y, radius, paintContext);
       return null;
     });
-    context.restore();
+    paintContext.restore();
   }
 
   function drawPointerAura(time, strength) {
@@ -785,6 +816,8 @@ function initSpiderCursor() {
     outlinedTarget = null;
     targetProgress = 0;
     context.clearRect(0, 0, width, height);
+    objectContext?.clearRect(0, 0, width, height);
+    objectPainted = false;
   }
 
   function render(timestamp) {
@@ -793,11 +826,18 @@ function initSpiderCursor() {
 
     syncCanvas();
     context.clearRect(0, 0, width, height);
+    if (objectPainted) objectContext?.clearRect(0, 0, width, height);
+    objectPainted = false;
     backgroundContext.clearRect(0, 0, width, height);
     backgroundContext.fillStyle = pointerPalette.sky;
     context.fillStyle = pointerPalette.ink;
     context.strokeStyle = pointerPalette.stroke;
     context.lineWidth = 0.72;
+    if (objectContext) {
+      objectContext.fillStyle = pointerPalette.ink;
+      objectContext.strokeStyle = pointerPalette.stroke;
+      objectContext.lineWidth = 0.72;
+    }
     const time = timestamp / 1000;
     const delta = previousTimestamp ? min(0.05, (timestamp - previousTimestamp) / 1000) : 0;
     previousTimestamp = timestamp;
@@ -813,10 +853,15 @@ function initSpiderCursor() {
       outlinedTarget = activeTarget;
     }
     const currentRect = getTargetRect(outlinedTarget);
+    const targetContext = !objectContext || isViewportBound(outlinedTarget) || canvas.matches(":popover-open") ? context : objectContext;
     const targetIsInHeader = Boolean(outlinedTarget?.closest(".site-header"));
-    const headerBounds = currentRect && !targetIsInHeader && !canvas.matches(":popover-open")
+    const headerBounds = currentRect && targetContext === context && !targetIsInHeader && !canvas.matches(":popover-open")
       ? masthead?.getBoundingClientRect()
       : null;
+    if (currentRect && targetContext === objectContext && objectScrollTop !== window.scrollY) {
+      objectScrollTop = window.scrollY;
+      objectCanvas.style.top = `${objectScrollTop}px`;
+    }
     if (typeof syncTimeMachinePointerHover === "function" && pointerInside) syncTimeMachinePointerHover(hoveredElement);
     auraProgress = clamp(auraProgress + (pointerInside && !pointerOverHoverTarget ? delta / 0.18 : -delta / 0.14));
     if (pointerInside && !pointerOverHoverTarget && auraProgress > 0.01) {
@@ -848,7 +893,8 @@ function initSpiderCursor() {
         context.closePath();
         context.clip("evenodd");
       }
-      drawTargetTexture(currentRect, time, targetStrength);
+      drawTargetTexture(currentRect, time, targetStrength, targetContext);
+      objectPainted = targetContext === objectContext;
       if (headerBounds) context.restore();
     }
     if (targetProgress === 0 && !activeTarget) outlinedTarget = null;
@@ -884,6 +930,7 @@ function initSpiderCursor() {
 initSpiderCursor();
 
 function initHeroTextEffect() {
+  if (window.siteEntry?.has(document.querySelector(".hero"))) return;
   const textEffects = Array.from(document.querySelectorAll("[data-hero-text-effect]"));
   const supportingElements = Array.from(document.querySelectorAll("[data-hero-reveal]"));
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;

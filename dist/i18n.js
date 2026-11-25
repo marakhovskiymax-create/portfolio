@@ -5,10 +5,11 @@
   let saved = "en";
   try { saved = localStorage.getItem("portfolio-language") || "en"; } catch { /* Storage can be disabled. */ }
   let locale = requested === "ru" || requested === "en" ? requested : saved === "ru" ? "ru" : "en";
-  const sourceScripts = page === "index"
-    ? ["gsap-starter.js", "script.js?v=20261125-hero-start"]
-    : ["script.js?v=20261125-hero-start", "amocrm.js?v=20261125-hero-start"];
-  let messages = {};
+  const bundled = JSON.parse(document.getElementById("page-catalog")?.textContent || "{}");
+  const catalog = bundled[locale] || { messages: {}, meta: {} };
+  const messages = catalog.messages || {};
+  const localized = new WeakSet();
+  let started = false;
 
   // Bind short Russian function words to the next word before motion splits text.
   const russianShortWord = /(?<![\p{L}\p{N}])(?:из-за|из-под|вместо|вокруг|внутри|вдоль|между|перед|после|через|около|среди|кроме|против|сквозь|сверх|вне|ради|обо|для|при|под|над|без|про|из|от|до|по|на|за|об|во|со|ко|или|либо|в|к|с|у|о|и|а|не|но)[\t\n\r\f ]+(?=[«„“"'({]*[\p{L}\p{N}])/giu;
@@ -18,6 +19,8 @@
 
   window.siteI18n = {
     locale,
+    apply: translateRoot,
+    start,
     t(source) {
       const translated = messages[source] || source;
       return locale === "ru" ? keepRussianShortWords(translated) : translated;
@@ -75,50 +78,58 @@
   }
 
   function translateNode(node) {
-    if (node.parentElement?.closest("script, style, noscript, svg, template")) return;
+    if (node.parentElement?.closest("script, style, noscript, svg, template, [data-early-localized]")) return;
     const match = node.textContent.match(/^(\s*)([\s\S]*?)(\s*)$/);
     if (!match) return;
     const key = match[2].replace(/\s+/g, " ").trim();
     if (key && Object.hasOwn(messages, key)) node.textContent = match[1] + messages[key] + match[3];
   }
 
-  function translatePage(catalog) {
-    messages = { ...(catalog.common || {}), ...(catalog.pages?.[page] || {}) };
-    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  function translateRoot(root = document.body) {
+    if (!root || localized.has(root)) return;
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
     const nodes = [];
     while (walker.nextNode()) nodes.push(walker.currentNode);
     nodes.forEach(translateNode);
-    document.querySelectorAll("[data-i18n-key]").forEach((element) => {
+    root.querySelectorAll("[data-i18n-key]").forEach((element) => {
+      if (element.closest("[data-early-localized]")) return;
       const translation = messages[element.dataset.i18nKey];
       if (translation) element.textContent = translation;
     });
     if (locale === "ru") {
-      const russianText = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+      const russianText = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
       while (russianText.nextNode()) {
         const node = russianText.currentNode;
-        if (node.parentElement?.closest("script, style, noscript, svg, template, pre, code, kbd, samp, textarea, [contenteditable]")) continue;
+        if (node.parentElement?.closest("script, style, noscript, svg, template, pre, code, kbd, samp, textarea, [contenteditable], [data-early-localized]")) continue;
         node.nodeValue = keepRussianShortWords(node.nodeValue);
       }
-      document.querySelectorAll("[data-ru-src]").forEach((element) => {
+      root.querySelectorAll("[data-ru-src]").forEach((element) => {
         element.setAttribute("src", element.dataset.ruSrc);
       });
-      document.querySelectorAll("[data-ru-href]").forEach((element) => {
+      root.querySelectorAll("[data-ru-href]").forEach((element) => {
         element.setAttribute("href", element.dataset.ruHref);
       });
     }
-    document.querySelectorAll("[alt], [aria-label], [title], [placeholder]").forEach((element) => {
+    [root, ...root.querySelectorAll("[alt], [aria-label], [title], [placeholder]")].forEach((element) => {
+      if (element.closest("[data-early-localized]")) return;
       ["alt", "aria-label", "title", "placeholder"].forEach((attribute) => {
         const value = element.getAttribute(attribute);
         if (value && Object.hasOwn(messages, value)) element.setAttribute(attribute, messages[value]);
       });
     });
     if (locale === "ru") {
-      document.querySelectorAll('[lang="en"]').forEach((element) => { element.lang = "ru"; });
+      if (root.lang === "en") root.lang = "ru";
+      root.querySelectorAll('[lang="en"]').forEach((element) => { element.lang = "ru"; });
     }
 
     document.documentElement.lang = locale;
     document.body.dataset.locale = locale;
-    const meta = catalog.meta?.[page];
+    localized.add(root);
+    root.setAttribute("data-early-localized", locale);
+  }
+
+  function applyDocumentMetadata() {
+    const meta = catalog.meta;
     if (meta?.title) document.title = meta.title;
     if (meta?.description) document.querySelector('meta[name="description"]')?.setAttribute("content", meta.description);
 
@@ -136,47 +147,16 @@
     });
   }
 
-  function loadScriptsInOrder(sources) {
-    return Promise.all(sources.map((source) => new Promise((resolve) => {
-      const script = document.createElement("script");
-      // Dynamic classic scripts normally run as soon as each download ends.
-      // Keep execution order while fetching the independent files in parallel.
-      script.async = false;
-      script.src = source;
-      script.onload = resolve;
-      script.onerror = resolve;
-      document.body.append(script);
-    })));
+  function start() {
+    if (started) return;
+    started = true;
+    translateRoot(document.body);
+    updateLanguageMenu();
+    keepLanguageInNavigation();
+    try { localStorage.setItem("portfolio-language", locale); } catch { /* URL selection still works. */ }
   }
 
-  async function start() {
-    try {
-      if (window.siteLocaleRequest?.locale === locale) {
-        const result = await window.siteLocaleRequest.ready;
-        if (result.error) throw result.error;
-        translatePage(result.catalog);
-      } else {
-        const response = await fetch(`locales/${locale}.json?v=20261116-preposition-wrap`);
-        if (!response.ok) throw new Error(`Locale ${locale} could not be loaded`);
-        translatePage(await response.json());
-      }
-    } catch (error) {
-      console.error("Portfolio localization:", error);
-      locale = "en";
-      window.siteI18n.locale = "en";
-      document.documentElement.lang = "en";
-      document.title = document.querySelector("title")?.dataset.titleEn || document.title;
-    }
-    try { localStorage.setItem("portfolio-language", locale); } catch { /* URL still preserves the choice. */ }
-    try {
-      updateLanguageMenu();
-      keepLanguageInNavigation();
-    } finally {
-      document.documentElement.classList.remove("locale-pending");
-    }
-    await loadScriptsInOrder(sourceScripts);
-    document.documentElement.classList.remove("case-motion-pending", "case-hero-pending", "hero-motion-pending", "page-motion-pending");
-  }
-
-  start();
+  document.documentElement.classList.replace("no-js", "js");
+  document.documentElement.lang = locale;
+  applyDocumentMetadata();
 })();

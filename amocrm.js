@@ -981,6 +981,7 @@ function initCaseTextMotion() {
     const section = document.querySelector(config.selector);
     const title = section?.querySelector(config.title);
     if (!section || !title) return;
+    if (config.selector === "#overview" && window.siteEntry?.has(section.querySelector(".case-hero__copy"))) return;
 
     const characters = splitTitle(title);
     const supportingElements = [...new Set(config.support.flatMap((selector) => Array.from(section.querySelectorAll(selector))))];
