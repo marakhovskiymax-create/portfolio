@@ -4425,6 +4425,14 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
     padding-inline: 10px;
   }
 
+  body:not(.case-page) .time-machine__stop:not(.is-active) .time-machine__stop-label {
+    color: var(--color-text);
+  }
+
+  body:not(.case-page) .time-machine__stop.is-active .time-machine__stop-label {
+    color: var(--project-accent);
+  }
+
   body:not(.case-page) .time-machine__stop.is-edge-clipped {
     visibility: hidden !important;
     pointer-events: none;

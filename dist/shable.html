@@ -3842,6 +3842,12 @@ body:not(.case-page) .time-machine__stop-target {
 width: auto;
 padding-inline: 10px;
 }
+body:not(.case-page) .time-machine__stop:not(.is-active) .time-machine__stop-label {
+color: var(--color-text);
+}
+body:not(.case-page) .time-machine__stop.is-active .time-machine__stop-label {
+color: var(--project-accent);
+}
 body:not(.case-page) .time-machine__stop.is-edge-clipped {
 visibility: hidden !important;
 pointer-events: none;
@@ -5786,7 +5792,7 @@ html[data-theme="light"] .career-tab.is-active .career-tab__logo .career-logo--a
 html[data-theme="light"] .quote-card__logo--amocrm { content: url("design/assets/logos/amocrm-light.svg"); filter: none; }
 html[data-theme="light"] .quote-card__logo[src$="make-difference.svg"] { filter: invert(1) hue-rotate(180deg); }
 html[data-theme="light"] .quote-card__logo--loccitane { filter: brightness(0); }
-html[data-theme="light"] .contact__details { background: radial-gradient(circle at 50% 106%, rgba(49,80,164,0.08), transparent 48%), #eeefea; }
+html[data-theme="light"] .contact__details { background: none; }
 @media (min-width: 1025px) {
 html body:not(.case-page) .contact__details { background: none; }
 }
