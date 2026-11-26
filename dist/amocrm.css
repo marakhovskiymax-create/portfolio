@@ -584,6 +584,12 @@ body.case-page {
   text-align: left;
 }
 
+@media (min-width: 768px) {
+  .case-accordion__trigger {
+    padding-inline: 15px;
+  }
+}
+
 .case-accordion__trigger:focus-visible {
   outline: 1px solid var(--color-text);
   outline-offset: 6px;

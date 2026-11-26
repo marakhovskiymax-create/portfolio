@@ -1994,7 +1994,7 @@ min-height: 76px;
 align-items: center;
 justify-content: space-between;
 gap: 6px;
-padding: 20px;
+padding: 20px 15px;
 border: 0;
 background: transparent;
 color: var(--color-text);
@@ -4672,6 +4672,11 @@ font-size: clamp(1.15rem, 1.8vw, 1.5rem);
 font-weight: 600;
 line-height: 1.35;
 text-align: left;
+}
+@media (min-width: 768px) {
+.case-accordion__trigger {
+padding-inline: 15px;
+}
 }
 .case-accordion__trigger:focus-visible {
 outline: 1px solid var(--color-text);
