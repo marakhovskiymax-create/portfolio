@@ -2240,7 +2240,7 @@ body[data-locale="ru"] .hero__title-row--second {
   align-items: center;
   justify-content: space-between;
   gap: 6px;
-  padding: 20px 15px;
+  padding: 20px;
   border: 0;
   background: transparent;
   color: var(--color-text);
@@ -2275,7 +2275,7 @@ body[data-locale="ru"] .hero__title-row--second {
 
 .faq-answer__card {
   margin-bottom: 20px;
-  padding: 20px 22px;
+  padding: 20px;
   border: 1px solid rgba(var(--ui-fg-rgb, 244, 243, 238), 0.1);
   border-radius: 16px;
   background: rgba(var(--ui-fg-rgb, 244, 243, 238), 0.055);
@@ -3377,7 +3377,6 @@ body[data-locale="ru"] .hero__title-row--second {
   .faq-trigger {
     min-height: 68px;
     gap: 6px;
-    padding-block: 18px;
   }
 
   .faq-contact {
@@ -4482,10 +4481,6 @@ body.has-spider-cursor .skill-drag-item.is-dragging {
 
   body:not(.case-page) .faq__intro {
     margin-inline: auto;
-  }
-
-  .faq-trigger {
-    padding-inline: 0;
   }
 
   body:not(.case-page) .quote-marquee {

@@ -573,7 +573,7 @@ body.case-page {
   align-items: center;
   justify-content: space-between;
   gap: 6px;
-  padding: 18px 0;
+  padding: 20px;
   border: 0;
   background: transparent;
   color: var(--color-text);
@@ -582,12 +582,6 @@ body.case-page {
   font-weight: 600;
   line-height: 1.35;
   text-align: left;
-}
-
-@media (min-width: 768px) {
-  .case-accordion__trigger {
-    padding-inline: 15px;
-  }
 }
 
 .case-accordion__trigger:focus-visible {
@@ -617,7 +611,7 @@ body.case-page {
 
 .case-accordion__card {
   margin-bottom: 20px;
-  padding: 22px 24px;
+  padding: 20px;
   border: 1px solid rgba(var(--ui-fg-rgb, 244, 243, 238), 0.1);
   border-radius: 20px;
   background: rgba(var(--ui-fg-rgb, 244, 243, 238), 0.055);
