@@ -857,6 +857,10 @@ function initSpiderCursor() {
       updatePointerTarget(hoveredElement);
     }
     if (keyboardTarget?.isConnected) activeTarget = keyboardTarget;
+    if (outlinedTarget && outlinedTarget !== activeTarget && outlinedTarget.closest(".language-menu")) {
+      outlinedTarget = null;
+      targetProgress = 0;
+    }
     if (activeTarget && activeTarget !== outlinedTarget) {
       outlinedTarget = activeTarget;
     }
