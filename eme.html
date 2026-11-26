@@ -3862,9 +3862,20 @@ margin-inline: 0;
 body:not(.case-page) .contact__details {
 min-height: 0;
 overflow: visible;
-padding: 0;
+padding: 24px;
 border-radius: 0;
-background: none;
+}
+body:not(.case-page) .contact-method .cta-reveal__text {
+min-width: 0;
+height: auto;
+}
+body:not(.case-page) .contact-method .cta-reveal__line {
+height: auto;
+white-space: normal;
+overflow-wrap: anywhere;
+}
+body:not(.case-page) .contact-method .cta-reveal__line[aria-hidden="true"] {
+display: none;
 }
 body:not(.case-page) .contact-globe {
 min-height: 0;
@@ -5796,9 +5807,6 @@ html[data-theme="light"] .quote-card__logo--amocrm { content: url("design/assets
 html[data-theme="light"] .quote-card__logo[src$="make-difference.svg"] { filter: invert(1) hue-rotate(180deg); }
 html[data-theme="light"] .quote-card__logo--loccitane { filter: brightness(0); }
 html[data-theme="light"] .contact__details { background: radial-gradient(circle at 50% 106%, rgba(49,80,164,0.08), transparent 48%), #eeefea; }
-@media (min-width: 1025px) {
-html[data-theme="dark"] body:not(.case-page) .contact__details { background: none; }
-}
 html[data-theme="light"] .contact-form { background: #ffffff; border-color: var(--color-border-soft); }
 html[data-theme="light"] .faq-contact { background: #ffffff; border-color: var(--color-border); }
 html[data-theme="light"] .contact-form input,
