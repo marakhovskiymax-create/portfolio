@@ -691,25 +691,25 @@ function initSpiderCursor() {
   }
 
   function drawPointerAura(time, strength) {
-    // Native arrow coordinates describe its tip, not the center of its body.
-    const radius = 24;
-    const centerX = pointerX + 8;
-    const centerY = pointerY + 12;
-    const quarterLength = PI * radius / 2;
+    // Trace an arrow around the native cursor, anchored at its actual tip.
+    const vertices = [[-3, -6], [-3, 26], [4, 20], [10, 33], [20, 28], [14, 17], [26, 17]]
+      .map(([x, y]) => point(pointerX + x, pointerY + y));
+    const segments = vertices.map((start, index) => {
+      const end = vertices[(index + 1) % vertices.length];
+      return {
+        type: "line",
+        startX: start.x,
+        startY: start.y,
+        endX: end.x,
+        endY: end.y,
+        length: hypot(end.x - start.x, end.y - start.y),
+      };
+    });
     const rect = {
-      centerX,
-      centerY,
-      perimeter: PI * radius * 2,
-      segments: many(4, (index) => ({
-        type: "arc",
-        centerX,
-        centerY,
-        radiusX: radius,
-        radiusY: radius,
-        startAngle: (index - 1) * PI / 2,
-        endAngle: index * PI / 2,
-        length: quarterLength,
-      })),
+      centerX: pointerX + 8,
+      centerY: pointerY + 12,
+      perimeter: segments.reduce((total, segment) => total + segment.length, 0),
+      segments,
     };
     context.save();
     context.shadowColor = pointerPalette.glow;
