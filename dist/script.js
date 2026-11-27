@@ -659,12 +659,14 @@ function initSpiderCursor() {
     return rect;
   }
 
-  function drawTargetTexture(rect, time, strength, paintContext = context) {
+  function drawTargetTexture(rect, time, strength, paintContext = context, pointerAura = false) {
     const sampleCount = min(320, max(140, Math.ceil(rect.perimeter / 5)));
+    const layerOpacity = pointerAura ? [0.96, 0.78, 0.6, 0.45, 0.3, 0.2] : [0.92, 0.56, 0.34, 0.22];
+    const nodeCount = pointerAura ? 28 : 18;
     paintContext.save();
-    paintContext.lineWidth = 0.78;
+    paintContext.lineWidth = pointerAura ? 1.15 : 0.78;
 
-    for (let layer = 0; layer < 4; layer += 1) {
+    for (let layer = 0; layer < layerOpacity.length; layer += 1) {
       paintContext.beginPath();
       for (let index = 0; index <= sampleCount; index += 1) {
         const progress = index / sampleCount;
@@ -675,13 +677,13 @@ function initSpiderCursor() {
         if (index === 0) paintContext.moveTo(x, y);
         else paintContext.lineTo(x, y);
       }
-      paintContext.globalAlpha = strength * [0.92, 0.56, 0.34, 0.22][layer];
+      paintContext.globalAlpha = strength * layerOpacity[layer];
       paintContext.stroke();
     }
 
     paintContext.globalAlpha = strength * 0.96;
-    many(18, (index) => {
-      const progress = index / 18 + sin(time * 0.8 + index) * 0.006;
+    many(nodeCount, (index) => {
+      const progress = index / nodeCount + (pointerAura ? time * 0.035 : 0) + sin(time * 0.8 + index) * 0.006;
       const edge = perimeterPoint(rect, progress);
       const radius = 0.8 + (sin(time * 2 + index * 1.7) + 1) * 0.45;
       drawCircle(edge.x, edge.y, radius, paintContext);
@@ -714,7 +716,28 @@ function initSpiderCursor() {
     context.save();
     context.shadowColor = pointerPalette.glow;
     context.shadowBlur = 5;
-    drawTargetTexture(rect, time, strength * 0.55);
+    drawTargetTexture(rect, time, strength * 0.72, context, true);
+    context.save();
+    context.beginPath();
+    vertices.forEach((vertex, index) => {
+      if (index === 0) context.moveTo(vertex.x, vertex.y);
+      else context.lineTo(vertex.x, vertex.y);
+    });
+    context.closePath();
+    context.clip();
+    context.shadowBlur = 0;
+    context.lineWidth = 0.65;
+    for (let index = 0; index < 14; index += 1) {
+      const progress = index / 14 + time * 0.055;
+      const start = perimeterPoint(rect, progress);
+      const end = perimeterPoint(rect, progress + 0.14 + sin(time * 1.2 + index) * 0.07);
+      context.globalAlpha = strength * (0.18 + (sin(time * 1.5 + index) + 1) * 0.06);
+      context.beginPath();
+      context.moveTo(start.x, start.y);
+      context.lineTo(end.x, end.y);
+      context.stroke();
+    }
+    context.restore();
     context.restore();
   }
 
