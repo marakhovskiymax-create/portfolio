@@ -691,16 +691,19 @@ function initSpiderCursor() {
   }
 
   function drawPointerAura(time, strength) {
-    const radius = 17;
+    // Native arrow coordinates describe its tip, not the center of its body.
+    const radius = 24;
+    const centerX = pointerX + 8;
+    const centerY = pointerY + 12;
     const quarterLength = PI * radius / 2;
     const rect = {
-      centerX: pointerX,
-      centerY: pointerY,
+      centerX,
+      centerY,
       perimeter: PI * radius * 2,
       segments: many(4, (index) => ({
         type: "arc",
-        centerX: pointerX,
-        centerY: pointerY,
+        centerX,
+        centerY,
         radiusX: radius,
         radiusY: radius,
         startAngle: (index - 1) * PI / 2,
@@ -875,7 +878,7 @@ function initSpiderCursor() {
       objectCanvas.style.top = `${objectScrollTop}px`;
     }
     if (typeof syncTimeMachinePointerHover === "function" && pointerInside) syncTimeMachinePointerHover(hoveredElement);
-    auraProgress = clamp(auraProgress + (pointerInside && !pointerOverHoverTarget ? delta / 0.18 : -delta / 0.14));
+    auraProgress = pointerInside && !pointerOverHoverTarget ? clamp(auraProgress + delta / 0.18) : 0;
     if (pointerInside && !pointerOverHoverTarget && auraProgress > 0.01) {
       drawPointerAura(time, smoothstep(auraProgress));
     }
