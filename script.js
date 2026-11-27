@@ -406,7 +406,7 @@ function initSpiderCursor() {
   if (!context) return;
 
   // All stars belong behind page content, including stars connected to the cursor.
-  // Only the pointer aura and target outline are overlays; the cursor is native.
+  // The arrow aura replaces the native pointer only while it is actually drawn.
   const backgroundCanvas = document.createElement("canvas");
   const backgroundContext = backgroundCanvas.getContext("2d");
   if (!backgroundContext) return;
@@ -459,6 +459,7 @@ function initSpiderCursor() {
   let pointerOverDragItem = false;
   let pointerInside = false;
   let pointerOverHoverTarget = false;
+  let nativePointerHidden = false;
   let auraProgress = 0;
   let outlinedTarget = null;
   let targetProgress = 0;
@@ -470,9 +471,16 @@ function initSpiderCursor() {
   const dragItemSelector = ".skill-drag-item, .work-chip";
   const hoverSelector = `${interactiveSelector}, ${dragItemSelector}, .quote-card, .quote-marquee__row, .case-carousel__viewport, .about-badge, .language-menu, [data-contact-globe]`;
 
+  function setAuraPointer(active) {
+    if (nativePointerHidden === active) return;
+    nativePointerHidden = active;
+    document.body.classList.toggle("has-aura-pointer", active);
+  }
+
   function updatePointerTarget(element) {
     const hovered = element instanceof Element ? element.closest(hoverSelector) : null;
     pointerOverHoverTarget = Boolean(hovered && !hovered.matches(":disabled, [aria-disabled='true']"));
+    if (pointerOverHoverTarget) setAuraPointer(false);
     pointerOverDragItem = element instanceof Element && Boolean(element.closest(dragItemSelector));
     activeTarget = resolveInteractiveTarget(element);
   }
@@ -694,7 +702,7 @@ function initSpiderCursor() {
 
   function drawPointerAura(time, strength) {
     // Trace an arrow around the native cursor, anchored at its actual tip.
-    const vertices = [[-3, -6], [-3, 26], [4, 20], [10, 33], [20, 28], [14, 17], [26, 17]]
+    const vertices = [[0, 0], [0, 32], [7, 26], [13, 39], [23, 34], [17, 23], [29, 23]]
       .map(([x, y]) => point(pointerX + x, pointerY + y));
     const segments = vertices.map((start, index) => {
       const end = vertices[(index + 1) % vertices.length];
@@ -708,8 +716,8 @@ function initSpiderCursor() {
       };
     });
     const rect = {
-      centerX: pointerX + 8,
-      centerY: pointerY + 12,
+      centerX: pointerX + 11,
+      centerY: pointerY + 18,
       perimeter: segments.reduce((total, segment) => total + segment.length, 0),
       segments,
     };
@@ -821,6 +829,7 @@ function initSpiderCursor() {
   }
 
   function handlePointerLeave() {
+    setAuraPointer(false);
     pointerInside = false;
     pointerOverHoverTarget = false;
     auraProgress = 0;
@@ -844,6 +853,7 @@ function initSpiderCursor() {
   }
 
   function resetTarget() {
+    setAuraPointer(false);
     activeTarget = null;
     keyboardTarget = null;
     pointerOverDragItem = false;
@@ -856,7 +866,10 @@ function initSpiderCursor() {
 
   function render(timestamp) {
     frame = window.requestAnimationFrame(render);
-    if (document.hidden) return;
+    if (document.hidden) {
+      setAuraPointer(false);
+      return;
+    }
 
     syncCanvas();
     context.clearRect(0, 0, width, height);
@@ -901,9 +914,12 @@ function initSpiderCursor() {
       objectCanvas.style.top = `${objectScrollTop}px`;
     }
     if (typeof syncTimeMachinePointerHover === "function" && pointerInside) syncTimeMachinePointerHover(hoveredElement);
-    auraProgress = pointerInside && !pointerOverHoverTarget ? clamp(auraProgress + delta / 0.18) : 0;
+    auraProgress = pointerInside && !pointerOverHoverTarget ? 1 : 0;
     if (pointerInside && !pointerOverHoverTarget && auraProgress > 0.01) {
       drawPointerAura(time, smoothstep(auraProgress));
+      setAuraPointer(true);
+    } else {
+      setAuraPointer(false);
     }
     targetProgress = clamp(
       targetProgress + (currentRect && activeTarget ? delta / 0.24 : -delta / 0.28),
